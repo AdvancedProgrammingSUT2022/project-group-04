@@ -1,9 +1,12 @@
 import java.util.Scanner;
 
 import Controller.LoginMenuController;
+import Controller.MainMenuController;
 import Model.LoginMenuModel;
+import Model.MainMenuModel;
 import Model.User;
 import View.LoginMenu;
+import View.MainMenu;
 
 public class Main{
 
@@ -15,6 +18,10 @@ public class Main{
         LoginMenuController loginMenuController = new LoginMenuController(loginMenuModel);
         LoginMenu loginMenu = new LoginMenu(loginMenuController);
 
+        MainMenuModel mainMenuModel = new MainMenuModel();
+        MainMenuController mainMenuController = new MainMenuController(mainMenuModel);
+        MainMenu mainMenu = new MainMenu(mainMenuController);
+
         User loggedinUser;
 
         while(true) {
@@ -22,6 +29,7 @@ public class Main{
             if(loggedinUser == null) {
                 break;
             }
+            mainMenu.run(scanner, loggedinUser);
         }
 
 
