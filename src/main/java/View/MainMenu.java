@@ -1,12 +1,17 @@
 package View;
 
+import Controller.GameMenuController;
 import Controller.MainMenuController;
 import Controller.ProfileMenuController;
+import Database.GameDatabase;
 import Enums.LoginMenuCommands;
 import Enums.MainMenuCommands;
+import Model.Civilization;
+import Model.GameModel;
 import Model.ProfileMenuModel;
 import Model.User;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -35,6 +40,8 @@ public class MainMenu extends Menu{
                 } else {
                     enterProfileMenu(scanner, loggedinUser);
                 }
+            } else if((matcher = MainMenuCommands.getCommandMatcher(command, MainMenuCommands.PLAY_GAME)) != null) {
+                playGame(matcher, scanner);
             } else {
                 System.out.println("invalid command");
             }
@@ -63,5 +70,24 @@ public class MainMenu extends Menu{
         ProfileMenu profileMenu = new ProfileMenu(profileMenuController);
 
         profileMenu.run(scanner, loggedinUser);
+    }
+
+    private void playGame(Matcher matcher, Scanner scanner) {
+
+        ArrayList<Civilization> players = new ArrayList<Civilization>();
+        // find Users;
+        // create Civilizations
+        enterGameMenu(players, scanner);
+
+    }
+
+    private void enterGameMenu(ArrayList<Civilization> players, Scanner scanner) {
+        GameModel gameModel = new GameModel();
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        GameMenu gameMenu = new GameMenu(gameMenuController);
+
+        GameDatabase.setPlayers(players);
+        gameMenu.run(scanner);
+
     }
 }
