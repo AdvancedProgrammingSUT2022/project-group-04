@@ -29,4 +29,12 @@ public class User {
     public int getScore() {
         return this.score;
     }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
