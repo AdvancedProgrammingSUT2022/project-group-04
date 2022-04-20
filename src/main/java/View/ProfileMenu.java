@@ -13,6 +13,8 @@ public class ProfileMenu extends Menu{
     private UserController userController;
     private static final String PROFILE_CHANGE_NICKNAME = "profile change --nickname (?<nickname>\\S+)";
     private static final String PROFILE_CHANGE_PASSWORD = "profile change --password --current (?<currentPassword>\\S+) --new (?<newPassword>\\S+)";
+    private static final String SHORT_CHANGE_NICKNNAME = "profile change -n (?<nickname>\\S+)";
+    private static final String SHORT_CHANGE_PASSWORD = "profile change -p -c (?<currentPassword>\\S+) -n (?<newPassword>\\S+)";
 
     public ProfileMenu(ProfileMenuController profileMenuController) {
         this.profileMenuController = profileMenuController;
@@ -23,16 +25,18 @@ public class ProfileMenu extends Menu{
         String command;
         while(true) {
             Matcher matcher;
-            command = scanner.nextLine();
+            command = this.profileMenuController.commandCorrector(scanner.nextLine());
             if(command.equals("menu exit")) {
                 return null;
             } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
             } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
-            } else if((matcher = getCommandMatcher(command, PROFILE_CHANGE_NICKNAME)) != null) {
+            } else if(((matcher = getCommandMatcher(command, PROFILE_CHANGE_NICKNAME)) != null)
+                    || ((matcher = getCommandMatcher(command, SHORT_CHANGE_NICKNNAME)) != null)) {
                 System.out.println(changeNickname(loggedinUser, matcher));
-            } else if((matcher = getCommandMatcher(command, PROFILE_CHANGE_PASSWORD)) != null) {
+            } else if(((matcher = getCommandMatcher(command, PROFILE_CHANGE_PASSWORD)) != null)
+                    || ((matcher = getCommandMatcher(command, SHORT_CHANGE_PASSWORD)) != null)) {
                 System.out.println(changePassword(loggedinUser, matcher));
             } else {
                 System.out.println("invalid command");
