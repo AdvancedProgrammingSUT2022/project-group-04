@@ -2,8 +2,6 @@ package View;
 
 import Controller.ProfileMenuController;
 import Controller.UserController;
-import Database.UserDatabase;
-import Enums.ProfileMenuCommands;
 import Model.User;
 
 import java.util.Scanner;
@@ -13,6 +11,8 @@ public class ProfileMenu extends Menu{
 
     private ProfileMenuController profileMenuController;
     private UserController userController;
+    private static final String PROFILE_CHANGE_NICKNAME = "profile change --nickname (?<nickname>\\S+)";
+    private static final String PROFILE_CHANGE_PASSWORD = "profile change --password --current (?<currentPassword>\\S+) --new (?<newPassword>\\S+)";
 
     public ProfileMenu(ProfileMenuController profileMenuController) {
         this.profileMenuController = profileMenuController;
@@ -26,13 +26,13 @@ public class ProfileMenu extends Menu{
             command = scanner.nextLine();
             if(command.equals("menu exit")) {
                 return null;
-            } else if((matcher = ProfileMenuCommands.getCommandMatcher(command, ProfileMenuCommands.MENU_SHOW)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if((matcher = ProfileMenuCommands.getCommandMatcher(command, ProfileMenuCommands.MENU_ENTER)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
-            } else if((matcher = ProfileMenuCommands.getCommandMatcher(command, ProfileMenuCommands.PROFILE_CHANGE_NICKNAME)) != null) {
+            } else if((matcher = getCommandMatcher(command, PROFILE_CHANGE_NICKNAME)) != null) {
                 System.out.println(changeNickname(loggedinUser, matcher));
-            } else if((matcher = ProfileMenuCommands.getCommandMatcher(command, ProfileMenuCommands.PROFILE_CHANGE_PASSWORD)) != null) {
+            } else if((matcher = getCommandMatcher(command, PROFILE_CHANGE_PASSWORD)) != null) {
                 System.out.println(changePassword(loggedinUser, matcher));
             } else {
                 System.out.println("invalid command");

@@ -6,13 +6,13 @@ import Model.User;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-import Model.User;
-import Enums.LoginMenuCommands;
 import Database.UserDatabase;
 
 public class LoginMenu extends Menu{
 
     private LoginMenuController loginMenuController;
+    private static final String USER_CREATE = "user create --username (?<username>\\S+) --nickname (?<nickname>\\S+) --password (?<password>\\S+)";
+    private static final String USER_LOGIN = "user login --username (?<username>\\S+) --password (?<password>\\S+)";
 
     public LoginMenu(LoginMenuController loginMenuController) {
         this.loginMenuController = loginMenuController;
@@ -25,13 +25,13 @@ public class LoginMenu extends Menu{
             command = scanner.nextLine();
             if(command.equals("menu exit")) {
                 return null;
-            } else if((matcher = LoginMenuCommands.getCommandMatcher(command, LoginMenuCommands.MENU_SHOW)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if((matcher = LoginMenuCommands.getCommandMatcher(command, LoginMenuCommands.MENU_ENTER)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
-            } else if((matcher = LoginMenuCommands.getCommandMatcher(command, LoginMenuCommands.USER_CREATE)) != null) {
+            } else if((matcher = getCommandMatcher(command, USER_CREATE)) != null) {
                 System.out.println(userCreate(matcher));
-            } else if((matcher = LoginMenuCommands.getCommandMatcher(command, LoginMenuCommands.USER_LOGIN)) != null) {
+            } else if((matcher = getCommandMatcher(command, USER_LOGIN)) != null) {
                 String result = userLogin(matcher);
                 System.out.println(result);
                 if(result.endsWith("successfully!")) {
