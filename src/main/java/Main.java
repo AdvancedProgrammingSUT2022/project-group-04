@@ -1,7 +1,9 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 import Controller.LoginMenuController;
 import Controller.MainMenuController;
+import Database.UserDatabase;
 import Model.LoginMenuModel;
 import Model.MainMenuModel;
 import Model.User;
@@ -11,8 +13,10 @@ import View.MainMenu;
 public class Main{
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
+
+        UserDatabase.readFromFile("UserDatabase.json");
 
         LoginMenuModel loginMenuModel = new LoginMenuModel();
         LoginMenuController loginMenuController = new LoginMenuController(loginMenuModel);
@@ -31,6 +35,8 @@ public class Main{
             }
             mainMenu.run(scanner, loggedinUser);
         }
+
+        UserDatabase.writeInFile("UserDatabase.json");
 
 
     }
