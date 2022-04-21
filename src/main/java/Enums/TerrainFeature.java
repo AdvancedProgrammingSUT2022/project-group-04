@@ -1,6 +1,6 @@
 package Enums;
 
-public enum TerrainFeatures {
+public enum TerrainFeature {
     Prairie,
     Jungle,
     Ice,
