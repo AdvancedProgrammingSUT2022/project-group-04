@@ -63,6 +63,11 @@ public class MainMenu extends Menu{
         return null;
     }
 
+    /**
+     * entered profile menu
+     * @param scanner
+     * @param loggedinUser
+     */
     private void enterProfileMenu(Scanner scanner, User loggedinUser) {
         ProfileMenuModel profileMenuModel = new ProfileMenuModel();
         ProfileMenuController profileMenuController = new ProfileMenuController(profileMenuModel);
@@ -71,6 +76,11 @@ public class MainMenu extends Menu{
         profileMenu.run(scanner, loggedinUser);
     }
 
+    /**
+     * makes a new game
+     * @param matcher
+     * @param scanner
+     */
     private void playGame(Matcher matcher, Scanner scanner) {
 
         ArrayList<Civilization> players = new ArrayList<Civilization>();
@@ -80,6 +90,11 @@ public class MainMenu extends Menu{
 
     }
 
+    /**
+     * enters game menu
+     * @param players
+     * @param scanner
+     */
     private void enterGameMenu(ArrayList<Civilization> players, Scanner scanner) {
         GameModel gameModel = new GameModel();
         GameMenuController gameMenuController = new GameMenuController(gameModel);
