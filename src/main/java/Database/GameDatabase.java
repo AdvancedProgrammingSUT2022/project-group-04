@@ -4,11 +4,14 @@ import Model.Civilization;
 import Model.Tile;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameDatabase {
 
     public static ArrayList<Civilization> players;
     public static ArrayList<Tile> map;
+    private static final int length = 50;
+    private static final int width  = 50;
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.players = players;
@@ -39,6 +42,12 @@ public class GameDatabase {
     }
 
     public static void generateMap(int numberOfPlayers){
+        Random random = new Random();
+        int[] possibilities = {10,10,10,10,10,10,10,10};
+        for (int i=0;i<length;i++){
+            for (int j=0;j<width;j++){
 
+            }
+        }
     }
 }
