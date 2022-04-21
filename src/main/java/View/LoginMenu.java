@@ -56,6 +56,10 @@ public class LoginMenu extends Menu{
         return "please login first";
     }
 
+    /**
+     * creates a new user
+     * @param matcher
+     */
     private String userCreate(Matcher matcher) {
         String username = matcher.group("username");
         String nickname = matcher.group("nickname");

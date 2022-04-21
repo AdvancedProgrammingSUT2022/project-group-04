@@ -27,14 +27,29 @@ public class ProfileMenuController {
         return true;
     }
 
+    /**
+     *
+     * @param loggedinUser
+     * @param nickname
+     */
     public void changeNickname(User loggedinUser, String nickname) {
         this.profileMenuModel.changeNickname(loggedinUser, nickname);
     }
 
+    /**
+     *
+     * @param loggedinUser
+     * @param password
+     */
     public void changePassword(User loggedinUser, String password) {
         this.profileMenuModel.changePassword(loggedinUser, password);
     }
 
+    /**
+     * corrects commands
+     * @param command
+     * @return
+     */
     public String commandCorrector(String command) {
         if(command.startsWith("profile change") && isChangeRequestPassword(command)) {
             return correctChangePassword(command);
@@ -42,6 +57,11 @@ public class ProfileMenuController {
         return command;
     }
 
+    /**
+     *
+     * @param command
+     * @return true if the request was profile change password
+     */
     private boolean isChangeRequestPassword(String command) {
         String[] splitCommand = command.split(" ");
         for(int i=0; i<splitCommand.length; i++) {
@@ -52,6 +72,11 @@ public class ProfileMenuController {
         return false;
     }
 
+    /**
+     * corrects change password commands
+     * @param command
+     * @return
+     */
     private String correctChangePassword(String command) {
         String[] splitCommand = command.split(" ");
         String correctCommand = "profile change ";

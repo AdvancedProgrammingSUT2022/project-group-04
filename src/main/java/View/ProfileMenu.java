@@ -53,6 +53,11 @@ public class ProfileMenu extends Menu{
         return "menu navigation is not possible";
     }
 
+    /**
+     * changes nickname
+     * @param loggedinUser
+     * @param matcher
+     */
     private String changeNickname(User loggedinUser, Matcher matcher) {
         String nickname = matcher.group("nickname");
         if(!this.profileMenuController.isNicknameUnique(nickname)) {
@@ -62,6 +67,11 @@ public class ProfileMenu extends Menu{
         return "nickname changed successfully!";
     }
 
+    /**
+     * changes password
+     * @param loggedinUser
+     * @param matcher
+     */
     private String changePassword(User loggedinUser, Matcher matcher) {
         String password = matcher.group("currentPassword");
         String newPassword = matcher.group("newPassword");
