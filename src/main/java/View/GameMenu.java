@@ -2,7 +2,7 @@ package View;
 
 import Controller.GameMenuController;
 import Database.GameDatabase;
-import Enums.MapAndGeneralCommandsOfGameMenu;
+//import Enums.MapAndGeneralCommandsOfGameMenu;
 import Model.Tile;
 
 import java.util.Scanner;
