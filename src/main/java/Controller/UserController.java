@@ -5,6 +5,12 @@ import Database.UserDatabase;
 
 public class UserController {
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return true is the password was correct.
+     */
     public boolean isPasswordCorrect(String username, String password) {
         User user = UserDatabase.getUserByUsername(username);
         if(user == null) {

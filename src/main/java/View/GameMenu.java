@@ -23,11 +23,11 @@ public class GameMenu extends Menu{
             command = scanner.nextLine();
             if(command.equals("menu exit")) {
                 break;
-            } else if((matcher = MapAndGeneralCommandsOfGameMenu.getCommandMatcher(command, MapAndGeneralCommandsOfGameMenu.MENU_SHOW)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if((matcher = MapAndGeneralCommandsOfGameMenu.getCommandMatcher(command, MapAndGeneralCommandsOfGameMenu.MENU_ENTER)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
-            } else if((matcher = MapAndGeneralCommandsOfGameMenu.getCommandMatcher(command, MapAndGeneralCommandsOfGameMenu.MENU_EXIT)) != null) {
+            } else if((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
                 System.out.println(menuExit(matcher));
             } else {
                 System.out.println("invalid command");
