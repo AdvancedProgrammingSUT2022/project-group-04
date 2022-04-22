@@ -3,6 +3,9 @@ package Database;
 import Model.City;
 import Model.Civilization;
 import Model.Tile;
+import Model.Resources;
+import Model.BaseTerrain;
+import Model.TerrainFeatures;
 
 
 import java.util.ArrayList;
