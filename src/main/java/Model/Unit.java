@@ -2,14 +2,14 @@ package Model;
 
 public class Unit {
 
-    private int X;
-    private int Y;
-    private int Vx;
-    private int Vy;
+    private int x;
+    private int y;
+    private int vX;
+    private int vY;
     private int power;
     private int cost;
-    // private Technology technologyRequired;
-    // private Resource resourcesRequired;
+    private Technology technologyRequired;
+    private Resources resourcesRequired;
     private int movementPoint;
     private String unitType;
     private boolean isSleeping;
@@ -19,35 +19,35 @@ public class Unit {
     private Tile isOnTile;
 
     public int getX() {
-        return X;
+        return x;
     }
 
     public void setX(int x) {
-        X = x;
+        x = x;
     }
 
     public int getY() {
-        return Y;
+        return y;
     }
 
     public void setY(int y) {
-        Y = y;
+        y = y;
     }
 
-    public int getVx() {
-        return Vx;
+    public int getVX() {
+        return vX;
     }
 
-    public void setVx(int vx) {
-        Vx = vx;
+    public void setVX(int vX) {
+        vX = vX;
     }
 
-    public int getVy() {
-        return Vy;
+    public int getVY() {
+        return vY;
     }
 
-    public void setVy(int vy) {
-        Vy = vy;
+    public void setVY(int vY) {
+        vY = vY;
     }
 
     public int getPower() {
@@ -114,11 +114,11 @@ public class Unit {
         this.HP = HP;
     }
 
-    public Unit(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP ){
-        this.X = x;
-        this.Y = y;
-        this.Vx = Vx;
-        this.Vy = Vy;
+    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP ){
+        this.x = x;
+        this.y = y;
+        this.vX = vX;
+        this.vY = vY;
         this.power = power;
         this.movementPoint = movementPoint;
         this.unitType = unitType;
@@ -134,56 +134,56 @@ public class Unit {
         return isOnTile;
     }
     public void moveOneTile(int direction){
-        int x1 = X, y1 = Y - 10; // value is temporary , will be changed
-        int x2 = X + 7 , y2 = Y - 7;
-        int x3 = X + 7 , y3 = Y + 7;
-        int x4 = X, y4 = Y + 10;
-        int x5 = X - 7, y5 = Y + 7;
-        int x6 = X - 7, y6 = Y - 7;
+        int x1 = x, y1 = y - 10; // value is temporary , will be changed
+        int x2 = x + 7 , y2 = y - 7;
+        int x3 = x + 7 , y3 = y + 7;
+        int x4 = x, y4 = y + 10;
+        int x5 = x - 7, y5 = y + 7;
+        int x6 = x - 7, y6 = y - 7;
         switch(direction){
             case 1:
                 do {
-                    if (Y > y1 - 1)
-                        this.Y -= Vy;
-                } while (Y > y1 - 1);
+                    if (y > y1 - 1)
+                        this.y -= vY;
+                } while (y > y1 - 1);
                 break;
             case 2:
                 do {
-                    if (X < x2 - 1)
-                        this.X += Vx;
-                    if (Y > y2 - 1)
-                        this.Y -= Vy;
-                } while (X < x1 - 1 || Y > y1 - 1);
+                    if (x < x2 - 1)
+                        this.x += vX;
+                    if (y > y2 - 1)
+                        this.y -= vY;
+                } while (x < x1 - 1 || y > y1 - 1);
                 break;
             case 3:
                 do {
-                    if (X < x1 - 1)
-                        this.X += Vx;
-                    if (Y < y1 - 1)
-                        this.Y += Vy;
-                } while (X < x1 - 1 || Y < y1 - 1);
+                    if (x < x1 - 1)
+                        this.x += vX;
+                    if (y < y1 - 1)
+                        this.y += vY;
+                } while (x < x1 - 1 || y < y1 - 1);
                 break;
             case 4:
                 do {
-                    if (Y < y1 - 1)
-                        this.Y += Vy;
-                } while (Y < y1 - 1);
+                    if (y < y1 - 1)
+                        this.y += vY;
+                } while (y < y1 - 1);
                 break;
             case 5:
                 do {
-                    if (X > x1 - 1)
-                        this.X -= Vx;
-                    if (Y < y1 - 1)
-                        this.Y += Vy;
-                } while (X > x1 - 1 || Y < y1 - 1);
+                    if (x > x1 - 1)
+                        this.x -= vX;
+                    if (y < y1 - 1)
+                        this.y += vY;
+                } while (x > x1 - 1 || y < y1 - 1);
                 break;
             case 6:
                 do {
-                    if (X > x1 - 1)
-                        this.X -= Vx;
-                    if (Y > y1 - 1)
-                        this.Y -= Vy;
-                } while (X > x1 - 1 || Y > y1 - 1);
+                    if (x > x1 - 1)
+                        this.x -= vX;
+                    if (y > y1 - 1)
+                        this.y -= vY;
+                } while (x > x1 - 1 || y > y1 - 1);
                 break;
         }
     }
