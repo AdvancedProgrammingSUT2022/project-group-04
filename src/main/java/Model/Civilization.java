@@ -23,6 +23,10 @@ public class Civilization {
         this.technologies = new ArrayList<Technology>();
     }
 
+    public ArrayList<Technology> getTechnologies() {
+        return technologies;
+    }
+
     public void assignTiles() {
 
     }
@@ -92,6 +96,16 @@ public class Civilization {
             }
         }
     }
+
+    public boolean isTechnologyForThisCivilization(Technology technology) {
+        for (int i = 0; i < this.technologies.size(); i++) {
+            if(this.technologies.get(i).equals(technology)) {
+                return true;
+            }
+        }
+        return false;
+
+    }     
 
     public boolean isTileInCivilization(Tile tile){
         for (Tile tile1 : tiles) {

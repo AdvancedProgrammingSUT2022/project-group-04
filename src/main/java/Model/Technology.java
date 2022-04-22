@@ -122,6 +122,101 @@ public class Technology {
                 this.prerequisiteTechnologies.add(new Technology("Calendar"));
                 this.prerequisiteTechnologies.add(new Technology("Philosophy"));
                 break;
+            case "Acoustics":
+                this.cost = 650;
+                this.prerequisiteTechnologies.add(new Technology("Education"));
+                break;
+            case "Archaeology":
+                this.cost = 1300;
+                this.prerequisiteTechnologies.add(new Technology("Acoustics"));
+                break;
+            case "Banking":
+                this.cost = 650;
+                this.prerequisiteTechnologies.add(new Technology("Education"));
+                this.prerequisiteTechnologies.add(new Technology("Chivalry"));
+                break;
+            case "Chemistry":
+                this.cost = 900;
+                this.prerequisiteTechnologies.add(new Technology("Gunpowder"));
+                break;
+            case "Economics":
+                this.cost = 900;
+                this.prerequisiteTechnologies.add(new Technology("Banking"));
+                this.prerequisiteTechnologies.add(new Technology("PrintingPress"));
+                break;
+            case "Fertilizer":
+                this.cost = 1300;
+                this.prerequisiteTechnologies.add(new Technology("Chemistry"));
+                break;
+            case "Gunpowder":
+                this.cost = 680;
+                this.prerequisiteTechnologies.add(new Technology("Physics"));
+                this.prerequisiteTechnologies.add(new Technology("Steel"));
+                break;
+            case "Metallurgy":
+                this.cost = 900;
+                this.prerequisiteTechnologies.add(new Technology("Gunpowder"));
+                break;
+            case "MilitaryScience":
+                this.cost = 1300;
+                this.prerequisiteTechnologies.add(new Technology("Economics"));
+                this.prerequisiteTechnologies.add(new Technology("Chemistry"));
+                break;
+            case "PrintingPress":
+                this.cost = 650;
+                this.prerequisiteTechnologies.add(new Technology("Machinery"));
+                this.prerequisiteTechnologies.add(new Technology("Physics"));
+                break;
+            case "Rifling":
+                this.cost = 1425;
+                this.prerequisiteTechnologies.add(new Technology("Metallurgy"));
+                break;
+            case "ScientificTheory":
+                this.cost = 1300;
+                this.prerequisiteTechnologies.add(new Technology("Acoustics"));
+                break;
+            case "Biology":
+                this.cost = 1680;
+                this.prerequisiteTechnologies.add(new Technology("Archaeology"));
+                this.prerequisiteTechnologies.add(new Technology("ScientificTheory"));
+                break;
+            case "Combustion":
+                this.cost = 2200;
+                this.prerequisiteTechnologies.add(new Technology("ReplaceableParts"));
+                this.prerequisiteTechnologies.add(new Technology("Railroad"));
+                this.prerequisiteTechnologies.add(new Technology("Dynamite"));
+                break;
+            case "Dynamite":
+                this.cost = 1900;
+                this.prerequisiteTechnologies.add(new Technology("Fertilizer"));
+                this.prerequisiteTechnologies.add(new Technology("Rifling"));
+                break;
+            case "Electricity":
+                this.cost = 1900;
+                this.prerequisiteTechnologies.add(new Technology("Biology"));
+                this.prerequisiteTechnologies.add(new Technology("SteamPower"));
+                break;
+            case "Radio":
+                this.cost = 2200;
+                this.prerequisiteTechnologies.add(new Technology("Electricity"));
+                break;
+            case "Railroad":
+                this.cost = 1900;
+                this.prerequisiteTechnologies.add(new Technology("SteamPower"));
+                break;
+            case "ReplaceableParts":
+                this.cost = 1900;
+                this.prerequisiteTechnologies.add(new Technology("SteamPower"));
+                break;
+            case "SteamPower":
+                this.cost = 1680;
+                this.prerequisiteTechnologies.add(new Technology("ScientificTheory"));
+                this.prerequisiteTechnologies.add(new Technology("MilitaryScience"));
+                break;
+            case " Telegraph":
+                this.cost = 2200;
+                this.prerequisiteTechnologies.add(new Technology("Electricity"));
+                break;
             default:
                 break;
         }
@@ -146,6 +241,15 @@ public class Technology {
             }
         }
         return false;
+    }
+
+    public boolean isTechnologyValidForCivilization(Civilization civilization, Technology technology) {
+        for(int i=0; i<this.prerequisiteTechnologies.size(); i++) {
+            if(!civilization.isTechnologyForThisCivilization(this.prerequisiteTechnologies.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
