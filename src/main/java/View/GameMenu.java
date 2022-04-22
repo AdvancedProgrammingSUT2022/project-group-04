@@ -1,6 +1,9 @@
 package View;
 
 import Controller.GameMenuController;
+import Database.GameDatabase;
+//import Enums.MapAndGeneralCommandsOfGameMenu;
+import Model.Tile;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -43,5 +46,76 @@ public class GameMenu extends Menu{
 
     private String menuExit(Matcher matcher) {
         return "you must finish the game to exit";
+    }
+
+    public void printMap(Matcher matcher){
+        int mainX = Integer.parseInt(matcher.group("x"));
+        int mainY = Integer.parseInt(matcher.group("y"));
+        String[][][] linesOfHexagons = new String[5][6][6];
+        for (int i=-2;i<3;i++){
+            for (int j=-2;j<4;j++){
+                int x = mainX+i;
+                int y = mainY+j;
+                Tile tile = GameDatabase.getBlockByXandY(x,y);
+                if (tile == null || i==-2 || i==3){
+                    for (int k = 0; k < 3; k++) {
+                        for (int k1 = 0; k1 < 2*(k+4);k1++)
+                            linesOfHexagons[i + 2][j + 2][k] +=" ";
+                    }
+                    for (int k = 4; k < 6; k++) {
+                        for (int k1 = 0; k1 < 2*(10-k);k1++)
+                            linesOfHexagons[i + 2][j + 2][k] +=" ";
+                    }
+                }
+                else {
+                    //TODO set lines of hexagons with format
+                    linesOfHexagons[i + 2][j + 2][0] = "something";
+                    linesOfHexagons[i + 2][j + 2][1] = "something";
+                    linesOfHexagons[i + 2][j + 2][2] = "something";
+                    linesOfHexagons[i + 2][j + 2][3] = "something";
+                    linesOfHexagons[i + 2][j + 2][4] = "something";
+                    linesOfHexagons[i + 2][j + 2][5] = "something";
+                }
+            }
+        }
+        String[] lines = new String[30];
+        int[] counterLine ={0,3,0,3,0,3};
+        int[] counterOfHex = {1,0,1,0,1,0};
+        for (int i=1;i<22;i++){
+            int numberOfSpace = (i%6);
+            String[] marz = new String[2];
+            if (numberOfSpace<4 && numberOfSpace>0){
+                marz[0]="\\";
+                marz[1]="/";
+            }
+            else{
+                marz[1]="\\";
+                marz[0]="/";
+            }
+            if (numberOfSpace==0 || numberOfSpace==1) numberOfSpace=3;
+            else if (numberOfSpace==2 || numberOfSpace==5) numberOfSpace=2;
+            else if (numberOfSpace==4 || numberOfSpace==3) numberOfSpace=1;
+            for (int j=0;j<numberOfSpace;j++) {
+                lines[i] +=" ";
+            }
+            //set the i-th line
+            int flag = 1;
+            for (int j=0;j<6;j++) {
+                lines[i] += marz[flag];
+                lines[i] += linesOfHexagons[counterOfHex[j]][j][counterLine[j]];
+                flag = 1 - flag;
+            }
+            //set arrays for next cycle
+            for (int u=0;u<6;u++){
+                counterLine[u] += 1;
+                if (counterLine[u]==6) {
+                    counterOfHex[u]+=1;
+                    counterLine[u] = 0;
+                }
+            }
+        }
+        for (int i=0;i<23;i++){
+            System.out.println(lines[i]);
+        }
     }
 }

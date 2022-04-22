@@ -98,3 +98,4 @@ public class TerrainFeatures {
         return this.movementIsPossible;
     }
 }
+

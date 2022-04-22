@@ -1,6 +1,7 @@
 package Enums;
 
 public enum Resource {
+
     //bonus
     Banana,
     Cow,
@@ -23,4 +24,5 @@ public enum Resource {
     Coal,
     Horse,
     Iron;
+
 }
