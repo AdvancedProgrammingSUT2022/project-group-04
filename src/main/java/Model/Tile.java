@@ -54,6 +54,7 @@ public class Tile {
         }
     }
 
+
     public ArrayList<Improvement> getImprovements() {
         return improvements;
     }
@@ -72,6 +73,10 @@ public class Tile {
 
     public boolean isRiverByNumberOfEdge(int indexOfEdge) {
         return isRiver[indexOfEdge];
+    }
+
+    public void setRiverByEdgeIndex(int edgeIndex){
+        this.isRiver[edgeIndex] = true;
     }
 
     public BaseTerrain getBaseTerrain() {

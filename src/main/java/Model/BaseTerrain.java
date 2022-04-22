@@ -1,5 +1,6 @@
 package Model;
 
+import Enums.Resource;
 import Enums.TerrainFeature;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class BaseTerrain {
     private int movementPrice;
     private ArrayList<TerrainFeatures> possibleFeatures;
     private ArrayList<Resources> possibleResources;
+    private ArrayList<TerrainFeatures> features;
+    private ArrayList<Resources> resources;
     private boolean movementIsPossible;
 
     public BaseTerrain(String type) {
@@ -25,6 +28,7 @@ public class BaseTerrain {
                 changesInCombat = -33;
                 movementPrice = 1;
                 movementIsPossible = true;
+                //TODO terrainFeatures & resources
                 break;
             case "Meadow":
                 foodNum = 2;
@@ -86,7 +90,7 @@ public class BaseTerrain {
         this.type = type;
     }
 
-    public String getType(){
+    public String getType() {
         return this.type;
     }
 
@@ -116,5 +120,21 @@ public class BaseTerrain {
 
     public boolean IsMovementPossible() {
         return this.movementIsPossible;
+    }
+
+    public void addFeature(TerrainFeatures terrainFeature) {
+        this.features.add(terrainFeature);
+    }
+
+    public void addResource(Resources resource) {
+        this.resources.add(resource);
+    }
+
+    public ArrayList<Resources> getResources() {
+        return resources;
+    }
+
+    public ArrayList<TerrainFeatures> getFeatures() {
+        return features;
     }
 }
