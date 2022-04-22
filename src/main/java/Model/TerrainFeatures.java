@@ -64,7 +64,8 @@ public class TerrainFeatures {
                 movementPrice = 1;
                 movementIsPossible = true;
                 break;
-            //TODO River ro bayad inja bezarim?
+            default:
+                break;
         }
         this.type = type;
     }

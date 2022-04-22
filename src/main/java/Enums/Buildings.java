@@ -15,5 +15,5 @@ public enum Buildings {
     Temple,
     Castle,
     Forge,
-    Garden,
+    Garden;
 }

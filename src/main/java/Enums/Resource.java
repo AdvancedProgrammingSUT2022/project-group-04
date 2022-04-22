@@ -22,5 +22,5 @@ public enum Resource {
     //Strategics
     Coal,
     Horse,
-    Iron,
+    Iron;
 }
