@@ -35,11 +35,9 @@ public class Civilization {
         this.gold += amount;
     }
 
-    /*
     public void addTechnology(Technology newTechnology) {
         this.technologies.add(newTechnology);
     }
-    */
 
     public void addTile(Tile newTile) {
         this.tiles.add(newTile);

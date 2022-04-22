@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Tile {
 
-    private BaseTerrain baseTerrain;
-    private int x;
-    private int y;
-    private String contains;
-    private ArrayList<Unit> units;
+    protected BaseTerrain baseTerrain;
+    protected int x;
+    protected int y;
+    protected String contains;
+    protected ArrayList<Unit> units;
     private Civilization civilization;
     private boolean isRaided;
     private boolean[] isRiver;
@@ -60,7 +60,7 @@ public class Tile {
         return this.civilization;
     }
 
-    public boolean isRiverByNumberOfEdge(int indexOfEdge){
+    public boolean isRiverByNumberOfEdge(int indexOfEdge) {
         return isRiver[indexOfEdge];
     }
 
