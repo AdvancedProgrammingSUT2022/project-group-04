@@ -1,7 +1,5 @@
 package Model;
 
-import Enums.Improvements;
-
 import java.util.ArrayList;
 
 public class Resources {
@@ -15,16 +13,181 @@ public class Resources {
     private Improvement improvementNeeded;
 
     public Resources(String name) {
+        this.name = name;
+        this.canBeFoundOnBaseTerrain = new ArrayList<BaseTerrain>();
+        this.canBeFoundOnTerrainFeature = new ArrayList<TerrainFeatures>();
         switch (name) {
             case "banana":
-                foodNum = 1;
-                gold = 0;
-                production = 0;
-                //TODO set canBeFoundOnTerrainFeature && canBeFoundOnBaseTerrain && improvementNeeded
+                this.type = "bonus";
+                this.foodNum = 1;
+                this.production = 0;
+                this.gold = 0;
+                //
+                //
+                //
                 break;
             case "Cow":
-                //TODO ...
-
+                this.type = "bonus";
+                this.foodNum = 1;
+                this.production = 0;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
+            case "Gazelle":
+                this.type = "bonus";
+                this.foodNum = 1;
+                this.production = 0;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
+            case "Sheep":
+                this.type = "bonus";
+                this.foodNum = 1;
+                this.production = 0;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
+            case "Wheat":
+                this.type = "bonus";
+                this.foodNum = 1;
+                this.production = 0;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
+            case "Cotton":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Color":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Fur":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Gemstone":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 3;
+                //
+                //
+                //
+                break;
+            case "Gold":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Incense":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Ivory":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Marble":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Silk":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Silver":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Sugar":
+                this.type = "luxury";
+                this.foodNum = 0;
+                this.production = 0;
+                this.gold = 2;
+                //
+                //
+                //
+                break;
+            case "Coal":
+                this.type = "Strategics";
+                this.foodNum = 0;
+                this.production = 1;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
+            case "Horse":
+                this.type = "Strategics";
+                this.foodNum = 0;
+                this.production = 1;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
+            case "Iron":
+                this.type = "Strategics";
+                this.foodNum = 0;
+                this.production = 1;
+                this.gold = 0;
+                //
+                //
+                //
+                break;
         }
     }
 }
