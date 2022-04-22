@@ -80,6 +80,11 @@ public class UserDatabase {
         }
     }
 
+    /**
+     * writes in file
+     * @param fileName
+     * @throws IOException
+     */
     public static void writeInFile(String fileName) throws IOException {
         Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
         Path userPath = Paths.get(fileName);

@@ -17,19 +17,19 @@ public class City {
     private int timeToExtendBorders;
     private int timeTopPopulate;
     private ArrayList<Citizen> citizens;
-    //private ArrayList<Building> buildings;
-    //private boolean isGarrison;
-    //private boolean isDivision;
+    private ArrayList<Building> buildings;
+    private boolean isGarrison;
+    private boolean isDivision;
     private int hitPoint;
     private String civilizationName;
-    //private boolean isColonized;
+    private boolean isColonized;
     private boolean isCapital;
 
     public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital) {
         this.name = name;
         this.power = power;
-        //this.longRangePower = 0;
-        //this.range = 0;
+        this.longRangePower = 0;
+        this.range = 0;
         this.foodGeneratingRate = foodGeneratingRate;
         this.goldGeneratingRate = goldGeneratingRate;
         this.scienceGenerating = scienceGenerating;
@@ -37,8 +37,8 @@ public class City {
         this.timeToExtendBorders = timeToExtendBorders;
         this.timeTopPopulate = timeTopPopulate;
         this.citizens = citizens;
-        //this.buildings = new ArrayList<Building>();
-        //this.hitPoint = 0;
+        this.buildings = new ArrayList<Building>();
+        this.hitPoint = 0;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
     }
