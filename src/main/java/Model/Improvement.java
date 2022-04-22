@@ -6,23 +6,17 @@ import java.util.ArrayList;
 
 public class Improvement {
     private String name;
-    private ArrayList<Resource> resourcesThatNeedImprovement;
     private Technology requiredTechnology;
     private ArrayList<BaseTerrain> BaseTerrainThatCanBeBuilt;
     private ArrayList<TerrainFeatures> TerrainFeaturesThatCanBeBuilt;
+    private int cityFoodChange;
+    private int cityProductionChange;
 
-    public Improvement(String name, ArrayList<Resource> resourcesThatNeedImprovement, Technology requiredTechnology, ArrayList<BaseTerrain> BaseTerrainThatCanBeBuilt,ArrayList<TerrainFeatures> TerrainFeaturesThatCanBeBuilt){
+    public Improvement(String name){
         this.name = name;
-        this.resourcesThatNeedImprovement = resourcesThatNeedImprovement;
-        this.requiredTechnology = requiredTechnology;
-        this.BaseTerrainThatCanBeBuilt = BaseTerrainThatCanBeBuilt;
-        this.TerrainFeaturesThatCanBeBuilt = TerrainFeaturesThatCanBeBuilt;
     }
     public String getName() {
         return name;
-    }
-    public ArrayList<Resource> getResourcesThatNeedImprovement() {
-        return resourcesThatNeedImprovement;
     }
 
     public Technology getRequiredTechnology() {
@@ -37,6 +31,12 @@ public class Improvement {
         return TerrainFeaturesThatCanBeBuilt;
     }
 
+    public int getCityFoodChange() {
+        return cityFoodChange;
+    }
 
+    public int getCityProductionChange() {
+        return cityProductionChange;
+    }
 }
 
