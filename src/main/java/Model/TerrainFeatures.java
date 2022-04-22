@@ -12,6 +12,7 @@ public class TerrainFeatures {
     private int changesInCombat;
     private int movementPrice;
     private ArrayList<Resources> possibleResources;
+    private ArrayList<Resources> resources;
     private boolean movementIsPossible;
 
     public TerrainFeatures(String type) {
@@ -96,6 +97,10 @@ public class TerrainFeatures {
 
     public boolean IsMovementPossible() {
         return this.movementIsPossible;
+    }
+
+    public void addResource(Resources resource) {
+        this.resources.add(resource);
     }
 }
 

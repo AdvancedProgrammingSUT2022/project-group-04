@@ -206,5 +206,10 @@ public class Resources {
                 break;
         }
     }
+
+    public String getName() {
+        return this.name;
+    }
+
 }
 
