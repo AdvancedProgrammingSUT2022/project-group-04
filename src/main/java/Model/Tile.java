@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Tile {
 
-    private BaseTerrain baseTerrain;
-    private int x;
-    private int y;
-    private String contains;
-    private ArrayList<Unit> units;
+    protected BaseTerrain baseTerrain;
+    protected int x;
+    protected int y;
+    protected String contains;
+    protected ArrayList<Unit> units;
     private boolean isRaided;
     private boolean[] isRiver;
 
