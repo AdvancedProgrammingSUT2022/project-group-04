@@ -16,7 +16,7 @@ public class Unit {
     private boolean isReady;
     private String era;
     private int HP;
-    private Tile isOnTile;
+    private Tile tileOfUnit;
 
     public int getX() {
         return x;
@@ -128,10 +128,10 @@ public class Unit {
         this.HP = HP;
     }
     public void setIsOnTile(Tile isOnTile) {
-        this.isOnTile = isOnTile;
+        this.tileOfUnit = isOnTile;
     }
     public Tile getIsOnTile() {
-        return isOnTile;
+        return tileOfUnit;
     }
     public void moveOneTile(int direction){
         int x1 = x, y1 = y - 10; // value is temporary , will be changed
