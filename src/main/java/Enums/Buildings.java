@@ -15,6 +15,24 @@ public enum Buildings {
     Temple,
     Castle,
     Forge,
-    Garden;
-
+    Garden,
+    Market,
+    Mint,
+    Monastery,
+    University,
+    Workshop,
+    Bank,
+    MilitaryAcademy,
+    Museum,
+    OperaHouse,
+    PublicSchool,
+    SatrapsCourt,
+    Theater,
+    Windmill,
+    Arsenal,
+    BroadcastTower,
+    Factory,
+    Hospital,
+    MilitaryBase,
+    StockExchange
 }
