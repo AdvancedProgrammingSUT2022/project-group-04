@@ -10,7 +10,7 @@ public class Civilization {
     private ArrayList<Tile> tiles;
     private ArrayList<City> cities;
     private int gold;
-    //private ArrayList<Technology> technologies;
+    private ArrayList<Technology> technologies;
 
     public Civilization(String username, String nickname) {
         this.username = username;
@@ -20,7 +20,7 @@ public class Civilization {
         this.tiles = new ArrayList<Tile>();
         this.cities = new ArrayList<City>();
         this.gold = 0;
-        //this.technologies = new ArrayList<Technology>();
+        this.technologies = new ArrayList<Technology>();
     }
 
     public void assignTiles() {
@@ -93,5 +93,13 @@ public class Civilization {
                 return;
             }
         }
+    }
+
+    public boolean isTileInCivilization(Tile tile){
+        for (Tile tile1 : tiles) {
+            if (tile1.getX()== tile.getX() && tile1.getY()== tile.getY())
+                return true;
+        }
+        return false;
     }
 }

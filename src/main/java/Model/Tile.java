@@ -9,6 +9,7 @@ public class Tile {
     private int Y;
     private String contains;
     private ArrayList<Unit> units;
+    private Civilization civilization;
     private boolean isRaided;
     private boolean[] isRiver;
 
@@ -20,7 +21,6 @@ public class Tile {
         this.units = new ArrayList<Unit>();
         this.isRiver = new boolean[6];
     }
-
 
 
     public String getType() {
@@ -44,12 +44,19 @@ public class Tile {
     }
 
     public void removeUnit(Unit unit) {
-        for(int i=0; i<this.units.size(); i++) {
-            if(this.units.get(i).equals(unit)) {
+        for (int i = 0; i < this.units.size(); i++) {
+            if (this.units.get(i).equals(unit)) {
                 this.units.remove(i);
                 return;
             }
         }
     }
 
+    public void setCivilization(Civilization civilization) {
+        this.civilization = civilization;
+    }
+
+    public Civilization getCivilization() {
+        return this.civilization;
+    }
 }

@@ -69,12 +69,28 @@ public class GameMenu extends Menu{
                 }
                 else {
                     //TODO set lines of hexagons with format
-                    linesOfHexagons[i + 2][j + 2][0] = "something";
-                    linesOfHexagons[i + 2][j + 2][1] = "something";
-                    linesOfHexagons[i + 2][j + 2][2] = "something";
-                    linesOfHexagons[i + 2][j + 2][3] = "something";
-                    linesOfHexagons[i + 2][j + 2][4] = "something";
-                    linesOfHexagons[i + 2][j + 2][5] = "something";
+                    String colorOfHexagon;
+                    if (tile.getType().equals("Desert") || tile.getType().equals("Meadow")){
+                        colorOfHexagon = Colors.ANSI_YELLOW_BACKGROUND;
+                    }
+                    else if (tile.getType().equals("Plain") || tile.getType().equals("Hill")){
+                        colorOfHexagon = Colors.ANSI_GREEN_BACKGROUND;
+                    }
+                    else if (tile.getType().equals("Mountain") || tile.getType().equals("Snow")){
+                        colorOfHexagon = Colors.ANSI_WHITE_BACKGROUND;
+                    }
+                    else if (tile.getType().equals("Ocean")){
+                        colorOfHexagon = Colors.ANSI_BLUE_BACKGROUND;
+                    }
+                    else if (tile.getType().equals("Tundra")){
+                        colorOfHexagon = Colors.ANSI_RED_BACKGROUND;
+                    }
+                    linesOfHexagons[i + 2][j + 2][0] = colorOfHexagon+;
+                    linesOfHexagons[i + 2][j + 2][1] = colorOfHexagon+;
+                    linesOfHexagons[i + 2][j + 2][2] = colorOfHexagon+;
+                    linesOfHexagons[i + 2][j + 2][3] = colorOfHexagon+;
+                    linesOfHexagons[i + 2][j + 2][4] = colorOfHexagon+;
+                    linesOfHexagons[i + 2][j + 2][5] = colorOfHexagon+"--------";
                 }
             }
         }
