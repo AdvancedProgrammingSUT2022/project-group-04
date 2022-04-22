@@ -32,3 +32,4 @@ public class StrategicsResources extends Resources{
     }
 
 }
+

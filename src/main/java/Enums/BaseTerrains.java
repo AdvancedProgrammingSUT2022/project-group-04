@@ -8,5 +8,6 @@ public enum BaseTerrains {
     Ocean,
     Plain,
     Snow,
-    Tundra
+    Tundra;
+
 }

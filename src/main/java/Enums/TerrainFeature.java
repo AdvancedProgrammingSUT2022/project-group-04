@@ -6,6 +6,5 @@ public enum TerrainFeature {
     Ice,
     Dense_Jungle,
     Swamp,
-    Oasis,
-    River
+    Oasis;
 }
