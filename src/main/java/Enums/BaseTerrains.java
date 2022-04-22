@@ -9,5 +9,4 @@ public enum BaseTerrains {
     Plain,
     Snow,
     Tundra;
-
 }

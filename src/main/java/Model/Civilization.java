@@ -104,5 +104,14 @@ public class Civilization {
             }
         }
         return false;
+
+    }     
+
+    public boolean isTileInCivilization(Tile tile){
+        for (Tile tile1 : tiles) {
+            if (tile1.getX()== tile.getX() && tile1.getY()== tile.getY())
+                return true;
+        }
+        return false;
     }
 }
