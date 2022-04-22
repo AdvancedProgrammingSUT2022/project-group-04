@@ -68,7 +68,7 @@ public class GameMenu extends Menu {
                     }
                 } else {
                     //TODO set lines of hexagons with format
-                    String colorOfHexagon;
+                    String colorOfHexagon = "";
                     if (tile.getType().equals("Desert") || tile.getType().equals("Meadow")) {
                         colorOfHexagon = Colors.ANSI_YELLOW_BACKGROUND;
                     } else if (tile.getType().equals("Plain") || tile.getType().equals("Hill")) {
@@ -81,12 +81,26 @@ public class GameMenu extends Menu {
                         colorOfHexagon = Colors.ANSI_RED_BACKGROUND;
                     }
                     linesOfHexagons[i + 2][j + 2][0] = Colors.ANSI_RESET + colorOfHexagon + "        ";
+                    //
                     linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon +
-                            tile.getCivilization().getNickname();//TODO colorOfFont
-                    linesOfHexagons[i + 2][j + 2][2] = Colors.ANSI_RESET + colorOfHexagon + x + "," + y;//coordinates
-                    linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +;//
-                    linesOfHexagons[i + 2][j + 2][4] = Colors.ANSI_RESET + colorOfHexagon +;//
-                    linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + colorOfHexagon + "--------";//
+                            (tile.getCivilization().getNickname() + "                 ").substring(0, 10);//TODO colorOfFont
+                    //
+                    linesOfHexagons[i + 2][j + 2][2] = Colors.ANSI_RESET + colorOfHexagon +
+                            ("    " + x + "," + y + "        ").substring(0, 12);//coordinates
+                    //
+                    linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon;//TODO Unit to print
+                    //showing Features
+                    String allFeatures = " ";
+                    for (int k = 0; k < tile.getBaseTerrain().getPossibleFeatures().size(); k++) {
+                        allFeatures += tile.getBaseTerrain().getPossibleFeatures().get(k).getType().substring(0, 2) + "-";
+                    }
+                    linesOfHexagons[i + 2][j + 2][4] = Colors.ANSI_RESET + colorOfHexagon +
+                            (allFeatures + "           ").substring(0, 10);
+                    //
+                    linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + colorOfHexagon + "________";
+                    if (tile.isRiverByNumberOfEdge(3)) {
+                        linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + colorOfHexagon + Colors.ANSI_CYAN + "________";
+                    }
                 }
             }
         }
@@ -96,12 +110,13 @@ public class GameMenu extends Menu {
         for (int i = 1; i < 22; i++) {
             int numberOfSpace = (i % 6);
             String[] marz = new String[2];
+            marz[0] = "\\";
+            marz[1] = "/";
+            int flag;
             if (numberOfSpace < 4 && numberOfSpace > 0) {
-                marz[0] = "\\";
-                marz[1] = "/";
+                flag = 1;
             } else {
-                marz[1] = "\\";
-                marz[0] = "/";
+                flag = 0;
             }
             if (numberOfSpace == 0 || numberOfSpace == 1) numberOfSpace = 3;
             else if (numberOfSpace == 2 || numberOfSpace == 5) numberOfSpace = 2;
@@ -110,8 +125,14 @@ public class GameMenu extends Menu {
                 lines[i] += " ";
             }
             //set the i-th line
-            int flag = 1;
             for (int j = 0; j < 6; j++) {
+                Tile tile = GameDatabase.getBlockByXandY(counterOfHex[j] + mainX - 2, mainY + j - 2);
+                if (flag == 1 && tile.isRiverByNumberOfEdge(5)
+                        || flag == 0 && tile.isRiverByNumberOfEdge(4)) {//Condition to river
+                    lines[i] += Colors.ANSI_RESET + Colors.ANSI_CYAN_BACKGROUND;
+                } else {
+                    lines[i] += Colors.ANSI_RESET;
+                }
                 lines[i] += marz[flag];
                 lines[i] += linesOfHexagons[counterOfHex[j]][j][counterLine[j]];
                 flag = 1 - flag;

@@ -59,4 +59,12 @@ public class Tile {
     public Civilization getCivilization() {
         return this.civilization;
     }
+
+    public boolean isRiverByNumberOfEdge(int indexOfEdge){
+        return isRiver[indexOfEdge];
+    }
+
+    public BaseTerrain getBaseTerrain() {
+        return baseTerrain;
+    }
 }
