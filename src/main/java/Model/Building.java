@@ -98,6 +98,64 @@ public class Building {
                 this.cost = 100;
                 this.maintenance = 2;
                 //
+            case "Bank":
+                this.cost = 220;
+                this.maintenance = 0;
+                //
+            case "MilitaryAcademy":
+                this.cost = 350;
+                this.maintenance = 3;
+                //
+            case "Museum":
+                this.cost = 350;
+                this.maintenance = 3;
+                //
+            case "OperaHouse":
+                this.cost = 220;
+                this.maintenance = 3;
+                //
+            case "PublicSchool":
+                this.cost = 350;
+                this.maintenance = 3;
+                //
+            case "SatrapsCourt":
+                this.cost = 220;
+                this.maintenance = 0;
+                //
+            case "Theater":
+                this.cost = 300;
+                this.maintenance = 5;
+                //
+            case "Windmill":
+                this.cost = 180;
+                this.maintenance = 2;
+                //
+            case "Arsenal":
+                this.cost = 350;
+                this.maintenance = 3;
+                //
+            case "BroadcastTower":
+                this.cost = 600;
+                this.maintenance = 3;
+                //
+            case "Factory":
+                this.cost = 300;
+                this.maintenance = 3;
+                //
+            case "Hospital":
+                this.cost = 400;
+                this.maintenance = 2;
+                //
+            case "MilitaryBase":
+                this.cost = 450;
+                this.maintenance = 4;
+                //
+            case "StockExchange":
+                this.cost = 650;
+                this.maintenance = 0;
+                //
+            default:
+                break;
         }
     }
 
