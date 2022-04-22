@@ -80,10 +80,23 @@ public class GameMenu extends Menu {
                     } else if (tile.getType().equals("Tundra")) {
                         colorOfHexagon = Colors.ANSI_RED_BACKGROUND;
                     }
-                    linesOfHexagons[i + 2][j + 2][0] = Colors.ANSI_RESET + colorOfHexagon + "        ";
-                    //
-                    linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon +
-                            (tile.getCivilization().getNickname() + "                 ").substring(0, 10);//TODO colorOfFont
+                    linesOfHexagons[i + 2][j + 2][0] = Colors.ANSI_RESET + colorOfHexagon +
+                            (tile.getType().substring(0, 3) + "       ").substring(0, 8);
+                    //finding the civilization of tile
+                    int flag = -1;
+                    for (int k = 0; k < GameDatabase.players.size(); k++) {
+                        if (GameDatabase.players.get(k).isTileInCivilization(x, y)) {
+                            flag = k;
+                            break;
+                        }
+                    }
+                    if (flag == -1) {
+                        linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon +
+                                ("                              ").substring(0, 10);
+                    } else {
+                        linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon + GameDatabase.players.get(flag).getColor()
+                        + (GameDatabase.players.get(flag).getNickname() + "             ").substring(0, 10);
+                    }
                     //
                     linesOfHexagons[i + 2][j + 2][2] = Colors.ANSI_RESET + colorOfHexagon +
                             ("    " + x + "," + y + "        ").substring(0, 12);//coordinates
