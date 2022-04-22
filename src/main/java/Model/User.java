@@ -2,7 +2,7 @@ package Model;
 
 public class User {
 
-    private final String username;
+    private String username;
     private String nickname;
     private String password;
     private int score;

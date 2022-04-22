@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Tile {
 
-    private String type;
+    private BaseTerrain baseTerrain;
     private int X;
     private int Y;
     private String contains;
@@ -14,7 +14,7 @@ public class Tile {
 
 
     public Tile(String type, int X, int Y) {
-        this.type = type;
+        this.baseTerrain = new BaseTerrain(type);
         this.X = X;
         this.Y = Y;
         this.units = new ArrayList<Unit>();
@@ -24,7 +24,7 @@ public class Tile {
 
 
     public String getType() {
-        return this.type;
+        return this.baseTerrain.getType();
     }
 
     public int getX() {
