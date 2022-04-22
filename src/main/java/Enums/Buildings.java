@@ -10,6 +10,7 @@ public enum Buildings {
     Armory,
     Burial_Tomb,
     Circus,
+    Colosseum,
     Courthouse,
     Stable,
     Temple,
