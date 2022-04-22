@@ -22,8 +22,7 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Dense_Jungle"));
                 //
                 break;
             case "Cow":
@@ -31,8 +30,7 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
                 //
                 break;
             case "Gazelle":
@@ -40,8 +38,9 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
                 //
                 break;
             case "Sheep":
@@ -49,8 +48,10 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
                 //
                 break;
             case "Wheat":
@@ -58,8 +59,8 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Prairie"));
                 //
                 break;
             case "Cotton":
