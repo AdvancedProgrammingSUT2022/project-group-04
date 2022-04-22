@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Civilization {
     private String username;
@@ -11,6 +12,15 @@ public class Civilization {
     private ArrayList<City> cities;
     private int gold;
     private ArrayList<Technology> technologies;
+    private String color;
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return this.color;
+    }
 
     public Civilization(String username, String nickname) {
         this.username = username;
@@ -76,8 +86,8 @@ public class Civilization {
     }
 
     public void removeTile(Tile conqueredTile) {
-        for(int i=0; i<this.tiles.size(); i++) {
-            if(this.tiles.get(i).equals(conqueredTile)) {
+        for (int i = 0; i < this.tiles.size(); i++) {
+            if (this.tiles.get(i).equals(conqueredTile)) {
                 this.tiles.remove(i);
                 return;
             }
@@ -85,19 +95,20 @@ public class Civilization {
     }
 
     public void removeCity(City conqueredCity) {
-        for(int i=0; i<this.cities.size(); i++) {
-            if(this.cities.get(i).equals(conqueredCity)) {
+        for (int i = 0; i < this.cities.size(); i++) {
+            if (this.cities.get(i).equals(conqueredCity)) {
                 this.cities.remove(i);
                 return;
             }
         }
     }
 
-    public boolean isTileInCivilization(Tile tile){
-        for (Tile tile1 : tiles) {
-            if (tile1.getX()== tile.getX() && tile1.getY()== tile.getY())
+    public boolean isTileInCivilization(int x, int y) {
+        for (Tile tile : tiles) {
+            if (tile.getX() == x && tile.getY() == y)
                 return true;
         }
         return false;
     }
+
 }

@@ -9,7 +9,6 @@ public class Tile {
     protected int y;
     protected String contains;
     protected ArrayList<Unit> units;
-    private Civilization civilization;
     private boolean isRaided;
     private boolean[] isRiver;
 
@@ -52,16 +51,12 @@ public class Tile {
         }
     }
 
-    public void setCivilization(Civilization civilization) {
-        this.civilization = civilization;
-    }
-
-    public Civilization getCivilization() {
-        return this.civilization;
-    }
-
     public boolean isRiverByNumberOfEdge(int indexOfEdge) {
         return isRiver[indexOfEdge];
+    }
+
+    public void setRiverByEdgeIndex(int edgeIndex){
+        this.isRiver[edgeIndex] = true;
     }
 
     public BaseTerrain getBaseTerrain() {
