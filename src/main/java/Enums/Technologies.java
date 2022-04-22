@@ -1,6 +1,7 @@
 package Enums;
 
 public enum Technologies {
+    //ancient
     Agriculture,
     AnimalHusbandry,
     Archery,
@@ -12,11 +13,13 @@ public enum Technologies {
     TheWheel,
     Trapping,
     Writing,
+    //classical
     Construction,
     HorsebackRiding,
     IronWorking,
     Mathematics,
     Philosophy,
+    //medieval
     Chivalry,
     CivilService,
     Currency,
@@ -27,6 +30,7 @@ public enum Technologies {
     Physics,
     Steel,
     Theology,
+    //renaissance
     Acoustics,
     Archaeology,
     Banking,
@@ -39,6 +43,7 @@ public enum Technologies {
     PrintingPress,
     Rifling,
     ScientificTheory,
+    //industrial
     Biology,
     Combustion,
     Dynamite,
