@@ -68,8 +68,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
                 //
                 break;
             case "Color":
@@ -77,8 +78,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Dense_Jungle"));
                 //
                 break;
             case "Fur":
@@ -86,8 +87,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
                 //
                 break;
             case "Gemstone":
@@ -95,8 +96,12 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 3;
-                //
-                //
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Dense_Jungle"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
                 //
                 break;
             case "Gold":
@@ -104,8 +109,10 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
                 //
                 break;
             case "Incense":
@@ -113,8 +120,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
                 //
                 break;
             case "Ivory":
@@ -122,8 +129,7 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
                 //
                 break;
             case "Marble":
@@ -131,8 +137,11 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
                 //
                 break;
             case "Silk":
@@ -140,8 +149,7 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
                 //
                 break;
             case "Silver":
@@ -149,8 +157,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
                 //
                 break;
             case "Sugar":
@@ -158,8 +167,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                //
-                //
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Prairie"));
+                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Swamp"));
                 //
                 break;
             case "Coal":
@@ -167,8 +176,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 1;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
                 //
                 break;
             case "Horse":
@@ -176,8 +186,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 1;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
                 //
                 break;
             case "Iron":
@@ -185,8 +196,12 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 1;
                 this.gold = 0;
-                //
-                //
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add(new BaseTerrain("Snow"));
                 //
                 break;
         }

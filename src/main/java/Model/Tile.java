@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Tile {
 
     private BaseTerrain baseTerrain;
-    private int X;
-    private int Y;
+    private int x;
+    private int y;
     private String contains;
     private ArrayList<Unit> units;
     private Civilization civilization;
@@ -14,10 +14,10 @@ public class Tile {
     private boolean[] isRiver;
 
 
-    public Tile(String type, int X, int Y) {
+    public Tile(String type, int x, int y) {
         this.baseTerrain = new BaseTerrain(type);
-        this.X = X;
-        this.Y = Y;
+        this.x = x;
+        this.y = y;
         this.units = new ArrayList<Unit>();
         this.isRiver = new boolean[6];
     }
@@ -28,11 +28,11 @@ public class Tile {
     }
 
     public int getX() {
-        return this.X;
+        return this.x;
     }
 
     public int getY() {
-        return this.Y;
+        return this.y;
     }
 
     private void setRaidedModel(boolean isRaided) {
