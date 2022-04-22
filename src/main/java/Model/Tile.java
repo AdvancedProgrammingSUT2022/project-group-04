@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class Tile {
 
-    private BaseTerrain baseTerrain;
-    private int x;
-    private int y;
-    private String contains;
-    private ArrayList<Unit> units;
+    protected BaseTerrain baseTerrain;
+    protected int x;
+    protected int y;
+    protected String contains;
+    protected ArrayList<Unit> units;
+    private Civilization civilization;
     private boolean isRaided;
     private boolean[] isRiver;
 
@@ -20,7 +21,6 @@ public class Tile {
         this.units = new ArrayList<Unit>();
         this.isRiver = new boolean[6];
     }
-
 
 
     public String getType() {
@@ -44,12 +44,27 @@ public class Tile {
     }
 
     public void removeUnit(Unit unit) {
-        for(int i=0; i<this.units.size(); i++) {
-            if(this.units.get(i).equals(unit)) {
+        for (int i = 0; i < this.units.size(); i++) {
+            if (this.units.get(i).equals(unit)) {
                 this.units.remove(i);
                 return;
             }
         }
     }
 
+    public void setCivilization(Civilization civilization) {
+        this.civilization = civilization;
+    }
+
+    public Civilization getCivilization() {
+        return this.civilization;
+    }
+
+    public boolean isRiverByNumberOfEdge(int indexOfEdge) {
+        return isRiver[indexOfEdge];
+    }
+
+    public BaseTerrain getBaseTerrain() {
+        return baseTerrain;
+    }
 }

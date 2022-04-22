@@ -4,7 +4,7 @@ import Database.GameDatabase;
 
 import java.util.ArrayList;
 
-public class City {
+public class City extends Tile{
 
     private String name;
     private int power;
@@ -25,7 +25,8 @@ public class City {
     private boolean isColonized;
     private boolean isCapital;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital) {
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, int x, int y) {
+        super(type, x, y);
         this.name = name;
         this.power = power;
         this.longRangePower = 0;
