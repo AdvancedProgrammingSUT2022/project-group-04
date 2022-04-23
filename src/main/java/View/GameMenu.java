@@ -202,4 +202,6 @@ public class GameMenu extends Menu {
             System.out.print(lines[i]);
         }
     }
+
+    // this is a comment for retards
 }
