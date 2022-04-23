@@ -120,7 +120,7 @@ public class GameDatabase {
                 int randomGenerate = random.nextInt(terrainFeatures.size()*2);
                 if (randomGenerate < 3){//TODO change the possibility
                     String type = terrainFeatures.get(j).getType();
-                    TerrainFeatures terrainFeatures1 = randomInitializeFeatures(type);
+                    TerrainFeatures terrainFeatures1 = randomInitializeFeature(type);
                     map.get(i).getBaseTerrain().addFeature(terrainFeatures1);
                 }
             }
@@ -140,7 +140,7 @@ public class GameDatabase {
         }
     }
 
-    public static TerrainFeatures randomInitializeFeatures(String type){
+    public static TerrainFeatures randomInitializeFeature(String type){
         Random random = new Random();
         TerrainFeatures terrainFeature = new TerrainFeatures(type);
         ArrayList<Resources> resources = terrainFeature.getPossibleResources();
