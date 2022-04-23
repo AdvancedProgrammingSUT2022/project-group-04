@@ -80,10 +80,6 @@ public class GameDatabase {
 
     }
 
-    public static void generatePlayers(ArrayList<Civilization> civilizations){
-        players = civilizations;
-    }
-
     public static void generateMap(int numberOfPlayers) {
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
@@ -184,7 +180,13 @@ public class GameDatabase {
             int yRandomGenerate = random.nextInt(length);
             int direction = random.nextInt(6);
             int x1 = xRandomGenerate + deltaX[direction];
-            int y1 = xRandomGenerate + deltaX[direction];
+            int y1 = xRandomGenerate + deltaY[direction];
+            if (getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
+                    || getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
+                    || getBlockByXandY(x1,y1).getType().equals("Ocean")
+                    || getBlockByXandY(x1,y1).getType().equals("Mountain")){
+                continue;
+            }
             boolean isOccupied = false;
             for (int i=0;i<counter;i++){
                 if (players.get(i).isTileInCivilization(xRandomGenerate,yRandomGenerate)
