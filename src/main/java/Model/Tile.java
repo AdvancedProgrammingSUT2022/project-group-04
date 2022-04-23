@@ -9,7 +9,6 @@ public class Tile {
     protected int y;
     protected String contains;
     protected ArrayList<Unit> units;
-    private Civilization civilization;
     protected ArrayList<Improvement> improvements;
     private boolean isRaided;
     private boolean[] isRiver;
@@ -63,13 +62,6 @@ public class Tile {
         this.improvements.add(newImprovement);
     }
 
-    public void setCivilization(Civilization civilization) {
-        this.civilization = civilization;
-    }
-
-    public Civilization getCivilization() {
-        return this.civilization;
-    }
 
     public boolean isRiverByNumberOfEdge(int indexOfEdge) {
         return isRiver[indexOfEdge];
