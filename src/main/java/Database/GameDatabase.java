@@ -132,8 +132,8 @@ public class GameDatabase {
             for (int j = 0; j < 6; j++) {
                 int xOfTile = tile.getX() + deltaX[j];
                 int yOfTile = tile.getY() + deltaY[j];
-                if ((xOfTile > length || xOfTile < 0
-                        || yOfTile > width || yOfTile < 0)
+                if ((xOfTile >= length || xOfTile < 0
+                        || yOfTile >= width || yOfTile < 0)
                         || (tile.getType().equals("Ocean")
                         && getBlockByXandY(xOfTile, yOfTile).getType().equals("Ocean"))) {
                     continue;
