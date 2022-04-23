@@ -132,8 +132,8 @@ public class GameDatabase {
             for (int j = 0; j < 6; j++) {
                 int xOfTile = tile.getX() + deltaX[j];
                 int yOfTile = tile.getY() + deltaY[j];
-                if ((xOfTile > length || xOfTile < 0
-                        || yOfTile > width || yOfTile < 0)
+                if ((xOfTile >= length || xOfTile < 0
+                        || yOfTile >= width || yOfTile < 0)
                         || (tile.getType().equals("Ocean")
                         && getBlockByXandY(xOfTile, yOfTile).getType().equals("Ocean"))) {
                     continue;
@@ -154,7 +154,7 @@ public class GameDatabase {
                 int randomGenerate = random.nextInt(terrainFeatures.size()*2);
                 if (randomGenerate < 3){//TODO change the possibility
                     String type = terrainFeatures.get(j).getType();
-                    TerrainFeatures terrainFeatures1 = randomInitializeFeatures(type);
+                    TerrainFeatures terrainFeatures1 = randomInitializeFeature(type);
                     map.get(i).getBaseTerrain().addFeature(terrainFeatures1);
                 }
             }
@@ -174,7 +174,7 @@ public class GameDatabase {
         }
     }
 
-    public static TerrainFeatures randomInitializeFeatures(String type){
+    public static TerrainFeatures randomInitializeFeature(String type){
         Random random = new Random();
         TerrainFeatures terrainFeature = new TerrainFeatures(type);
         ArrayList<Resources> resources = terrainFeature.getPossibleResources();
