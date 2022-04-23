@@ -91,11 +91,13 @@ public class GameMenu extends Menu {
                 Tile tile = GameDatabase.getBlockByXandY(x, y);
                 if (tile == null || i == -2 || i == 3) {
                     for (int k = 0; k < 3; k++) {
+                        linesOfHexagons[i + 2][j + 2][k] = "";
                         for (int k1 = 0; k1 < 2 * (k + 4); k1++)
                             linesOfHexagons[i + 2][j + 2][k] += " ";
                     }
-                    for (int k = 4; k < 6; k++) {
-                        for (int k1 = 0; k1 < 2 * (10 - k); k1++)
+                    for (int k = 3; k < 6; k++) {
+                        linesOfHexagons[i + 2][j + 2][k] = "";
+                        for (int k1 = 0; k1 < 2 * (9 - k); k1++)
                             linesOfHexagons[i + 2][j + 2][k] += " ";
                     }
                 } else {
@@ -113,7 +115,7 @@ public class GameMenu extends Menu {
                         colorOfHexagon = Colors.ANSI_RED_BACKGROUND;
                     }
                     linesOfHexagons[i + 2][j + 2][0] = Colors.ANSI_RESET + colorOfHexagon +
-                            (tile.getType().substring(0, 3) + "       ").substring(0, 8);
+                            (tile.getType().substring(0, 4) + "       ").substring(0, 8);
                     //finding the civilization of tile
                     int flag = -1;
                     for (int k = 0; k < GameDatabase.players.size(); k++) {
@@ -133,7 +135,8 @@ public class GameMenu extends Menu {
                     linesOfHexagons[i + 2][j + 2][2] = Colors.ANSI_RESET + colorOfHexagon +
                             ("    " + x + "," + y + "        ").substring(0, 12);//coordinates
                     //
-                    linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon;//TODO Unit to print
+                    linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
+                            ("                ").substring(0,12);//TODO Unit to print
                     //showing Features
                     String allFeatures = " ";
                     for (int k = 0; k < tile.getBaseTerrain().getPossibleFeatures().size(); k++) {
@@ -166,6 +169,7 @@ public class GameMenu extends Menu {
             if (numberOfSpace == 0 || numberOfSpace == 1) numberOfSpace = 3;
             else if (numberOfSpace == 2 || numberOfSpace == 5) numberOfSpace = 2;
             else if (numberOfSpace == 4 || numberOfSpace == 3) numberOfSpace = 1;
+            lines[i] = Colors.ANSI_RESET;
             for (int j = 0; j < numberOfSpace; j++) {
                 lines[i] += " ";
             }
@@ -182,6 +186,7 @@ public class GameMenu extends Menu {
                 lines[i] += linesOfHexagons[counterOfHex[j]][j][counterLine[j]];
                 flag = 1 - flag;
             }
+            lines[i] += Colors.ANSI_RESET + "\n";
             //set arrays for next cycle
             for (int u = 0; u < 6; u++) {
                 counterLine[u] += 1;
@@ -191,8 +196,10 @@ public class GameMenu extends Menu {
                 }
             }
         }
+        lines[0] = "";
+        lines[22] = "";
         for (int i = 0; i < 23; i++) {
-            System.out.println(lines[i]);
+            System.out.print(lines[i]);
         }
     }
 }
