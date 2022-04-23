@@ -80,6 +80,10 @@ public class GameDatabase {
 
     }
 
+    public static void generatePlayers(ArrayList<Civilization> civilizations){
+        players = civilizations;
+    }
+
     public static void generateMap(int numberOfPlayers) {
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
@@ -96,12 +100,13 @@ public class GameDatabase {
         baseTerrains.put(6, "Snow");
         baseTerrains.put(7, "Tundra");
         //initialize players
-        String[] usernames = {"A","B","C","D","E","F","H"};
-        String[] nicknames = {"A","B","C","D","E","F","H"};
-        for (int i=0;i<numberOfPlayers;i++){
-            Civilization civilization = new Civilization(usernames[i],nicknames[i]);
-            players.add(civilization);
-        }
+//        System.out.println(players.size()); TODO remove when completely fixed
+//        String[] usernames = {"A","B","C","D","E","F","H"};
+//        String[] nicknames = {"A","B","C","D","E","F","H"};
+//        for (int i=0;i<numberOfPlayers;i++){
+//            Civilization civilization = new Civilization(usernames[i],nicknames[i]);
+//            players.add(civilization);
+//        }
         //
         for (int i = 0; i < possibilities.length; i++) {
             sumOfPossibilities += possibilities[i];
@@ -170,6 +175,28 @@ public class GameDatabase {
                     Resources resource = new Resources(name);
                     map.get(i).getBaseTerrain().addResource(resource);
                 }
+            }
+        }
+        //random set beginning tiles for each player
+        int counter = 0;
+        while (counter<players.size()){
+            int xRandomGenerate = random.nextInt(length);
+            int yRandomGenerate = random.nextInt(length);
+            int direction = random.nextInt(6);
+            int x1 = xRandomGenerate + deltaX[direction];
+            int y1 = xRandomGenerate + deltaX[direction];
+            boolean isOccupied = false;
+            for (int i=0;i<counter;i++){
+                if (players.get(i).isTileInCivilization(xRandomGenerate,yRandomGenerate)
+                        || players.get(i).isTileInCivilization(x1,y1)){
+                    isOccupied = true;
+                    break;
+                }
+            }
+            if (!isOccupied){
+                players.get(counter).addTile(getBlockByXandY(xRandomGenerate,yRandomGenerate));
+                players.get(counter).addTile(getBlockByXandY(x1,y1));
+                counter++;
             }
         }
     }
