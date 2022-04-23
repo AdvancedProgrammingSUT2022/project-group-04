@@ -11,6 +11,9 @@ import java.util.regex.Matcher;
 public class GameMenu extends Menu {
 
     private GameMenuController gameMenuController;
+    private static final String MAP_SHOW_POSITION = "map show (?<x>\\d+) (?<y>\\d+)";
+    private static final String MAP_SHOW_CITY = "map show (?<cityName>.+)";
+
 
     public GameMenu(GameMenuController gameMenuController) {
         this.gameMenuController = gameMenuController;
@@ -29,6 +32,20 @@ public class GameMenu extends Menu {
                 System.out.println(menuEnter(matcher));
             } else if ((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
                 System.out.println(menuExit(matcher));
+            } else if ((matcher = getCommandMatcher(command, MAP_SHOW_POSITION)) != null) {
+                String result = mapShowPosition(matcher);
+                if(result == null) {
+                    printMap(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                } else {
+                    System.out.println(result);
+                }
+            } else if ((matcher = getCommandMatcher(command, MAP_SHOW_CITY)) != null) {
+                String result = mapShowCity(matcher);
+                if(result == null) {
+                    printMap(GameDatabase.getCityByName(matcher.group("cityName")).getX(), GameDatabase.getCityByName(matcher.group("cityName")).getY());
+                } else {
+                    System.out.println(result);
+                }
             } else {
                 System.out.println("invalid command");
             }
@@ -37,7 +54,7 @@ public class GameMenu extends Menu {
 
     @Override
     public String menuShow(Matcher matcher) {
-        return "Main Menu";
+        return "Game Menu";
     }
 
     private String menuEnter(Matcher matcher) {
@@ -48,9 +65,24 @@ public class GameMenu extends Menu {
         return "you must finish the game to exit";
     }
 
-    public void printMap(Matcher matcher) {
-        int mainX = Integer.parseInt(matcher.group("x"));
-        int mainY = Integer.parseInt(matcher.group("y"));
+    private String mapShowPosition(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "position is not valid";
+        }
+        return null;
+    }
+
+    private String mapShowCity(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        if(!this.gameMenuController.isCityValid(cityName)) {
+            return "selected city is not valid";
+        }
+        return null;
+    }
+
+    public void printMap(int mainX, int mainY) {
         String[][][] linesOfHexagons = new String[5][6][6];
         for (int i = -2; i < 3; i++) {
             for (int j = -2; j < 4; j++) {

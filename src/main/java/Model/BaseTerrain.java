@@ -20,6 +20,11 @@ public class BaseTerrain {
     private boolean movementIsPossible;
 
     public BaseTerrain(String type) {
+        this.type = type;
+        possibleFeatures = new ArrayList<TerrainFeatures>();
+        possibleResources = new ArrayList<Resources>();
+        features = new ArrayList<TerrainFeatures>();
+        resources = new ArrayList<Resources>();
         switch (type) {
             case "Desert":
                 foodNum = 0;
@@ -28,7 +33,8 @@ public class BaseTerrain {
                 changesInCombat = -33;
                 movementPrice = 1;
                 movementIsPossible = true;
-                //TODO terrainFeatures & resources
+                possibleFeatures.add(new TerrainFeatures("Oasis"));
+                possibleFeatures.add(new TerrainFeatures("Prairie"));
                 break;
             case "Meadow":
                 foodNum = 2;
@@ -37,6 +43,8 @@ public class BaseTerrain {
                 changesInCombat = -33;
                 movementPrice = 1;
                 movementIsPossible = true;
+                possibleFeatures.add(new TerrainFeatures("Jungle"));
+                possibleFeatures.add(new TerrainFeatures("Oasis"));
                 break;
             case "Hill":
                 foodNum = 0;
@@ -45,6 +53,8 @@ public class BaseTerrain {
                 changesInCombat = 25;
                 movementPrice = 2;
                 movementIsPossible = true;
+                possibleFeatures.add(new TerrainFeatures("Jungle"));
+                possibleFeatures.add(new TerrainFeatures("Dense_Jungle"));
                 break;
             case "Mountain":
                 foodNum = 0;
@@ -69,6 +79,8 @@ public class BaseTerrain {
                 changesInCombat = -33;
                 movementPrice = 1;
                 movementIsPossible = true;
+                possibleFeatures.add(new TerrainFeatures("Jungle"));
+                possibleFeatures.add(new TerrainFeatures("Dense_Jungle"));
                 break;
             case "Snow":
                 foodNum = 0;
@@ -85,9 +97,9 @@ public class BaseTerrain {
                 changesInCombat = -33;
                 movementPrice = 1;
                 movementIsPossible = true;
+                possibleFeatures.add(new TerrainFeatures("Jungle"));
                 break;
         }
-        this.type = type;
     }
 
     public String getType() {

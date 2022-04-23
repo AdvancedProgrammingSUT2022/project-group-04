@@ -4,19 +4,22 @@ import Controller.GameMenuController;
 import Controller.MainMenuController;
 import Controller.ProfileMenuController;
 import Database.GameDatabase;
+import Database.UserDatabase;
 import Model.Civilization;
 import Model.GameModel;
 import Model.ProfileMenuModel;
 import Model.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class MainMenu extends Menu{
 
     private MainMenuController mainMenuController;
-    private static final String PLAY_GAME = "play game";
+    private static final String PLAY_GAME = "play game(?<command>( --player\\d+ \\S+)+)";
+    private static final String SHORT_PLAY_GAME = "play game(?<command>( -p\\d+ \\S+)+)";
 
     public MainMenu(MainMenuController mainMenuController) {
         this.mainMenuController = mainMenuController;
@@ -39,9 +42,15 @@ public class MainMenu extends Menu{
                 } else {
                     enterProfileMenu(scanner, loggedinUser);
                 }
-            } else if((matcher = getCommandMatcher(command, PLAY_GAME)) != null) {
-                playGame(matcher, scanner);
+            } else if(((matcher = getCommandMatcher(command, PLAY_GAME)) != null)
+                        || ((matcher = getCommandMatcher(command, SHORT_PLAY_GAME)) != null)) {
+                String result = playGame(matcher);
+                System.out.println(result);
+                if(result.startsWith("game")) {
+                    enterGameMenu(scanner, matcher);
+                }
             } else {
+                System.out.println(command);
                 System.out.println("invalid command");
             }
         }
@@ -79,23 +88,35 @@ public class MainMenu extends Menu{
     /**
      * makes a new game
      * @param matcher
-     * @param scanner
      */
-    private void playGame(Matcher matcher, Scanner scanner) {
+    private String playGame(Matcher matcher) {
 
-        ArrayList<Civilization> players = new ArrayList<Civilization>();
-        // find Users;
-        // create Civilizations
-        enterGameMenu(players, scanner);
+        String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
+        for (int i = 1; i < splitCommand.length; i++) {
+            if(!this.mainMenuController.isUserExists(splitCommand[i])) {
+                return "at least one username dose not exists.";
+            }
+        }
+        return "game started. good luck!";
 
     }
 
     /**
      * enters game menu
-     * @param players
      * @param scanner
+     * @param matcher
      */
-    private void enterGameMenu(ArrayList<Civilization> players, Scanner scanner) {
+    private void enterGameMenu(Scanner scanner, Matcher matcher) {
+
+        String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
+        GameDatabase.generateMap(splitCommand.length - 1);
+        ArrayList<Civilization> players = new ArrayList<Civilization>();
+
+        for (int i = 1; i < splitCommand.length; i++) {
+            Civilization civilization = new Civilization(splitCommand[i], UserDatabase.getUserByUsername(splitCommand[i]).getNickname());
+            players.add(civilization);
+        }
+
         GameModel gameModel = new GameModel();
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         GameMenu gameMenu = new GameMenu(gameMenuController);
