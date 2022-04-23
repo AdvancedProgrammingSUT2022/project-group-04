@@ -10,21 +10,21 @@ public class Resources {
     private int gold;
     private int foodNum;
     private int production;
-    private ArrayList<BaseTerrain> canBeFoundOnBaseTerrain;
-    private ArrayList<TerrainFeatures> canBeFoundOnTerrainFeature;
+    private ArrayList<String> canBeFoundOnBaseTerrain;
+    private ArrayList<String> canBeFoundOnTerrainFeature;
     private Improvement improvementNeeded;
 
     public Resources(String name) {
         this.name = name;
-        this.canBeFoundOnBaseTerrain = new ArrayList<BaseTerrain>();
-        this.canBeFoundOnTerrainFeature = new ArrayList<TerrainFeatures>();
+        this.canBeFoundOnBaseTerrain = new ArrayList<String>();
+        this.canBeFoundOnTerrainFeature = new ArrayList<String>();
         switch (name) {
             case "banana":
                 this.type = "bonus";
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Dense_Jungle"));
+                canBeFoundOnTerrainFeature.add("Dense_Jungle");
                 improvementNeeded = new Improvement("Field");
                 break;
             case "Cow":
@@ -32,7 +32,7 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add("Meadow");
                 improvementNeeded = new Improvement("Pasture");
                 break;
             case "Gazelle":
@@ -40,9 +40,9 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
+                canBeFoundOnBaseTerrain.add("Tundra");
+                canBeFoundOnBaseTerrain.add("Hill");
+                canBeFoundOnTerrainFeature.add("Jungle");
                 improvementNeeded = new Improvement("Camp");
                 break;
             case "Sheep":
@@ -50,10 +50,10 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Meadow");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Hill");
                 improvementNeeded = new Improvement("Pasture");
                 break;
             case "Wheat":
@@ -61,8 +61,8 @@ public class Resources {
                 this.foodNum = 1;
                 this.production = 0;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Prairie"));
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnTerrainFeature.add("Prairie");
                 improvementNeeded = new Improvement("Farm");
                 break;
             case "Cotton":
@@ -70,9 +70,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Meadow");
                 improvementNeeded = new Improvement("Field");
                 break;
             case "Color":
@@ -80,8 +80,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Dense_Jungle"));
+                canBeFoundOnTerrainFeature.add("Jungle");
+                canBeFoundOnTerrainFeature.add("Dense_Jungle");
                 improvementNeeded = new Improvement("Field");
                 break;
             case "Fur":
@@ -89,8 +89,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
+                canBeFoundOnTerrainFeature.add("Jungle");
+                canBeFoundOnBaseTerrain.add("Tundra");
                 improvementNeeded = new Improvement("Camp");
                 break;
             case "Gemstone":
@@ -98,12 +98,12 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 3;
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Dense_Jungle"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnTerrainFeature.add("Dense_Jungle");
+                canBeFoundOnBaseTerrain.add("Tundra");
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Meadow");
+                canBeFoundOnBaseTerrain.add("Hill");
                 improvementNeeded = new Improvement("Mine");
                 break;
             case "Gold":
@@ -111,10 +111,10 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Meadow");
+                canBeFoundOnBaseTerrain.add("Hill");
                 improvementNeeded = new Improvement("Mine");
                 break;
             case "Incense":
@@ -122,8 +122,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Desert");
                 improvementNeeded = new Improvement("Field");
                 break;
             case "Ivory":
@@ -131,7 +131,7 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
+                canBeFoundOnBaseTerrain.add("Plain");
                 improvementNeeded = new Improvement("Camp");
                 break;
             case "Marble":
@@ -139,11 +139,11 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnBaseTerrain.add("Tundra");
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Meadow");
+                canBeFoundOnBaseTerrain.add("Hill");
                 improvementNeeded = new Improvement("StoneMine");
                 break;
             case "Silk":
@@ -151,7 +151,7 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Jungle"));
+                canBeFoundOnTerrainFeature.add("Jungle");
                 improvementNeeded = new Improvement("Field");
                 break;
             case "Silver":
@@ -159,9 +159,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnBaseTerrain.add("Tundra");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Hill");
                 improvementNeeded = new Improvement("Mine");
                 break;
             case "Sugar":
@@ -169,8 +169,8 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 0;
                 this.gold = 2;
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Prairie"));
-                canBeFoundOnTerrainFeature.add(new TerrainFeatures("Swamp"));
+                canBeFoundOnTerrainFeature.add("Prairie");
+                canBeFoundOnTerrainFeature.add("Swamp");
                 improvementNeeded = new Improvement("Field");
                 break;
             case "Coal":
@@ -178,9 +178,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 1;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Meadow");
+                canBeFoundOnBaseTerrain.add("Hill");
                 improvementNeeded = new Improvement("Mine");
                 break;
             case "Horse":
@@ -188,9 +188,9 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 1;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
+                canBeFoundOnBaseTerrain.add("Tundra");
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Meadow");
                 improvementNeeded = new Improvement("Pasture");
                 break;
             case "Iron":
@@ -198,12 +198,12 @@ public class Resources {
                 this.foodNum = 0;
                 this.production = 1;
                 this.gold = 0;
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Tundra"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Plain"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Desert"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Hill"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Meadow"));
-                canBeFoundOnBaseTerrain.add(new BaseTerrain("Snow"));
+                canBeFoundOnBaseTerrain.add("Tundra");
+                canBeFoundOnBaseTerrain.add("Plain");
+                canBeFoundOnBaseTerrain.add("Desert");
+                canBeFoundOnBaseTerrain.add("Hill");
+                canBeFoundOnBaseTerrain.add("Meadow");
+                canBeFoundOnBaseTerrain.add("Snow");
                 improvementNeeded = new Improvement("Mine");
                 break;
             default:
@@ -231,11 +231,11 @@ public class Resources {
         return production;
     }
 
-    public ArrayList<BaseTerrain> getCanBeFoundOnBaseTerrain() {
+    public ArrayList<String> getCanBeFoundOnBaseTerrain() {
         return canBeFoundOnBaseTerrain;
     }
 
-    public ArrayList<TerrainFeatures> getCanBeFoundOnTerrainFeature() {
+    public ArrayList<String> getCanBeFoundOnTerrainFeature() {
         return canBeFoundOnTerrainFeature;
     }
 

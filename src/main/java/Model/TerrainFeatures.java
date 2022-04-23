@@ -16,6 +16,9 @@ public class TerrainFeatures {
     private boolean movementIsPossible;
 
     public TerrainFeatures(String type) {
+        this.type = type;
+        this.possibleResources = new ArrayList<Resources>();
+        this.resources = new ArrayList<Resources>();
         switch (type) {
             case "Prairie":
                 foodNum = 2;
@@ -68,7 +71,6 @@ public class TerrainFeatures {
             default:
                 break;
         }
-        this.type = type;
     }
 
     public String getType(){
