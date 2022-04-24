@@ -12,15 +12,7 @@ public class Civilization {
     private ArrayList<City> cities;
     private int gold;
     private ArrayList<Technology> technologies;
-    private String color;
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getColor() {
-        return this.color;
-    }
 
     public Civilization(String username, String nickname) {
         this.username = username;
@@ -115,9 +107,10 @@ public class Civilization {
         }
         return false;
     }
+
     public boolean isTechnologyForThisCivilization(Technology technology) {
         for (int i = 0; i < this.technologies.size(); i++) {
-            if(this.technologies.get(i).equals(technology)) {
+            if (this.technologies.get(i).equals(technology)) {
                 return true;
             }
         }
