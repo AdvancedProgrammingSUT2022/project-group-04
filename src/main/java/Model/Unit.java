@@ -1,5 +1,9 @@
 package Model;
 
+import Database.GameDatabase;
+
+import java.util.ArrayList;
+
 public class Unit {
 
     private int x;
@@ -187,8 +191,38 @@ public class Unit {
                 break;
         }
     }
-    public void moveTo(Tile tile){
+
+    public void findPath(Tile currentTile, Tile destTile){
+        ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
+        Tile currentInCopy = null;
+        Tile destInCopy = null;
+        for (Tile tile:copyOfMap){
+            if (tile.getX() == currentTile.getX() && tile.getY() == currentTile.getY())
+                currentInCopy = tile;
+            if (tile.getX() == destTile.getX() && tile.getY() == destTile.getY())
+                destInCopy = tile;
+        }
+
 
     }
+
+    public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile>listOfCheckedTiles){
+        ArrayList<Tile> adjacentTiles = new ArrayList<>();
+        adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX() - 1, currentTile.getY()));
+        adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX(), currentTile.getY() + 1));
+        adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX() + 1, currentTile.getY() + 1));
+        adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX() + 1, currentTile.getY()));
+        adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX() + 1, currentTile.getY() - 1));
+        adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX(), currentTile.getY() - 1));
+        int i = 0;
+        for (Tile tile:adjacentTiles){
+            if(tile.canBePassed() && !listOfCheckedTiles.contains(tile) && !currentTile.isRiverByNumberOfEdge(i)){
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
+
 
 }
