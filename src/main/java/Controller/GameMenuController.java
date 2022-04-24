@@ -84,4 +84,30 @@ public class GameMenuController {
         }
         return null;
     }
+
+    public boolean isCivilizationValid(String civilizationName) {
+        Civilization civilization = GameDatabase.getCivilizationByNickname(civilizationName);
+        if(civilization == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isCheatForTurn(String civilizationName, int turn) {
+        int index = GameDatabase.getCivilizationIndex(civilizationName);
+        if(index == -1) {
+            return false;
+        }
+        if(index == turn) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isAmountValidForTurn(int amount) {
+        if(amount < 1) {
+            return false;
+        }
+        return true;
+    }
 }
