@@ -105,7 +105,7 @@ public class City extends Tile{
     }
 
     private void generateGold() {
-        Civilization civilization = GameDatabase.getCivilizationByName(this.civilizationName);
+        Civilization civilization = GameDatabase.getCivilizationByNickname(this.civilizationName);
         if(civilization != null) {
             civilization.addGold(this.goldGeneratingRate);
         }
