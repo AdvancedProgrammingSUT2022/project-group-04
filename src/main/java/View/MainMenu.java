@@ -109,9 +109,11 @@ public class MainMenu extends Menu{
     private void enterGameMenu(Scanner scanner, Matcher matcher) {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
-        GameDatabase.generateMap(splitCommand.length - 1);
-        ArrayList<Civilization> players = new ArrayList<Civilization>();
+        if(splitCommand.length == 1) {
+            splitCommand = matcher.group("command").split(" -p\\d+ ");
+        }
 
+        ArrayList<Civilization> players = new ArrayList<Civilization>();
         for (int i = 1; i < splitCommand.length; i++) {
             Civilization civilization = new Civilization(splitCommand[i], UserDatabase.getUserByUsername(splitCommand[i]).getNickname());
             players.add(civilization);
@@ -122,6 +124,8 @@ public class MainMenu extends Menu{
         GameMenu gameMenu = new GameMenu(gameMenuController);
 
         GameDatabase.setPlayers(players);
+        GameDatabase.generateMap(splitCommand.length - 1);
+
         gameMenu.run(scanner);
 
     }
