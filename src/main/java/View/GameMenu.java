@@ -135,12 +135,12 @@ public class GameMenu extends Menu {
                 Tile tile = GameDatabase.getBlockByXandY(x, y);
                 if (tile == null || i == -2 || i == 2) {
                     for (int k = 0; k < 3; k++) {
-                        linesOfHexagons[i + 2][j + 2][k] = "";
+                        linesOfHexagons[i + 2][j + 2][k] = Colors.ANSI_RESET;
                         for (int k1 = 0; k1 < 2 * (k + 4); k1++)
                             linesOfHexagons[i + 2][j + 2][k] += " ";
                     }
                     for (int k = 3; k < 6; k++) {
-                        linesOfHexagons[i + 2][j + 2][k] = "";
+                        linesOfHexagons[i + 2][j + 2][k] = Colors.ANSI_RESET;
                         for (int k1 = 0; k1 < 2 * (9 - k); k1++)
                             linesOfHexagons[i + 2][j + 2][k] += " ";
                     }
@@ -191,7 +191,7 @@ public class GameMenu extends Menu {
                     //
                     linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + colorOfHexagon + "________";
                     if (tile.isRiverByNumberOfEdge(3)) {
-                        linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + Colors.ANSI_CYAN + "________";
+                        linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + Colors.ANSI_CYAN_BACKGROUND + "________";
                     }
                 }
             }
@@ -220,8 +220,9 @@ public class GameMenu extends Menu {
             //set the i-th line
             for (int j = 0; j < 6; j++) {
                 Tile tile = GameDatabase.getBlockByXandY(counterOfHex[j] + mainX - 2, mainY + j - 2);
-                if (flag == 1 && tile.isRiverByNumberOfEdge(5)
-                        || flag == 0 && tile.isRiverByNumberOfEdge(4)) {//Condition to river
+                if ((tile != null)
+                        && (flag == 1 && tile.isRiverByNumberOfEdge(5)
+                        || flag == 0 && tile.isRiverByNumberOfEdge(4))) {//Condition to river
                     lines[i] += Colors.ANSI_RESET + Colors.ANSI_CYAN_BACKGROUND;
                 } else {
                     lines[i] += Colors.ANSI_RESET;
