@@ -126,6 +126,14 @@ public class MainMenu extends Menu{
         GameDatabase.setPlayers(players);
         GameDatabase.generateMap(splitCommand.length - 1);
 
+        for (int i = 0; i < GameDatabase.players.size(); i++) {
+            System.out.println(GameDatabase.players.get(i).getNickname());
+            for (int j = 0; j < GameDatabase.players.get(i).getTiles().size(); j++) {
+                System.out.println(GameDatabase.players.get(i).getTiles().get(j).getX());
+                System.out.println(GameDatabase.players.get(i).getTiles().get(j).getY());
+            }
+        }
+
         gameMenu.run(scanner);
 
     }
