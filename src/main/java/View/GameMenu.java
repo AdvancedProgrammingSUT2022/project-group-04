@@ -191,7 +191,7 @@ public class GameMenu extends Menu {
                     //
                     linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + colorOfHexagon + "________";
                     if (tile.isRiverByNumberOfEdge(3)) {
-                        linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + Colors.ANSI_CYAN + "________";
+                        linesOfHexagons[i + 2][j + 2][5] = Colors.ANSI_RESET + Colors.ANSI_CYAN_BACKGROUND + "________";
                     }
                 }
             }
