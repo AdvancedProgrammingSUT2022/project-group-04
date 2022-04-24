@@ -104,5 +104,13 @@ public class TerrainFeatures {
     public void addResource(Resources resource) {
         this.resources.add(resource);
     }
+
+    public int getMovementPrice() {
+        return movementPrice;
+    }
+
+    public void setMovementPrice(int movementPrice) {
+        this.movementPrice = movementPrice;
+    }
 }
 
