@@ -1,5 +1,9 @@
 package Model;
 
+import Database.GameDatabase;
+
+import java.util.ArrayList;
+
 public class Unit {
 
     private int x;
@@ -190,5 +194,24 @@ public class Unit {
     public void moveTo(Tile tile){
 
     }
+    public int DistanceMetric(Tile currentTile, Tile destTile){
+        return 0;
+    }
+    public void findPath(Tile currentTile, Tile destTile){
+
+    }
+    public void findNextStep(Tile currentTile, Tile destTile, ArrayList<Tile>listOfCheckedTiles){
+
+    }
+    public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile>listOfCheckedTiles){
+        Tile adjacentTile0 = GameDatabase.getTileByXandY(currentTile.getX(), currentTile.getY());
+        if (listOfCheckedTiles.contains(adjacentTile0)){
+
+        }
+        return true;
+
+
+    }
+
 
 }
