@@ -13,7 +13,6 @@ public class Tile {
     private boolean isRaided;
     private boolean[] isRiver;
 
-
     public Tile(String type, int x, int y) {
         this.baseTerrain = new BaseTerrain(type);
         this.x = x;
@@ -79,5 +78,8 @@ public class Tile {
 
     public BaseTerrain getBaseTerrain() {
         return baseTerrain;
+    }
+    public boolean canBePassed(){
+        return this.baseTerrain.IsMovementPossible();
     }
 }
