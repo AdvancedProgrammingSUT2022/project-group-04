@@ -172,7 +172,7 @@ public class GameMenu extends Menu {
                         linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon +
                                 ("                              ").substring(0, 10);
                     } else {
-                        linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon + GameDatabase.players.get(flag).getColor()
+                        linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon 
                         + (GameDatabase.players.get(flag).getNickname() + "             ").substring(0, 10);
                     }
                     //
