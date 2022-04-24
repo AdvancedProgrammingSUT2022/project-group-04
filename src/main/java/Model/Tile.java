@@ -13,6 +13,10 @@ public class Tile {
     private boolean isRaided;
     private boolean[] isRiver;
 
+    ArrayList<Tile> neighbors = new ArrayList<Tile>();
+    boolean visited;
+    Tile prev;
+
 
     public Tile(String type, int x, int y) {
         this.baseTerrain = new BaseTerrain(type);
@@ -26,7 +30,6 @@ public class Tile {
         }
     }
 
-
     public String getType() {
         return this.baseTerrain.getType();
     }
@@ -37,6 +40,26 @@ public class Tile {
 
     public int getY() {
         return this.y;
+    }
+    public ArrayList<Tile> getNeighbors() {
+        return neighbors;
+    }
+    public void setNeighbors(ArrayList<Tile> neighbors) {
+        this.neighbors = neighbors;
+    }
+    public boolean isVisited() {
+        return visited;
+    }
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public Tile getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Tile prev) {
+        this.prev = prev;
     }
 
     public ArrayList<Unit> getUnits() {
@@ -80,5 +103,8 @@ public class Tile {
 
     public BaseTerrain getBaseTerrain() {
         return baseTerrain;
+    }
+    public boolean canBePassed(){
+        return this.baseTerrain.IsMovementPossible();
     }
 }
