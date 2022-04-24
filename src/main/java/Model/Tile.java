@@ -36,6 +36,10 @@ public class Tile {
         return this.y;
     }
 
+    public ArrayList<Unit> getUnits() {
+        return units;
+    }
+
     private void setRaidedModel(boolean isRaided) {
         this.isRaided = isRaided;
     }

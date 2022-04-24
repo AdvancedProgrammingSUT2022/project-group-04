@@ -4,6 +4,7 @@ import Controller.GameMenuController;
 import Database.GameDatabase;
 //import Enums.MapAndGeneralCommandsOfGameMenu;
 import Model.Tile;
+import Model.Unit;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -11,8 +12,11 @@ import java.util.regex.Matcher;
 public class GameMenu extends Menu {
 
     private GameMenuController gameMenuController;
+    int numberOfPlayers = GameDatabase.players.size();
     private static final String MAP_SHOW_POSITION = "map show (?<x>\\d+) (?<y>\\d+)";
     private static final String MAP_SHOW_CITY = "map show (?<cityName>.+)";
+    private static final String SELECT_COMBAT = "select combat (?<x>\\d+) (?<y>\\d+)";
+    private static final String SELECT_NONCOMBAT = "select noncombat (?<x>\\d+) (?<y>\\d+)";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -21,6 +25,10 @@ public class GameMenu extends Menu {
 
     public void run(Scanner scanner) {
         String command;
+
+        int turn = 1;
+        Unit unitSelected = null;
+
         while (true) {
             Matcher matcher;
             command = scanner.nextLine();
@@ -46,6 +54,10 @@ public class GameMenu extends Menu {
                 } else {
                     System.out.println(result);
                 }
+            } else if ((matcher = getCommandMatcher(command, SELECT_COMBAT)) != null) {
+                System.out.println(selectCombat(matcher, unitSelected, turn));
+            } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
+                System.out.println(selectNonCombat(matcher, unitSelected, turn));
             } else {
                 System.out.println("invalid command");
             }
@@ -80,6 +92,38 @@ public class GameMenu extends Menu {
             return "selected city is not valid";
         }
         return null;
+    }
+
+    private String selectCombat(Matcher matcher, Unit unitSelected, int turn) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "position is not valid";
+        }
+        if(!this.gameMenuController.isCombatUnitInThisPosition(turn, x, y)) {
+            return "no combat unit";
+        }
+        unitSelected = this.gameMenuController.selectCombatUnit(turn, x, y);
+        return "unit selected";
+    }
+
+    private String selectNonCombat(Matcher matcher, Unit unitSelected, int turn) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "position is not valid";
+        }
+        if(!this.gameMenuController.isNonCombatUnitInThisPosition(turn, x, y)) {
+            return "no combat unit";
+        }
+        unitSelected = this.gameMenuController.selectNonCombatUnit(turn, x, y);
+        return "unit selected";
+    }
+
+    private int nextTurn(int turn) {
+        if(turn != this.numberOfPlayers) {
+            return turn++;
+        } return 1;
     }
 
     public void printMap(int mainX, int mainY) {
