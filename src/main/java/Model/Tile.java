@@ -12,7 +12,6 @@ public class Tile {
     protected ArrayList<Improvement> improvements;
     private boolean isRaided;
     private boolean[] isRiver;
-
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     boolean visited;
     Tile prev;
@@ -106,5 +105,12 @@ public class Tile {
     }
     public boolean canBePassed(){
         return this.baseTerrain.IsMovementPossible();
+    }
+    public int movementPriceForTile(){
+        int movementPriceSum = getBaseTerrain().getMovementPrice();
+        for (TerrainFeatures features:getBaseTerrain().getFeatures()){
+            movementPriceSum += features.getMovementPrice();
+        }
+        return movementPriceSum;
     }
 }
