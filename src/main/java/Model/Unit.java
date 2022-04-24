@@ -191,18 +191,21 @@ public class Unit {
                 break;
         }
     }
-    public void moveTo(Tile tile){
 
-    }
-    public int DistanceMetric(Tile currentTile, Tile destTile){
-        return 0;
-    }
     public void findPath(Tile currentTile, Tile destTile){
+        ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
+        Tile currentInCopy = null;
+        Tile destInCopy = null;
+        for (Tile tile:copyOfMap){
+            if (tile.getX() == currentTile.getX() && tile.getY() == currentTile.getY())
+                currentInCopy = tile;
+            if (tile.getX() == destTile.getX() && tile.getY() == destTile.getY())
+                destInCopy = tile;
+        }
+
 
     }
-    public void findNextStep(Tile currentTile, Tile destTile, ArrayList<Tile>listOfCheckedTiles){
 
-    }
     public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile>listOfCheckedTiles){
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         adjacentTiles.add(GameDatabase.getTileByXandY(currentTile.getX() - 1, currentTile.getY()));
