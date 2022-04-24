@@ -180,7 +180,7 @@ public class GameDatabase {
             int yRandomGenerate = random.nextInt(length);
             int direction = random.nextInt(6);
             int x1 = xRandomGenerate + deltaX[direction];
-            int y1 = xRandomGenerate + deltaY[direction];
+            int y1 = yRandomGenerate + deltaY[direction];
             if (getBlockByXandY(xRandomGenerate,yRandomGenerate) == null
                     ||getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
                     || getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
