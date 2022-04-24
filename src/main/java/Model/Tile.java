@@ -21,6 +21,9 @@ public class Tile {
         this.units = new ArrayList<Unit>();
         this.improvements = new ArrayList<Improvement>();
         this.isRiver = new boolean[6];
+        for (int i = 0; i < this.isRiver.length; i++) {
+            this.isRiver[i] = false;
+        }
     }
 
 

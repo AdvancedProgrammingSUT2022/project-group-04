@@ -50,7 +50,6 @@ public class MainMenu extends Menu{
                     enterGameMenu(scanner, matcher);
                 }
             } else {
-                System.out.println(command);
                 System.out.println("invalid command");
             }
         }
