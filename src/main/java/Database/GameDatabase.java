@@ -200,7 +200,8 @@ public class GameDatabase {
             int x1 = xRandomGenerate + deltaX[direction];
             int y1 = yRandomGenerate + deltaY[direction];
             if (getBlockByXandY(xRandomGenerate,yRandomGenerate) == null
-                    ||getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
+                    || getBlockByXandY(x1,y1) == null
+                    || getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
                     || getBlockByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
                     || getBlockByXandY(x1,y1).getType().equals("Ocean")
                     || getBlockByXandY(x1,y1).getType().equals("Mountain")){
