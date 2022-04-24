@@ -27,9 +27,18 @@ public class GameDatabase {
      * @param civilizationName
      * @return selected civilization
      */
-    public static Civilization getCivilizationByName(String civilizationName) {
+    public static Civilization getCivilizationByUsername(String civilizationName) {
         for (int i = 0; i < GameDatabase.players.size(); i++) {
             if (GameDatabase.players.get(i).getUsername().equals(civilizationName)) {
+                return GameDatabase.players.get(i);
+            }
+        }
+        return null;
+    }
+
+    public static Civilization getCivilizationByNickname(String civilizationName) {
+        for (int i = 0; i < GameDatabase.players.size(); i++) {
+            if (GameDatabase.players.get(i).getNickname().equals(civilizationName)) {
                 return GameDatabase.players.get(i);
             }
         }
@@ -68,6 +77,15 @@ public class GameDatabase {
             }
         }
         return null;
+    }
+
+    public static int getCivilizationIndex(String civilizationName) {
+        for (int i = 0; i < GameDatabase.players.size(); i++) {
+            if (GameDatabase.players.get(i).getNickname().equals(civilizationName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 
@@ -186,6 +204,7 @@ public class GameDatabase {
                     || getTileByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
                     || getTileByXandY(x1,y1).getType().equals("Ocean")
                     || getTileByXandY(x1,y1).getType().equals("Mountain")){
+
                 continue;
             }
             boolean isOccupied = false;
