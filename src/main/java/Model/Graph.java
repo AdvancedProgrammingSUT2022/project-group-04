@@ -22,7 +22,10 @@ public class Graph {
         for (int i = 0; i < copyOfMap.size(); i++){
             for (int j = i + 1; j < copyOfMap.size(); j++){
                 if (areAdjacent(copyOfMap.get(i), copyOfMap.get(j))){
-
+                    if (copyOfMap.get(i).canBePassed() && copyOfMap.get(j).canBePassed()){
+                        //TODO... handle rivers
+                        add_neighbor(copyOfMap.get(i), copyOfMap.get(j));
+                    }
                 }
             }
         }
@@ -36,6 +39,7 @@ public class Graph {
         Queue<Tile> queue = new LinkedList<>();
         start.setVisited(true);
         queue.add(start);
+        boolean exists = false;
         while(!queue.isEmpty()){
             Tile currentTile = queue.poll();
             for(Tile tile: currentTile.neighbors){
@@ -45,10 +49,14 @@ public class Graph {
                     tile.prev = currentTile;
                     if(tile.equals(end)){
                         queue.clear();
+                        exists = true;
                         break;
                     }
                 }
             }
+        }
+        if(!exists){
+            //Todo... go until you reach an area that is unable to pass
         }
     }
 
