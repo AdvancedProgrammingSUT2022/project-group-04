@@ -61,6 +61,7 @@ public class Graph {
     }
 
     public ArrayList<Tile> route(Tile start, Tile end){
+        bfs(start, end);
         Tile tile = end;
         ArrayList<Tile> route = new ArrayList<>();
         while (tile != null){

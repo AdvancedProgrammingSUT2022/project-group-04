@@ -149,4 +149,12 @@ public class BaseTerrain {
     public ArrayList<TerrainFeatures> getFeatures() {
         return features;
     }
+
+    public int getMovementPrice() {
+        return movementPrice;
+    }
+
+    public void setMovementPrice(int movementPrice) {
+        this.movementPrice = movementPrice;
+    }
 }

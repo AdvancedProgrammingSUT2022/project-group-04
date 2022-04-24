@@ -131,13 +131,13 @@ public class Unit {
         this.era = era;
         this.HP = HP;
     }
-    public void setIsOnTile(Tile isOnTile) {
+    public void setTileOfUnit(Tile isOnTile) {
         this.tileOfUnit = isOnTile;
     }
-    public Tile getIsOnTile() {
+    public Tile getTileOfUnit() {
         return tileOfUnit;
     }
-    public void moveOneTile(int direction){
+    public void moveOneTile(int direction){ //this function is to be used with graphics
         int x1 = x, y1 = y - 10; // value is temporary , will be changed
         int x2 = x + 7 , y2 = y - 7;
         int x3 = x + 7 , y3 = y + 7;
@@ -191,8 +191,14 @@ public class Unit {
                 break;
         }
     }
+    public void moveToAdjacentTile(Tile adjacentTile){
+        this.x = adjacentTile.getX();
+        this.y = adjacentTile.getY();
+        this.movementPoint -= adjacentTile.movementPriceForTile();
+    }
 
-    public void findPath(Tile currentTile, Tile destTile){
+    public void moveUnitFromTo(Tile currentTile, Tile destTile){
+        Graph graph = new Graph();
         ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
         Tile currentInCopy = null;
         Tile destInCopy = null;
@@ -202,8 +208,20 @@ public class Unit {
             if (tile.getX() == destTile.getX() && tile.getY() == destTile.getY())
                 destInCopy = tile;
         }
-
-
+        ArrayList<Tile> path = new ArrayList<>();
+        for (Tile copyTile: graph.route(currentInCopy, destInCopy)){
+            for (Tile mainTile: GameDatabase.map){
+                if (mainTile.getX() == copyTile.getX() && mainTile.getY() == copyTile.getY()){
+                    path.add(mainTile);
+                }
+            }
+        }
+        for (int i = 1; i < path.size(); i++){
+            if (movementPoint >= path.get(i).movementPriceForTile())
+                moveToAdjacentTile(path.get(i));
+            else
+                break;
+        }
     }
 
     public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile>listOfCheckedTiles){
