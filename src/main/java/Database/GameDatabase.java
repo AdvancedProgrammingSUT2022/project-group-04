@@ -138,7 +138,7 @@ public class GameDatabase {
                         break;
                     }
                 }
-                Tile tile = new Tile(baseTerrains.get(flag), i, j);
+                Tile tile = new Tile("fogOfWar",baseTerrains.get(flag), i, j); // TODO.. how to set tiles
                 map.add(tile);
             }
         }
