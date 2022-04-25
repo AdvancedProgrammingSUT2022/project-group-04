@@ -1,5 +1,6 @@
 package Model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -118,4 +119,19 @@ public class Civilization {
 
     }
 
+    public ArrayList<Tile> firstClassAdjacentTiles(){
+        return null;
+    }
+
+    public ArrayList<Tile> secondClassAdjacentTiles(){
+        return null;
+    }
+
+    public ArrayList<Tile> clearTiles(){
+        return null;
+    }
+
+    public ArrayList<Tile> visibleTiles(){
+        return null;
+    }
 }
