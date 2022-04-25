@@ -25,8 +25,8 @@ public class City extends Tile{
     private boolean isColonized;
     private boolean isCapital;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, int x, int y) {
-        super(type, x, y);
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type,String baseTerrainType, int x, int y) {
+        super(type,baseTerrainType, x, y);
         this.name = name;
         this.power = power;
         this.longRangePower = 0;
