@@ -138,7 +138,7 @@ public class GameDatabase {
                         break;
                     }
                 }
-                Tile tile = new Tile(baseTerrains.get(flag), i, j);
+                Tile tile = new Tile("fogOfWar",baseTerrains.get(flag), i, j); // TODO.. how to set tiles
                 map.add(tile);
             }
         }
@@ -153,8 +153,8 @@ public class GameDatabase {
                 int yOfTile = tile.getY() + deltaY[j];
                 if ((xOfTile >= length || xOfTile < 0
                         || yOfTile >= width || yOfTile < 0)
-                        || (tile.getType().equals("Ocean")
-                        && getTileByXandY(xOfTile, yOfTile).getType().equals("Ocean"))) {
+                        || (tile.getBaseTerrainType().equals("Ocean")
+                        && getTileByXandY(xOfTile, yOfTile).getBaseTerrainType().equals("Ocean"))) {
                     continue;
                 }
                 int randomGenerate = random.nextInt(1000);
@@ -201,10 +201,10 @@ public class GameDatabase {
             int y1 = yRandomGenerate + deltaY[direction];
             if (getTileByXandY(xRandomGenerate,yRandomGenerate) == null
                     || getTileByXandY(x1,y1) == null
-                    || getTileByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
-                    || getTileByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
-                    || getTileByXandY(x1,y1).getType().equals("Ocean")
-                    || getTileByXandY(x1,y1).getType().equals("Mountain")){
+                    || getTileByXandY(xRandomGenerate,yRandomGenerate).getBaseTerrainType().equals("Ocean")
+                    || getTileByXandY(xRandomGenerate,yRandomGenerate).getBaseTerrainType().equals("Mountain")
+                    || getTileByXandY(x1,y1).getBaseTerrainType().equals("Ocean")
+                    || getTileByXandY(x1,y1).getBaseTerrainType().equals("Mountain")){
 
                 continue;
             }

@@ -3,12 +3,13 @@ package Model;
 import java.util.ArrayList;
 
 public class Tile {
-
+    protected String type; //fogOfWar , Visible , Clear
     protected BaseTerrain baseTerrain;
     protected int x;
     protected int y;
     protected String contains;
     protected ArrayList<Unit> units;
+    protected ArrayList<Building> buildings;
     protected ArrayList<Improvement> improvements;
     private boolean isRaided;
     private boolean[] isRiver;
@@ -17,8 +18,9 @@ public class Tile {
     Tile prev;
 
 
-    public Tile(String type, int x, int y) {
-        this.baseTerrain = new BaseTerrain(type);
+    public Tile(String type ,String baseTerrainType, int x, int y) {
+        this.type = type;
+        this.baseTerrain = new BaseTerrain(baseTerrainType);
         this.x = x;
         this.y = y;
         this.units = new ArrayList<Unit>();
@@ -29,7 +31,7 @@ public class Tile {
         }
     }
 
-    public String getType() {
+    public String getBaseTerrainType() {
         return this.baseTerrain.getType();
     }
 
@@ -112,5 +114,9 @@ public class Tile {
             movementPriceSum += features.getMovementPrice();
         }
         return movementPriceSum;
+    }
+
+    public boolean canBeSeenByUnitOrBuilding(){
+        return false;
     }
 }
