@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class MainMenu extends Menu{
+public class MainMenu extends Menu {
 
     private MainMenuController mainMenuController;
     private static final String PLAY_GAME = "play game(?<command>( --player\\d+ \\S+)+)";
@@ -27,26 +27,26 @@ public class MainMenu extends Menu{
 
     public void run(Scanner scanner, User loggedinUser) {
         String command;
-        while(true) {
+        while (true) {
             Matcher matcher;
             command = scanner.nextLine();
-            if(command.equals("user logout")) {
+            if (command.equals("user logout")) {
                 System.out.println("user logged out successfully!");
                 break;
-            } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 String result = menuEnter(matcher);
-                if(result != null) {
+                if (result != null) {
                     System.out.println(result);
                 } else {
                     enterProfileMenu(scanner, loggedinUser);
                 }
-            } else if(((matcher = getCommandMatcher(command, PLAY_GAME)) != null)
-                        || ((matcher = getCommandMatcher(command, SHORT_PLAY_GAME)) != null)) {
+            } else if (((matcher = getCommandMatcher(command, PLAY_GAME)) != null)
+                    || ((matcher = getCommandMatcher(command, SHORT_PLAY_GAME)) != null)) {
                 String result = playGame(matcher);
                 System.out.println(result);
-                if(result.startsWith("game")) {
+                if (result.startsWith("game")) {
                     enterGameMenu(scanner, matcher);
                 }
             } else {
@@ -62,10 +62,10 @@ public class MainMenu extends Menu{
 
     private String menuEnter(Matcher matcher) {
         String menuName = matcher.group("MenuName");
-        if(!this.mainMenuController.isMenuValid(menuName)) {
+        if (!this.mainMenuController.isMenuValid(menuName)) {
             return "menu navigation is not possible";
         }
-        if(menuName.equals("Game Menu")) {
+        if (menuName.equals("Game Menu")) {
             return "you must use play game command.";
         }
         return null;
@@ -73,6 +73,7 @@ public class MainMenu extends Menu{
 
     /**
      * entered profile menu
+     *
      * @param scanner
      * @param loggedinUser
      */
@@ -86,16 +87,17 @@ public class MainMenu extends Menu{
 
     /**
      * makes a new game
+     *
      * @param matcher
      */
     private String playGame(Matcher matcher) {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
-        if(splitCommand.length == 1) {
+        if (splitCommand.length == 1) {
             splitCommand = matcher.group("command").split(" -p\\d+ ");
         }
         for (int i = 1; i < splitCommand.length; i++) {
-            if(!this.mainMenuController.isUserExists(splitCommand[i])) {
+            if (!this.mainMenuController.isUserExists(splitCommand[i])) {
                 return "at least one username dose not exists.";
             }
         }
@@ -105,13 +107,14 @@ public class MainMenu extends Menu{
 
     /**
      * enters game menu
+     *
      * @param scanner
      * @param matcher
      */
     private void enterGameMenu(Scanner scanner, Matcher matcher) {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
-        if(splitCommand.length == 1) {
+        if (splitCommand.length == 1) {
             splitCommand = matcher.group("command").split(" -p\\d+ ");
         }
 

@@ -12,9 +12,10 @@ public class Improvement {
     private int cityFoodChange;
     private int cityProductionChange;
 
-    public Improvement(String name){
+    public Improvement(String name) {
         this.name = name;
     }
+
     public String getName() {
         return name;
     }

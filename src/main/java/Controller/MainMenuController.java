@@ -13,25 +13,23 @@ public class MainMenuController {
     }
 
     /**
-     *
      * @param menuName
      * @return true if the menuName was Profile Menu
      */
     public boolean isMenuValid(String menuName) {
-        if(menuName.equals("Profile Menu") || menuName.equals("Game Menu")) {
+        if (menuName.equals("Profile Menu") || menuName.equals("Game Menu")) {
             return true;
         }
         return false;
     }
 
     /**
-     *
      * @param username
      * @return true if the user was existed
      */
     public boolean isUserExists(String username) {
         User user = UserDatabase.getUserByUsername(username);
-        if(user == null) {
+        if (user == null) {
             return false;
         }
         return true;
