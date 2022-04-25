@@ -8,8 +8,8 @@ public class Soldier extends Unit {
     private int rangedCombatStrength;
     private int combatStrength;
 
-    public Soldier(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP) {
-        super(x, y, vX, vY, power, cost, movementPoint, unitType, isSleeping, isReady, era, HP);
+    public Soldier(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex) {
+        super(x, y, vX, vY, power, cost, movementPoint, unitType, isSleeping, isReady, era, HP, civilizationIndex);
         switch (unitType) {
             case "Archer":
                 this.range = 2;

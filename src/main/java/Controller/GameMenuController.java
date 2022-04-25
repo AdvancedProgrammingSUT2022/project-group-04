@@ -29,60 +29,51 @@ public class GameMenuController {
         return true;
     }
 
-    public boolean isCombatUnitInThisPosition(int turn, int x, int y) {
-        for (int i = 0; i < GameDatabase.players.get(turn).getTiles().size(); i++) {
-            for (int j = 0; j < GameDatabase.players.get(turn).getTiles().get(i).getUnits().size(); j++) {
-                if(GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j) instanceof Soldier) {
-                    if((GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getX() == x)
-                        && (GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getY() == y)) {
-                        return true;
-                    }
-                }
+    public boolean isCombatUnitInThisPosition(int x, int y) {
+        Tile tile = GameDatabase.getTileByXandY(x, y);
+        for (int i = 0; i < tile.getUnits().size(); i++) {
+            if(tile.getUnits().get(i) instanceof Soldier) {
+                return true;
             }
         }
         return false;
     }
 
-    public Unit selectCombatUnit(int turn, int x, int y) {
-        for (int i = 0; i < GameDatabase.players.get(turn).getTiles().size(); i++) {
-            for (int j = 0; j < GameDatabase.players.get(turn).getTiles().get(i).getUnits().size(); j++) {
-                if(GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j) instanceof Soldier) {
-                    if((GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getX() == x)
-                            && (GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getY() == y)) {
-                        return GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j);
-                    }
-                }
+    public Unit selectCombatUnit(int x, int y) {
+        Tile tile = GameDatabase.getTileByXandY(x, y);
+        for (int i = 0; i < tile.getUnits().size(); i++) {
+            if(tile.getUnits().get(i) instanceof Soldier) {
+                return tile.getUnits().get(i);
             }
         }
         return null;
     }
 
-    public boolean isNonCombatUnitInThisPosition(int turn, int x, int y) {
-        for (int i = 0; i < GameDatabase.players.get(turn).getTiles().size(); i++) {
-            for (int j = 0; j < GameDatabase.players.get(turn).getTiles().get(i).getUnits().size(); j++) {
-                if(GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j) instanceof Citizen) {
-                    if((GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getX() == x)
-                            && (GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getY() == y)) {
-                        return true;
-                    }
-                }
+    public boolean isNonCombatUnitInThisPosition(int x, int y) {
+        Tile tile = GameDatabase.getTileByXandY(x, y);
+        for (int i = 0; i < tile.getUnits().size(); i++) {
+            if(tile.getUnits().get(i) instanceof Citizen) {
+                return true;
             }
         }
         return false;
     }
 
-    public Unit selectNonCombatUnit(int turn, int x, int y) {
-        for (int i = 0; i < GameDatabase.players.get(turn).getTiles().size(); i++) {
-            for (int j = 0; j < GameDatabase.players.get(turn).getTiles().get(i).getUnits().size(); j++) {
-                if(GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j) instanceof Citizen) {
-                    if((GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getX() == x)
-                            && (GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j).getY() == y)) {
-                        return GameDatabase.players.get(turn).getTiles().get(i).getUnits().get(j);
-                    }
-                }
+    public Unit selectNonCombatUnit(int x, int y) {
+        Tile tile = GameDatabase.getTileByXandY(x, y);
+        for (int i = 0; i < tile.getUnits().size(); i++) {
+            if(tile.getUnits().get(i) instanceof Citizen) {
+                return tile.getUnits().get(i);
             }
         }
         return null;
+    }
+
+    public boolean isUnitForThisCivilization(int turn, Unit unitSelected) {
+        if(unitSelected.getCivilizationIndex() == turn) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isCivilizationValid(String civilizationName) {
