@@ -21,6 +21,7 @@ public class Unit {
     private String era;
     private int HP;
     private Tile tileOfUnit;
+    private int civilizationIndex;
 
     public int getX() {
         return x;
@@ -118,7 +119,11 @@ public class Unit {
         this.HP = HP;
     }
 
-    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP ){
+    public int getCivilizationIndex() {
+        return civilizationIndex;
+    }
+
+    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex ){
         this.x = x;
         this.y = y;
         this.vX = vX;
@@ -130,6 +135,7 @@ public class Unit {
         this.isReady = isReady;
         this.era = era;
         this.HP = HP;
+        this.civilizationIndex = civilizationIndex;
     }
     public void setTileOfUnit(Tile isOnTile) {
         this.tileOfUnit = isOnTile;

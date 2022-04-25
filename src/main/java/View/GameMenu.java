@@ -19,6 +19,7 @@ public class GameMenu extends Menu {
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
     private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String SHOW_TURN = "show turn";
+    private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -60,13 +61,13 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, SELECT_COMBAT)) != null) {
                 String result = selectCombat(matcher, unitSelected, turn);
                 if(result.startsWith("unit")) {
-                    unitSelected = this.gameMenuController.selectCombatUnit(turn, Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
                 String result = selectNonCombat(matcher, unitSelected, turn);
                 if(result.startsWith("unit")) {
-                    unitSelected = this.gameMenuController.selectCombatUnit(turn, Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
@@ -84,6 +85,13 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SHOW_TURN)) != null) {
                 System.out.println(GameDatabase.players.get(turn).getNickname());
+            } else if ((matcher = getCommandMatcher(command, UNIT_MOVE_TO)) != null) {
+                String result = unitMoveTo(matcher, unitSelected, turn);
+                if(result.startsWith("unit")) {
+                    unitSelected = null;
+                    turn = nextTurn(turn);
+                }
+                System.out.println(result);
             } else {
                 System.out.println("invalid command");
             }
@@ -126,10 +134,10 @@ public class GameMenu extends Menu {
         if(!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
-        if(!this.gameMenuController.isCombatUnitInThisPosition(turn, x, y)) {
+        if(!this.gameMenuController.isCombatUnitInThisPosition(x, y)) {
             return "no combat unit";
         }
-        unitSelected = this.gameMenuController.selectCombatUnit(turn, x, y);
+        unitSelected = this.gameMenuController.selectCombatUnit(x, y);
         return "unit selected";
     }
 
@@ -139,10 +147,10 @@ public class GameMenu extends Menu {
         if(!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
-        if(!this.gameMenuController.isNonCombatUnitInThisPosition(turn, x, y)) {
+        if(!this.gameMenuController.isNonCombatUnitInThisPosition(x, y)) {
             return "no combat unit";
         }
-        unitSelected = this.gameMenuController.selectNonCombatUnit(turn, x, y);
+        unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
         return "unit selected";
     }
 
@@ -166,7 +174,19 @@ public class GameMenu extends Menu {
         turn%= numberOfPlayers;
         return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
 
+    }
 
+    private String unitMoveTo(Matcher matcher, Unit unitSelected, int turn) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(unitSelected == null) {
+            return "you must select a unit first";
+        }
+        if(!gameMenuController.isUnitForThisCivilization(turn%numberOfPlayers, unitSelected)) {
+            return "unit is not for you";
+        }
+        // TODO: is possible to move
+        return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
     private int nextTurn(int turn) {
