@@ -58,7 +58,7 @@ public class GameDatabase {
     }
 
 
-    public static Tile getTileByXandY(int x, int y) {
+    public static Tile getTileByXAndY(int x, int y) {
 
         for (Tile tile : map) {
             if (tile.getX() == x && tile.getY() == y) return tile;
@@ -154,12 +154,12 @@ public class GameDatabase {
                 if ((xOfTile >= length || xOfTile < 0
                         || yOfTile >= width || yOfTile < 0)
                         || (tile.getType().equals("Ocean")
-                        && getTileByXandY(xOfTile, yOfTile).getType().equals("Ocean"))) {
+                        && getTileByXAndY(xOfTile, yOfTile).getType().equals("Ocean"))) {
                     continue;
                 }
                 int randomGenerate = random.nextInt(1000);
                 if (randomGenerate < possibilityOfEdgeBeingRiver) {
-                    Tile tile1 = getTileByXandY(xOfTile, yOfTile);
+                    Tile tile1 = getTileByXAndY(xOfTile, yOfTile);
                     tile.setRiverByEdgeIndex(j);
                     tile1.setRiverByEdgeIndex(numbOfEdge[j]);
                 }
@@ -199,12 +199,12 @@ public class GameDatabase {
             int direction = random.nextInt(6);
             int x1 = xRandomGenerate + deltaX[direction];
             int y1 = yRandomGenerate + deltaY[direction];
-            if (getTileByXandY(xRandomGenerate,yRandomGenerate) == null
-                    || getTileByXandY(x1,y1) == null
-                    || getTileByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
-                    || getTileByXandY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
-                    || getTileByXandY(x1,y1).getType().equals("Ocean")
-                    || getTileByXandY(x1,y1).getType().equals("Mountain")){
+            if (getTileByXAndY(xRandomGenerate,yRandomGenerate) == null
+                    || getTileByXAndY(x1,y1) == null
+                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
+                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
+                    || getTileByXAndY(x1,y1).getType().equals("Ocean")
+                    || getTileByXAndY(x1,y1).getType().equals("Mountain")){
 
                 continue;
             }
@@ -217,8 +217,8 @@ public class GameDatabase {
                 }
             }
             if (!isOccupied){
-                players.get(counter).addTile(getTileByXandY(xRandomGenerate,yRandomGenerate));
-                players.get(counter).addTile(getTileByXandY(x1,y1));
+                players.get(counter).addTile(getTileByXAndY(xRandomGenerate,yRandomGenerate));
+                players.get(counter).addTile(getTileByXAndY(x1,y1));
                 counter++;
             }
         }

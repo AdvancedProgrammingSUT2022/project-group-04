@@ -201,7 +201,7 @@ public class GameMenu extends Menu {
             for (int j = -2; j < 4; j++) {
                 int x = mainX + i;
                 int y = mainY + j;
-                Tile tile = GameDatabase.getTileByXandY(x, y);
+                Tile tile = GameDatabase.getTileByXAndY(x, y);
                 if (tile == null || i == -2 || i == 2) {
                     for (int k = 0; k < 3; k++) {
                         linesOfHexagons[i + 2][j + 2][k] = Colors.ANSI_RESET;
@@ -288,7 +288,7 @@ public class GameMenu extends Menu {
             }
             //set the i-th line
             for (int j = 0; j < 6; j++) {
-                Tile tile = GameDatabase.getTileByXandY(counterOfHex[j] + mainX - 2, mainY + j - 2);
+                Tile tile = GameDatabase.getTileByXAndY(counterOfHex[j] + mainX - 2, mainY + j - 2);
                 if ((tile != null)
                         && (flag == 1 && tile.isRiverByNumberOfEdge(5)
                         || flag == 0 && tile.isRiverByNumberOfEdge(4))) {//Condition to river
