@@ -81,7 +81,7 @@ public class Graph {
             for (int j = i + 1; j < copyOfMap.size(); j++) {
                 if (areAdjacent(copyOfMap.get(i), copyOfMap.get(j))) {
                     if (copyOfMap.get(i).canBePassed()
-                            && copyOfMap.get(j).canBePassed()){
+                            && copyOfMap.get(j).canBePassed()) {
                         int numberOfRiverEdge = commonEdgeNumber(copyOfMap.get(i), copyOfMap.get(j));
                         if (!copyOfMap.get(i).isRiverByNumberOfEdge(numberOfRiverEdge)) {
                             add_neighbor(copyOfMap.get(i), copyOfMap.get(j));
@@ -97,7 +97,7 @@ public class Graph {
         neighbourTile.getNeighbors().add(origin);
     }
 
-    public void bfs(Tile start, Tile end) {
+    public boolean bfs(Tile start, Tile end) {
         Queue<Tile> queue = new LinkedList<>();
         start.setVisited(true);
         queue.add(start);
@@ -117,21 +117,47 @@ public class Graph {
                 }
             }
         }
-        if (!exists) {
-            //Todo... go until you reach an area that is unable to pass
-        }
+        return exists;
     }
 
     public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
         setEdges(copyOfMap);
-        bfs(start, end);
-        Tile tile = end;
-        ArrayList<Tile> route = new ArrayList<>();
-        while (tile != null) {
-            route.add(tile);
-            tile = tile.getPrev();
+
+        if (bfs(start, end)) {//bfs path exists then return the route
+            Tile tile = end;
+            ArrayList<Tile> route = new ArrayList<>();
+            while (tile != null) {
+                route.add(tile);
+                tile = tile.getPrev();
+            }
+            Collections.reverse(route);
+            return route;
         }
-        Collections.reverse(route);
-        return route;
+
+        else { // bfs bath doesn't exist to the point we want
+            ArrayList<Tile> route = new ArrayList<>();
+            int minLength = Integer.MAX_VALUE;
+            outer:
+            for (int i = 1; i < 1000; i++) {
+                inner:
+                for (Tile adj : end.getAdjacentTilesByLayer(i)) { // trying to find a tile that is reachable
+                    if (bfs(start, adj)) {
+                        Tile tile = end;
+                        ArrayList<Tile> routeTemp = new ArrayList<>();
+                        while (tile != null) {
+                            routeTemp.add(tile);
+                            tile = tile.getPrev();
+                        }
+                        if (routeTemp.size() < minLength) { // trying to find the one with minimum length
+                            minLength = routeTemp.size();
+                            route.addAll(routeTemp);
+                        }
+                    }
+                }
+            }
+            return route;
+        }
+
     }
+
 }
