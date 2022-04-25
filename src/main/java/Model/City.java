@@ -4,7 +4,7 @@ import Database.GameDatabase;
 
 import java.util.ArrayList;
 
-public class City extends Tile{
+public class City extends Tile {
 
     private String name;
     private int power;
@@ -25,8 +25,8 @@ public class City extends Tile{
     private boolean isColonized;
     private boolean isCapital;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type,String baseTerrainType, int x, int y) {
-        super(type,baseTerrainType, x, y);
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
+        super(type, baseTerrainType, x, y);
         this.name = name;
         this.power = power;
         this.longRangePower = 0;
@@ -106,7 +106,7 @@ public class City extends Tile{
 
     private void generateGold() {
         Civilization civilization = GameDatabase.getCivilizationByNickname(this.civilizationName);
-        if(civilization != null) {
+        if (civilization != null) {
             civilization.addGold(this.goldGeneratingRate);
         }
     }
