@@ -10,6 +10,7 @@ public class Civilization {
     private int score;
     private int turn;
     private ArrayList<Tile> tiles;
+    private ArrayList<Tile> visibleTiles;
     private ArrayList<City> cities;
     private int gold;
     private ArrayList<Technology> technologies;
@@ -21,6 +22,7 @@ public class Civilization {
         this.score = 0;
         this.turn = 0;
         this.tiles = new ArrayList<Tile>();
+        this.visibleTiles = new ArrayList<Tile>();
         this.cities = new ArrayList<City>();
         this.gold = 0;
         this.technologies = new ArrayList<Technology>();
@@ -120,7 +122,6 @@ public class Civilization {
     }
 
     public ArrayList<Tile> tilesOnBorder(){
-
         ArrayList<Tile> tilesOnBorder = new ArrayList<>();
         for (Tile tile:tiles){
             boolean isBorderTile = false;
@@ -142,10 +143,18 @@ public class Civilization {
         ArrayList<Tile> firstClassAdjacentTiles = new ArrayList<>();
         for (Tile tile : tilesOnBorder()){
             if (!tile.getUnits().isEmpty() || !tile.getBuildings().isEmpty()) {
-                for (Tile adjacent : tile.getAdjacentTiles()) {
-                    if (!firstClassAdjacentTiles.contains(adjacent)
-                            && !tiles.contains(adjacent)) {
-                        firstClassAdjacentTiles.add(adjacent);
+                boolean thereIsUnitOBuildingNearby = false;
+                for (Tile adj :tilesOnBorder()){
+                    if (!adj.getUnits().isEmpty() || !adj.getBuildings().isEmpty()){
+                        thereIsUnitOBuildingNearby = true;
+                    }
+                }
+                if (thereIsUnitOBuildingNearby) {
+                    for (Tile adjacent : tile.getAdjacentTiles()) {
+                        if (!firstClassAdjacentTiles.contains(adjacent)
+                                && !tiles.contains(adjacent)) {
+                            firstClassAdjacentTiles.add(adjacent);
+                        }
                     }
                 }
             }
@@ -175,15 +184,14 @@ public class Civilization {
         return secondClassAdjacentTiles;
     }
 
-    public ArrayList<Tile> clearTiles(){
+    public ArrayList<Tile> getClearTiles(){
         ArrayList<Tile> clearTiles = new ArrayList<>();
         clearTiles.addAll(tiles);
         clearTiles.addAll(firstClassAdjacentTiles());
         clearTiles.addAll(secondClassAdjacentTiles());
+        visibleTiles.addAll(clearTiles);
         return clearTiles;
     }
 
-    public ArrayList<Tile> visibleTiles(){
-        return null;
-    }
+
 }
