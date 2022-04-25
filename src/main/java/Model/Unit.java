@@ -240,24 +240,4 @@ public class Unit {
         }
         return true;
     }
-
-    public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile> listOfCheckedTiles) {
-        ArrayList<Tile> adjacentTiles = new ArrayList<>();
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() - 1, currentTile.getY()));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX(), currentTile.getY() + 1));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() + 1, currentTile.getY() + 1));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() + 1, currentTile.getY()));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() + 1, currentTile.getY() - 1));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX(), currentTile.getY() - 1));
-        int i = 0;
-        for (Tile tile : adjacentTiles) {
-            if (tile.canBePassed() && !listOfCheckedTiles.contains(tile) && !currentTile.isRiverByNumberOfEdge(i)) {
-                return true;
-            }
-            i++;
-        }
-        return false;
-    }
-
-
 }
