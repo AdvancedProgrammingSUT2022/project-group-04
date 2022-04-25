@@ -119,6 +119,10 @@ public class Civilization {
 
     }
 
+    public ArrayList<Tile> tilesOnBorder(){
+        return null;
+    }
+
     public ArrayList<Tile> firstClassAdjacentTiles(){
         return null;
     }
