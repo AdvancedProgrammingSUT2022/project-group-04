@@ -101,6 +101,9 @@ public class MainMenu extends Menu {
                 return "at least one username dose not exists.";
             }
         }
+        if(splitCommand.length - 1 == 1) {
+            return "you can't play with yourself!";
+        }
         return "game started. good luck!";
 
     }
