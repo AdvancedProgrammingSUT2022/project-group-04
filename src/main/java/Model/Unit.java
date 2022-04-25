@@ -221,7 +221,7 @@ public class Unit {
                 destInCopy = tile;
         }
         ArrayList<Tile> path = new ArrayList<>();
-        for (Tile copyTile : graph.route(currentInCopy, destInCopy)) {
+        for (Tile copyTile : graph.route(currentInCopy, destInCopy, copyOfMap)) {
             for (Tile mainTile : GameDatabase.map) {
                 if (mainTile.getX() == copyTile.getX() && mainTile.getY() == copyTile.getY()) {
                     path.add(mainTile);

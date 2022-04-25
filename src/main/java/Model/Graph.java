@@ -52,7 +52,7 @@ public class Graph {
             if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
                 return 3;
             }
-            return -1;
+            return 6;
         } else {
             if (tile1.getX() == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
                 return 2;
@@ -72,7 +72,7 @@ public class Graph {
             if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
                 return 3;
             }
-            return -1;
+            return 6;
         }
     }
 
@@ -80,9 +80,12 @@ public class Graph {
         for (int i = 0; i < copyOfMap.size(); i++) {
             for (int j = i + 1; j < copyOfMap.size(); j++) {
                 if (areAdjacent(copyOfMap.get(i), copyOfMap.get(j))) {
-                    if (copyOfMap.get(i).canBePassed() && copyOfMap.get(j).canBePassed()) {
-                        //TODO... handle rivers
-                        add_neighbor(copyOfMap.get(i), copyOfMap.get(j));
+                    if (copyOfMap.get(i).canBePassed()
+                            && copyOfMap.get(j).canBePassed()){
+                        int numberOfRiverEdge = commonEdgeNumber(copyOfMap.get(i), copyOfMap.get(j));
+                        if (!copyOfMap.get(i).isRiverByNumberOfEdge(numberOfRiverEdge)) {
+                            add_neighbor(copyOfMap.get(i), copyOfMap.get(j));
+                        }
                     }
                 }
             }
@@ -119,7 +122,8 @@ public class Graph {
         }
     }
 
-    public ArrayList<Tile> route(Tile start, Tile end) {
+    public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
+        setEdges(copyOfMap);
         bfs(start, end);
         Tile tile = end;
         ArrayList<Tile> route = new ArrayList<>();
