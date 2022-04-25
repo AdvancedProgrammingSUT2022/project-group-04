@@ -157,4 +157,12 @@ public class BaseTerrain {
     public void setMovementPrice(int movementPrice) {
         this.movementPrice = movementPrice;
     }
+
+    public boolean hasFeature(String Feature){
+        for (TerrainFeatures terrainFeature : this.features){
+            if (terrainFeature.getType().equals(Feature))
+                return true;
+        }
+        return false;
+    }
 }

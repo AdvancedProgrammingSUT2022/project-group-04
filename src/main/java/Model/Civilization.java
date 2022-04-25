@@ -158,11 +158,16 @@ public class Civilization {
 
         ArrayList<Tile> secondClassAdjacentTiles = new ArrayList<>();
         for (Tile tile:firstClassAdjacentTiles()){
-            for (Tile adjacent : tile.getAdjacentTiles()){
-                if (!secondClassAdjacentTiles.contains(adjacent)
-                        && !firstClassAdjacentTiles().contains(adjacent)
-                        && !tiles.contains(adjacent)) {
-                    secondClassAdjacentTiles.add(adjacent);
+            if (!tile.getBaseTerrainType().equals("Mountain")
+                    && !tile.getBaseTerrainType().equals("Hill")
+                    && !tile.getBaseTerrain().hasFeature("Jungle")
+                    && !tile.getBaseTerrain().hasFeature("DenseJungle")){
+                for (Tile adjacent : tile.getAdjacentTiles()) {
+                    if (!secondClassAdjacentTiles.contains(adjacent)
+                            && !firstClassAdjacentTiles().contains(adjacent)
+                            && !tiles.contains(adjacent)) {
+                        secondClassAdjacentTiles.add(adjacent);
+                    }
                 }
             }
         }

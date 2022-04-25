@@ -4,7 +4,7 @@ public enum TerrainFeature {
     Prairie,
     Jungle,
     Ice,
-    Dense_Jungle,
+    DenseJungle,
     Swamp,
     Oasis;
 }
