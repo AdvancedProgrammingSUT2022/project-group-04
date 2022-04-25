@@ -69,6 +69,14 @@ public class Tile {
         this.prev = prev;
     }
 
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(ArrayList<Building> buildings) {
+        this.buildings = buildings;
+    }
+
     public ArrayList<Unit> getUnits() {
         return units;
     }
