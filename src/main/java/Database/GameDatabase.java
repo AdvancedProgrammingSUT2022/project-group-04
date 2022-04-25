@@ -57,6 +57,18 @@ public class GameDatabase {
         return null;
     }
 
+    public static City getCityByXAndY(int x, int y) {
+        for (Civilization player : GameDatabase.players) {
+            for (City city : player.getCities()) {
+                if(city.getX() == x
+                  && city.getY() == y) {
+                    return city;
+                }
+            }
+        }
+        return null;
+    }
+
 
     public static Tile getTileByXAndY(int x, int y) {
 

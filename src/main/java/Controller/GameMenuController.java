@@ -3,12 +3,36 @@ package Controller;
 import Database.GameDatabase;
 import Model.*;
 
+import java.util.HashMap;
+
 public class GameMenuController {
 
     private GameModel gameModel;
+    public HashMap<String, Integer> directionX;
+    public HashMap<String, Integer> directionY;
+    public int x;
+    public int y;
+    public int c;
 
     public GameMenuController(GameModel gameModel) {
         this.gameModel = gameModel;
+        this.directionX = new HashMap<String, Integer>();
+        {
+            this.directionX.put("UP", 1);
+            this.directionX.put("DOWN", -1);
+            this.directionX.put("RIGHT", 0);
+            this.directionX.put("LEFT", 0);
+        }
+        this.directionY = new HashMap<String, Integer>();
+        {
+            this.directionY.put("UP", 0);
+            this.directionY.put("DOWN", 0);
+            this.directionY.put("RIGHT", -1);
+            this.directionY.put("LEFT", 1);
+        }
+        this.x = 0;
+        this.y = 0;
+        this.c = 0;
     }
 
     public boolean isPositionValid(int x, int y) {
@@ -49,6 +73,22 @@ public class GameMenuController {
         return null;
     }
 
+    public boolean isDirectionForMapValid(String direction) {
+        if(direction.equals("UP")) {
+            return true;
+        }
+        if(direction.equals("DOWN")) {
+            return true;
+        }
+        if(direction.equals("RIGHT")) {
+            return true;
+        }
+        if(direction.equals("LEFT")) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
@@ -74,6 +114,32 @@ public class GameMenuController {
             return true;
         }
         return false;
+    }
+
+    public boolean isCityPositionValid(int x, int y){
+        City city = GameDatabase.getCityByXAndY(x, y);
+        if(city == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isDestinationOkForMove(Unit unit, int x, int y) {
+        if(unit instanceof Soldier) {
+            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
+                if(unit1 instanceof  Soldier) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
+                if(unit1 instanceof  Citizen) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     public boolean isCivilizationValid(String civilizationName) {

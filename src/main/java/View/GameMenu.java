@@ -2,6 +2,7 @@ package View;
 
 import Controller.GameMenuController;
 import Database.GameDatabase;
+import Model.City;
 import Model.Tile;
 import Model.Unit;
 
@@ -20,6 +21,9 @@ public class GameMenu extends Menu {
     private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String SHOW_TURN = "show turn";
     private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
+    private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
+    private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
+    private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -31,6 +35,7 @@ public class GameMenu extends Menu {
 
         int turn = 0;
         Unit unitSelected = null;
+        City citySelected = null;
 
         while (true) {
             numberOfPlayers = GameDatabase.players.size();
@@ -48,6 +53,8 @@ public class GameMenu extends Menu {
                 String result = mapShowPosition(matcher);
                 if (result == null) {
                     printMap(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    this.gameMenuController.x = Integer.parseInt(matcher.group("x"));
+                    this.gameMenuController.y = Integer.parseInt(matcher.group("y"));
                 } else {
                     System.out.println(result);
                 }
@@ -55,6 +62,8 @@ public class GameMenu extends Menu {
                 String result = mapShowCity(matcher);
                 if (result == null) {
                     printMap(GameDatabase.getCityByName(matcher.group("cityName")).getX(), GameDatabase.getCityByName(matcher.group("cityName")).getY());
+                    this.gameMenuController.x = GameDatabase.getCityByName(matcher.group("cityName")).getX();
+                    this.gameMenuController.y = GameDatabase.getCityByName(matcher.group("cityName")).getY();
                 } else {
                     System.out.println(result);
                 }
@@ -81,7 +90,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("now")) {
                     turn += Integer.parseInt(matcher.group("amount"));
                     turn %= numberOfPlayers;
-                    ;
+
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SHOW_TURN)) != null) {
@@ -93,6 +102,27 @@ public class GameMenu extends Menu {
                     turn = nextTurn(turn);
                 }
                 System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
+                String result = mapMove(matcher);
+                if (result == null) {
+                    printMap(this.gameMenuController.x, this.gameMenuController.y);
+                } else {
+                    System.out.println(result);
+                }
+            } else if ((matcher = getCommandMatcher(command, SELECT_CITY_BY_NAME)) != null) {
+                String result = citySelectByName(matcher);
+                if (result == null) {
+                    citySelected = GameDatabase.getCityByName(matcher.group("cityName"));
+                } else {
+                    System.out.println(result);
+                }
+            } else if ((matcher = getCommandMatcher(command, SELECT_CITY_BY_POSITION)) != null) {
+                String result = citySelectByName(matcher);
+                if (result == null) {
+                    citySelected = GameDatabase.getCityByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                } else {
+                    System.out.println(result);
+                }
             } else {
                 System.out.println("invalid command");
             }
@@ -184,10 +214,57 @@ public class GameMenu extends Menu {
             return "you must select a unit first";
         }
         if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "unit is not for you";
+            return "this unit is not for you";
         }
-        // TODO: is possible to move
+        if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
+            return "there are two units with one type in a tile";
+        }
+        if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+            return "invalid to move";
+
+        }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
+    }
+
+    private String mapMove(Matcher matcher) {
+        String direction = matcher.group("direction");
+        int groupCount = matcher.groupCount();
+        int c = this.gameMenuController.c;
+        if(matcher.group("c") != null) {
+            c = Integer.parseInt(matcher.group("c"));
+        }
+        if(!this.gameMenuController.isDirectionForMapValid(direction)) {
+            return "invalid direction";
+        }
+        int x = this.gameMenuController.x + this.gameMenuController.directionX.get(direction)*c;
+        int y = this.gameMenuController.y + this.gameMenuController.directionY.get(direction)*c;
+        if (!this.gameMenuController.isPositionValid(x, y)) {
+            return "position is not valid";
+        }
+        this.gameMenuController.x = x;
+        this.gameMenuController.y = y;
+        return null;
+
+    }
+
+    private String citySelectByName(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        if(!this.gameMenuController.isCityValid(cityName)) {
+            return "invalid city";
+        }
+        return null;
+    }
+
+    private String citySelectByPosition(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "invalid position";
+        }
+        if(!this.gameMenuController.isCityPositionValid(x, y)) {
+            return "no city in position " + Integer.toString(x) + " and " + Integer.toString(y);
+        }
+        return null;
     }
 
     private int nextTurn(int turn) {
