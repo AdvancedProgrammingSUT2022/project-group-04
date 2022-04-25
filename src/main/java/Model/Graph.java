@@ -7,16 +7,74 @@ import java.util.Queue;
 
 public class Graph {
     public boolean areAdjacent(Tile tile1, Tile tile2){
-        if (tile1.getX() == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY())) {
-            return true;
+        if (tile1.getY() % 2 == 0) {
+            if (tile1.getX() == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY())) {
+                return true;
+            }
+            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+                return true;
+            }
+            if (tile1.getX() + 1 == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY() || tile1.getY() == tile2.getY())) {
+                return true;
+            }
+            return false;
         }
-        if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()){
-            return true;
+        else{
+            if (tile1.getX() == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY())) {
+                return true;
+            }
+            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+                return true;
+            }
+            if (tile1.getX() - 1 == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY() || tile1.getY() == tile2.getY())) {
+                return true;
+            }
+            return false;
         }
-        if (tile1.getX() + 1 == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY() || tile1.getY() == tile2.getY())){
-            return true;
+    }
+    public int commonEdgeNumber(Tile tile1, Tile tile2){//WRT tile1
+        if (tile1.getY() % 2 == 0) {
+            if (tile1.getX() == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+                return 1;
+            }
+            if (tile1.getX() == tile2.getX() && tile1.getY() - 1 == tile2.getY()){
+                return 5;
+            }
+            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+                return 0;
+            }
+            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+                return 2;
+            }
+            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() - 1 == tile2.getY()){
+                return 4;
+            }
+            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()){
+                return 3;
+            }
+            return -1;
         }
-        return false;
+        else{
+            if (tile1.getX() == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+                return 2;
+            }
+            if (tile1.getX() == tile2.getX() && tile1.getY() - 1 == tile2.getY()){
+                return 4;
+            }
+            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+                return 0;
+            }
+            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+                return 1;
+            }
+            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() - 1 == tile2.getY()){
+                return 5;
+            }
+            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()){
+                return 3;
+            }
+            return -1;
+        }
     }
     public void setEdges(ArrayList<Tile> copyOfMap){
         for (int i = 0; i < copyOfMap.size(); i++){
