@@ -203,7 +203,9 @@ public class Unit {
         this.movementPoint -= adjacentTile.movementPriceForTile();
     }
 
-    public void moveUnitFromTo(Tile currentTile, Tile destTile){
+    public boolean moveUnitFromTo(Tile currentTile, Tile destTile){
+        if (!destTile.canBePassed())
+            return false;
         Graph graph = new Graph();
         ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
         Tile currentInCopy = null;
@@ -228,6 +230,7 @@ public class Unit {
             else
                 break;
         }
+        return true;
     }
 
     public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile>listOfCheckedTiles){
