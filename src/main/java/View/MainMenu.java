@@ -91,6 +91,9 @@ public class MainMenu extends Menu{
     private String playGame(Matcher matcher) {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
+        if(splitCommand.length == 1) {
+            splitCommand = matcher.group("command").split(" -p\\d+ ");
+        }
         for (int i = 1; i < splitCommand.length; i++) {
             if(!this.mainMenuController.isUserExists(splitCommand[i])) {
                 return "at least one username dose not exists.";
