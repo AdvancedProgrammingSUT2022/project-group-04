@@ -216,19 +216,19 @@ public class GameMenu extends Menu {
                 } else {
                     //TODO set lines of hexagons with format
                     String colorOfHexagon = "";
-                    if (tile.getType().equals("Desert") || tile.getType().equals("Meadow")) {
+                    if (tile.getBaseTerrainType().equals("Desert") || tile.getBaseTerrainType().equals("Meadow")) {
                         colorOfHexagon = Colors.ANSI_YELLOW_BACKGROUND;
-                    } else if (tile.getType().equals("Plain") || tile.getType().equals("Hill")) {
+                    } else if (tile.getBaseTerrainType().equals("Plain") || tile.getBaseTerrainType().equals("Hill")) {
                         colorOfHexagon = Colors.ANSI_GREEN_BACKGROUND;
-                    } else if (tile.getType().equals("Mountain") || tile.getType().equals("Snow")) {
+                    } else if (tile.getBaseTerrainType().equals("Mountain") || tile.getBaseTerrainType().equals("Snow")) {
                         colorOfHexagon = Colors.ANSI_WHITE_BACKGROUND;
-                    } else if (tile.getType().equals("Ocean")) {
+                    } else if (tile.getBaseTerrainType().equals("Ocean")) {
                         colorOfHexagon = Colors.ANSI_BLUE_BACKGROUND;
-                    } else if (tile.getType().equals("Tundra")) {
+                    } else if (tile.getBaseTerrainType().equals("Tundra")) {
                         colorOfHexagon = Colors.ANSI_RED_BACKGROUND;
                     }
                     linesOfHexagons[i + 2][j + 2][0] = Colors.ANSI_RESET + colorOfHexagon +
-                            (tile.getType().substring(0, 4) + "       ").substring(0, 8);
+                            (tile.getBaseTerrainType().substring(0, 4) + "       ").substring(0, 8);
                     //finding the civilization of tile
                     int flag = -1;
                     for (int k = 0; k < GameDatabase.players.size(); k++) {
