@@ -30,7 +30,7 @@ public class GameMenuController {
     }
 
     public boolean isCombatUnitInThisPosition(int x, int y) {
-        Tile tile = GameDatabase.getTileByXandY(x, y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
             if(tile.getUnits().get(i) instanceof Soldier) {
                 return true;
@@ -40,7 +40,7 @@ public class GameMenuController {
     }
 
     public Unit selectCombatUnit(int x, int y) {
-        Tile tile = GameDatabase.getTileByXandY(x, y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
             if(tile.getUnits().get(i) instanceof Soldier) {
                 return tile.getUnits().get(i);
@@ -50,7 +50,7 @@ public class GameMenuController {
     }
 
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
-        Tile tile = GameDatabase.getTileByXandY(x, y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
             if(tile.getUnits().get(i) instanceof Citizen) {
                 return true;
@@ -60,7 +60,7 @@ public class GameMenuController {
     }
 
     public Unit selectNonCombatUnit(int x, int y) {
-        Tile tile = GameDatabase.getTileByXandY(x, y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
             if(tile.getUnits().get(i) instanceof Citizen) {
                 return tile.getUnits().get(i);
