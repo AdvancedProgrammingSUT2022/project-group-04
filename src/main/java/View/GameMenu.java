@@ -13,6 +13,11 @@ public class GameMenu extends Menu {
 
     private GameMenuController gameMenuController;
     int numberOfPlayers;
+    int turn;
+    Unit unitSelected;
+    City citySelected;
+
+    //Commands
     private static final String MAP_SHOW_POSITION = "map show (?<x>\\d+) (?<y>\\d+)";
     private static final String MAP_SHOW_CITY = "map show (?<cityName>.+)";
     private static final String SELECT_COMBAT = "select combat (?<x>\\d+) (?<y>\\d+)";
@@ -28,14 +33,14 @@ public class GameMenu extends Menu {
 
     public GameMenu(GameMenuController gameMenuController) {
         this.gameMenuController = gameMenuController;
+        this.turn = 0;
+        this.citySelected = null;
+        this.unitSelected = null;
     }
 
     public void run(Scanner scanner) {
         String command;
 
-        int turn = 0;
-        Unit unitSelected = null;
-        City citySelected = null;
 
         while (true) {
             numberOfPlayers = GameDatabase.players.size();
@@ -68,25 +73,25 @@ public class GameMenu extends Menu {
                     System.out.println(result);
                 }
             } else if ((matcher = getCommandMatcher(command, SELECT_COMBAT)) != null) {
-                String result = selectCombat(matcher, unitSelected, turn);
+                String result = selectCombat(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
-                String result = selectNonCombat(matcher, unitSelected, turn);
+                String result = selectNonCombat(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
-                String result = changeTurn(matcher, turn);
+                String result = changeTurn(matcher);
                 if (result.startsWith("now")) {
                     turn = GameDatabase.getCivilizationIndex(matcher.group("civilizationName"));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NUMBER)) != null) {
-                String result = changeTurnByNumber(matcher, turn);
+                String result = changeTurnByNumber(matcher);
                 if (result.startsWith("now")) {
                     turn += Integer.parseInt(matcher.group("amount"));
                     turn %= numberOfPlayers;
@@ -96,10 +101,10 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, SHOW_TURN)) != null) {
                 System.out.println(GameDatabase.players.get(turn).getNickname());
             } else if ((matcher = getCommandMatcher(command, UNIT_MOVE_TO)) != null) {
-                String result = unitMoveTo(matcher, unitSelected, turn);
+                String result = unitMoveTo(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = null;
-                    turn = nextTurn(turn);
+                    turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
@@ -159,7 +164,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String selectCombat(Matcher matcher, Unit unitSelected, int turn) {
+    private String selectCombat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -172,7 +177,7 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    private String selectNonCombat(Matcher matcher, Unit unitSelected, int turn) {
+    private String selectNonCombat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -185,7 +190,7 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    private String changeTurn(Matcher matcher, int turn) {
+    private String changeTurn(Matcher matcher) {
         String civilizationName = matcher.group("civilizationName");
         if (!this.gameMenuController.isCivilizationValid(civilizationName)) {
             return "there is no player with nickname " + civilizationName;
@@ -196,7 +201,7 @@ public class GameMenu extends Menu {
         return "now it's your turn!";
     }
 
-    private String changeTurnByNumber(Matcher matcher, int turn) {
+    private String changeTurnByNumber(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForTurn(amount)) {
             return "invalid turn";
@@ -207,7 +212,7 @@ public class GameMenu extends Menu {
 
     }
 
-    private String unitMoveTo(Matcher matcher, Unit unitSelected, int turn) {
+    private String unitMoveTo(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (unitSelected == null) {
@@ -267,7 +272,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private int nextTurn(int turn) {
+    private int nextTurn() {
         if (turn != this.numberOfPlayers - 1) {
             return turn++;
         }
