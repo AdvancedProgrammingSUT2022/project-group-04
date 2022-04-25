@@ -153,8 +153,8 @@ public class GameDatabase {
                 int yOfTile = tile.getY() + deltaY[j];
                 if ((xOfTile >= length || xOfTile < 0
                         || yOfTile >= width || yOfTile < 0)
-                        || (tile.getType().equals("Ocean")
-                        && getTileByXAndY(xOfTile, yOfTile).getType().equals("Ocean"))) {
+                        || (tile.getBaseTerrainType().equals("Ocean")
+                        && getTileByXAndY(xOfTile, yOfTile).getBaseTerrainType().equals("Ocean"))) {
                     continue;
                 }
                 int randomGenerate = random.nextInt(1000);
@@ -201,10 +201,10 @@ public class GameDatabase {
             int y1 = yRandomGenerate + deltaY[direction];
             if (getTileByXAndY(xRandomGenerate,yRandomGenerate) == null
                     || getTileByXAndY(x1,y1) == null
-                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getType().equals("Ocean")
-                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getType().equals("Mountain")
-                    || getTileByXAndY(x1,y1).getType().equals("Ocean")
-                    || getTileByXAndY(x1,y1).getType().equals("Mountain")){
+                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getBaseTerrainType().equals("Ocean")
+                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getBaseTerrainType().equals("Mountain")
+                    || getTileByXAndY(x1,y1).getBaseTerrainType().equals("Ocean")
+                    || getTileByXAndY(x1,y1).getBaseTerrainType().equals("Mountain")){
 
                 continue;
             }
