@@ -22,8 +22,8 @@ public class GameMenu extends Menu {
     private static final String SHOW_TURN = "show turn";
     private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
     private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
-    private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
     private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
+    private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -117,7 +117,7 @@ public class GameMenu extends Menu {
                     System.out.println(result);
                 }
             } else if ((matcher = getCommandMatcher(command, SELECT_CITY_BY_POSITION)) != null) {
-                String result = citySelectByName(matcher);
+                String result = citySelectByPosition(matcher);
                 if (result == null) {
                     citySelected = GameDatabase.getCityByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 } else {
