@@ -157,4 +157,25 @@ public class Tile {
         return adjacentTiles;
     }
 
+    public ArrayList<Tile> getAdjacentTilesByLayer(int n){
+
+        ArrayList<Tile> adjacentTiles = new ArrayList<>();
+        if (n == 1){
+            return getAdjacentTiles();
+        }
+        else{
+            for (Tile tile : getAdjacentTilesByLayer(n - 1)){
+                for (Tile adjacent : tile.getAdjacentTiles()) {
+                    if (!getAdjacentTilesByLayer(n - 2).contains(adjacent)
+                            && !getAdjacentTilesByLayer(n - 1).contains(adjacent)
+                            && !adjacentTiles.contains(adjacent)){
+                        adjacentTiles.add(adjacent);
+                    }
+                }
+            }
+        }
+        return adjacentTiles;
+
+    }
+
 }
