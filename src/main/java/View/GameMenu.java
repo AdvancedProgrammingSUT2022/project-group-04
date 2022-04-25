@@ -2,6 +2,7 @@ package View;
 
 import Controller.GameMenuController;
 import Database.GameDatabase;
+import Model.City;
 import Model.Tile;
 import Model.Unit;
 
@@ -20,6 +21,9 @@ public class GameMenu extends Menu {
     private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String SHOW_TURN = "show turn";
     private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
+    private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
+    private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
+    private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -31,6 +35,7 @@ public class GameMenu extends Menu {
 
         int turn = 0;
         Unit unitSelected = null;
+        City citySelected = null;
 
         while (true) {
             numberOfPlayers = GameDatabase.players.size();
@@ -46,52 +51,78 @@ public class GameMenu extends Menu {
                 System.out.println(menuExit(matcher));
             } else if ((matcher = getCommandMatcher(command, MAP_SHOW_POSITION)) != null) {
                 String result = mapShowPosition(matcher);
-                if(result == null) {
+                if (result == null) {
                     printMap(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    this.gameMenuController.x = Integer.parseInt(matcher.group("x"));
+                    this.gameMenuController.y = Integer.parseInt(matcher.group("y"));
                 } else {
                     System.out.println(result);
                 }
             } else if ((matcher = getCommandMatcher(command, MAP_SHOW_CITY)) != null) {
                 String result = mapShowCity(matcher);
-                if(result == null) {
+                if (result == null) {
                     printMap(GameDatabase.getCityByName(matcher.group("cityName")).getX(), GameDatabase.getCityByName(matcher.group("cityName")).getY());
+                    this.gameMenuController.x = GameDatabase.getCityByName(matcher.group("cityName")).getX();
+                    this.gameMenuController.y = GameDatabase.getCityByName(matcher.group("cityName")).getY();
                 } else {
                     System.out.println(result);
                 }
             } else if ((matcher = getCommandMatcher(command, SELECT_COMBAT)) != null) {
                 String result = selectCombat(matcher, unitSelected, turn);
-                if(result.startsWith("unit")) {
+                if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
                 String result = selectNonCombat(matcher, unitSelected, turn);
-                if(result.startsWith("unit")) {
+                if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
                 String result = changeTurn(matcher, turn);
-                if(result.startsWith("now")) {
+                if (result.startsWith("now")) {
                     turn = GameDatabase.getCivilizationIndex(matcher.group("civilizationName"));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NUMBER)) != null) {
                 String result = changeTurnByNumber(matcher, turn);
-                if(result.startsWith("now")) {
-                    turn+= Integer.parseInt(matcher.group("amount"));
-                    turn%= numberOfPlayers;;
+                if (result.startsWith("now")) {
+                    turn += Integer.parseInt(matcher.group("amount"));
+                    turn %= numberOfPlayers;
+
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SHOW_TURN)) != null) {
                 System.out.println(GameDatabase.players.get(turn).getNickname());
             } else if ((matcher = getCommandMatcher(command, UNIT_MOVE_TO)) != null) {
                 String result = unitMoveTo(matcher, unitSelected, turn);
-                if(result.startsWith("unit")) {
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn(turn);
                 }
                 System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
+                String result = mapMove(matcher);
+                if (result == null) {
+                    printMap(this.gameMenuController.x, this.gameMenuController.y);
+                } else {
+                    System.out.println(result);
+                }
+            } else if ((matcher = getCommandMatcher(command, SELECT_CITY_BY_NAME)) != null) {
+                String result = citySelectByName(matcher);
+                if (result == null) {
+                    citySelected = GameDatabase.getCityByName(matcher.group("cityName"));
+                } else {
+                    System.out.println(result);
+                }
+            } else if ((matcher = getCommandMatcher(command, SELECT_CITY_BY_POSITION)) != null) {
+                String result = citySelectByName(matcher);
+                if (result == null) {
+                    citySelected = GameDatabase.getCityByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                } else {
+                    System.out.println(result);
+                }
             } else {
                 System.out.println("invalid command");
             }
@@ -114,7 +145,7 @@ public class GameMenu extends Menu {
     private String mapShowPosition(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!this.gameMenuController.isPositionValid(x, y)) {
+        if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
         return null;
@@ -122,7 +153,7 @@ public class GameMenu extends Menu {
 
     private String mapShowCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
-        if(!this.gameMenuController.isCityValid(cityName)) {
+        if (!this.gameMenuController.isCityValid(cityName)) {
             return "selected city is not valid";
         }
         return null;
@@ -131,10 +162,10 @@ public class GameMenu extends Menu {
     private String selectCombat(Matcher matcher, Unit unitSelected, int turn) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!this.gameMenuController.isPositionValid(x, y)) {
+        if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
-        if(!this.gameMenuController.isCombatUnitInThisPosition(x, y)) {
+        if (!this.gameMenuController.isCombatUnitInThisPosition(x, y)) {
             return "no combat unit";
         }
         unitSelected = this.gameMenuController.selectCombatUnit(x, y);
@@ -144,10 +175,10 @@ public class GameMenu extends Menu {
     private String selectNonCombat(Matcher matcher, Unit unitSelected, int turn) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!this.gameMenuController.isPositionValid(x, y)) {
+        if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
-        if(!this.gameMenuController.isNonCombatUnitInThisPosition(x, y)) {
+        if (!this.gameMenuController.isNonCombatUnitInThisPosition(x, y)) {
             return "no combat unit";
         }
         unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
@@ -156,10 +187,10 @@ public class GameMenu extends Menu {
 
     private String changeTurn(Matcher matcher, int turn) {
         String civilizationName = matcher.group("civilizationName");
-        if(!this.gameMenuController.isCivilizationValid(civilizationName)) {
+        if (!this.gameMenuController.isCivilizationValid(civilizationName)) {
             return "there is no player with nickname " + civilizationName;
         }
-        if(!this.gameMenuController.isCheatForTurn(civilizationName, turn)) {
+        if (!this.gameMenuController.isCheatForTurn(civilizationName, turn)) {
             return "there is already your turn!";
         }
         return "now it's your turn!";
@@ -167,11 +198,11 @@ public class GameMenu extends Menu {
 
     private String changeTurnByNumber(Matcher matcher, int turn) {
         int amount = Integer.parseInt(matcher.group("amount"));
-        if(!this.gameMenuController.isAmountValidForTurn(amount)) {
+        if (!this.gameMenuController.isAmountValidForTurn(amount)) {
             return "invalid turn";
         }
-        turn+= amount;
-        turn%= numberOfPlayers;
+        turn += amount;
+        turn %= numberOfPlayers;
         return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
 
     }
@@ -179,20 +210,67 @@ public class GameMenu extends Menu {
     private String unitMoveTo(Matcher matcher, Unit unitSelected, int turn) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(unitSelected == null) {
+        if (unitSelected == null) {
             return "you must select a unit first";
         }
-        if(!gameMenuController.isUnitForThisCivilization(turn%numberOfPlayers, unitSelected)) {
-            return "unit is not for you";
+        if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
         }
-        // TODO: is possible to move
+        if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
+            return "there are two units with one type in a tile";
+        }
+        if(!unitSelected.moveUnitFromTo(unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+            return "invalid to move";
+        }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
+    private String mapMove(Matcher matcher) {
+        String direction = matcher.group("direction");
+        int groupCount = matcher.groupCount();
+        int c = this.gameMenuController.c;
+        if(matcher.group("c") != null) {
+            c = Integer.parseInt(matcher.group("c"));
+        }
+        if(!this.gameMenuController.isDirectionForMapValid(direction)) {
+            return "invalid direction";
+        }
+        int x = this.gameMenuController.x + this.gameMenuController.directionX.get(direction)*c;
+        int y = this.gameMenuController.y + this.gameMenuController.directionY.get(direction)*c;
+        if (!this.gameMenuController.isPositionValid(x, y)) {
+            return "position is not valid";
+        }
+        this.gameMenuController.x = x;
+        this.gameMenuController.y = y;
+        return null;
+
+    }
+
+    private String citySelectByName(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        if(!this.gameMenuController.isCityValid(cityName)) {
+            return "invalid city";
+        }
+        return null;
+    }
+
+    private String citySelectByPosition(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "invalid position";
+        }
+        if(!this.gameMenuController.isCityPositionValid(x, y)) {
+            return "no city in position " + Integer.toString(x) + " and " + Integer.toString(y);
+        }
+        return null;
+    }
+
     private int nextTurn(int turn) {
-        if(turn != this.numberOfPlayers - 1) {
+        if (turn != this.numberOfPlayers - 1) {
             return turn++;
-        } return 0;
+        }
+        return 0;
     }
 
     public void printMap(int mainX, int mainY) {
@@ -242,14 +320,14 @@ public class GameMenu extends Menu {
                                 ("                              ").substring(0, 10);
                     } else {
                         linesOfHexagons[i + 2][j + 2][1] = Colors.ANSI_RESET + colorOfHexagon
-                        + (GameDatabase.players.get(flag).getNickname() + "             ").substring(0, 10);
+                                + (GameDatabase.players.get(flag).getNickname() + "             ").substring(0, 10);
                     }
                     //
                     linesOfHexagons[i + 2][j + 2][2] = Colors.ANSI_RESET + colorOfHexagon +
                             ("    " + x + "," + y + "        ").substring(0, 12);//coordinates
                     //
                     linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
-                            ("                ").substring(0,12);//TODO Unit to print
+                            ("                ").substring(0, 12);//TODO Unit to print
                     //showing Features
                     String allFeatures = " ";
                     for (int k = 0; k < tile.getBaseTerrain().getPossibleFeatures().size(); k++) {

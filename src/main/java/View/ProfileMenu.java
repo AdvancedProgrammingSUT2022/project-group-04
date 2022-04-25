@@ -7,7 +7,7 @@ import Model.User;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class ProfileMenu extends Menu{
+public class ProfileMenu extends Menu {
 
     private ProfileMenuController profileMenuController;
     private UserController userController;
@@ -23,19 +23,19 @@ public class ProfileMenu extends Menu{
 
     public User run(Scanner scanner, User loggedinUser) {
         String command;
-        while(true) {
+        while (true) {
             Matcher matcher;
             command = this.profileMenuController.commandCorrector(scanner.nextLine());
-            if(command.equals("menu exit")) {
+            if (command.equals("menu exit")) {
                 return null;
-            } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
-            } else if(((matcher = getCommandMatcher(command, PROFILE_CHANGE_NICKNAME)) != null)
+            } else if (((matcher = getCommandMatcher(command, PROFILE_CHANGE_NICKNAME)) != null)
                     || ((matcher = getCommandMatcher(command, SHORT_CHANGE_NICKNNAME)) != null)) {
                 System.out.println(changeNickname(loggedinUser, matcher));
-            } else if(((matcher = getCommandMatcher(command, PROFILE_CHANGE_PASSWORD)) != null)
+            } else if (((matcher = getCommandMatcher(command, PROFILE_CHANGE_PASSWORD)) != null)
                     || ((matcher = getCommandMatcher(command, SHORT_CHANGE_PASSWORD)) != null)) {
                 System.out.println(changePassword(loggedinUser, matcher));
             } else {
@@ -55,12 +55,13 @@ public class ProfileMenu extends Menu{
 
     /**
      * changes nickname
+     *
      * @param loggedinUser
      * @param matcher
      */
     private String changeNickname(User loggedinUser, Matcher matcher) {
         String nickname = matcher.group("nickname");
-        if(!this.profileMenuController.isNicknameUnique(nickname)) {
+        if (!this.profileMenuController.isNicknameUnique(nickname)) {
             return "user with nickname " + nickname + " already exists";
         }
         this.profileMenuController.changeNickname(loggedinUser, nickname);
@@ -69,16 +70,17 @@ public class ProfileMenu extends Menu{
 
     /**
      * changes password
+     *
      * @param loggedinUser
      * @param matcher
      */
     private String changePassword(User loggedinUser, Matcher matcher) {
         String password = matcher.group("currentPassword");
         String newPassword = matcher.group("newPassword");
-        if(!this.userController.isPasswordCorrect(loggedinUser.getUsername(), password)) {
+        if (!this.userController.isPasswordCorrect(loggedinUser.getUsername(), password)) {
             return "current password is invalid";
         }
-        if(!this.profileMenuController.isNewPasswordDiffrent(password, newPassword)) {
+        if (!this.profileMenuController.isNewPasswordDiffrent(password, newPassword)) {
             return "please enter a new password";
         }
         this.profileMenuController.changePassword(loggedinUser, newPassword);

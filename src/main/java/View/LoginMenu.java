@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 
 import Database.UserDatabase;
 
-public class LoginMenu extends Menu{
+public class LoginMenu extends Menu {
 
     private LoginMenuController loginMenuController;
     private static final String USER_CREATE = "user create --username (?<username>\\S+) --nickname (?<nickname>\\S+) --password (?<password>\\S+)";
@@ -22,23 +22,23 @@ public class LoginMenu extends Menu{
 
     public User run(Scanner scanner) {
         String command;
-        while(true) {
+        while (true) {
             Matcher matcher;
             command = this.loginMenuController.commandCorrector(scanner.nextLine());
-            if(command.equals("menu exit")) {
+            if (command.equals("menu exit")) {
                 return null;
-            } else if((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
-            } else if(((matcher = getCommandMatcher(command, USER_CREATE)) != null)
-                        || ((matcher = getCommandMatcher(command, SHORT_USER_CREATE)) != null)) {
+            } else if (((matcher = getCommandMatcher(command, USER_CREATE)) != null)
+                    || ((matcher = getCommandMatcher(command, SHORT_USER_CREATE)) != null)) {
                 System.out.println(userCreate(matcher));
-            } else if(((matcher = getCommandMatcher(command, USER_LOGIN)) != null)
-                        || ((matcher = getCommandMatcher(command, SHORT_USER_LOGIN)) != null)) {
+            } else if (((matcher = getCommandMatcher(command, USER_LOGIN)) != null)
+                    || ((matcher = getCommandMatcher(command, SHORT_USER_LOGIN)) != null)) {
                 String result = userLogin(matcher);
                 System.out.println(result);
-                if(result.endsWith("successfully!")) {
+                if (result.endsWith("successfully!")) {
                     return UserDatabase.getUserByUsername(matcher.group("username"));
                 }
             } else {
@@ -58,16 +58,17 @@ public class LoginMenu extends Menu{
 
     /**
      * creates a new user
+     *
      * @param matcher
      */
     private String userCreate(Matcher matcher) {
         String username = matcher.group("username");
         String nickname = matcher.group("nickname");
         String password = matcher.group("password");
-        if(!this.loginMenuController.isUsernameUnique(username)) {
+        if (!this.loginMenuController.isUsernameUnique(username)) {
             return "user with username " + username + " already exists";
         }
-        if(!this.loginMenuController.isNicknameUnique(nickname)) {
+        if (!this.loginMenuController.isNicknameUnique(nickname)) {
             return "user with nickname " + nickname + " already exists";
         }
         this.loginMenuController.userCreate(username, nickname, password);
@@ -77,7 +78,7 @@ public class LoginMenu extends Menu{
     private String userLogin(Matcher matcher) {
         String username = matcher.group("username");
         String password = matcher.group("password");
-        if(!this.loginMenuController.isUserExists(username)
+        if (!this.loginMenuController.isUserExists(username)
                 || !this.loginMenuController.isPasswordCorrect(username, password)) {
             return "Username and password didn't match";
         }
