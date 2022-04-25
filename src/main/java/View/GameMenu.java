@@ -219,8 +219,9 @@ public class GameMenu extends Menu {
         if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
         }
-        if(!unitSelected.moveUnitFromTo(unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+        if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
             return "invalid to move";
+
         }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }

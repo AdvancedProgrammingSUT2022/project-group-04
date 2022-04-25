@@ -37,8 +37,8 @@ public class GameMenuController {
 
     public boolean isPositionValid(int x, int y) {
         for (int i = 0; i < GameDatabase.map.size(); i++) {
-            if((GameDatabase.map.get(i).getX() == x)
-                && (GameDatabase.map.get(i).getY() == y)) {
+            if ((GameDatabase.map.get(i).getX() == x)
+                    && (GameDatabase.map.get(i).getY() == y)) {
                 return true;
             }
         }
@@ -47,7 +47,7 @@ public class GameMenuController {
 
     public boolean isCityValid(String cityName) {
         City city = GameDatabase.getCityByName(cityName);
-        if(city == null) {
+        if (city == null) {
             return false;
         }
         return true;
@@ -56,7 +56,7 @@ public class GameMenuController {
     public boolean isCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if(tile.getUnits().get(i) instanceof Soldier) {
+            if (tile.getUnits().get(i) instanceof Soldier) {
                 return true;
             }
         }
@@ -66,7 +66,7 @@ public class GameMenuController {
     public Unit selectCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if(tile.getUnits().get(i) instanceof Soldier) {
+            if (tile.getUnits().get(i) instanceof Soldier) {
                 return tile.getUnits().get(i);
             }
         }
@@ -92,7 +92,7 @@ public class GameMenuController {
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if(tile.getUnits().get(i) instanceof Citizen) {
+            if (tile.getUnits().get(i) instanceof Citizen) {
                 return true;
             }
         }
@@ -102,7 +102,7 @@ public class GameMenuController {
     public Unit selectNonCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if(tile.getUnits().get(i) instanceof Citizen) {
+            if (tile.getUnits().get(i) instanceof Citizen) {
                 return tile.getUnits().get(i);
             }
         }
@@ -110,7 +110,7 @@ public class GameMenuController {
     }
 
     public boolean isUnitForThisCivilization(int turn, Unit unitSelected) {
-        if(unitSelected.getCivilizationIndex() == turn) {
+        if (unitSelected.getCivilizationIndex() == turn) {
             return true;
         }
         return false;
@@ -144,7 +144,7 @@ public class GameMenuController {
 
     public boolean isCivilizationValid(String civilizationName) {
         Civilization civilization = GameDatabase.getCivilizationByNickname(civilizationName);
-        if(civilization == null) {
+        if (civilization == null) {
             return false;
         }
         return true;
@@ -152,17 +152,17 @@ public class GameMenuController {
 
     public boolean isCheatForTurn(String civilizationName, int turn) {
         int index = GameDatabase.getCivilizationIndex(civilizationName);
-        if(index == -1) {
+        if (index == -1) {
             return false;
         }
-        if(index == turn) {
+        if (index == turn) {
             return false;
         }
         return true;
     }
 
     public boolean isAmountValidForTurn(int amount) {
-        if(amount < 1) {
+        if (amount < 1) {
             return false;
         }
         return true;

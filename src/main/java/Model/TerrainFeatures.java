@@ -73,7 +73,7 @@ public class TerrainFeatures {
         }
     }
 
-    public String getType(){
+    public String getType() {
         return this.type;
     }
 

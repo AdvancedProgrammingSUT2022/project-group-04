@@ -49,7 +49,7 @@ public class GameDatabase {
     public static City getCityByName(String cityName) {
         for (int i = 0; i < GameDatabase.players.size(); i++) {
             for (int j = 0; j < GameDatabase.players.get(i).getCities().size(); j++) {
-                if(GameDatabase.players.get(i).getCities().get(j).getName().equals(cityName)) {
+                if (GameDatabase.players.get(i).getCities().get(j).getName().equals(cityName)) {
                     return GameDatabase.players.get(i).getCities().get(j);
                 }
             }
@@ -83,7 +83,7 @@ public class GameDatabase {
     public static Civilization getCivilizationByTile(Tile tile) {
         for (int i = 0; i < GameDatabase.players.size(); i++) {
             for (int j = 0; j < GameDatabase.players.get(i).getTiles().size(); j++) {
-                if(GameDatabase.players.get(i).getTiles().get(j).equals(tile)) {
+                if (GameDatabase.players.get(i).getTiles().get(j).equals(tile)) {
                     return GameDatabase.players.get(i);
                 }
             }
@@ -150,7 +150,7 @@ public class GameDatabase {
                         break;
                     }
                 }
-                Tile tile = new Tile("fogOfWar",baseTerrains.get(flag), i, j); // TODO.. how to set tiles
+                Tile tile = new Tile("fogOfWar", baseTerrains.get(flag), i, j); // TODO.. how to set tiles
                 map.add(tile);
             }
         }
@@ -178,12 +178,12 @@ public class GameDatabase {
             }
         }
         //random initialize terrainFeatures
-        for (int i=0;i<map.size();i++){
+        for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
             ArrayList<TerrainFeatures> terrainFeatures = baseTerrain.getPossibleFeatures();
-            for (int j=0;j<terrainFeatures.size();j++){
-                int randomGenerate = random.nextInt(terrainFeatures.size()*2);
-                if (randomGenerate < 3){//TODO change the possibility
+            for (int j = 0; j < terrainFeatures.size(); j++) {
+                int randomGenerate = random.nextInt(terrainFeatures.size() * 2);
+                if (randomGenerate < 3) {//TODO change the possibility
                     String type = terrainFeatures.get(j).getType();
                     TerrainFeatures terrainFeatures1 = randomInitializeFeature(type);
                     map.get(i).getBaseTerrain().addFeature(terrainFeatures1);
@@ -191,12 +191,12 @@ public class GameDatabase {
             }
         }
         //random initialize resources
-        for (int i=0;i<map.size();i++){
+        for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
             ArrayList<Resources> resources = baseTerrain.getPossibleResources();
-            for (int j=0;j<resources.size();j++){
-                int randomGenerate = random.nextInt(resources.size()*2);
-                if (randomGenerate < 3){//TODO change the possibility
+            for (int j = 0; j < resources.size(); j++) {
+                int randomGenerate = random.nextInt(resources.size() * 2);
+                if (randomGenerate < 3) {//TODO change the possibility
                     String name = resources.get(j).getName();
                     Resources resource = new Resources(name);
                     map.get(i).getBaseTerrain().addResource(resource);
@@ -205,49 +205,49 @@ public class GameDatabase {
         }
         //random set beginning tiles for each player
         int counter = 0;
-        while (counter<players.size()){
+        while (counter < players.size()) {
             int xRandomGenerate = random.nextInt(length);
             int yRandomGenerate = random.nextInt(length);
             int direction = random.nextInt(6);
             int x1 = xRandomGenerate + deltaX[direction];
             int y1 = yRandomGenerate + deltaY[direction];
-            if (getTileByXAndY(xRandomGenerate,yRandomGenerate) == null
-                    || getTileByXAndY(x1,y1) == null
-                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getBaseTerrainType().equals("Ocean")
-                    || getTileByXAndY(xRandomGenerate,yRandomGenerate).getBaseTerrainType().equals("Mountain")
-                    || getTileByXAndY(x1,y1).getBaseTerrainType().equals("Ocean")
-                    || getTileByXAndY(x1,y1).getBaseTerrainType().equals("Mountain")){
+            if (getTileByXAndY(xRandomGenerate, yRandomGenerate) == null
+                    || getTileByXAndY(x1, y1) == null
+                    || getTileByXAndY(xRandomGenerate, yRandomGenerate).getBaseTerrainType().equals("Ocean")
+                    || getTileByXAndY(xRandomGenerate, yRandomGenerate).getBaseTerrainType().equals("Mountain")
+                    || getTileByXAndY(x1, y1).getBaseTerrainType().equals("Ocean")
+                    || getTileByXAndY(x1, y1).getBaseTerrainType().equals("Mountain")) {
 
                 continue;
             }
             boolean isOccupied = false;
-            for (int i=0;i<counter;i++){
-                if (players.get(i).isTileInCivilization(xRandomGenerate,yRandomGenerate)
-                        || players.get(i).isTileInCivilization(x1,y1)){
+            for (int i = 0; i < counter; i++) {
+                if (players.get(i).isTileInCivilization(xRandomGenerate, yRandomGenerate)
+                        || players.get(i).isTileInCivilization(x1, y1)) {
                     isOccupied = true;
                     break;
                 }
             }
-            if (!isOccupied){
-                players.get(counter).addTile(getTileByXAndY(xRandomGenerate,yRandomGenerate));
-                players.get(counter).addTile(getTileByXAndY(x1,y1));
+            if (!isOccupied) {
+                players.get(counter).addTile(getTileByXAndY(xRandomGenerate, yRandomGenerate));
+                players.get(counter).addTile(getTileByXAndY(x1, y1));
                 counter++;
             }
         }
     }
 
-    public static TerrainFeatures randomInitializeFeature(String type){
+    public static TerrainFeatures randomInitializeFeature(String type) {
         Random random = new Random();
         TerrainFeatures terrainFeature = new TerrainFeatures(type);
         ArrayList<Resources> resources = terrainFeature.getPossibleResources();
-            for (int j=0;j<resources.size();j++){
-                int randomGenerate = random.nextInt(resources.size()*2);
-                if (randomGenerate < 3){//TODO change the possibility
-                    String name = resources.get(j).getName();
-                    Resources resource = new Resources(name);
-                    terrainFeature.addResource(resource);
-                }
+        for (int j = 0; j < resources.size(); j++) {
+            int randomGenerate = random.nextInt(resources.size() * 2);
+            if (randomGenerate < 3) {//TODO change the possibility
+                String name = resources.get(j).getName();
+                Resources resource = new Resources(name);
+                terrainFeature.addResource(resource);
             }
+        }
         return terrainFeature;
     }
 }

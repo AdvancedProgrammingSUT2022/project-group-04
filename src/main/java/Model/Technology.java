@@ -236,7 +236,7 @@ public class Technology {
 
     public boolean isInPrerequisiteTechnologies(Technology technology) {
         for (int i = 0; i < this.prerequisiteTechnologies.size(); i++) {
-            if(this.prerequisiteTechnologies.get(i).equals(technology)) {
+            if (this.prerequisiteTechnologies.get(i).equals(technology)) {
                 return true;
             }
         }
@@ -244,8 +244,8 @@ public class Technology {
     }
 
     public boolean isTechnologyValidForCivilization(Civilization civilization, Technology technology) {
-        for(int i=0; i<this.prerequisiteTechnologies.size(); i++) {
-            if(!civilization.isTechnologyForThisCivilization(this.prerequisiteTechnologies.get(i))) {
+        for (int i = 0; i < this.prerequisiteTechnologies.size(); i++) {
+            if (!civilization.isTechnologyForThisCivilization(this.prerequisiteTechnologies.get(i))) {
                 return false;
             }
         }

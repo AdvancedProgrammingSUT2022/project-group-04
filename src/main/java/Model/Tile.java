@@ -1,5 +1,7 @@
 package Model;
 
+import Database.GameDatabase;
+
 import java.util.ArrayList;
 
 public class Tile {
@@ -18,7 +20,7 @@ public class Tile {
     Tile prev;
 
 
-    public Tile(String type ,String baseTerrainType, int x, int y) {
+    public Tile(String type, String baseTerrainType, int x, int y) {
         this.type = type;
         this.baseTerrain = new BaseTerrain(baseTerrainType);
         this.x = x;
@@ -42,15 +44,19 @@ public class Tile {
     public int getY() {
         return this.y;
     }
+
     public ArrayList<Tile> getNeighbors() {
         return neighbors;
     }
+
     public void setNeighbors(ArrayList<Tile> neighbors) {
         this.neighbors = neighbors;
     }
+
     public boolean isVisited() {
         return visited;
     }
+
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
@@ -61,6 +67,14 @@ public class Tile {
 
     public void setPrev(Tile prev) {
         this.prev = prev;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(ArrayList<Building> buildings) {
+        this.buildings = buildings;
     }
 
     public ArrayList<Unit> getUnits() {
@@ -98,25 +112,49 @@ public class Tile {
         return isRiver[indexOfEdge];
     }
 
-    public void setRiverByEdgeIndex(int edgeIndex){
+    public void setRiverByEdgeIndex(int edgeIndex) {
         this.isRiver[edgeIndex] = true;
     }
 
     public BaseTerrain getBaseTerrain() {
         return baseTerrain;
     }
-    public boolean canBePassed(){
+
+    public boolean canBePassed() {
         return this.baseTerrain.IsMovementPossible();
     }
-    public int movementPriceForTile(){
+
+    public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
-        for (TerrainFeatures features:getBaseTerrain().getFeatures()){
+        for (TerrainFeatures features : getBaseTerrain().getFeatures()) {
             movementPriceSum += features.getMovementPrice();
         }
         return movementPriceSum;
     }
 
-    public boolean canBeSeenByUnitOrBuilding(){
+    public boolean canBeSeenByUnitOrBuilding() {
         return false;
     }
+
+    public ArrayList<Tile> getAdjacentTiles(){
+        ArrayList<Tile> adjacentTiles = new ArrayList<>();
+        if (this.y % 2 == 0){
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y - 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y - 1));
+        }
+        else {
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1 , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x, this.y - 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1 , this.y - 1));
+        }
+        return adjacentTiles;
+    }
+
 }

@@ -123,7 +123,7 @@ public class Unit {
         return civilizationIndex;
     }
 
-    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex ){
+    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex) {
         this.x = x;
         this.y = y;
         this.vX = vX;
@@ -137,20 +137,23 @@ public class Unit {
         this.HP = HP;
         this.civilizationIndex = civilizationIndex;
     }
+
     public void setTileOfUnit(Tile isOnTile) {
         this.tileOfUnit = isOnTile;
     }
+
     public Tile getTileOfUnit() {
         return tileOfUnit;
     }
-    public void moveOneTile(int direction){ //this function is to be used with graphics
+
+    public void moveOneTile(int direction) { //this function is to be used with graphics
         int x1 = x, y1 = y - 10; // value is temporary , will be changed
-        int x2 = x + 7 , y2 = y - 7;
-        int x3 = x + 7 , y3 = y + 7;
+        int x2 = x + 7, y2 = y - 7;
+        int x3 = x + 7, y3 = y + 7;
         int x4 = x, y4 = y + 10;
         int x5 = x - 7, y5 = y + 7;
         int x6 = x - 7, y6 = y - 7;
-        switch(direction){
+        switch (direction) {
             case 1:
                 do {
                     if (y > y1 - 1)
@@ -197,59 +200,44 @@ public class Unit {
                 break;
         }
     }
-    public void moveToAdjacentTile(Tile adjacentTile){
+
+    public void moveToAdjacentTile(Tile adjacentTile) {
         this.x = adjacentTile.getX();
         this.y = adjacentTile.getY();
         this.movementPoint -= adjacentTile.movementPriceForTile();
     }
 
-    public boolean moveUnitFromTo(Tile currentTile, Tile destTile){
+    public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
         if (!destTile.canBePassed())
             return false;
         Graph graph = new Graph();
         ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
         Tile currentInCopy = null;
         Tile destInCopy = null;
-        for (Tile tile:copyOfMap){
+        for (Tile tile : copyOfMap) {
             if (tile.getX() == currentTile.getX() && tile.getY() == currentTile.getY())
                 currentInCopy = tile;
             if (tile.getX() == destTile.getX() && tile.getY() == destTile.getY())
                 destInCopy = tile;
         }
         ArrayList<Tile> path = new ArrayList<>();
-        for (Tile copyTile: graph.route(currentInCopy, destInCopy)){
-            for (Tile mainTile: GameDatabase.map){
-                if (mainTile.getX() == copyTile.getX() && mainTile.getY() == copyTile.getY()){
+        for (Tile copyTile : graph.route(currentInCopy, destInCopy)) {
+            for (Tile mainTile : GameDatabase.map) {
+                if (mainTile.getX() == copyTile.getX() && mainTile.getY() == copyTile.getY()) {
                     path.add(mainTile);
                 }
             }
         }
-        for (int i = 1; i < path.size(); i++){
-            if (movementPoint >= path.get(i).movementPriceForTile())
+        for (int i = 1; i < path.size(); i++) {
+            if (movementPoint >= path.get(i).movementPriceForTile()) {
                 moveToAdjacentTile(path.get(i));
-            else
+                path.get(i).addUnit(selectedUnit);
+                path.get(i - 1).removeUnit(selectedUnit);
+            }
+            else {
                 break;
+            }
         }
         return true;
     }
-
-    public boolean isImpossibleToMove(Tile currentTile, ArrayList<Tile>listOfCheckedTiles){
-        ArrayList<Tile> adjacentTiles = new ArrayList<>();
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() - 1, currentTile.getY()));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX(), currentTile.getY() + 1));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() + 1, currentTile.getY() + 1));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() + 1, currentTile.getY()));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX() + 1, currentTile.getY() - 1));
-        adjacentTiles.add(GameDatabase.getTileByXAndY(currentTile.getX(), currentTile.getY() - 1));
-        int i = 0;
-        for (Tile tile:adjacentTiles){
-            if(tile.canBePassed() && !listOfCheckedTiles.contains(tile) && !currentTile.isRiverByNumberOfEdge(i)){
-                return true;
-            }
-            i++;
-        }
-        return false;
-    }
-
-
 }
