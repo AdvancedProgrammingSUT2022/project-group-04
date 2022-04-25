@@ -1,5 +1,7 @@
 package Model;
 
+import Database.GameDatabase;
+
 import java.util.ArrayList;
 
 public class Tile {
@@ -67,6 +69,14 @@ public class Tile {
         this.prev = prev;
     }
 
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(ArrayList<Building> buildings) {
+        this.buildings = buildings;
+    }
+
     public ArrayList<Unit> getUnits() {
         return units;
     }
@@ -125,4 +135,26 @@ public class Tile {
     public boolean canBeSeenByUnitOrBuilding() {
         return false;
     }
+
+    public ArrayList<Tile> getAdjacentTiles(){
+        ArrayList<Tile> adjacentTiles = new ArrayList<>();
+        if (this.y % 2 == 0){
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y - 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y - 1));
+        }
+        else {
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1 , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x, this.y - 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1 , this.y - 1));
+        }
+        return adjacentTiles;
+    }
+
 }

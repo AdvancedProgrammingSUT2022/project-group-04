@@ -119,16 +119,63 @@ public class Civilization {
 
     }
 
+    public ArrayList<Tile> tilesOnBorder(){
+
+        ArrayList<Tile> tilesOnBorder = new ArrayList<>();
+        for (Tile tile:tiles){
+            boolean isBorderTile = false;
+            for (Tile adjacent:tile.getAdjacentTiles()){
+                if (!tiles.contains(adjacent)){
+                    isBorderTile = true;
+                }
+            }
+            if (isBorderTile){
+                tilesOnBorder.add(tile);
+            }
+        }
+        return tilesOnBorder;
+
+    }
+
     public ArrayList<Tile> firstClassAdjacentTiles(){
-        return null;
+
+        ArrayList<Tile> firstClassAdjacentTiles = new ArrayList<>();
+        for (Tile tile : tilesOnBorder()){
+            if (!tile.getUnits().isEmpty() || !tile.getBuildings().isEmpty()) {
+                for (Tile adjacent : tile.getAdjacentTiles()) {
+                    if (!firstClassAdjacentTiles.contains(adjacent)
+                            && !tiles.contains(adjacent)) {
+                        firstClassAdjacentTiles.add(adjacent);
+                    }
+                }
+            }
+        }
+        return firstClassAdjacentTiles;
+
     }
 
     public ArrayList<Tile> secondClassAdjacentTiles(){
-        return null;
+
+        ArrayList<Tile> secondClassAdjacentTiles = new ArrayList<>();
+        for (Tile tile:firstClassAdjacentTiles()){
+            for (Tile adjacent : tile.getAdjacentTiles()){
+                if (!secondClassAdjacentTiles.contains(adjacent)
+                        && !firstClassAdjacentTiles().contains(adjacent)
+                        && !tiles.contains(adjacent)) {
+                    secondClassAdjacentTiles.add(adjacent);
+                }
+            }
+        }
+
+        return secondClassAdjacentTiles;
     }
 
     public ArrayList<Tile> clearTiles(){
-        return null;
+        ArrayList<Tile> clearTiles = new ArrayList<>();
+        clearTiles.addAll(tiles);
+        clearTiles.addAll(firstClassAdjacentTiles());
+        clearTiles.addAll(secondClassAdjacentTiles());
+        return clearTiles;
     }
 
     public ArrayList<Tile> visibleTiles(){
