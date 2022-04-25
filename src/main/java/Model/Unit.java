@@ -207,7 +207,7 @@ public class Unit {
         this.movementPoint -= adjacentTile.movementPriceForTile();
     }
 
-    public boolean moveUnitFromTo(Tile currentTile, Tile destTile) {
+    public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
         if (!destTile.canBePassed())
             return false;
         Graph graph = new Graph();
@@ -229,10 +229,14 @@ public class Unit {
             }
         }
         for (int i = 1; i < path.size(); i++) {
-            if (movementPoint >= path.get(i).movementPriceForTile())
+            if (movementPoint >= path.get(i).movementPriceForTile()) {
                 moveToAdjacentTile(path.get(i));
-            else
+                path.get(i).addUnit(selectedUnit);
+                path.get(i - 1).removeUnit(selectedUnit);
+            }
+            else {
                 break;
+            }
         }
         return true;
     }
