@@ -10,7 +10,7 @@ import Model.User;
 import View.LoginMenu;
 import View.MainMenu;
 
-public class Main{
+public class Main {
 
 
     public static void main(String[] args) throws IOException {
@@ -28,9 +28,9 @@ public class Main{
 
         User loggedinUser;
 
-        while(true) {
+        while (true) {
             loggedinUser = loginMenu.run(scanner);
-            if(loggedinUser == null) {
+            if (loggedinUser == null) {
                 break;
             }
             mainMenu.run(scanner, loggedinUser);

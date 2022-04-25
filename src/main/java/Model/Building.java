@@ -180,10 +180,10 @@ public class Building {
     }
 
     public boolean isBuildingValidForCivilization(Civilization civilization, Technology technology) {
-        if(technologyRequired == null) {
+        if (technologyRequired == null) {
             return true;
         }
-        if(civilization.isTechnologyForThisCivilization(this.technologyRequired)) {
+        if (civilization.isTechnologyForThisCivilization(this.technologyRequired)) {
             return true;
         }
         return false;

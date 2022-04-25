@@ -18,7 +18,7 @@ public class Tile {
     Tile prev;
 
 
-    public Tile(String type ,String baseTerrainType, int x, int y) {
+    public Tile(String type, String baseTerrainType, int x, int y) {
         this.type = type;
         this.baseTerrain = new BaseTerrain(baseTerrainType);
         this.x = x;
@@ -42,15 +42,19 @@ public class Tile {
     public int getY() {
         return this.y;
     }
+
     public ArrayList<Tile> getNeighbors() {
         return neighbors;
     }
+
     public void setNeighbors(ArrayList<Tile> neighbors) {
         this.neighbors = neighbors;
     }
+
     public boolean isVisited() {
         return visited;
     }
+
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
@@ -98,25 +102,27 @@ public class Tile {
         return isRiver[indexOfEdge];
     }
 
-    public void setRiverByEdgeIndex(int edgeIndex){
+    public void setRiverByEdgeIndex(int edgeIndex) {
         this.isRiver[edgeIndex] = true;
     }
 
     public BaseTerrain getBaseTerrain() {
         return baseTerrain;
     }
-    public boolean canBePassed(){
+
+    public boolean canBePassed() {
         return this.baseTerrain.IsMovementPossible();
     }
-    public int movementPriceForTile(){
+
+    public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
-        for (TerrainFeatures features:getBaseTerrain().getFeatures()){
+        for (TerrainFeatures features : getBaseTerrain().getFeatures()) {
             movementPriceSum += features.getMovementPrice();
         }
         return movementPriceSum;
     }
 
-    public boolean canBeSeenByUnitOrBuilding(){
+    public boolean canBeSeenByUnitOrBuilding() {
         return false;
     }
 }

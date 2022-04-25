@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class StrategicsResources extends Resources{
+public class StrategicsResources extends Resources {
 
     private Technology technologyNeededForVisibility;
     private ArrayList<Unit> relatedUnits;
@@ -12,7 +12,7 @@ public class StrategicsResources extends Resources{
         super(name);
         this.relatedUnits = new ArrayList<Unit>();
         this.relatedBuilding = new ArrayList<Building>();
-        switch(name) {
+        switch (name) {
             case "Coal":
                 technologyNeededForVisibility = new Technology("ScientificTheory");
                 //

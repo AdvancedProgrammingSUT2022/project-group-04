@@ -6,6 +6,7 @@ public class ProfileMenuModel {
 
     /**
      * changes nickname
+     *
      * @param loggedinUser
      * @param nickname
      */
@@ -16,6 +17,7 @@ public class ProfileMenuModel {
 
     /**
      * changes password
+     *
      * @param loggedinUser
      * @param password
      */
