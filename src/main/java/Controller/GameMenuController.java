@@ -18,8 +18,8 @@ public class GameMenuController {
         this.gameModel = gameModel;
         this.directionX = new HashMap<String, Integer>();
         {
-            this.directionX.put("UP", 1);
-            this.directionX.put("DOWN", -1);
+            this.directionX.put("UP", -1);
+            this.directionX.put("DOWN", 1);
             this.directionX.put("RIGHT", 0);
             this.directionX.put("LEFT", 0);
         }
@@ -27,12 +27,12 @@ public class GameMenuController {
         {
             this.directionY.put("UP", 0);
             this.directionY.put("DOWN", 0);
-            this.directionY.put("RIGHT", -1);
-            this.directionY.put("LEFT", 1);
+            this.directionY.put("RIGHT", 1);
+            this.directionY.put("LEFT", -1);
         }
         this.x = 0;
         this.y = 0;
-        this.c = 0;
+        this.c = 1;
     }
 
     public boolean isPositionValid(int x, int y) {
