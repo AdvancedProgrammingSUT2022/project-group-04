@@ -47,10 +47,7 @@ public class GameMenuController {
 
     public boolean isCityValid(String cityName) {
         City city = GameDatabase.getCityByName(cityName);
-        if (city == null) {
-            return false;
-        }
-        return true;
+        return city != null;
     }
 
     public boolean isCombatUnitInThisPosition(int x, int y) {
@@ -74,19 +71,16 @@ public class GameMenuController {
     }
 
     public boolean isDirectionForMapValid(String direction) {
-        if(direction.equals("UP")) {
+        if (direction.equals("UP")) {
             return true;
         }
-        if(direction.equals("DOWN")) {
+        if (direction.equals("DOWN")) {
             return true;
         }
-        if(direction.equals("RIGHT")) {
+        if (direction.equals("RIGHT")) {
             return true;
         }
-        if(direction.equals("LEFT")) {
-            return true;
-        }
-        return false;
+        return direction.equals("LEFT");
     }
 
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
@@ -116,25 +110,22 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean isCityPositionValid(int x, int y){
+    public boolean isCityPositionValid(int x, int y) {
         City city = GameDatabase.getCityByXAndY(x, y);
-        if(city == null) {
-            return false;
-        }
-        return true;
+        return city != null;
     }
 
     public boolean isDestinationOkForMove(Unit unit, int x, int y) {
-        if(unit instanceof Soldier) {
+        if (unit instanceof Soldier) {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if(unit1 instanceof  Soldier) {
+                if (unit1 instanceof Soldier) {
                     return false;
                 }
             }
             return true;
         } else {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if(unit1 instanceof  Citizen) {
+                if (unit1 instanceof Citizen) {
                     return false;
                 }
             }
@@ -166,5 +157,9 @@ public class GameMenuController {
             return false;
         }
         return true;
+    }
+
+    public boolean isAmountValidForGold(int amount) {
+        return isAmountValidForTurn(amount);
     }
 }

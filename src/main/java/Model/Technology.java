@@ -243,7 +243,7 @@ public class Technology {
         return false;
     }
 
-    public boolean isTechnologyValidForCivilization(Civilization civilization, Technology technology) {
+    public boolean isTechnologyValidForCivilization(Civilization civilization) {
         for (int i = 0; i < this.prerequisiteTechnologies.size(); i++) {
             if (!civilization.isTechnologyForThisCivilization(this.prerequisiteTechnologies.get(i))) {
                 return false;
