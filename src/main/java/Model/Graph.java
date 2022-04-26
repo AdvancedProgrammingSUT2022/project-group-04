@@ -8,24 +8,35 @@ import java.util.Queue;
 public class Graph {
     public boolean areAdjacent(Tile tile1, Tile tile2) {
         if (tile1.getY() % 2 == 0) {
-            if (tile1.getX() == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY())) {
+            if (tile1.getX() == tile2.getX()
+                    && (tile1.getY() + 1 == tile2.getY()
+                            || tile1.getY() - 1 == tile2.getY())) {
                 return true;
             }
             if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
                 return true;
             }
-            if (tile1.getX() + 1 == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY() || tile1.getY() == tile2.getY())) {
+            if (tile1.getX() + 1 == tile2.getX()
+                    && (tile1.getY() + 1 == tile2.getY()
+                    || tile1.getY() - 1 == tile2.getY()
+                    || tile1.getY() == tile2.getY())) {
                 return true;
             }
             return false;
         } else {
-            if (tile1.getX() == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY())) {
+            if (tile1.getX() == tile2.getX()
+                    && (tile1.getY() + 1 == tile2.getY()
+                    || tile1.getY() - 1 == tile2.getY())) {
                 return true;
             }
-            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+            if (tile1.getX() + 1 == tile2.getX()
+                    && tile1.getY() == tile2.getY()) {
                 return true;
             }
-            if (tile1.getX() - 1 == tile2.getX() && (tile1.getY() + 1 == tile2.getY() || tile1.getY() - 1 == tile2.getY() || tile1.getY() == tile2.getY())) {
+            if (tile1.getX() - 1 == tile2.getX()
+                    && (tile1.getY() + 1 == tile2.getY()
+                    || tile1.getY() - 1 == tile2.getY()
+                    || tile1.getY() == tile2.getY())) {
                 return true;
             }
             return false;
@@ -34,44 +45,57 @@ public class Graph {
 
     public int commonEdgeNumber(Tile tile1, Tile tile2) {//WRT tile1
         if (tile1.getY() % 2 == 0) {
-            if (tile1.getX() == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+            if (tile1.getX() == tile2.getX()
+                    && tile1.getY() + 1 == tile2.getY()) {
                 return 1;
             }
-            if (tile1.getX() == tile2.getX() && tile1.getY() - 1 == tile2.getY()) {
+            if (tile1.getX() == tile2.getX()
+                    && tile1.getY() - 1 == tile2.getY()) {
                 return 5;
             }
-            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+            if (tile1.getX() - 1 == tile2.getX()
+                    && tile1.getY() == tile2.getY()) {
                 return 0;
             }
-            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+            if (tile1.getX() + 1 == tile2.getX()
+                    && tile1.getY() + 1 == tile2.getY()) {
                 return 2;
             }
-            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() - 1 == tile2.getY()) {
+            if (tile1.getX() + 1 == tile2.getX()
+                    && tile1.getY() - 1 == tile2.getY()) {
                 return 4;
             }
-            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+            if (tile1.getX() + 1 == tile2.getX()
+                    && tile1.getY() == tile2.getY()) {
                 return 3;
             }
             return 6;
         } else {
-            if (tile1.getX() == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+            if (tile1.getX() == tile2.getX()
+                    && tile1.getY() + 1 == tile2.getY()) {
                 return 2;
             }
-            if (tile1.getX() == tile2.getX() && tile1.getY() - 1 == tile2.getY()) {
+            if (tile1.getX() == tile2.getX()
+                    && tile1.getY() - 1 == tile2.getY()) {
                 return 4;
             }
-            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+            if (tile1.getX() - 1 == tile2.getX()
+                    && tile1.getY() == tile2.getY()) {
                 return 0;
             }
-            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() + 1 == tile2.getY()) {
+            if (tile1.getX() - 1 == tile2.getX()
+                    && tile1.getY() + 1 == tile2.getY()) {
                 return 1;
             }
-            if (tile1.getX() - 1 == tile2.getX() && tile1.getY() - 1 == tile2.getY()) {
+            if (tile1.getX() - 1 == tile2.getX()
+                    && tile1.getY() - 1 == tile2.getY()) {
                 return 5;
             }
-            if (tile1.getX() + 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
+            if (tile1.getX() + 1 == tile2.getX()
+                    && tile1.getY() == tile2.getY()) {
                 return 3;
             }
+
             return 6;
         }
     }
@@ -132,16 +156,16 @@ public class Graph {
             }
             Collections.reverse(route);
             return route;
-        }
-
-        else { // bfs bath doesn't exist to the point we want
+        } else { // bfs bath doesn't exist to the point we want
             ArrayList<Tile> route = new ArrayList<>();
             int minLength = Integer.MAX_VALUE;
             outer:
             for (int i = 1; i < 1000; i++) {
+                boolean found = false;
                 inner:
                 for (Tile adj : end.getAdjacentTilesByLayer(i)) { // trying to find a tile that is reachable
                     if (bfs(start, adj)) {
+                        found = true;
                         Tile tile = end;
                         ArrayList<Tile> routeTemp = new ArrayList<>();
                         while (tile != null) {
@@ -153,6 +177,9 @@ public class Graph {
                             route.addAll(routeTemp);
                         }
                     }
+                }
+                if (found){
+                    break;
                 }
             }
             return route;
