@@ -22,13 +22,16 @@ public class GameMenu extends Menu {
     private static final String MAP_SHOW_CITY = "map show (?<cityName>.+)";
     private static final String SELECT_COMBAT = "select combat (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_NONCOMBAT = "select noncombat (?<x>\\d+) (?<y>\\d+)";
-    private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
-    private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String SHOW_TURN = "show turn";
     private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
     private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
     private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
+
+    //Cheat
+    private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
+    private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
+    private static final String CHEAT_GOLD = "gold increase (?<amount>-?\\d+)";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -128,6 +131,9 @@ public class GameMenu extends Menu {
                 } else {
                     System.out.println(result);
                 }
+            } else if ((matcher = getCommandMatcher(command, CHEAT_GOLD)) != null) {
+                System.out.println(cheatGold(matcher));
+
             } else {
                 System.out.println("invalid command");
             }
@@ -270,6 +276,15 @@ public class GameMenu extends Menu {
             return "no city in position " + Integer.toString(x) + " and " + Integer.toString(y);
         }
         return null;
+    }
+
+    private String cheatGold(Matcher matcher) {
+        int amount = Integer.parseInt(matcher.group("amount"));
+        if(!this.gameMenuController.isAmountValidForGold(amount)) {
+            return "invalid amount";
+        }
+        GameDatabase.players.get(turn).addGold(amount);
+        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
     }
 
     private int nextTurn() {

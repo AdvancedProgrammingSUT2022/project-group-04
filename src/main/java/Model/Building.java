@@ -179,7 +179,7 @@ public class Building {
         return exports;
     }
 
-    public boolean isBuildingValidForCivilization(Civilization civilization, Technology technology) {
+    public boolean isBuildingValidForCivilization(Civilization civilization) {
         if (technologyRequired == null) {
             return true;
         }

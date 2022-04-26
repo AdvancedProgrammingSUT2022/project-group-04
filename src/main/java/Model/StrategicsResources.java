@@ -34,5 +34,9 @@ public class StrategicsResources extends Resources {
         }
     }
 
+    public boolean isResourceVisibleForThisCivilization(Civilization civilization) {
+        return civilization.isTechnologyForThisCivilization(this.technologyNeededForVisibility);
+    }
+
 }
 
