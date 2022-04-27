@@ -1,5 +1,7 @@
 package Model;
 
+import Database.GameDatabase;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +16,12 @@ public class Civilization {
     private ArrayList<City> cities;
     private int gold;
     private ArrayList<Technology> technologies;
+    private int happiness;
 
+
+    public int getHappiness() {
+        return happiness;
+    }
 
     public Civilization(String username, String nickname) {
         this.username = username;
@@ -26,6 +33,12 @@ public class Civilization {
         this.cities = new ArrayList<City>();
         this.gold = 0;
         this.technologies = new ArrayList<Technology>();
+        this.happiness = 50 * GameDatabase.players.size();
+
+    }
+
+    public void addHappiness(int amount) {
+        this.happiness += amount;
     }
 
     public ArrayList<Technology> getTechnologies() {
@@ -191,6 +204,10 @@ public class Civilization {
         clearTiles.addAll(secondClassAdjacentTiles());
         visibleTiles.addAll(clearTiles);
         return clearTiles;
+    }
+
+    public boolean isHappy() {
+        return happiness >= 0;
     }
 
 

@@ -36,6 +36,7 @@ public class GameMenu extends Menu {
     //Info
     private static final String INFO_CITY = "info city";
     private static final String VALID_BUILDINGS = "valid buildings";
+    private static final String INFO_DEMOGRAPHY = "info demography";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -47,8 +48,7 @@ public class GameMenu extends Menu {
 
     public void run(Scanner scanner) {
         String command;
-
-
+        Info info = Info.getInstance();
         while (true) {
             numberOfPlayers = GameDatabase.players.size();
             Matcher matcher;
@@ -139,8 +139,7 @@ public class GameMenu extends Menu {
                 System.out.println(cheatGold(matcher));
 
             } else if ((matcher = getCommandMatcher(command, INFO_CITY)) != null) {
-                infoCity();
-
+                info.infoCity(turn);
             } else if ((matcher = getCommandMatcher(command, VALID_BUILDINGS)) != null) {
                 String result = validBuildings(scanner);
                 if(result == null) {
@@ -149,6 +148,8 @@ public class GameMenu extends Menu {
                     System.out.println(result);
                 }
 
+            } else if ((matcher = getCommandMatcher(command, INFO_DEMOGRAPHY)) != null) {
+                System.out.println(info.infoDemography(turn));
             } else {
                 System.out.println("invalid command");
             }
@@ -302,12 +303,7 @@ public class GameMenu extends Menu {
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
     }
 
-    private void infoCity() {
-        Civilization civilization = GameDatabase.players.get(turn);
-        for (City city : civilization.getCities()) {
-            System.out.println(city);
-        }
-    }
+
 
     private String validBuildings(Scanner scanner) {
         if (citySelected == null) {
