@@ -24,7 +24,6 @@ public class City extends Tile {
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
-    private int happiness;
 
     public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
         super(type, baseTerrainType, x, y);
@@ -135,7 +134,6 @@ public class City extends Tile {
         String result = this.name + ": \n";
         result += "\t Type: " + this.baseTerrain.getType() + "\n";
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t Happiness" + Integer.toString(this.happiness) + "\n";
         result += "\t Hit Point" + Integer.toString(this.hitPoint);
         return result;
     }
@@ -144,4 +142,5 @@ public class City extends Tile {
         this.buildings.add(building);
         GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
     }
+
 }
