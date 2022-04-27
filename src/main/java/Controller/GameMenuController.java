@@ -159,6 +159,15 @@ public class GameMenuController {
         return true;
     }
 
+    public boolean isCityForThisCivilization(int turn, City citySelected) {
+        for (City city : GameDatabase.players.get(turn).getCities()) {
+            if(city.getName().equals(citySelected.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isAmountValidForGold(int amount) {
         return isAmountValidForTurn(amount);
     }
