@@ -41,6 +41,7 @@ public class City extends Tile {
         this.timeTopPopulate = timeTopPopulate;
         this.citizens = citizens;
         this.buildings = new ArrayList<Building>();
+        this.discoveredResources = new ArrayList<Resources>();
         this.hitPoint = 0;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
@@ -117,7 +118,7 @@ public class City extends Tile {
 
     public boolean cityHasBuilding(String name) {
         for (Building building : this.buildings) {
-            if(building.getName().equals(name)) {
+            if(building.getName().equals(name) && building.getTurnsNeedToBuild() == 0) {
                 return true;
             }
         }
@@ -140,9 +141,12 @@ public class City extends Tile {
         return result;
     }
 
-    public void buildBuilding(Building building) {
+    public void buildBuilding(Building building, boolean build) {
+        building.setCityName(this.name);
         this.buildings.add(building);
-        GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
+        if(!build) {
+            GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
+        }
     }
 
     public boolean isResourceDiscoveredByThisCity(String resourceName) {
@@ -152,6 +156,16 @@ public class City extends Tile {
             }
         }
         return false;
+    }
+
+    public void nextTurn() {
+        for (Building building : this.buildings) {
+            if(!building.wasBuilt()) {
+                building.build();
+            } else {
+                building.nextTurn();
+            }
+        }
     }
 
 }

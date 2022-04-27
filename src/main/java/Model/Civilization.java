@@ -206,6 +206,12 @@ public class Civilization {
         return clearTiles;
     }
 
+    public void nextTurn() {
+        for (City city : this.cities) {
+            city.nextTurn();
+        }
+    }
+
     public boolean isHappy() {
         return happiness >= 0;
     }
