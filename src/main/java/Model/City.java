@@ -1,6 +1,7 @@
 package Model;
 
 import Database.GameDatabase;
+import Enums.Resource;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class City extends Tile {
     private int timeTopPopulate;
     private ArrayList<Citizen> citizens;
     private ArrayList<Building> buildings;
+    private ArrayList<Resources> discoveredResources;
     private boolean isGarrison;
     private boolean isDivision;
     private int hitPoint;
@@ -141,6 +143,15 @@ public class City extends Tile {
     public void buildBuilding(Building building) {
         this.buildings.add(building);
         GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
+    }
+
+    public boolean isResourceDiscoveredByThisCity(String resourceName) {
+        for (Resources discoveredResource : this.discoveredResources) {
+            if(discoveredResource.getName().equals(resourceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
