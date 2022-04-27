@@ -27,6 +27,8 @@ public class GameMenu extends Menu {
     private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
     private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
+    private static final String BUY_BUILDING = "building --buy";
+    private static final String BUILD_BUILDING = "building --build";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -343,11 +345,29 @@ public class GameMenu extends Menu {
             }
         }
         index--;
-        citySelected.buildBuilding(validBuildings.get(index));
+        System.out.println("do you want build building " + validBuildings.get(index).getName() + " or buy?");
+        boolean build = true;
+        while(true) {
+            input = scanner.nextLine();
+            if(input.equals("EXIT")) {
+                return "EXIT building menu";
+            }
+            if(input.equals(BUY_BUILDING)) {
+                build = false;
+                break;
+            } else if(!input.equals(BUILD_BUILDING)) {
+                System.out.println("buy or build?");
+            } else {
+                break;
+            }
+        }
+        System.out.println("Great!");
+        citySelected.buildBuilding(validBuildings.get(index), build);
         return null;
     }
 
     private int nextTurn() {
+        GameDatabase.nextTurn();
         if (turn != this.numberOfPlayers - 1) {
             return turn++;
         }

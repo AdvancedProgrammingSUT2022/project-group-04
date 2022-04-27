@@ -250,4 +250,21 @@ public class GameDatabase {
         }
         return terrainFeature;
     }
+
+    public static Civilization getCivilizationForCity(String cityName) {
+        for (Civilization player : GameDatabase.players) {
+            for (City city : player.getCities()) {
+                if(city.getName().equals(cityName)) {
+                    return player;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void nextTurn() {
+        for (Civilization player : GameDatabase.players) {
+            player.nextTurn();
+        }
+    }
 }

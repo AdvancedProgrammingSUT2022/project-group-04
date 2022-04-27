@@ -168,6 +168,17 @@ public class GameMenuController {
         return false;
     }
 
+    public boolean isCityNameUnique(String cityName) {
+        for (Civilization player : GameDatabase.players) {
+            for (City city : player.getCities()) {
+                if(city.getName().equals(cityName)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean isAmountValidForGold(int amount) {
         return isAmountValidForTurn(amount);
     }

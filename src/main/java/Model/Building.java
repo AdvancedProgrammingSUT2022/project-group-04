@@ -1,5 +1,7 @@
 package Model;
 
+import Database.GameDatabase;
+
 import java.util.ArrayList;
 
 public class Building {
@@ -9,10 +11,21 @@ public class Building {
     private int maintenance;
     private Technology technologyRequired;
     private ArrayList<Citizen> exports;
+    private int turnsNeedToBuild;
+    private String cityName;
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
 
     public Building(String name) {
         this.name = name;
         this.exports = new ArrayList<Citizen>();
+        this.turnsNeedToBuild = 10;
         switch (name) {
             case "Barracks":
                 this.cost = 80;
@@ -259,8 +272,33 @@ public class Building {
         return false;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Building)) {
+            return false;
+        }
+        return this.name.equals(((Building) obj).getName());
+    }
+
     private boolean isWindMillValidForThisCity(City selectedCity) {
         return !selectedCity.getBaseTerrainType().equals("Hill");
+    }
+
+    public int getTurnsNeedToBuild() {
+        return turnsNeedToBuild;
+    }
+
+    public void build() {
+        this.turnsNeedToBuild--;
+    }
+
+    public boolean wasBuilt() {
+        return this.turnsNeedToBuild == 0;
+    }
+
+    public void nextTurn() {
+        GameDatabase.getCivilizationForCity(this.cityName).addGold(-this.cost);
+        // TODO nextTurn for Buildings
     }
 }
 
