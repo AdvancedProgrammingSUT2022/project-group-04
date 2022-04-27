@@ -183,11 +183,29 @@ public class Building {
         if(!isBuildingValidBecauseOfRequiredBuildings(citySelected)) {
             return false;
         }
+        if (!isBuildingValidBecauseOfRequiredResources(citySelected)) {
+            return false;
+        }
         if (technologyRequired == null && civilization.getGold()>=this.cost) {
             return true;
         }
         return civilization.isTechnologyForThisCivilization(this.technologyRequired)
                 && civilization.getGold() >= this.cost;
+    }
+
+    private boolean isBuildingValidBecauseOfRequiredResources(City citySelected) {
+        if(this.name.equals("Circus")
+                && (!citySelected.isResourceDiscoveredByThisCity("Horse")
+                && !citySelected.isResourceDiscoveredByThisCity("Ivory"))) {
+            return false;
+        } if(this.name.equals("Stable") && !citySelected.isResourceDiscoveredByThisCity("Horse")) {
+            return false;
+        } if(this.name.equals("Forge") && !citySelected.isResourceDiscoveredByThisCity("Iron")) {
+            return false;
+        } if(this.name.equals("Factory") && !citySelected.isResourceDiscoveredByThisCity("Coal")) {
+            return false;
+        }
+        return true;
     }
 
     private boolean isBuildingValidBecauseOfRequiredBuildings(City citySelected) {
@@ -198,7 +216,11 @@ public class Building {
             return false;
         } if(this.name.equals("Temple") && !citySelected.cityHasBuilding("Monument")) {
             return false;
-        } if(this.name.equals("Bank") && !citySelected.cityHasBuilding("Market")) {
+        } if(this.name.equals("Castle") && !citySelected.cityHasBuilding("Walls")) {
+            return false;
+        } if(this.name.equals("University") && !citySelected.cityHasBuilding("Library")) {
+            return false;
+        }  if(this.name.equals("Bank") && !citySelected.cityHasBuilding("Market")) {
             return false;
         } if(this.name.equals("MilitaryAcademy") && !citySelected.cityHasBuilding("Barracks")) {
             return false;
@@ -222,7 +244,7 @@ public class Building {
         } if(this.name.equals("MilitaryBase") && !citySelected.cityHasBuilding("Castle")) {
             return false;
         } if(this.name.equals("StockExchange")
-                && (!citySelected.cityHasBuilding("Bank") || !citySelected.cityHasBuilding("SatrapsCourt"))) {
+                && (!citySelected.cityHasBuilding("Bank") && !citySelected.cityHasBuilding("SatrapsCourt"))) {
             return false;
         }
         return true;
