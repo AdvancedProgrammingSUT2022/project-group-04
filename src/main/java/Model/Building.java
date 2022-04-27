@@ -179,14 +179,66 @@ public class Building {
         return exports;
     }
 
-    public boolean isBuildingValidForCivilization(Civilization civilization) {
-        if (technologyRequired == null) {
+    public boolean isBuildingValidForCivilization(Civilization civilization, City citySelected) {
+        if(!isBuildingValidBecauseOfRequiredBuildings(citySelected)) {
+            return false;
+        }
+        if (technologyRequired == null && civilization.getGold()>=this.cost) {
             return true;
         }
-        if (civilization.isTechnologyForThisCivilization(this.technologyRequired)) {
-            return true;
+        return civilization.isTechnologyForThisCivilization(this.technologyRequired)
+                && civilization.getGold() >= this.cost;
+    }
+
+    private boolean isBuildingValidBecauseOfRequiredBuildings(City citySelected) {
+        if((this.name.equals("Water_Mill") || this.name.equals("Garden"))
+                && !isWaterMillValidForThisCity(citySelected)) {
+            return false;
+        } if(this.name.equals("Armory") && !citySelected.cityHasBuilding("Barracks")) {
+            return false;
+        } if(this.name.equals("Temple") && !citySelected.cityHasBuilding("Monument")) {
+            return false;
+        } if(this.name.equals("Bank") && !citySelected.cityHasBuilding("Market")) {
+            return false;
+        } if(this.name.equals("MilitaryAcademy") && !citySelected.cityHasBuilding("Barracks")) {
+            return false;
+        } if(this.name.equals("Museum") && !citySelected.cityHasBuilding("OperaHouse")) {
+            return false;
+        } if(this.name.equals("OperaHouse")
+                && (!citySelected.cityHasBuilding("Temple") || !citySelected.cityHasBuilding("Burial_Tomb"))) {
+            return false;
+        } if(this.name.equals("PublicSchool") && !citySelected.cityHasBuilding("University")) {
+            return false;
+        } if(this.name.equals("SatrapsCourt") && !citySelected.cityHasBuilding("Market")) {
+            return false;
+        } if(this.name.equals("Theater") && !citySelected.cityHasBuilding("Colosseum")) {
+            return false;
+        } if(this.name.equals("Windmill") && !isWindMillValidForThisCity(citySelected)) {
+            return false;
+        } if(this.name.equals("Arsenal") && !citySelected.cityHasBuilding(" MilitaryAcademy")) {
+            return false;
+        } if(this.name.equals("BroadcastTower") && !citySelected.cityHasBuilding("Museum")) {
+            return false;
+        } if(this.name.equals("MilitaryBase") && !citySelected.cityHasBuilding("Castle")) {
+            return false;
+        } if(this.name.equals("StockExchange")
+                && (!citySelected.cityHasBuilding("Bank") || !citySelected.cityHasBuilding("SatrapsCourt"))) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isWaterMillValidForThisCity(City citySelected) {
+        for (boolean isRiver : citySelected.getIsRiver()) {
+            if(isRiver) {
+                return true;
+            }
         }
         return false;
+    }
+
+    private boolean isWindMillValidForThisCity(City selectedCity) {
+        return !selectedCity.getBaseTerrainType().equals("Hill");
     }
 }
 

@@ -24,6 +24,7 @@ public class City extends Tile {
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
+    private int happiness;
 
     public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
         super(type, baseTerrainType, x, y);
@@ -104,10 +105,43 @@ public class City extends Tile {
         generateGold();
     }
 
+    @Override
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+    public boolean isColonized() {
+        return isColonized;
+    }
+
+    public boolean cityHasBuilding(String name) {
+        for (Building building : this.buildings) {
+            if(building.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void generateGold() {
         Civilization civilization = GameDatabase.getCivilizationByNickname(this.civilizationName);
         if (civilization != null) {
             civilization.addGold(this.goldGeneratingRate);
         }
+    }
+
+    @Override
+    public String toString() {
+        String result = this.name + ": \n";
+        result += "\t Type: " + this.baseTerrain.getType() + "\n";
+        result += "\t Power: " + Integer.toString(this.power) + "\n";
+        result += "\t Happiness" + Integer.toString(this.happiness) + "\n";
+        result += "\t Hit Point" + Integer.toString(this.hitPoint);
+        return result;
+    }
+
+    public void buildBuilding(Building building) {
+        this.buildings.add(building);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
     }
 }

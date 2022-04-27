@@ -13,9 +13,14 @@ public class Tile {
     protected ArrayList<Unit> units;
     protected ArrayList<Building> buildings;
     protected ArrayList<Improvement> improvements;
-    private boolean isRaided;
-    private boolean[] isRiver;
+    protected boolean isRaided;
+    protected boolean[] isRiver;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
+
+    public boolean[] getIsRiver() {
+        return isRiver;
+    }
+
     boolean visited;
     Tile prev;
 

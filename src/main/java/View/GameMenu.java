@@ -2,10 +2,10 @@ package View;
 
 import Controller.GameMenuController;
 import Database.GameDatabase;
-import Model.City;
-import Model.Tile;
-import Model.Unit;
+import Database.GlobalVariables;
+import Model.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -32,6 +32,10 @@ public class GameMenu extends Menu {
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
     private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String CHEAT_GOLD = "gold increase (?<amount>-?\\d+)";
+
+    //Info
+    private static final String INFO_CITY = "info city";
+    private static final String VALID_BUILDINGS = "valid buildings";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -133,6 +137,17 @@ public class GameMenu extends Menu {
                 }
             } else if ((matcher = getCommandMatcher(command, CHEAT_GOLD)) != null) {
                 System.out.println(cheatGold(matcher));
+
+            } else if ((matcher = getCommandMatcher(command, INFO_CITY)) != null) {
+                infoCity();
+
+            } else if ((matcher = getCommandMatcher(command, VALID_BUILDINGS)) != null) {
+                String result = validBuildings(scanner);
+                if(result == null) {
+                    turn = nextTurn();
+                } else {
+                    System.out.println(result);
+                }
 
             } else {
                 System.out.println("invalid command");
@@ -285,6 +300,55 @@ public class GameMenu extends Menu {
         }
         GameDatabase.players.get(turn).addGold(amount);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
+    }
+
+    private void infoCity() {
+        Civilization civilization = GameDatabase.players.get(turn);
+        for (City city : civilization.getCities()) {
+            System.out.println(city);
+        }
+    }
+
+    private String validBuildings(Scanner scanner) {
+        if (citySelected == null) {
+            return "you must select a city first";
+        }
+        if (!gameMenuController.isCityForThisCivilization(turn % numberOfPlayers, citySelected)) {
+            return "this city is not for you";
+        }
+        ArrayList<Building> validBuildings = new ArrayList<Building>();
+        int counter = 1;
+        for (String buildingName : GlobalVariables.BUILDINGS) {
+            Building building = new Building(buildingName);
+            if(building.isBuildingValidForCivilization(GameDatabase.players.get(turn), citySelected)) {
+                validBuildings.add(building);
+                System.out.println(Integer.toString(counter) + "- " + building.getName() + " | cost: " + Integer.toString(building.getCost()));
+                counter++;
+            }
+        }
+        if(validBuildings.size() == 0) {
+            return "poor civilization! you don't have any valid buildings!!!";
+        }
+        String input;
+        int index;
+        while(true) {
+            input = scanner.nextLine();
+            if(input.equals("EXIT")) {
+                return "EXIT building menu";
+            }
+            if(!input.matches("\\d+")) {
+                System.out.println("please inter a number");
+            } else {
+                if(Integer.parseInt(input) > 0 && Integer.parseInt(input) <= counter) {
+                    index = Integer.parseInt(input);
+                    break;
+                }
+                System.out.println("invalid number");
+            }
+        }
+        index--;
+        citySelected.buildBuilding(validBuildings.get(index));
+        return null;
     }
 
     private int nextTurn() {
