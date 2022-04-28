@@ -233,6 +233,7 @@ public class Civilization {
     public void nextTurn() {
         for (City city : this.cities) {
             city.nextTurn();
+            gold+= city.getGoldGeneratingRate();
             science+= city.getCitizens().size();
             if(city.isCapital()) {
                 science+= 3;
@@ -256,6 +257,15 @@ public class Civilization {
         for (Technology technology1 : technologies) {
             if (technology1.getName().equals(technology))
                 return true;
+        }
+        return false;
+    }
+
+    public boolean isImprovementReachedByThisCivilization(String improvementName) {
+        for (Tile tile : this.tiles) {
+            if(tile.isImprovementForThisTile(improvementName)) {
+                return true;
+            }
         }
         return false;
     }

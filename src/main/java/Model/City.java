@@ -48,6 +48,7 @@ public class City extends Tile {
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
         this.food = 0;
+        this.production = 0;
     }
 
     public String getName() {
@@ -177,7 +178,10 @@ public class City extends Tile {
         this.food+= amount;
     }
 
+    @Override
     public void nextTurn() {
+        this.production += this.productionGenerating;
+        this.food += this.foodGeneratingRate;
         for (Building building : this.buildings) {
             if(!building.wasBuilt()) {
                 building.build();
@@ -190,6 +194,24 @@ public class City extends Tile {
             this.production+= improvement.getCityProductionChange();
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(improvement.getCivilizationGoldChange());
         }
+        for (Resources resource : this.discoveredResources) {
+            resource.nextTurn(this.name);
+        }
     }
 
+    public ArrayList<Resources> getDiscoveredResources() {
+        return discoveredResources;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public int getProduction() {
+        return production;
+    }
+
+    public void addProduction(int amount) {
+        this.production += amount;
+    }
 }
