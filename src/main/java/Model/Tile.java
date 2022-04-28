@@ -44,16 +44,15 @@ public class Tile {
     private void InitializeRoundsTillFinish() {
         roundsTillFinish = new int[10];
         roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
+        roundsTillFinish[1] = 0;
+        roundsTillFinish[2] = 0;
+        roundsTillFinish[3] = 0;
+        roundsTillFinish[4] = 0;
+        roundsTillFinish[5] = 0;
+        roundsTillFinish[6] = 0;
+        roundsTillFinish[7] = 0;
+        roundsTillFinish[8] = 0;
+        roundsTillFinish[9] = 0;
     }
 
     public String getBaseTerrainType() {
@@ -153,9 +152,7 @@ public class Tile {
 
     public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
-        for (TerrainFeatures features : getBaseTerrain().getFeatures()) {
-            movementPriceSum += features.getMovementPrice();
-        }
+        movementPriceSum += getBaseTerrain().getFeature().getMovementPrice();
         return movementPriceSum;
     }
 
@@ -235,12 +232,7 @@ public class Tile {
     }
 
     public boolean isThisFeatureForThisTile(String featureName) {
-        for (TerrainFeatures terrainFeatures : this.getBaseTerrain().getFeatures()) {
-            if(terrainFeatures.getType().equals(featureName)) {
-                return true;
-            }
-        }
-        return false;
+        return this.getBaseTerrain().getFeature().getType().equals(featureName);
     }
 
     public void nextTurn() {
