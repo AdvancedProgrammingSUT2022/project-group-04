@@ -4,37 +4,40 @@ import Database.GameDatabase;
 
 import java.util.HashMap;
 
-public class Worker extends Citizen{
+public class Worker extends Citizen {
     private boolean isAssigned;
     private int indexOfProject;
     private String typeOfWork;
-    private static HashMap<String,Integer> workToIndex;
-    public static void setHashMap(){
-        workToIndex.put("Road",0);
-        workToIndex.put("Railroad",1);
-        workToIndex.put("Farm",2);
-        workToIndex.put("Mine",3);
-        workToIndex.put("TradingPost",4);
-        workToIndex.put("LumberMill",5);
-        workToIndex.put("Pasture",6);
-        workToIndex.put("Camp",7);
-        workToIndex.put("Field",8);
-        workToIndex.put("quarry",9);//TODO might change
-        workToIndex.put("removeJungle",10);//forest in the doc
-        workToIndex.put("removeDenseJungle",11);
-        workToIndex.put("removePrairie",12);
-        workToIndex.put("removeRoad",13);
-        workToIndex.put("removeRailroad",14);
-        workToIndex.put("repair",15);
+    private static HashMap<String, Integer> workToIndex;
+
+    public static void setHashMap() {
+        workToIndex.put("Road", 0);
+        workToIndex.put("Railroad", 1);
+        workToIndex.put("Farm", 2);
+        workToIndex.put("Mine", 3);
+        workToIndex.put("TradingPost", 4);
+        workToIndex.put("LumberMill", 5);
+        workToIndex.put("Pasture", 6);
+        workToIndex.put("Camp", 7);
+        workToIndex.put("Field", 8);
+        workToIndex.put("quarry", 9);//TODO might change
+        workToIndex.put("removeJungle", 10);//forest in the doc
+        workToIndex.put("removeDenseJungle", 11);
+        workToIndex.put("removePrairie", 12);
+        workToIndex.put("removeRoad", 13);
+        workToIndex.put("removeRailroad", 14);
+        workToIndex.put("repair", 15);
     }
-    public Worker(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex){
-        super(x, y, Vx, Vy, power, cost, movementPoint, unitType, isSleeping, isReady, era, HP, civilizationIndex);
+
+    public Worker(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, boolean isAssigned) {
+        super(x, y, Vx, Vy, power, cost, movementPoint, unitType, isSleeping, isReady, era, HP, civilizationIndex, isAssigned);
         isAssigned = false;
         indexOfProject = -1;
         typeOfWork = "";
     }
+
     //@Override
-    public void nextTurn(){
+    public void nextTurn() {
         if (isAssigned) {
             Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
             int roundsTillFinishProject = tile.getRoundsTillFinishProjectByIndex(indexOfProject);
@@ -47,14 +50,15 @@ public class Worker extends Citizen{
             }
         }
     }
-    public void pauseProject(){
+
+    public void pauseProject() {
         if (isAssigned) this.isAssigned = false;
     }
-    public void assignNewProject(String type){
-        if (typeOfWork.equals(type)){
+
+    public void assignNewProject(String type) {
+        if (typeOfWork.equals(type)) {
             isAssigned = true;
-        }
-        else {
+        } else {
             Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
             if (tile.getRoundsTillFinishProjectByIndex(indexOfProject) != 0)
                 tile.initializeRoundsTillFinish(indexOfProject);
@@ -64,52 +68,52 @@ public class Worker extends Citizen{
         }
     }
 
-    public void makeFarm(){
-        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+    public void makeFarm() {
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Agriculture")
                 && !tile.getBaseTerrain().getType().equals("Ice")
                 && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
                 || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
-                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))){
+                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
             indexOfProject = workToIndex.get("Farm");
             typeOfWork = "Farm";
             isAssigned = true;
         }
     }
 
-    public void makeMine(){
-        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+    public void makeMine() {
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("")
                 && !tile.getBaseTerrain().getType().equals("Ice")
                 && (tile.getBaseTerrainType().equals("Hill"))
                 && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
                 || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
-                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))){
+                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
             indexOfProject = workToIndex.get("Mine");
             typeOfWork = "Mine";
             isAssigned = true;
         }
     }
 
-    public void makeRoad(){
-        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+    public void makeRoad() {
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Wheel")
                 && !tile.hasRoad
                 && !tile.getBaseTerrainType().equals("Ice")
                 && !tile.getBaseTerrainType().equals("Ocean")
-                && !tile.getBaseTerrainType().equals("Mountain")){
+                && !tile.getBaseTerrainType().equals("Mountain")) {
             indexOfProject = 0;
             isAssigned = true;
             typeOfWork = "Road";
         }
     }
 
-    public void finishWork(){
-        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
-        switch (indexOfProject){
+    public void finishWork() {
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        switch (indexOfProject) {
             case 0:
                 tile.hasRoad = true;
                 break;
@@ -141,8 +145,7 @@ public class Worker extends Citizen{
                 typeOfWork = "";
                 indexOfProject = -1;
                 isAssigned = false;
-            case 9:
-
+            case 9://TODO others
         }
         isAssigned = false;
     }
