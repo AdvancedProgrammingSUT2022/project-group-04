@@ -168,6 +168,18 @@ public class Tile {
         return adjacentTiles;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof Tile)) {
+            return false;
+        }
+        if(this.x == ((Tile) object).getX()
+            && this.y == ((Tile) object).getY()) {
+            return true;
+        }
+        return false;
+    }
+
     public ArrayList<Tile> getAdjacentTilesByLayer(int n){
 
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
