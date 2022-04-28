@@ -21,7 +21,9 @@ public class combatController {
     }
 
     public void takeHostage(ArrayList<Citizen> citizens){
-
+        for (Citizen citizen : citizens){
+            citizen.setHostage(true);
+        }
     }
 
     public void meleeCombatUnits(Soldier soldier1, Soldier soldier2){
