@@ -15,6 +15,7 @@ public class Tile {
     protected ArrayList<Improvement> improvements;
     protected boolean isRaided;
     protected boolean[] isRiver;
+    protected boolean hasRoad;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
 
     public boolean[] getIsRiver() {
@@ -27,6 +28,7 @@ public class Tile {
 
     public Tile(String type, String baseTerrainType, int x, int y) {
         this.type = type;
+        this.hasRoad = false;
         this.baseTerrain = new BaseTerrain(baseTerrainType);
         this.x = x;
         this.y = y;
@@ -40,6 +42,10 @@ public class Tile {
 
     public String getBaseTerrainType() {
         return this.baseTerrain.getType();
+    }
+
+    public boolean hasRoad() {
+        return this.hasRoad;
     }
 
     public int getX() {

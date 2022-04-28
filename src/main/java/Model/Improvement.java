@@ -7,13 +7,76 @@ import java.util.ArrayList;
 public class Improvement {
     private String name;
     private Technology requiredTechnology;
-    private ArrayList<BaseTerrain> BaseTerrainThatCanBeBuilt;
-    private ArrayList<TerrainFeatures> TerrainFeaturesThatCanBeBuilt;
+    private ArrayList<String> BaseTerrainThatCanBeBuilt;
+    private ArrayList<String> TerrainFeaturesThatCanBeBuilt;
     private int cityFoodChange;
     private int cityProductionChange;
 
     public Improvement(String name) {
         this.name = name;
+        this.BaseTerrainThatCanBeBuilt = new ArrayList<String>();
+        this.TerrainFeaturesThatCanBeBuilt = new ArrayList<String>();
+        switch (name) {
+            case "Camp":
+                this.requiredTechnology = new Technology("Trapping");
+                this.BaseTerrainThatCanBeBuilt.add("Hill");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Tundra");
+                this.TerrainFeaturesThatCanBeBuilt.add("Jungle");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 0;
+                break;
+            case "Farm":
+                this.requiredTechnology = new Technology("Agriculture");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.cityFoodChange = 1;
+                this.cityProductionChange = 0;
+                break;
+            case "LumberMill":
+                this.requiredTechnology = new Technology("Construction");
+                this.TerrainFeaturesThatCanBeBuilt.add("Jungle");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 1;
+                break;
+            case "Mine":
+                this.requiredTechnology = new Technology("Mining");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.BaseTerrainThatCanBeBuilt.add("Tundra");
+                this.BaseTerrainThatCanBeBuilt.add("Snow");
+                this.TerrainFeaturesThatCanBeBuilt.add("Jungle");
+                this.TerrainFeaturesThatCanBeBuilt.add("DenseJungle");
+                this.TerrainFeaturesThatCanBeBuilt.add("Swamp");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 1;
+                break;
+            case "Pasture":
+                this.requiredTechnology = new Technology("AnimalHusbandry");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.BaseTerrainThatCanBeBuilt.add("Tundra");
+                this.BaseTerrainThatCanBeBuilt.add("Hill");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 1;
+                break;
+            case "Field":
+                this.requiredTechnology = new Technology("Calendar");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.TerrainFeaturesThatCanBeBuilt.add("Jungle");
+                this.TerrainFeaturesThatCanBeBuilt.add("DenseJungle");
+                this.TerrainFeaturesThatCanBeBuilt.add("Swamp");
+                this.TerrainFeaturesThatCanBeBuilt.add("Prairie");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 1;
+                break;
+            // TODO
+        }
     }
 
     public String getName() {
@@ -24,11 +87,11 @@ public class Improvement {
         return requiredTechnology;
     }
 
-    public ArrayList<BaseTerrain> getBaseTerrainThatCanBeBuilt() {
+    public ArrayList<String> getBaseTerrainThatCanBeBuilt() {
         return BaseTerrainThatCanBeBuilt;
     }
 
-    public ArrayList<TerrainFeatures> getTerrainFeaturesThatCanBeBuilt() {
+    public ArrayList<String> getTerrainFeaturesThatCanBeBuilt() {
         return TerrainFeaturesThatCanBeBuilt;
     }
 
