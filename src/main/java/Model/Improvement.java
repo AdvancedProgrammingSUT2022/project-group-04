@@ -1,6 +1,5 @@
 package Model;
 
-import Enums.Resource;
 
 import java.util.ArrayList;
 
@@ -11,6 +10,7 @@ public class Improvement {
     private ArrayList<String> TerrainFeaturesThatCanBeBuilt;
     private int cityFoodChange;
     private int cityProductionChange;
+    private int civilizationGoldChange;
 
     public Improvement(String name) {
         this.name = name;
@@ -25,6 +25,7 @@ public class Improvement {
                 this.TerrainFeaturesThatCanBeBuilt.add("Jungle");
                 this.cityFoodChange = 0;
                 this.cityProductionChange = 0;
+                this.civilizationGoldChange = 0;
                 break;
             case "Farm":
                 this.requiredTechnology = new Technology("Agriculture");
@@ -33,12 +34,15 @@ public class Improvement {
                 this.BaseTerrainThatCanBeBuilt.add("Meadow");
                 this.cityFoodChange = 1;
                 this.cityProductionChange = 0;
+                this.civilizationGoldChange = 0;
+
                 break;
             case "LumberMill":
                 this.requiredTechnology = new Technology("Construction");
                 this.TerrainFeaturesThatCanBeBuilt.add("Jungle");
                 this.cityFoodChange = 0;
                 this.cityProductionChange = 1;
+                this.civilizationGoldChange = 0;
                 break;
             case "Mine":
                 this.requiredTechnology = new Technology("Mining");
@@ -52,6 +56,7 @@ public class Improvement {
                 this.TerrainFeaturesThatCanBeBuilt.add("Swamp");
                 this.cityFoodChange = 0;
                 this.cityProductionChange = 1;
+                this.civilizationGoldChange = 0;
                 break;
             case "Pasture":
                 this.requiredTechnology = new Technology("AnimalHusbandry");
@@ -61,7 +66,8 @@ public class Improvement {
                 this.BaseTerrainThatCanBeBuilt.add("Tundra");
                 this.BaseTerrainThatCanBeBuilt.add("Hill");
                 this.cityFoodChange = 0;
-                this.cityProductionChange = 1;
+                this.cityProductionChange = 0;
+                this.civilizationGoldChange = 0;
                 break;
             case "Field":
                 this.requiredTechnology = new Technology("Calendar");
@@ -73,9 +79,41 @@ public class Improvement {
                 this.TerrainFeaturesThatCanBeBuilt.add("Swamp");
                 this.TerrainFeaturesThatCanBeBuilt.add("Prairie");
                 this.cityFoodChange = 0;
-                this.cityProductionChange = 1;
+                this.cityProductionChange = 0;
+                this.civilizationGoldChange = 0;
                 break;
-            // TODO
+            case "StoneMine":
+                this.requiredTechnology = new Technology("Masonry");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.BaseTerrainThatCanBeBuilt.add("Tundra");
+                this.BaseTerrainThatCanBeBuilt.add("Hill");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 0;
+                this.civilizationGoldChange = 0;
+                break;
+            case "TradingPost":
+                this.requiredTechnology = new Technology("Trapping");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.BaseTerrainThatCanBeBuilt.add("Tundra");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 0;
+                this.civilizationGoldChange = 1;
+                break;
+            case "Factory":
+                this.requiredTechnology = new Technology("Engineering");
+                this.BaseTerrainThatCanBeBuilt.add("Desert");
+                this.BaseTerrainThatCanBeBuilt.add("Plain");
+                this.BaseTerrainThatCanBeBuilt.add("Meadow");
+                this.BaseTerrainThatCanBeBuilt.add("Tundra");
+                this.BaseTerrainThatCanBeBuilt.add("Snow");
+                this.cityFoodChange = 0;
+                this.cityProductionChange = 2;
+                this.civilizationGoldChange = 0;
+                break;
         }
     }
 
@@ -101,6 +139,10 @@ public class Improvement {
 
     public int getCityProductionChange() {
         return cityProductionChange;
+    }
+
+    public int getCivilizationGoldChange() {
+        return this.civilizationGoldChange;
     }
 }
 

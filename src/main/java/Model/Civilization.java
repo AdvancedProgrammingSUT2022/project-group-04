@@ -2,9 +2,7 @@ package Model;
 
 import Database.GameDatabase;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Civilization {
     private String username;
@@ -17,6 +15,7 @@ public class Civilization {
     private int gold;
     private ArrayList<Technology> technologies;
     private int happiness;
+    private int science;
 
 
     public int getHappiness() {
@@ -34,6 +33,7 @@ public class Civilization {
         this.gold = 0;
         this.technologies = new ArrayList<Technology>();
         this.happiness = 50 * GameDatabase.players.size();
+        this.science = 0;
 
     }
 
@@ -210,6 +210,7 @@ public class Civilization {
         for (City city : this.cities) {
             city.nextTurn();
         }
+
     }
 
     public boolean isHappy() {
