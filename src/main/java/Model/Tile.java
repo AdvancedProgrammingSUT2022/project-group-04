@@ -17,7 +17,7 @@ public class Tile {
     protected boolean[] isRiver;
     protected boolean hasRoad;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
-
+    protected int[] roundsTillFinish;
     public boolean[] getIsRiver() {
         return isRiver;
     }
@@ -38,7 +38,9 @@ public class Tile {
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
         }
+        roundsTillFinish = new int[10];
     }
+
 
     public String getBaseTerrainType() {
         return this.baseTerrain.getType();

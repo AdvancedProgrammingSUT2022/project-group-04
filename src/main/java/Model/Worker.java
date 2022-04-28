@@ -1,5 +1,7 @@
 package Model;
 
+import Database.GameDatabase;
+
 public class Worker extends Citizen{
     private boolean isAssigned;
     private int roundsTillFinishProject;
@@ -11,16 +13,33 @@ public class Worker extends Citizen{
     public void nextTurn(){
         roundsTillFinishProject -- ;
         if (roundsTillFinishProject <= 0){
+            finishWork();
             roundsTillFinishProject = 0;
             isAssigned = false;
             typeOfWork = "";
         }
     }
     public void makeRoad(){
+        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if ()
-        isAssigned = true;
-        typeOfWork = "Road";
-
+        if (civilization.isTechnologyInCivilization("Wheel")
+                && !tile.hasRoad
+                && !tile.getBaseTerrain().equals("Ice")
+                && !tile.getBaseTerrain().equals("Ocean")
+                && !tile.getBaseTerrain().equals("Mountain") {
+            roundsTillFinishProject = 3;
+            isAssigned = true;
+            typeOfWork = "Road";
+        }
     }
-    public void
+    public void finishWork(){
+        if (typeOfWork.equals("Road")){
+            Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+            tile.hasRoad = true;
+        }
+        else if (typeOfWork.equals("")){
+
+        }
+    }
 }
