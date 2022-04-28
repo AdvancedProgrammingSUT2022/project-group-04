@@ -1,5 +1,7 @@
 package Model;
 
+import Database.GlobalVariables;
+
 import java.util.ArrayList;
 
 public class Technology {
@@ -7,10 +9,14 @@ public class Technology {
     private String name;
     private int cost;
     private ArrayList<Technology> prerequisiteTechnologies;
+    private int turnsNeedToResearch;
+    private boolean isStopped;
 
     public Technology(String name) {
         this.name = name;
+        this.turnsNeedToResearch = 10;
         this.prerequisiteTechnologies = new ArrayList<Technology>();
+        this.isStopped = false;
         switch (name) {
             case "Agriculture":
                 this.cost = 20;
@@ -244,12 +250,91 @@ public class Technology {
     }
 
     public boolean isTechnologyValidForCivilization(Civilization civilization) {
-        for (int i = 0; i < this.prerequisiteTechnologies.size(); i++) {
-            if (!civilization.isTechnologyForThisCivilization(this.prerequisiteTechnologies.get(i))) {
+        if (civilization.getScience() <= this.cost) {
+            return false;
+        }
+        for (Technology prerequisiteTechnology : this.prerequisiteTechnologies) {
+            if (!civilization.isTechnologyForThisCivilization(prerequisiteTechnology)) {
                 return false;
             }
         }
         return true;
+    }
+
+    public boolean wasReached() {
+        return this.turnsNeedToResearch == 0;
+    }
+
+    private String leadingTechnologies() {
+        String leadingTechnologies = "Leading technologies: \n";
+        for (String technology : GlobalVariables.TECHNOLOGIES) {
+            Technology technology1 = new Technology(technology);
+            for (Technology prerequisiteTechnology : technology1.prerequisiteTechnologies) {
+                if(prerequisiteTechnology.getName().equals(this.name)) {
+                    leadingTechnologies+= "\t " + technology + "\n";
+                }
+            }
+        }
+        return leadingTechnologies;
+    }
+
+    private String leadingBuildings() {
+        String leadingBuildings = "Leading buildings: \n";
+        for (String building : GlobalVariables.BUILDINGS) {
+            Building building1 = new Building(building);
+            if(building1.getTechnologyRequired().getName().equals(this.name)) {
+                leadingBuildings += "\t " + building + "\n";
+            }
+        }
+        return leadingBuildings;
+    }
+
+    public boolean isStopped() {
+        return this.isStopped;
+    }
+
+    public void stop() {
+        isStopped = true;
+    }
+
+    public void start() {
+        isStopped = false;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Technology)) {
+            return false;
+        }
+        if(((Technology) obj).getName().equals(this.name)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setTurnsNeedToResearch(int turnsNeedToResearch) {
+        this.turnsNeedToResearch = turnsNeedToResearch;
+    }
+
+    @Override
+    public String toString() {
+        String result = this.name + "\n";
+        if(!wasReached() && this.turnsNeedToResearch != 0) {
+            result += "\t turns need: " + Integer.toString(this.turnsNeedToResearch);
+            if(isStopped) {
+                result += "\t Stopped\n";
+            }
+        } else {
+            result += leadingTechnologies();
+            result += leadingBuildings();
+        }
+        return result;
+    }
+
+    public void nextTurn() {
+        if(!wasReached()) {
+            this.turnsNeedToResearch--;
+        }
     }
 }
 
