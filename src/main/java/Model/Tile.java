@@ -38,9 +38,23 @@ public class Tile {
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
         }
-        roundsTillFinish = new int[10];
+        InitializeRoundsTillFinish();
     }
 
+    private void InitializeRoundsTillFinish() {
+        roundsTillFinish = new int[10];
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+        roundsTillFinish[0] = 0;
+    }
 
     public String getBaseTerrainType() {
         return this.baseTerrain.getType();
