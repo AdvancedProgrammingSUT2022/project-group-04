@@ -26,6 +26,8 @@ public class City extends Tile {
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
+    private int food;
+    private int production;
 
     public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
         super(type, baseTerrainType, x, y);
@@ -45,6 +47,7 @@ public class City extends Tile {
         this.hitPoint = 0;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
+        this.food = 0;
     }
 
     public String getName() {
@@ -158,6 +161,10 @@ public class City extends Tile {
         return false;
     }
 
+    public void addFood(int amount) {
+        this.food+= amount;
+    }
+
     public void nextTurn() {
         for (Building building : this.buildings) {
             if(!building.wasBuilt()) {
@@ -165,6 +172,11 @@ public class City extends Tile {
             } else {
                 building.nextTurn();
             }
+        }
+        for (Improvement improvement : this.improvements) {
+            this.food+= improvement.getCityFoodChange();
+            this.production+= improvement.getCityProductionChange();
+            GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(improvement.getCivilizationGoldChange());
         }
     }
 
