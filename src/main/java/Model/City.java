@@ -157,6 +157,7 @@ public class City extends Tile {
 
     public void buildBuilding(Building building, boolean build) {
         building.setCityName(this.name);
+        building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
         if(!build) {
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
