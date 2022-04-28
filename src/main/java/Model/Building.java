@@ -184,6 +184,18 @@ public class Building {
         return maintenance;
     }
 
+    public void setTurnsNeedToBuild(int production, int productionGeneratingRate) {
+        int turns = production - cost;
+        if(turns >= 0) {
+            this.turnsNeedToBuild = 0;
+        } else {
+            turns = -turns;
+            this.turnsNeedToBuild = turns/productionGeneratingRate + 1;
+        }
+
+
+    }
+
     public Technology getTechnologyRequired() {
         return technologyRequired;
     }
