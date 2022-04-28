@@ -29,7 +29,7 @@ public class Worker extends Citizen{
                 && !tile.hasRoad
                 && !tile.getBaseTerrain().equals("Ice")
                 && !tile.getBaseTerrain().equals("Ocean")
-                && !tile.getBaseTerrain().equals("Mountain") {
+                && !tile.getBaseTerrain().equals("Mountain")) {
             indexOfProject = 0;
             isAssigned = true;
             typeOfWork = "Road";

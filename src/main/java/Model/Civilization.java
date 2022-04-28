@@ -58,7 +58,13 @@ public class Civilization {
     }
 
     public void addTechnology(Technology newTechnology) {
+        if(science - newTechnology.getCost() < 100) {
+            newTechnology.setTurnsNeedToResearch(1);
+        } else {
+            newTechnology.setTurnsNeedToResearch(10 - (science - newTechnology.getCost())/10);
+        }
         this.technologies.add(newTechnology);
+        this.science = 0;
     }
 
     public void addTile(Tile newTile) {
@@ -209,8 +215,19 @@ public class Civilization {
     public void nextTurn() {
         for (City city : this.cities) {
             city.nextTurn();
+            science+= city.getCitizens().size();
+            if(city.isCapital()) {
+                science+= 3;
+            }
+        }
+        for (Technology technology : this.technologies) {
+            technology.nextTurn();
         }
 
+    }
+
+    public int getScience() {
+        return this.science;
     }
 
     public boolean isHappy() {
