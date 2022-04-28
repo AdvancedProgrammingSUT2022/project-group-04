@@ -20,6 +20,7 @@ public class Unit {
     protected boolean isReady;
     protected String era;
     protected int HP;
+    protected int XP;
     protected Tile tileOfUnit;
     protected int civilizationIndex;
 
@@ -115,8 +116,23 @@ public class Unit {
         return HP;
     }
 
+    public void reduceHP(int amount){
+        this.HP -= amount;
+    }
+    public void regainHP(int amount){
+        this.HP += amount;
+    }
+
     public void setHP(int HP) {
         this.HP = HP;
+    }
+
+    public int getXP() {
+        return XP;
+    }
+
+    public void setXP(int XP) {
+        this.XP = XP;
     }
 
     public int getCivilizationIndex() {
@@ -228,6 +244,7 @@ public class Unit {
                 }
             }
         }
+        //Todo.. make each movement round based
         for (int i = 1; i < path.size(); i++) {
             if (movementPoint >= path.get(i).movementPriceForTile()) {
                 moveToAdjacentTile(path.get(i));

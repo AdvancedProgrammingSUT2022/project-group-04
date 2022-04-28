@@ -177,7 +177,7 @@ public class GameDatabase {
                 }
             }
         }
-        //random initialize terrainFeatures
+        //random initialize terrainFeature
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
             ArrayList<TerrainFeatures> terrainFeatures = baseTerrain.getPossibleFeatures();
@@ -186,7 +186,8 @@ public class GameDatabase {
                 if (randomGenerate < 3) {//TODO change the possibility
                     String type = terrainFeatures.get(j).getType();
                     TerrainFeatures terrainFeatures1 = randomInitializeFeature(type);
-                    map.get(i).getBaseTerrain().addFeature(terrainFeatures1);
+                    map.get(i).getBaseTerrain().setFeature(terrainFeatures1);
+                    break;
                 }
             }
         }
@@ -200,6 +201,7 @@ public class GameDatabase {
                     String name = resources.get(j).getName();
                     Resources resource = new Resources(name);
                     map.get(i).getBaseTerrain().addResource(resource);
+                    break;
                 }
             }
         }

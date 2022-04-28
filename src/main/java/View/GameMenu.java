@@ -39,6 +39,7 @@ public class GameMenu extends Menu {
     private static final String INFO_CITY = "info city";
     private static final String VALID_BUILDINGS = "valid buildings";
     private static final String INFO_DEMOGRAPHY = "info demography";
+    private static final String INFO_RESEARCH = "info research";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -152,6 +153,8 @@ public class GameMenu extends Menu {
 
             } else if ((matcher = getCommandMatcher(command, INFO_DEMOGRAPHY)) != null) {
                 System.out.println(info.infoDemography(turn));
+            } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
+                info.infoResearch(turn, scanner);
             } else {
                 System.out.println("invalid command");
             }
@@ -230,8 +233,9 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isAmountValidForTurn(amount)) {
             return "invalid turn";
         }
-        turn += amount;
-        turn %= numberOfPlayers;
+        for (int i = 0; i < amount; i++) {
+            turn = nextTurn();
+        }
         return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
 
     }

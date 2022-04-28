@@ -13,7 +13,7 @@ public class BaseTerrain {
     private int movementPrice;
     private ArrayList<TerrainFeatures> possibleFeatures;
     private ArrayList<Resources> possibleResources;
-    private ArrayList<TerrainFeatures> features;
+    private TerrainFeatures features;
     private Resources resources;
     private boolean movementIsPossible;
 
@@ -21,7 +21,7 @@ public class BaseTerrain {
         this.type = type;
         possibleFeatures = new ArrayList<TerrainFeatures>();
         possibleResources = new ArrayList<Resources>();
-        features = new ArrayList<TerrainFeatures>();
+        //features = new ArrayList<TerrainFeatures>();
         switch (type) {
             case "Desert":
                 foodNum = 0;
@@ -131,8 +131,8 @@ public class BaseTerrain {
         return this.movementIsPossible;
     }
 
-    public void addFeature(TerrainFeatures terrainFeature) {
-        this.features.add(terrainFeature);
+    public void setFeature(TerrainFeatures terrainFeature) {
+        this.features = terrainFeature;
     }
 
     public void addResource(Resources resource) {
@@ -143,7 +143,7 @@ public class BaseTerrain {
         return resources;
     }
 
-    public ArrayList<TerrainFeatures> getFeatures() {
+    public TerrainFeatures getFeature() {
         return features;
     }
 
@@ -155,20 +155,12 @@ public class BaseTerrain {
         this.movementPrice = movementPrice;
     }
 
-    public boolean hasFeature(String Feature){
-        for (TerrainFeatures terrainFeature : this.features){
-            if (terrainFeature.getType().equals(Feature))
-                return true;
-        }
+    public boolean hasFeature(String feature){
+        if (features.getType().equals(feature)) return true;
         return false;
     }
 
     public void removeFeature(String type){
-        for (TerrainFeatures feature : features) {
-            if (feature.getType().equals(type)) {
-                features.remove(feature);
-                break;
-            }
-        }
+        features = null;
     }
 }

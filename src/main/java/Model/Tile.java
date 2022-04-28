@@ -176,9 +176,7 @@ public class Tile {
 
     public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
-        for (TerrainFeatures features : getBaseTerrain().getFeatures()) {
-            movementPriceSum += features.getMovementPrice();
-        }
+        movementPriceSum += getBaseTerrain().getFeature().getMovementPrice();
         return movementPriceSum;
     }
 
@@ -246,5 +244,22 @@ public class Tile {
 
     public void reduceRoundsByIndex(int indexOfProject) {
         this.roundsTillFinish[indexOfProject] --;
+    }
+
+    public boolean isImprovementForThisTile(String improvementName) {
+        for (Improvement improvement : this.improvements) {
+            if(improvementName.equals(improvement.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isThisFeatureForThisTile(String featureName) {
+        return this.getBaseTerrain().getFeature().getType().equals(featureName);
+    }
+
+    public void nextTurn() {
+
     }
 }

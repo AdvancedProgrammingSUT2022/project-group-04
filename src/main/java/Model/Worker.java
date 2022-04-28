@@ -98,9 +98,9 @@ public class Worker extends Citizen{
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Wheel")
                 && !tile.hasRoad
-                && !tile.getBaseTerrain().equals("Ice")
-                && !tile.getBaseTerrain().equals("Ocean")
-                && !tile.getBaseTerrain().equals("Mountain")){
+                && !tile.getBaseTerrainType().equals("Ice")
+                && !tile.getBaseTerrainType().equals("Ocean")
+                && !tile.getBaseTerrainType().equals("Mountain")){
             indexOfProject = 0;
             isAssigned = true;
             typeOfWork = "Road";

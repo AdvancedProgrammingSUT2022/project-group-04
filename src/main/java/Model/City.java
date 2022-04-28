@@ -22,7 +22,7 @@ public class City extends Tile {
     private ArrayList<Resources> discoveredResources;
     private boolean isGarrison;
     private boolean isDivision;
-    private int hitPoint;
+    private int HP;
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
@@ -44,10 +44,11 @@ public class City extends Tile {
         this.citizens = citizens;
         this.buildings = new ArrayList<Building>();
         this.discoveredResources = new ArrayList<Resources>();
-        this.hitPoint = 0;
+        this.HP = 0;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
         this.food = 0;
+        this.production = 0;
     }
 
     public String getName() {
@@ -94,8 +95,19 @@ public class City extends Tile {
         return citizens;
     }
 
-    public int getHitPoint() {
-        return hitPoint;
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public void reduceHP(int amount){
+        this.HP -= amount;
+    }
+    public void regainHP(int amount){
+        this.HP += amount;
     }
 
     public String getCivilizationName() {
@@ -140,12 +152,13 @@ public class City extends Tile {
         String result = this.name + ": \n";
         result += "\t Type: " + this.baseTerrain.getType() + "\n";
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t Hit Point" + Integer.toString(this.hitPoint);
+        result += "\t Hit Point" + Integer.toString(this.HP);
         return result;
     }
 
     public void buildBuilding(Building building, boolean build) {
         building.setCityName(this.name);
+        building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
         if(!build) {
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
@@ -165,7 +178,10 @@ public class City extends Tile {
         this.food+= amount;
     }
 
+    @Override
     public void nextTurn() {
+        this.production += this.productionGenerating;
+        this.food += this.foodGeneratingRate;
         for (Building building : this.buildings) {
             if(!building.wasBuilt()) {
                 building.build();
@@ -178,6 +194,24 @@ public class City extends Tile {
             this.production+= improvement.getCityProductionChange();
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(improvement.getCivilizationGoldChange());
         }
+        for (Resources resource : this.discoveredResources) {
+            resource.nextTurn(this.name);
+        }
     }
 
+    public ArrayList<Resources> getDiscoveredResources() {
+        return discoveredResources;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public int getProduction() {
+        return production;
+    }
+
+    public void addProduction(int amount) {
+        this.production += amount;
+    }
 }

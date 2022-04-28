@@ -191,5 +191,24 @@ public class Soldier extends Unit {
         }
     }
 
+    public void attackUnit(Unit unit){
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                this.combatStrength -= ((10 - i) / 20) * this.combatStrength;
+                break;
+            }
+        }
+        unit.setHP(unit.getHP() - this.combatStrength);
+    }
+    public void attackCity(City city){
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                this.combatStrength -= ((10 - i) / 20) * this.combatStrength;
+                break;
+            }
+        }
+        city.setHP(city.getHP() - this.combatStrength);
+    }
+
 
 }

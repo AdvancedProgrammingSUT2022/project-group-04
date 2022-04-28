@@ -2,6 +2,7 @@ package Model;
 
 import Database.GameDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Civilization {
@@ -16,6 +17,8 @@ public class Civilization {
     private ArrayList<Technology> technologies;
     private int happiness;
     private int science;
+    private boolean isInWar = false;
+    private Civilization isInWarWith;
 
 
     public int getHappiness() {
@@ -58,7 +61,13 @@ public class Civilization {
     }
 
     public void addTechnology(Technology newTechnology) {
+        if(science - newTechnology.getCost() < 100) {
+            newTechnology.setTurnsNeedToResearch(1);
+        } else {
+            newTechnology.setTurnsNeedToResearch(10 - (science - newTechnology.getCost())/10);
+        }
         this.technologies.add(newTechnology);
+        this.science = 0;
     }
 
     public void addTile(Tile newTile) {
@@ -97,6 +106,22 @@ public class Civilization {
         return this.gold;
     }
 
+    public boolean isInWar() {
+        return isInWar;
+    }
+
+    public void setInWar(boolean inWar) {
+        isInWar = inWar;
+    }
+
+    public Civilization getIsInWarWith() {
+        return isInWarWith;
+    }
+
+    public void setIsInWarWith(Civilization isInWarWith) {
+        this.isInWarWith = isInWarWith;
+    }
+
     public void removeTile(Tile conqueredTile) {
         for (int i = 0; i < this.tiles.size(); i++) {
             if (this.tiles.get(i).equals(conqueredTile)) {
@@ -131,6 +156,16 @@ public class Civilization {
             }
         }
         return false;
+
+    }
+
+    public ArrayList<Unit> getAllUnitsOfCivilization(){
+
+        ArrayList<Unit> allUnits = new ArrayList<>();
+        for (Tile tile : tiles){
+            allUnits.addAll(tile.getUnits());
+        }
+        return allUnits;
 
     }
 
@@ -209,8 +244,20 @@ public class Civilization {
     public void nextTurn() {
         for (City city : this.cities) {
             city.nextTurn();
+            gold+= city.getGoldGeneratingRate();
+            science+= city.getCitizens().size();
+            if(city.isCapital()) {
+                science+= 3;
+            }
+        }
+        for (Technology technology : this.technologies) {
+            technology.nextTurn();
         }
 
+    }
+
+    public int getScience() {
+        return this.science;
     }
 
     public boolean isHappy() {
@@ -221,6 +268,15 @@ public class Civilization {
         for (Technology technology1 : technologies) {
             if (technology1.getName().equals(technology))
                 return true;
+        }
+        return false;
+    }
+
+    public boolean isImprovementReachedByThisCivilization(String improvementName) {
+        for (Tile tile : this.tiles) {
+            if(tile.isImprovementForThisTile(improvementName)) {
+                return true;
+            }
         }
         return false;
     }
