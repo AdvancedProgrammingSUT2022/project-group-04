@@ -12,8 +12,9 @@ public class Worker extends Citizen{
     @Override
     public void nextTurn(){
         Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
-        
-        roundsTillFinish -- ;
+        int roundsTillFinishProject = tile.getRoundsTillFinishProjectByIndex(indexOfProject);
+        tile.reduceRoundsByIndex(indexOfProject);
+        roundsTillFinishProject -- ;
         if (roundsTillFinishProject <= 0){
             finishWork();
             roundsTillFinishProject = 0;
@@ -30,7 +31,7 @@ public class Worker extends Citizen{
                 && !tile.getBaseTerrain().equals("Ice")
                 && !tile.getBaseTerrain().equals("Ocean")
                 && !tile.getBaseTerrain().equals("Mountain") {
-            roundsTillFinishProject = 3;
+            indexOfProject = 0;
             isAssigned = true;
             typeOfWork = "Road";
         }
@@ -40,8 +41,8 @@ public class Worker extends Citizen{
             Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
             tile.hasRoad = true;
         }
-        else if (typeOfWork.equals("")){
-
-        }
+//        else if (typeOfWork.equals("")){
+//
+//        }
     }
 }

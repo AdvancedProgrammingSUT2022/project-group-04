@@ -217,4 +217,11 @@ public class Tile {
 
     }
 
+    public int getRoundsTillFinishProjectByIndex(int indexOfProject) {
+        return this.roundsTillFinish[indexOfProject];
+    }
+
+    public void reduceRoundsByIndex(int indexOfProject) {
+        this.roundsTillFinish[indexOfProject] --;
+    }
 }
