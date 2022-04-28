@@ -117,10 +117,10 @@ public class Unit {
     }
 
     public void reduceHP(int amount){
-
+        this.HP -= amount;
     }
     public void regainHP(int amount){
-
+        this.HP += amount;
     }
 
     public void setHP(int HP) {

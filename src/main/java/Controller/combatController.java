@@ -60,6 +60,14 @@ public class combatController {
         }
     }
 
+    public void regainHP(Unit unit){
+        //Todo... check to see if is in friendly tile or ...
+    }
+
+    public void Strengthen(){
+
+    }
+
 
 
 

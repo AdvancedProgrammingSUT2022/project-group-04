@@ -22,7 +22,7 @@ public class City extends Tile {
     private ArrayList<Resources> discoveredResources;
     private boolean isGarrison;
     private boolean isDivision;
-    private int hitPoint;
+    private int HP;
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
@@ -44,7 +44,7 @@ public class City extends Tile {
         this.citizens = citizens;
         this.buildings = new ArrayList<Building>();
         this.discoveredResources = new ArrayList<Resources>();
-        this.hitPoint = 0;
+        this.HP = 0;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
         this.food = 0;
@@ -94,8 +94,19 @@ public class City extends Tile {
         return citizens;
     }
 
-    public int getHitPoint() {
-        return hitPoint;
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public void reduceHP(int amount){
+        this.HP -= amount;
+    }
+    public void regainHP(int amount){
+        this.HP += amount;
     }
 
     public String getCivilizationName() {
@@ -140,7 +151,7 @@ public class City extends Tile {
         String result = this.name + ": \n";
         result += "\t Type: " + this.baseTerrain.getType() + "\n";
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t Hit Point" + Integer.toString(this.hitPoint);
+        result += "\t Hit Point" + Integer.toString(this.HP);
         return result;
     }
 
