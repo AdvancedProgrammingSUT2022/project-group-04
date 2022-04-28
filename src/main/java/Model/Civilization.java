@@ -2,6 +2,7 @@ package Model;
 
 import Database.GameDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Civilization {
@@ -155,6 +156,16 @@ public class Civilization {
             }
         }
         return false;
+
+    }
+
+    public ArrayList<Unit> getAllUnitsOfCivilization(){
+
+        ArrayList<Unit> allUnits = new ArrayList<>();
+        for (Tile tile : tiles){
+            allUnits.addAll(tile.getUnits());
+        }
+        return allUnits;
 
     }
 

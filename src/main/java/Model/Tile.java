@@ -44,16 +44,15 @@ public class Tile {
     private void InitializeRoundsTillFinish() {
         roundsTillFinish = new int[10];
         roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
-        roundsTillFinish[0] = 0;
+        roundsTillFinish[1] = 0;
+        roundsTillFinish[2] = 0;
+        roundsTillFinish[3] = 0;
+        roundsTillFinish[4] = 0;
+        roundsTillFinish[5] = 0;
+        roundsTillFinish[6] = 0;
+        roundsTillFinish[7] = 0;
+        roundsTillFinish[8] = 0;
+        roundsTillFinish[9] = 0;
     }
 
     public String getBaseTerrainType() {
