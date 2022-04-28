@@ -162,4 +162,13 @@ public class BaseTerrain {
         }
         return false;
     }
+
+    public void removeFeature(String type){
+        for (TerrainFeatures feature : features) {
+            if (feature.getType().equals(type)) {
+                features.remove(feature);
+                break;
+            }
+        }
+    }
 }
