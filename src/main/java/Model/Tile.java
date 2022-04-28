@@ -224,4 +224,26 @@ public class Tile {
     public void reduceRoundsByIndex(int indexOfProject) {
         this.roundsTillFinish[indexOfProject] --;
     }
+
+    public boolean isImprovementForThisTile(String improvementName) {
+        for (Improvement improvement : this.improvements) {
+            if(improvementName.equals(improvement.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isThisFeatureForThisTile(String featureName) {
+        for (TerrainFeatures terrainFeatures : this.getBaseTerrain().getFeatures()) {
+            if(terrainFeatures.getType().equals(featureName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void nextTurn() {
+
+    }
 }

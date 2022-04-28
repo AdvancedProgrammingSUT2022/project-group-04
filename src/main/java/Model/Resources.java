@@ -5,14 +5,14 @@ import Database.GameDatabase;
 import java.util.ArrayList;
 
 public class Resources {
-    private String name;
-    private String type;
-    private int gold;
-    private int foodNum;
-    private int production;
-    private ArrayList<String> canBeFoundOnBaseTerrain;
-    private ArrayList<String> canBeFoundOnTerrainFeature;
-    private Improvement improvementNeeded;
+    protected String name;
+    protected String type;
+    protected int gold;
+    protected int foodNum;
+    protected int production;
+    protected ArrayList<String> canBeFoundOnBaseTerrain;
+    protected ArrayList<String> canBeFoundOnTerrainFeature;
+    protected Improvement improvementNeeded;
 
     public Resources(String name) {
         this.name = name;
@@ -241,6 +241,54 @@ public class Resources {
 
     public Improvement getImprovementNeeded() {
         return improvementNeeded;
+    }
+
+    public boolean isResourceValidForThisTile(String tileType) {
+        for (String baseTerrainName : this.canBeFoundOnBaseTerrain) {
+            if(baseTerrainName.equals(tileType)) {
+                return true;
+            }
+        }
+        for (String featureName : this.canBeFoundOnTerrainFeature) {
+            if(featureName.equals(tileType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isResourceValidForThisTile(Tile tile) {
+        for (String baseTerrainName : this.canBeFoundOnBaseTerrain) {
+            if(tile.getBaseTerrain().getType().equals(baseTerrainName)) {
+                return true;
+            }
+        }
+        for (String featureName : this.canBeFoundOnTerrainFeature) {
+            if(tile.isThisFeatureForThisTile(featureName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isResourceOnTileValidForDiscovering(Tile tile) {
+        Resources resources = new Resources(tile.getBaseTerrain().getResources().getName());
+        for (Improvement improvement : tile.getImprovements()) {
+            if(resources.getImprovementNeeded().equals(improvement)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isResourceValidForThisCivilization(Civilization civilization) {
+        return civilization.isImprovementReachedByThisCivilization(this.improvementNeeded.getName());
+    }
+
+    public void nextTurn(String cityName) {
+        GameDatabase.getCityByName(cityName).addFood(this.foodNum);
+        GameDatabase.getCityByName(cityName).addProduction(this.production);
+        GameDatabase.getCivilizationForCity(cityName).addGold(this.gold);
     }
 
 }
