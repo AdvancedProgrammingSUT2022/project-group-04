@@ -152,9 +152,7 @@ public class Tile {
 
     public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
-        for (TerrainFeatures features : getBaseTerrain().getFeatures()) {
-            movementPriceSum += features.getMovementPrice();
-        }
+        movementPriceSum += getBaseTerrain().getFeature().getMovementPrice();
         return movementPriceSum;
     }
 
@@ -234,12 +232,7 @@ public class Tile {
     }
 
     public boolean isThisFeatureForThisTile(String featureName) {
-        for (TerrainFeatures terrainFeatures : this.getBaseTerrain().getFeatures()) {
-            if(terrainFeatures.getType().equals(featureName)) {
-                return true;
-            }
-        }
-        return false;
+        return this.getBaseTerrain().getFeature().getType().equals(featureName);
     }
 
     public void nextTurn() {

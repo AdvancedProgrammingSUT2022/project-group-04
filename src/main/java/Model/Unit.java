@@ -244,6 +244,7 @@ public class Unit {
                 }
             }
         }
+        //Todo.. make each movement round based
         for (int i = 1; i < path.size(); i++) {
             if (movementPoint >= path.get(i).movementPriceForTile()) {
                 moveToAdjacentTile(path.get(i));
