@@ -16,6 +16,8 @@ public class Civilization {
     private ArrayList<Technology> technologies;
     private int happiness;
     private int science;
+    private boolean isInWar = false;
+    private Civilization isInWarWith;
 
 
     public int getHappiness() {
@@ -101,6 +103,22 @@ public class Civilization {
 
     public int getGold() {
         return this.gold;
+    }
+
+    public boolean isInWar() {
+        return isInWar;
+    }
+
+    public void setInWar(boolean inWar) {
+        isInWar = inWar;
+    }
+
+    public Civilization getIsInWarWith() {
+        return isInWarWith;
+    }
+
+    public void setIsInWarWith(Civilization isInWarWith) {
+        this.isInWarWith = isInWarWith;
     }
 
     public void removeTile(Tile conqueredTile) {
