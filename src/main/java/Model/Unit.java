@@ -6,22 +6,22 @@ import java.util.ArrayList;
 
 public class Unit {
 
-    private int x;
-    private int y;
-    private int vX;
-    private int vY;
-    private int power;
-    private int cost;
-    private Technology technologyRequired;
-    private Resources resourcesRequired;
-    private int movementPoint;
-    private String unitType;
-    private boolean isSleeping;
-    private boolean isReady;
-    private String era;
-    private int HP;
-    private Tile tileOfUnit;
-    private int civilizationIndex;
+    protected int x;
+    protected int y;
+    protected int vX;
+    protected int vY;
+    protected int power;
+    protected int cost;
+    protected Technology technologyRequired;
+    protected Resources resourcesRequired;
+    protected int movementPoint;
+    protected String unitType;
+    protected boolean isSleeping;
+    protected boolean isReady;
+    protected String era;
+    protected int HP;
+    protected Tile tileOfUnit;
+    protected int civilizationIndex;
 
     public int getX() {
         return x;
