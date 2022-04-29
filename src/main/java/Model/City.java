@@ -27,7 +27,10 @@ public class City extends Tile {
     private boolean isColonized;
     private boolean isCapital;
     private int food;
+    private int leftoverFood;
     private int production;
+    private boolean hasSettler;
+    private boolean isGettingWorkedOn;
 
     public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
         super(type, baseTerrainType, x, y);
@@ -48,6 +51,7 @@ public class City extends Tile {
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
         this.food = 0;
+        this.leftoverFood = 0;
         this.production = 0;
     }
 
@@ -213,5 +217,15 @@ public class City extends Tile {
 
     public void addProduction(int amount) {
         this.production += amount;
+    }
+
+    public int countFood(){
+        leftoverFood
+    }
+
+    public void createSettler(){
+        hasSettler = true;
+        citizens.add(new Settler(x, y, Vx, Vy, power, 89, 2, , isSleeping, isReady, era, HP, civilizationIndex, isAssigned));
+
     }
 }
