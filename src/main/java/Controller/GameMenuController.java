@@ -93,7 +93,7 @@ public class GameMenuController {
     public boolean isCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Soldier) {
+            if (isUnitSoldier(tile.getUnits().get(i))) {
                 return true;
             }
         }
@@ -103,7 +103,7 @@ public class GameMenuController {
     public Unit selectCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Soldier) {
+            if (isUnitSoldier(tile.getUnits().get(i))) {
                 return tile.getUnits().get(i);
             }
         }
@@ -126,7 +126,7 @@ public class GameMenuController {
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Citizen) {
+            if (isUnitCivilian(tile.getUnits().get(i))) {
                 return true;
             }
         }
@@ -136,7 +136,7 @@ public class GameMenuController {
     public Unit selectNonCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Citizen) {
+            if (isUnitCivilian(tile.getUnits().get(i))) {
                 return tile.getUnits().get(i);
             }
         }
@@ -156,16 +156,16 @@ public class GameMenuController {
     }
 
     public boolean isDestinationOkForMove(Unit unit, int x, int y) {
-        if (unit instanceof Soldier) {
+        if (isUnitSoldier(unit)) {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (unit1 instanceof Soldier) {
+                if (isUnitSoldier(unit1)) {
                     return false;
                 }
             }
             return true;
         } else {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (unit1 instanceof Citizen) {
+                if (isUnitCivilian(unit1)) {
                     return false;
                 }
             }
