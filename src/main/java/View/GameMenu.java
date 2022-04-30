@@ -143,29 +143,74 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SLEEP)) != null) {
-
+                String result = unitSleep();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_ALERT)) != null) {
-
+                String result = unitAlert();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY)) != null) {
-
+                String result = unitFortify();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null) {
-
+                String result = unitFortifyHeal();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null) {
-
+                //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null) {
-
+                //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
-
+                //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
-
+                String result = unitFoundCity();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null) {
-
+                String result = unitCancelMission();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_WAKE)) != null) {
-
+                String result = unitWake();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_DELETE)) != null) {
-
+                String result = unitDelete();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null) {
-
+                String result = unitBuildRoad();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
 
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null) {
@@ -376,6 +421,49 @@ public class GameMenu extends Menu {
             unitSelected.fortifyHeal();
         }
         return "unit fortifyHealed";
+    }
+
+    private String unitFoundCity(){
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else if(unitSelected.isCombatUnit()) {
+            return "this is not a settler unit";
+        } else {
+            unitSelected.createCity(unitSelected.getX(), unitSelected.getY());
+        }
+        return "unit found city";
+
+    }
+
+    private String unitCancelMission(){
+        return null;
+    }
+    private String unitWake(){
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else {
+            unitSelected.setSleeping(false);
+        }
+        return "unit awakened";
+    }
+    private String unitAttack(){
+        return null;
+    }
+    private String unitGarrison(){
+        return null;
+    }
+    private String unitSetupRanged(){
+        return null;
+    }
+    private String unitDelete(){
+        return null;
+    }
+    private String unitBuildRoad(){
+        return null;
     }
 
     private String mapMove(Matcher matcher) {

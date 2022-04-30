@@ -12,7 +12,12 @@ public class Settler extends Citizen {
 
     }
 
-//    public void createCity(int xOfTile,int yOfTile) {
+    public boolean isSettler(){
+        return true;
+    }
+
+    @Override
+    public void createCity(int xOfTile,int yOfTile) {
 //        Tile tile = GameDatabase.getTileByXAndY(x, y);
 //        if (tile.city == null){//TODO edit if there is more than one turn for creating city
 //            String name = ;
@@ -20,5 +25,5 @@ public class Settler extends Citizen {
 //            int
 //            tile.city = new City(name,power,);
 //        }
-//    }
+    }
 }

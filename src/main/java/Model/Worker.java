@@ -36,7 +36,10 @@ public class Worker extends Citizen {
         typeOfWork = "";
     }
 
-    //@Override
+    @Override
+    public boolean isSettler(){
+        return false;
+    }
     public void nextTurn() {
         if (isAssigned) {
             Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
