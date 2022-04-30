@@ -17,4 +17,8 @@ public class Citizen extends Unit {
         isHostage = hostage;
     }
 
+    public boolean isCombatUnit(){
+        return false;
+    }
+
 }

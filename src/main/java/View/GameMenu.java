@@ -344,8 +344,10 @@ public class GameMenu extends Menu {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
+        } else if(!unitSelected.isCombatUnit()) {
+            return "this is not a combat unit";
         } else {
-            //TODO... check if unit is a combat unit
+            unitSelected.setReady(true);
         }
         return "unit is ready";
     }
@@ -355,10 +357,25 @@ public class GameMenu extends Menu {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
+        } else if(!unitSelected.isCombatUnit()) {
+            return "this is not a combat unit";
         } else {
-
+            unitSelected.fortify();
         }
         return "unit fortified";
+    }
+
+    private String unitFortifyHeal(){
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else if(!unitSelected.isCombatUnit()) {
+            return "this is not a combat unit";
+        } else {
+            unitSelected.fortifyHeal();
+        }
+        return "unit fortifyHealed";
     }
 
     private String mapMove(Matcher matcher) {
@@ -615,4 +632,5 @@ public class GameMenu extends Menu {
     }
 
     // this is a comment for retards
+    // this a comment for women
 }
