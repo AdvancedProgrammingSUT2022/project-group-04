@@ -29,7 +29,7 @@ public class City extends Tile {
     private int food;
     private int leftoverFood;
     private int production;
-    private boolean hasSettler;
+    private Settler settler;
     private boolean isGettingWorkedOn;
 
     public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
@@ -53,6 +53,7 @@ public class City extends Tile {
         this.food = 0;
         this.leftoverFood = 0;
         this.production = 0;
+        this.settler = null;
     }
 
     public String getName() {
@@ -107,10 +108,11 @@ public class City extends Tile {
         this.HP = HP;
     }
 
-    public void reduceHP(int amount){
+    public void reduceHP(int amount) {
         this.HP -= amount;
     }
-    public void regainHP(int amount){
+
+    public void regainHP(int amount) {
         this.HP += amount;
     }
 
@@ -137,7 +139,7 @@ public class City extends Tile {
 
     public boolean cityHasBuilding(String name) {
         for (Building building : this.buildings) {
-            if(building.getName().equals(name) && building.getTurnsNeedToBuild() == 0) {
+            if (building.getName().equals(name) && building.getTurnsNeedToBuild() == 0) {
                 return true;
             }
         }
@@ -164,14 +166,14 @@ public class City extends Tile {
         building.setCityName(this.name);
         building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
-        if(!build) {
+        if (!build) {
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
         }
     }
 
     public boolean isResourceDiscoveredByThisCity(String resourceName) {
         for (Resources discoveredResource : this.discoveredResources) {
-            if(discoveredResource.getName().equals(resourceName)) {
+            if (discoveredResource.getName().equals(resourceName)) {
                 return true;
             }
         }
@@ -179,7 +181,7 @@ public class City extends Tile {
     }
 
     public void addFood(int amount) {
-        this.food+= amount;
+        this.food += amount;
     }
 
     @Override
@@ -187,20 +189,21 @@ public class City extends Tile {
         this.production += this.productionGenerating;
         this.food += this.foodGeneratingRate;
         for (Building building : this.buildings) {
-            if(!building.wasBuilt()) {
+            if (!building.wasBuilt()) {
                 building.build();
             } else {
                 building.nextTurn();
             }
         }
         for (Improvement improvement : this.improvements) {
-            this.food+= improvement.getCityFoodChange();
-            this.production+= improvement.getCityProductionChange();
+            this.food += improvement.getCityFoodChange();
+            this.production += improvement.getCityProductionChange();
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(improvement.getCivilizationGoldChange());
         }
         for (Resources resource : this.discoveredResources) {
             resource.nextTurn(this.name);
         }
+        countFood();//setting the food for the next turn
     }
 
     public ArrayList<Resources> getDiscoveredResources() {
@@ -219,13 +222,53 @@ public class City extends Tile {
         this.production += amount;
     }
 
-//    public int countFood(){
-//        leftoverFood
-//    }
-//
-//    public void createSettler(){
-//        hasSettler = true;
-//        citizens.add(new Settler(x, y, Vx, Vy, power, 89, 2, , isSleeping, isReady, era, HP, civilizationIndex, isAssigned));
-//
-//    }
+    public void countFood() {
+        int count = food + leftoverFood;
+        //add resources food
+        for (Resources discoveredResource : discoveredResources) {
+            count += discoveredResource.foodNum;
+        }
+        //sub citizens food
+        for (Citizen citizen : citizens) {
+            if (citizen.cost == 89) count -= 2;
+        }
+        if (settler != null) {
+            count -= 2;
+        }
+        if (count < 0) {
+            citizensDyingForHunger(count);
+        } else {
+            count = checkNewCitizen(count);
+        }
+        //updating the leftover
+        leftoverFood = count;
+    }
+
+    private int checkNewCitizen(int count) {
+        double size = (double) citizens.size();
+        if (count > Math.pow(2.0, size)) {
+            count -= Math.pow(2.0, size);//TODO change initializing fields
+            citizens.add(new Citizen(x, y, 0, 0, 0, 0, 0, "sth", true, true, "?", 0, 0, false));
+        }
+        return count;
+    }
+
+    private void citizensDyingForHunger(int count) {
+        while (count > 0) {
+            citizens.remove(0);
+            count--;
+        }
+    }
+
+    //
+    public void createSettler() {
+        if (citizens.size() > 1 && settler == null) {
+            settler = new Settler(x, y, 0, 0, 0, 89, 0, "sth", true, true, "?", 0, 0, false);//TODO change initializing fields
+            leftoverFood = 0;//damn immigrants why they gotta be eating everything
+        }
+    }
+
+    public void removeSettler() {
+        settler = null;
+    }
 }
