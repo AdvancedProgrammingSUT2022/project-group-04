@@ -32,7 +32,7 @@ public class City extends Tile {
     private int production;
     private boolean isGettingWorkedOn;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Worker> workers,ArrayList<Settler> settlers, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
         super(type, baseTerrainType, x, y);
         this.name = name;
         this.power = power;
@@ -44,8 +44,8 @@ public class City extends Tile {
         this.productionGenerating = productionGenerating;
         this.timeToExtendBorders = timeToExtendBorders;
         this.timeTopPopulate = timeTopPopulate;
-        this.workers = workers;
-        this.settlers = settlers;
+        this.workers = new ArrayList<Worker>();
+        this.settlers = new ArrayList<Settler>();
         this.buildings = new ArrayList<Building>();
         this.discoveredResources = new ArrayList<Resources>();
         this.HP = 0;

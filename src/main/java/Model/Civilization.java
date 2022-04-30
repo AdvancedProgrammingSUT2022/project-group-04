@@ -246,7 +246,7 @@ public class Civilization {
         for (City city : this.cities) {
             city.nextTurn();
             gold+= city.getGoldGeneratingRate();
-            science+= city.getCitizens().size();
+            science+= city.getWorkers().size() + city.getSettlers().size();
             if(city.isCapital()) {
                 science+= 3;
             }
@@ -260,7 +260,7 @@ public class Civilization {
     private int happinessCalculator() {
         int population = 0;
         for (City city : this.cities) {
-            population += city.getCitizens().size();
+            population += city.getSettlers().size() + city.getWorkers().size();
         }
         return -population*this.cities.size();
     }

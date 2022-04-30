@@ -22,9 +22,9 @@ public class Settler extends Citizen {
         if (!civilization.isCityInCivilization(xOfCity,yOfCity)
                 && tiles.contains(tileOfOriginalCity)) {
             //TODO edit if there is more than one turn for creating city
-            civilization.addCity( new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(),
-                    0, tile.baseTerrain.getProduction(), 0, 0, null, ""
-                    , false, "", tile.getBaseTerrainType(), tile.x, tile.y));
+            civilization.addCity(new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 0,
+                    tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(this.x, this.y)).getNickname(),
+                    false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY()));
             civilization.getCityByXAndY(x,y).removeSettler();//kill the settler after making city
         }
     }
