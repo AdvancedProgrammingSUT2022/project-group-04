@@ -134,12 +134,14 @@ public class Worker extends Citizen {
                 //tile.baseTerrain.removeFeature();
 //                tile.baseTerrain = null;
                 Improvement improvement = new Improvement("Farm");
+                improvement.setTurnsNeed(GameDatabase.getTileByXAndY(this.x, this.y));
                 tile.improvements.add(improvement);
                 typeOfWork = "remove" + tile.getBaseTerrainType();
                 indexOfProject = workToIndex.get(typeOfWork);
                 break;
             case 3:
                 improvement = new Improvement("Mine");
+                improvement.setTurnsNeed(GameDatabase.getTileByXAndY(this.x, this.y));
                 tile.improvements.add(improvement);
                 typeOfWork = "remove" + tile.getBaseTerrainType();
                 indexOfProject = workToIndex.get(typeOfWork);

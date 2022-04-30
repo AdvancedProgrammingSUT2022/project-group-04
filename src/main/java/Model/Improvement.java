@@ -1,6 +1,8 @@
 package Model;
 
 
+import Database.GameDatabase;
+
 import java.util.ArrayList;
 
 public class Improvement {
@@ -8,6 +10,7 @@ public class Improvement {
     private Technology requiredTechnology;
     private ArrayList<String> BaseTerrainThatCanBeBuilt;
     private ArrayList<String> TerrainFeaturesThatCanBeBuilt;
+    private int turnsNeed;
     private int cityFoodChange;
     private int cityProductionChange;
     private int civilizationGoldChange;
@@ -16,6 +19,7 @@ public class Improvement {
         this.name = name;
         this.BaseTerrainThatCanBeBuilt = new ArrayList<String>();
         this.TerrainFeaturesThatCanBeBuilt = new ArrayList<String>();
+        this.turnsNeed = 6;
         switch (name) {
             case "Camp":
                 this.requiredTechnology = new Technology("Trapping");
@@ -114,6 +118,27 @@ public class Improvement {
                 this.cityProductionChange = 2;
                 this.civilizationGoldChange = 0;
                 break;
+        }
+    }
+
+    public void setTurnsNeed(Tile tile) {
+        switch (this.name) {
+            case "Farm":
+                switch (tile.getBaseTerrain().getFeature().getType()) {
+                    case "Jungle" -> this.turnsNeed = 10;
+                    case "DenseJungle" -> this.turnsNeed = 13;
+                    case "Swamp" -> this.turnsNeed = 12;
+                    default -> this.turnsNeed = 6;
+                }
+            case "Mine":
+                switch (tile.getBaseTerrain().getFeature().getType()) {
+                    case "Jungle" -> this.turnsNeed = 10;
+                    case "DenseJungle" -> this.turnsNeed = 13;
+                    case "Swamp" -> this.turnsNeed = 12;
+                    default -> this.turnsNeed = 6;
+                }
+            default:
+                this.turnsNeed = 6;
         }
     }
 
