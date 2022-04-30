@@ -110,6 +110,15 @@ public class Worker extends Citizen {
             typeOfWork = "Road";
         }
     }
+//    public void removeRoad(){//TODO change if more than 1 turn is needed for removal
+//        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+//        tile.hasRoad = false;
+//    }
+//
+//    public void removeFeature(){
+//        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+//        tile.baseTerrain.removeFeature();
+//    }
 
     public void finishWork() {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
@@ -145,7 +154,30 @@ public class Worker extends Citizen {
                 typeOfWork = "";
                 indexOfProject = -1;
                 isAssigned = false;
+                break;
             case 9://TODO others
+            case 10:
+            case 11:
+            case 12:
+                tile.baseTerrain.removeFeature();
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
+                break;
+            case 13:
+                tile.hasRoad = false;
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
+                break;
+            case 14:
+                tile.hasRailroad = false;
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
+                break;
+            case 15:
+
         }
         isAssigned = false;
     }

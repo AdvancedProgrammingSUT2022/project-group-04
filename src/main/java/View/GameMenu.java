@@ -450,7 +450,21 @@ public class GameMenu extends Menu {
         }
         String[] lines = new String[30];
         int[] counterLine = {0, 3, 0, 3, 0, 3};
-        int[] counterOfHex = {1, 0, 1, 0, 1, 0};
+        int[] counterOfHex = new int[6];
+        counterOfHex[0]=1;
+        counterOfHex[2]=1;
+        counterOfHex[4]=1;
+        if (mainY%2==1){
+            counterOfHex[1]=0;
+            counterOfHex[3]=0;
+            counterOfHex[5]=0;
+        }
+        else {
+//            counterOfHex = {1, 0, 1, 0, 1, 0};
+            counterOfHex[1]=1;
+            counterOfHex[3]=1;
+            counterOfHex[5]=1;
+        }
         for (int i = 1; i < 22; i++) {
             int numberOfSpace = (i % 6);
             String[] marz = new String[2];

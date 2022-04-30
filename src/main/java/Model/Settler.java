@@ -12,7 +12,7 @@ public class Settler extends Citizen {
 
     }
 
-    public void createCity() {
+    public void createCity(int xOfTile,int yOfTile) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile.city == null){//TODO edit if there is more than one turn for creating city
             String name = ;
