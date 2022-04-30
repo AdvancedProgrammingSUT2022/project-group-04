@@ -142,49 +142,49 @@ public class GameMenu extends Menu {
                     turn = nextTurn();
                 }
                 System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_SLEEP)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_SLEEP)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_ALERT)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_ALERT)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_WAKE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_WAKE)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_DELETE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_DELETE)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_JUNGLE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_JUNGLE)) != null) {
 
-            } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_ROUTE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_ROUTE)) != null) {
 
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
 
@@ -216,7 +216,7 @@ public class GameMenu extends Menu {
                 info.infoCity(turn);
             } else if ((matcher = getCommandMatcher(command, VALID_BUILDINGS)) != null) {
                 String result = validBuildings(scanner);
-                if(result == null) {
+                if (result == null) {
                     turn = nextTurn();
                 } else {
                     System.out.println(result);
@@ -316,56 +316,46 @@ public class GameMenu extends Menu {
         int y = Integer.parseInt(matcher.group("y"));
         if (unitSelected == null) {
             return "you must select a unit first";
-        }
-        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        }
-        else if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
+        } else if (!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
-        }
-        else if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+        } else if (!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
             return "invalid to move";
-        }
-        else{
+        } else {
             unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
         }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
-    private String unitSleep(){
-        if (unitSelected == null){
+    private String unitSleep() {
+        if (unitSelected == null) {
             return "you must select a unit first";
-        }
-        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        }
-        else{
+        } else {
             unitSelected.setSleeping(true);
         }
         return "unit slept";
     }
 
-    private String unitAlert(){
-        if (unitSelected == null){
+    private String unitAlert() {
+        if (unitSelected == null) {
             return "you must select a unit first";
-        }
-        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        }
-        else{
+        } else {
             //TODO... check if unit is a combat unit
         }
         return "unit is ready";
     }
 
-    private String unitFortify(){
-        if (unitSelected == null){
+    private String unitFortify() {
+        if (unitSelected == null) {
             return "you must select a unit first";
-        }
-        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        }
-        else {
+        } else {
 
         }
         return "unit fortified";
@@ -375,14 +365,14 @@ public class GameMenu extends Menu {
         String direction = matcher.group("direction");
         int groupCount = matcher.groupCount();
         int c = this.gameMenuController.c;
-        if(matcher.group("c") != null) {
+        if (matcher.group("c") != null) {
             c = Integer.parseInt(matcher.group("c"));
         }
-        if(!this.gameMenuController.isDirectionForMapValid(direction)) {
+        if (!this.gameMenuController.isDirectionForMapValid(direction)) {
             return "invalid direction";
         }
-        int x = this.gameMenuController.x + this.gameMenuController.directionX.get(direction)*c;
-        int y = this.gameMenuController.y + this.gameMenuController.directionY.get(direction)*c;
+        int x = this.gameMenuController.x + this.gameMenuController.directionX.get(direction) * c;
+        int y = this.gameMenuController.y + this.gameMenuController.directionY.get(direction) * c;
         if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
@@ -394,7 +384,7 @@ public class GameMenu extends Menu {
 
     private String citySelectByName(Matcher matcher) {
         String cityName = matcher.group("cityName");
-        if(!this.gameMenuController.isCityValid(cityName)) {
+        if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
         }
         return null;
@@ -403,10 +393,10 @@ public class GameMenu extends Menu {
     private String citySelectByPosition(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!this.gameMenuController.isPositionValid(x, y)) {
+        if (!this.gameMenuController.isPositionValid(x, y)) {
             return "invalid position";
         }
-        if(!this.gameMenuController.isCityPositionValid(x, y)) {
+        if (!this.gameMenuController.isCityPositionValid(x, y)) {
             return "no city in position " + Integer.toString(x) + " and " + Integer.toString(y);
         }
         return null;
@@ -414,13 +404,12 @@ public class GameMenu extends Menu {
 
     private String cheatGold(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
-        if(!this.gameMenuController.isAmountValidForGold(amount)) {
+        if (!this.gameMenuController.isAmountValidForGold(amount)) {
             return "invalid amount";
         }
         GameDatabase.players.get(turn).addGold(amount);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
     }
-
 
 
     private String validBuildings(Scanner scanner) {
@@ -434,26 +423,26 @@ public class GameMenu extends Menu {
         int counter = 1;
         for (String buildingName : GlobalVariables.BUILDINGS) {
             Building building = new Building(buildingName);
-            if(building.isBuildingValidForCivilization(GameDatabase.players.get(turn), citySelected)) {
+            if (building.isBuildingValidForCivilization(GameDatabase.players.get(turn), citySelected)) {
                 validBuildings.add(building);
                 System.out.println(Integer.toString(counter) + "- " + building.getName() + " | cost: " + Integer.toString(building.getCost()));
                 counter++;
             }
         }
-        if(validBuildings.size() == 0) {
+        if (validBuildings.size() == 0) {
             return "poor civilization! you don't have any valid buildings!!!";
         }
         String input;
         int index;
-        while(true) {
+        while (true) {
             input = scanner.nextLine();
-            if(input.equals("EXIT")) {
+            if (input.equals("EXIT")) {
                 return "EXIT building menu";
             }
-            if(!input.matches("\\d+")) {
+            if (!input.matches("\\d+")) {
                 System.out.println("please inter a number");
             } else {
-                if(Integer.parseInt(input) > 0 && Integer.parseInt(input) <= counter) {
+                if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= counter) {
                     index = Integer.parseInt(input);
                     break;
                 }
@@ -463,15 +452,15 @@ public class GameMenu extends Menu {
         index--;
         System.out.println("do you want build building " + validBuildings.get(index).getName() + " or buy?");
         boolean build = true;
-        while(true) {
+        while (true) {
             input = scanner.nextLine();
-            if(input.equals("EXIT")) {
+            if (input.equals("EXIT")) {
                 return "EXIT building menu";
             }
-            if(input.equals(BUY_BUILDING)) {
+            if (input.equals(BUY_BUILDING)) {
                 build = false;
                 break;
-            } else if(!input.equals(BUILD_BUILDING)) {
+            } else if (!input.equals(BUILD_BUILDING)) {
                 System.out.println("buy or build?");
             } else {
                 break;
@@ -497,7 +486,8 @@ public class GameMenu extends Menu {
                 int x = mainX + i;
                 int y = mainY + j;
                 Tile tile = GameDatabase.getTileByXAndY(x, y);
-                if (tile == null || (i == 2 && mainY%2==1) || i == -2) {
+                if (tile == null || (i == 2 && (mainY % 2 == 1 || y % 2 == mainY % 2)) || i == -2
+                        || (i == -1 && mainY % 2 == 0 && y % 2 != mainY % 2)) {
                     for (int k = 0; k < 3; k++) {
                         linesOfHexagons[i + 2][j + 2][k] = Colors.ANSI_RESET;
                         for (int k1 = 0; k1 < 2 * (k + 4); k1++)
@@ -563,19 +553,17 @@ public class GameMenu extends Menu {
         String[] lines = new String[30];
         int[] counterLine = {0, 3, 0, 3, 0, 3};
         int[] counterOfHex = new int[6];
-        counterOfHex[0]=1;
-        counterOfHex[2]=1;
-        counterOfHex[4]=1;
-        if (mainY%2==1){
-            counterOfHex[1]=0;
-            counterOfHex[3]=0;
-            counterOfHex[5]=0;
-        }
-        else {
-//            counterOfHex = {1, 0, 1, 0, 1, 0};
-            counterOfHex[1]=1;
-            counterOfHex[3]=1;
-            counterOfHex[5]=1;
+        counterOfHex[0] = 1;
+        counterOfHex[2] = 1;
+        counterOfHex[4] = 1;
+        if (mainY % 2 == 1) {
+            counterOfHex[1] = 0;
+            counterOfHex[3] = 0;
+            counterOfHex[5] = 0;
+        } else {
+            counterOfHex[1] = 1;
+            counterOfHex[3] = 1;
+            counterOfHex[5] = 1;
         }
         for (int i = 1; i < 22; i++) {
             int numberOfSpace = (i % 6);
@@ -609,7 +597,7 @@ public class GameMenu extends Menu {
                 lines[i] += linesOfHexagons[counterOfHex[j]][j][counterLine[j]];
                 flag = 1 - flag;
             }
-            lines[i] += Colors.ANSI_RESET + "\n";
+            lines[i] += Colors.ANSI_RESET + marz[flag] + "\n";
             //set arrays for next cycle
             for (int u = 0; u < 6; u++) {
                 counterLine[u] += 1;
