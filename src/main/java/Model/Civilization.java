@@ -280,4 +280,20 @@ public class Civilization {
         }
         return false;
     }
+
+    public boolean isCityInCivilization(int xCity,int yCity){
+        for (City city : cities) {
+            if (city.x == xCity && city.y == yCity)
+                return true;
+        }
+        return false;
+    }
+
+    public City getCityByXAndY(int xCity, int yCity) {
+        for (City city : cities) {
+            if (city.x == xCity && city.y == yCity)
+                return city;
+        }
+        return null;
+    }
 }

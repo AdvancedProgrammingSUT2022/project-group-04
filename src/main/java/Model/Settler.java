@@ -2,6 +2,8 @@ package Model;
 
 import Database.GameDatabase;
 
+import java.util.ArrayList;
+
 public class Settler extends Citizen {
 
     public Settler(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, boolean isAssigned) {
@@ -12,18 +14,24 @@ public class Settler extends Citizen {
 
     }
 
-    public boolean isSettler(){
-        return true;
+    public void createCity(String name, int xOfCity, int yOfCity) {
+        Tile tile = GameDatabase.getTileByXAndY(xOfCity, yOfCity);
+        Tile tileOfOriginalCity = GameDatabase.getTileByXAndY(this.x, this.y);
+        Civilization civilization = GameDatabase.getCivilizationByTile(tileOfOriginalCity);
+        ArrayList<Tile> tiles = tile.getNeighbors();
+        if (!civilization.isCityInCivilization(xOfCity,yOfCity)
+                && tiles.contains(tileOfOriginalCity)) {
+            //TODO edit if there is more than one turn for creating city
+            civilization.addCity( new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(),
+                    0, tile.baseTerrain.getProduction(), 0, 0, null, ""
+                    , false, "", tile.getBaseTerrainType(), tile.x, tile.y));
+            civilization.getCityByXAndY(x,y).removeSettler();//kill the settler after making city
+        }
     }
 
     @Override
-    public void createCity(int xOfTile,int yOfTile) {
-//        Tile tile = GameDatabase.getTileByXAndY(x, y);
-//        if (tile.city == null){//TODO edit if there is more than one turn for creating city
-//            String name = ;
-//            int power = ;
-//            int
-//            tile.city = new City(name,power,);
-//        }
+    public boolean isSettler() {
+        return true;
     }
+
 }

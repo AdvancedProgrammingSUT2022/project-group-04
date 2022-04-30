@@ -54,6 +54,7 @@ public class GameMenu extends Menu {
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
     private static final String BUY_BUILDING = "building --buy";
     private static final String BUILD_BUILDING = "building --build";
+    private static final String BUILD_CITY = "build city (?<name>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String SEND_MESSAGE = "to (?<Nickname>\\S+) send (?<Text>.+)";
 
     //Cheat
@@ -334,6 +335,8 @@ public class GameMenu extends Menu {
                 System.out.println(info.infoDemography(turn));
             } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
                 info.infoResearch(turn, scanner);
+            } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null){
+                System.out.println(gameMenuController.buildCity(matcher));
             } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {

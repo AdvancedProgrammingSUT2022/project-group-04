@@ -4,6 +4,7 @@ import Database.GameDatabase;
 import Model.*;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
 
 public class GameMenuController {
 
@@ -221,5 +222,15 @@ public class GameMenuController {
 
     public boolean isAmountValidForGold(int amount) {
         return isAmountValidForTurn(amount);
+    }
+
+    public String buildCity(Matcher matcher) {
+        int xOfCity = Integer.parseInt(matcher.group("x"));
+        int yOfCity = Integer.parseInt(matcher.group("y"));
+        //TODO when commands are released
+//        if (){
+//
+//        }
+        return "";
     }
 }
