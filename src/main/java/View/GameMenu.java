@@ -680,10 +680,10 @@ public class GameMenu extends Menu {
     }
 
     private int nextTurn() {
-        GameDatabase.nextTurn();
         if (turn != this.numberOfPlayers - 1) {
             return turn++;
         }
+        GameDatabase.nextTurn();
         return 0;
     }
 
