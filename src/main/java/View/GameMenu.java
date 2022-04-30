@@ -246,15 +246,17 @@ public class GameMenu extends Menu {
         if (unitSelected == null) {
             return "you must select a unit first";
         }
-        if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
         }
-        if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
+        else if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
         }
-        if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+        else if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
             return "invalid to move";
-
+        }
+        else{
+            unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
         }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }
