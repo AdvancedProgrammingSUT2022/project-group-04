@@ -199,6 +199,7 @@ public class GameMenu extends Menu {
                 String result = citySelectByName(matcher);
                 if (result == null) {
                     citySelected = GameDatabase.getCityByName(matcher.group("cityName"));
+                    System.out.println(citySelected);
                 } else {
                     System.out.println(result);
                 }
@@ -206,6 +207,7 @@ public class GameMenu extends Menu {
                 String result = citySelectByPosition(matcher);
                 if (result == null) {
                     citySelected = GameDatabase.getCityByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    System.out.println(citySelected);
                 } else {
                     System.out.println(result);
                 }
@@ -272,6 +274,7 @@ public class GameMenu extends Menu {
             return "no combat unit";
         }
         unitSelected = this.gameMenuController.selectCombatUnit(x, y);
+        System.out.println(unitSelected);
         return "unit selected";
     }
 
@@ -285,6 +288,7 @@ public class GameMenu extends Menu {
             return "no combat unit";
         }
         unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
+        System.out.println(unitSelected);
         return "unit selected";
     }
 
