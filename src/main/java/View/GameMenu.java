@@ -205,63 +205,72 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null) {
-                String result = unitBuildRoad();
+                Improvement Road = new Improvement("Road");
+                String result = unitBuild(Road);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
-                String result = unitBuildRailRoad();
+                Improvement RailRoad = new Improvement("RailRoad");
+                String result = unitBuild(RailRoad);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null) {
-                String result = unitBuildMine();
+                Improvement Mine = new Improvement("Mine");
+                String result = unitBuild(Mine);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null) {
-                String result = unitBuildTradingPost();
+                Improvement TradingPost = new Improvement("TradingPost");
+                String result = unitBuild(TradingPost);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null) {
-                String result = unitBuildLumberMill();
+                Improvement LumberMill = new Improvement("LumberMill");
+                String result = unitBuild(LumberMill);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null) {
-                String result = unitBuildPasture();
+                Improvement Pasture = new Improvement("Pasture");
+                String result = unitBuild(Pasture);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null) {
-                String result = unitBuildCamp();
+                Improvement Camp = new Improvement("Camp");
+                String result = unitBuild(Camp);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null) {
-                String result = unitBuildPlantation();
+                Improvement Plantation = new Improvement("Plantation");
+                String result = unitBuild(Plantation);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null) {
-                String result = unitBuildQuarry();
+                Improvement Quarry = new Improvement("Quarry");
+                String result = unitBuild(Quarry);
                 if (result.startsWith("unit")){
                     unitSelected = null;
                     turn = nextTurn();
@@ -525,43 +534,7 @@ public class GameMenu extends Menu {
         //TODO...
         return null;
     }
-    private String unitBuildRoad(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildRailRoad(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildFarm(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildMine(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildLumberMill(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildPasture(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildTradingPost(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildCamp(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildQuarry(){
-        //TODO...
-        return null;
-    }
-    private String unitBuildPlantation(){
+    private String unitBuild(Improvement improvement){
         //TODO...
         return null;
     }
