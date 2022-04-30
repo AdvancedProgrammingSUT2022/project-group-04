@@ -160,7 +160,7 @@ public class BaseTerrain {
         return false;
     }
 
-    public void removeFeature(String type){
+    public void removeFeature(){
         features = null;
     }
 }

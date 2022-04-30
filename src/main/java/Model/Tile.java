@@ -18,6 +18,7 @@ public class Tile {
     protected boolean[] isRiver;
     protected boolean hasRoad;
     protected boolean hasRailroad;
+    protected City city;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     protected int[] roundsTillFinish;
     public boolean[] getIsRiver() {
@@ -44,37 +45,32 @@ public class Tile {
     }
 
     public void initializeRoundsTillFinish(int flag) {
+        int[] base = new int[15];
+        base[0] = 3;
+        base[1] = 3;
+        base[2] = 6;
+        base[3] = 6;
+        //TODO improvements number of turns needed
+        base[4] = 0;
+        base[5] = 0;
+        base[6] = 0;
+        base[7] = 0;
+        base[8] = 0;
+        base[9] = 0;
+        //
+        base[10] = 4;
+        base[11] = 7;
+        base[12] = 6;
+        base[13] = 3;
+        base[14] = 3;
+        base[15] = 3;
         if (flag == -1) {
             roundsTillFinish = new int[16];
-            roundsTillFinish[0] = 3;
-            roundsTillFinish[1] = 0;
-            roundsTillFinish[2] = 0;
-            roundsTillFinish[3] = 0;
-            roundsTillFinish[4] = 0;
-            roundsTillFinish[5] = 0;
-            roundsTillFinish[6] = 0;
-            roundsTillFinish[7] = 0;
-            roundsTillFinish[8] = 0;
-            roundsTillFinish[9] = 0;
-            roundsTillFinish[10] = 0;
-            roundsTillFinish[11] = 0;
-            roundsTillFinish[12] = 0;
-            roundsTillFinish[13] = 3;
-            roundsTillFinish[14] = 3;
-            roundsTillFinish[15] = 3;
+            for (int i=0;i<16;i++){
+                roundsTillFinish[i] = base[i];
+            }
         }
         else {
-            int[] base = new int[10];
-            base[0] = 3;
-            base[1] = 0;
-            base[2] = 0;
-            base[3] = 0;
-            base[4] = 0;
-            base[5] = 0;
-            base[6] = 0;
-            base[7] = 0;
-            base[8] = 0;
-            base[9] = 0;
             roundsTillFinish[flag] = base[flag];
         }
     }
