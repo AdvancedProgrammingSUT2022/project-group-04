@@ -159,6 +159,17 @@ public class Civilization {
 
     }
 
+    public boolean hasResource(Resources resources) {
+        for (City city : this.cities) {
+            for (Resources resource : city.getDiscoveredResources()) {
+                if(resource.getName().equals(resources.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public ArrayList<Unit> getAllUnitsOfCivilization(){
 
         ArrayList<Unit> allUnits = new ArrayList<>();
