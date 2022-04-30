@@ -157,8 +157,11 @@ public class City extends Tile {
     public String toString() {
         String result = this.name + ": \n";
         result += "\t Type: " + this.baseTerrain.getType() + "\n";
+        result += "\t production: " + Integer.toString(this.production);
+        result += "\t food: " + Integer.toString(this.food);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t Hit Point" + Integer.toString(this.HP);
+        result += "\t population: " + Integer.toString(this.citizens.size());
+        result += "\t Hit Point: " + Integer.toString(this.HP);
         return result;
     }
 
@@ -263,7 +266,7 @@ public class City extends Tile {
     //
     public void createSettler() {
         if (citizens.size() > 1 && settler == null) {
-            settler = new Settler(x, y, 0, 0, 0, 89, 0, "sth", true, true, "?", 0, 0, false);//TODO change initializing fields
+            settler = new Settler(x, y, 0, 0, 0, 89, 0, true, true, "?", 0, 0, false);//TODO change initializing fields
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }

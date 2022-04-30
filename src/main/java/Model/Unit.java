@@ -92,8 +92,16 @@ public class Unit {
         return isSleeping;
     }
 
-    public void setSleeping(boolean sleeping) {
-        isSleeping = sleeping;
+    public void sleep() {
+        this.isSleeping = true;
+    }
+
+    public void wakeUp() {
+        this.isSleeping = false;
+    }
+
+    public void setSleeping(boolean isSleeping) {
+        this.isSleeping = isSleeping;
     }
 
     public boolean isReady() {
@@ -223,6 +231,14 @@ public class Unit {
         this.movementPoint -= adjacentTile.movementPriceForTile();
     }
 
+    @Override
+    public String toString() {
+        String result = this.unitType;
+        result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
+        result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.power);
+        return result;
+    }
+
     public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
         if (!destTile.canBePassed())
             return false;
@@ -267,6 +283,10 @@ public class Unit {
     }
     public void fortifyHeal(){
         //TODO...
+    }
+
+    public void createCity(int xOfTile,int yOfTile){
+
     }
 
 }

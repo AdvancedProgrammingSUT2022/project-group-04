@@ -46,15 +46,55 @@ public class GameMenuController {
         return false;
     }
 
+    public boolean isUnitSoldier(Unit unitSelected){
+        return !unitSelected.getUnitType().startsWith("Civilian");
+    }
+
+    public boolean isUnitCivilian(Unit unitSelected) {
+        return !isUnitSoldier(unitSelected);
+    }
+
+    public boolean isUnitWorker(Unit unitSelected) {
+        return unitSelected.getUnitType().equals("Civilian Worker");
+    }
+
+    public boolean isUnitSettler(Unit unitSelected) {
+        return unitSelected.getUnitType().equals("Civilian Settler");
+    }
+
     public boolean isCityValid(String cityName) {
         City city = GameDatabase.getCityByName(cityName);
         return city != null;
     }
 
+    public boolean isJungleInThisTile(Tile tile) {
+        return tile.getBaseTerrain().getFeature().getType().endsWith("Jungle");
+    }
+
+    public boolean isRouteInThisTile(Tile tile) {
+        return tile.hasRoad() || tile.hasRailroad();
+    }
+
+    public boolean isImprovementValidForThisTile(Tile tile, String improvementName) {
+        Improvement improvement = new Improvement(improvementName);
+        if(!GameDatabase.getCivilizationByTile(tile).isTechnologyForThisCivilization(improvement.getRequiredTechnology()));
+        for (String terrainName : improvement.getBaseTerrainThatCanBeBuilt()) {
+            if(tile.getBaseTerrain().getType().equals(terrainName)) {
+                return true;
+            }
+        }
+        for (String featureName : improvement.getTerrainFeaturesThatCanBeBuilt()) {
+            if(tile.getBaseTerrain().getFeature().getType().equals(featureName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Soldier) {
+            if (isUnitSoldier(tile.getUnits().get(i))) {
                 return true;
             }
         }
@@ -64,7 +104,7 @@ public class GameMenuController {
     public Unit selectCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Soldier) {
+            if (isUnitSoldier(tile.getUnits().get(i))) {
                 return tile.getUnits().get(i);
             }
         }
@@ -87,7 +127,7 @@ public class GameMenuController {
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Citizen) {
+            if (isUnitCivilian(tile.getUnits().get(i))) {
                 return true;
             }
         }
@@ -97,7 +137,7 @@ public class GameMenuController {
     public Unit selectNonCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (tile.getUnits().get(i) instanceof Citizen) {
+            if (isUnitCivilian(tile.getUnits().get(i))) {
                 return tile.getUnits().get(i);
             }
         }
@@ -117,16 +157,16 @@ public class GameMenuController {
     }
 
     public boolean isDestinationOkForMove(Unit unit, int x, int y) {
-        if (unit instanceof Soldier) {
+        if (isUnitSoldier(unit)) {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (unit1 instanceof Soldier) {
+                if (isUnitSoldier(unit1)) {
                     return false;
                 }
             }
             return true;
         } else {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (unit1 instanceof Citizen) {
+                if (isUnitCivilian(unit1)) {
                     return false;
                 }
             }

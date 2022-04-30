@@ -2,10 +2,7 @@ package View;
 
 import Database.GameDatabase;
 import Database.GlobalVariables;
-import Model.City;
-import Model.Civilization;
-import Model.Demography;
-import Model.Technology;
+import Model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -37,6 +34,14 @@ public class Info {
     public Demography infoDemography(int turn) {
         Civilization civilization = GameDatabase.players.get(turn);
         return new Demography(civilization);
+    }
+
+    public void infoNotification(int turn) {
+        System.out.println(GameDatabase.players.get(turn).getNickname() + " have " + Integer.toString(Notification.getUnreadMessagesNumber(GameDatabase.players.get(turn))) + " unread messages");
+        for (Notification notification : Notification.get(GameDatabase.players.get(turn))) {
+            System.out.println(notification);
+            notification.read();
+        }
     }
 
     public void infoResearch(int turn, Scanner scanner) {

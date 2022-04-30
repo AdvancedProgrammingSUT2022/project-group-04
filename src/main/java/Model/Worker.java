@@ -29,14 +29,17 @@ public class Worker extends Citizen {
         workToIndex.put("repair", 15);
     }
 
-    public Worker(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, boolean isAssigned) {
-        super(x, y, Vx, Vy, power, cost, movementPoint, unitType, isSleeping, isReady, era, HP, civilizationIndex, isAssigned);
+    public Worker(int x, int y, int Vx, int Vy, int power ,int movementPoint, String era, int HP, int civilizationIndex, boolean isAssigned) {
+        super(x, y, Vx, Vy, power, 70, movementPoint, "Civilian Worker",true, true, era, HP, civilizationIndex, isAssigned);
         isAssigned = false;
         indexOfProject = -1;
         typeOfWork = "";
     }
 
-    //@Override
+    @Override
+    public boolean isSettler(){
+        return false;
+    }
     public void nextTurn() {
         if (isAssigned) {
             Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);

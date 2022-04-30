@@ -21,4 +21,8 @@ public class Citizen extends Unit {
         return false;
     }
 
+    public boolean isSettler(){
+        return true;
+    }
+
 }

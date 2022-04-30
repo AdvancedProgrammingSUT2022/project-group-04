@@ -18,7 +18,6 @@ public class Tile {
     protected boolean[] isRiver;
     protected boolean hasRoad;
     protected boolean hasRailroad;
-    protected City city;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     protected int[] roundsTillFinish;
     public boolean[] getIsRiver() {
@@ -44,6 +43,14 @@ public class Tile {
         initializeRoundsTillFinish(-1);
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public boolean hasRailroad() {
+        return hasRailroad;
+    }
+
     public void initializeRoundsTillFinish(int flag) {
         int[] base = new int[16];
         base[0] = 3;
@@ -51,12 +58,12 @@ public class Tile {
         base[2] = 6;
         base[3] = 6;
         //TODO improvements number of turns needed
-        base[4] = 0;
-        base[5] = 0;
-        base[6] = 0;
-        base[7] = 0;
-        base[8] = 0;
-        base[9] = 0;
+        base[4] = 6;
+        base[5] = 6;
+        base[6] = 6;
+        base[7] = 6;
+        base[8] = 6;
+        base[9] = 6;
         //
         base[10] = 4;
         base[11] = 7;
