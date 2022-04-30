@@ -17,9 +17,10 @@ public class City extends Tile {
     private int productionGenerating;
     private int timeToExtendBorders;
     private int timeTopPopulate;
-    private ArrayList<Citizen> citizens;
+    private ArrayList<Worker> workers;
     private ArrayList<Building> buildings;
     private ArrayList<Resources> discoveredResources;
+    private ArrayList<Settler> settlers;
     private boolean isGarrison;
     private boolean isDivision;
     private int HP;
@@ -29,10 +30,9 @@ public class City extends Tile {
     private int food;
     private int leftoverFood;
     private int production;
-    private Settler settler;
     private boolean isGettingWorkedOn;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Citizen> citizens, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, ArrayList<Worker> workers,ArrayList<Settler> settlers, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
         super(type, baseTerrainType, x, y);
         this.name = name;
         this.power = power;
@@ -44,7 +44,8 @@ public class City extends Tile {
         this.productionGenerating = productionGenerating;
         this.timeToExtendBorders = timeToExtendBorders;
         this.timeTopPopulate = timeTopPopulate;
-        this.citizens = citizens;
+        this.workers = workers;
+        this.settlers = settlers;
         this.buildings = new ArrayList<Building>();
         this.discoveredResources = new ArrayList<Resources>();
         this.HP = 0;
@@ -53,7 +54,6 @@ public class City extends Tile {
         this.food = 0;
         this.leftoverFood = 0;
         this.production = 0;
-        this.settler = null;
     }
 
     public String getName() {
@@ -96,8 +96,12 @@ public class City extends Tile {
         return timeTopPopulate;
     }
 
-    public ArrayList<Citizen> getCitizens() {
-        return citizens;
+    public ArrayList<Worker> getWorkers() {
+        return workers;
+    }
+
+    public ArrayList<Settler> getSettlers(){
+        return settlers;
     }
 
     public int getHP() {
@@ -160,7 +164,7 @@ public class City extends Tile {
         result += "\t production: " + Integer.toString(this.production);
         result += "\t food: " + Integer.toString(this.food);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t population: " + Integer.toString(this.citizens.size());
+        result += "\t population: " + Integer.toString(this.workers.size() + this.settlers.size());
         result += "\t Hit Point: " + Integer.toString(this.HP);
         return result;
     }
@@ -232,14 +236,14 @@ public class City extends Tile {
             count += discoveredResource.foodNum;
         }
         //sub citizens food
-        for (Citizen citizen : citizens) {
-            if (citizen.cost == 89) count -= 2;
-        }
-        if (settler != null) {
+        for (Citizen citizen : workers) {
             count -= 2;
         }
+        for (Settler settler : settlers) {
+            count -=2;
+        }
         if (count < 0) {
-            citizensDyingForHunger(count);
+            count = citizensDyingForHunger(count);
         } else {
             count = checkNewCitizen(count);
         }
@@ -248,30 +252,32 @@ public class City extends Tile {
     }
 
     private int checkNewCitizen(int count) {
-        double size = (double) citizens.size();
+        double size = (double) workers.size() + (double) workers.size();
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
-            citizens.add(new Citizen(x, y, 0, 0, 0, 0, 0, "sth", true, true, "?", 0, 0, false));
+            workers.add(new Worker(x, y, 0, 0, 0, 0,"sth", 0, 0, false));
         }
         return count;
     }
 
-    private void citizensDyingForHunger(int count) {
+    private int citizensDyingForHunger(int count) {
         while (count > 0) {
-            citizens.remove(0);
-            count--;
+            if (settlers.size()>0) settlers.remove(0);
+            else if (workers.size()>0) workers.remove(0);
+            count += 2;
         }
+        return count;
     }
 
     //
     public void createSettler() {
-        if (citizens.size() > 1 && settler == null) {
-            settler = new Settler(x, y, 0, 0, 0, 89, 0, true, true, "?", 0, 0, false);//TODO change initializing fields
+        if (workers.size() + settlers.size() > 1) {
+            settlers.add(new Settler(x, y, 0, 0, 0, 89, 0, true, true, "?", 0, 0, false));//TODO change initializing fields
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
 
     public void removeSettler() {
-        settler = null;
+        settlers.remove(0);
     }
 }
