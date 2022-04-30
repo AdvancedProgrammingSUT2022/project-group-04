@@ -21,7 +21,6 @@ public class BaseTerrain {
         this.type = type;
         possibleFeatures = new ArrayList<TerrainFeatures>();
         possibleResources = new ArrayList<Resources>();
-        //features = new ArrayList<TerrainFeatures>();
         switch (type) {
             case "Desert":
                 foodNum = 0;
@@ -32,6 +31,13 @@ public class BaseTerrain {
                 movementIsPossible = true;
                 possibleFeatures.add(new TerrainFeatures("Oasis"));
                 possibleFeatures.add(new TerrainFeatures("Prairie"));
+                possibleResources.add(new StrategicsResources("Iron"));
+                possibleResources.add(new Resources("Gold"));
+                possibleResources.add(new Resources("Silver"));
+                possibleResources.add(new Resources("Gemstone"));
+                possibleResources.add(new Resources("Marble"));
+                possibleResources.add(new Resources("Incense"));
+                possibleResources.add(new Resources("Sheep"));
                 break;
             case "Meadow":
                 foodNum = 2;
@@ -42,6 +48,15 @@ public class BaseTerrain {
                 movementIsPossible = true;
                 possibleFeatures.add(new TerrainFeatures("Jungle"));
                 possibleFeatures.add(new TerrainFeatures("Oasis"));
+                possibleResources.add(new StrategicsResources("Iron"));
+                possibleResources.add(new StrategicsResources("Horse"));
+                possibleResources.add(new StrategicsResources("Coal"));
+                possibleResources.add(new Resources("Gold"));
+                possibleResources.add(new Resources("Cow"));
+                possibleResources.add(new Resources("Gemstone"));
+                possibleResources.add(new Resources("Marble"));
+                possibleResources.add(new Resources("Cotton"));
+                possibleResources.add(new Resources("Sheep"));
                 break;
             case "Hill":
                 foodNum = 0;
@@ -52,6 +67,14 @@ public class BaseTerrain {
                 movementIsPossible = true;
                 possibleFeatures.add(new TerrainFeatures("Jungle"));
                 possibleFeatures.add(new TerrainFeatures("Dense_Jungle"));
+                possibleResources.add(new StrategicsResources("Iron"));
+                possibleResources.add(new StrategicsResources("Coal"));
+                possibleResources.add(new Resources("Gold"));
+                possibleResources.add(new Resources("Gazelle"));
+                possibleResources.add(new Resources("Gemstone"));
+                possibleResources.add(new Resources("Marble"));
+                possibleResources.add(new Resources("Silver"));
+                possibleResources.add(new Resources("Sheep"));
                 break;
             case "Mountain":
                 foodNum = 0;
@@ -78,6 +101,17 @@ public class BaseTerrain {
                 movementIsPossible = true;
                 possibleFeatures.add(new TerrainFeatures("Jungle"));
                 possibleFeatures.add(new TerrainFeatures("Dense_Jungle"));
+                possibleResources.add(new StrategicsResources("Iron"));
+                possibleResources.add(new StrategicsResources("Horse"));
+                possibleResources.add(new StrategicsResources("Coal"));
+                possibleResources.add(new Resources("Wheat"));
+                possibleResources.add(new Resources("Gold"));
+                possibleResources.add(new Resources("Ivory"));
+                possibleResources.add(new Resources("Gemstone"));
+                possibleResources.add(new Resources("Marble"));
+                possibleResources.add(new Resources("Cotton"));
+                possibleResources.add(new Resources("Incense"));
+                possibleResources.add(new Resources("Sheep"));
                 break;
             case "Snow":
                 foodNum = 0;
@@ -86,6 +120,7 @@ public class BaseTerrain {
                 changesInCombat = -33;
                 movementPrice = 1;
                 movementIsPossible = true;
+                possibleResources.add(new StrategicsResources("Iron"));
                 break;
             case "Tundra":
                 foodNum = 1;
@@ -95,6 +130,12 @@ public class BaseTerrain {
                 movementPrice = 1;
                 movementIsPossible = true;
                 possibleFeatures.add(new TerrainFeatures("Jungle"));
+                possibleResources.add(new StrategicsResources("Iron"));
+                possibleResources.add(new StrategicsResources("Horse"));
+                possibleResources.add(new Resources("Gemstone"));
+                possibleResources.add(new Resources("Marble"));
+                possibleResources.add(new Resources("Gazelle"));
+                possibleResources.add(new Resources("Silver"));
                 break;
         }
     }
