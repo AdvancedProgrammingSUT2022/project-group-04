@@ -155,8 +155,11 @@ public class City extends Tile {
     public String toString() {
         String result = this.name + ": \n";
         result += "\t Type: " + this.baseTerrain.getType() + "\n";
+        result += "\t production: " + Integer.toString(this.production);
+        result += "\t food: " + Integer.toString(this.food);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t Hit Point" + Integer.toString(this.HP);
+        result += "\t population: " + Integer.toString(this.citizens.size());
+        result += "\t Hit Point: " + Integer.toString(this.HP);
         return result;
     }
 

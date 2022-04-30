@@ -51,12 +51,12 @@ public class Tile {
         base[2] = 6;
         base[3] = 6;
         //TODO improvements number of turns needed
-        base[4] = 0;
-        base[5] = 0;
-        base[6] = 0;
-        base[7] = 0;
-        base[8] = 0;
-        base[9] = 0;
+        base[4] = 6;
+        base[5] = 6;
+        base[6] = 6;
+        base[7] = 6;
+        base[8] = 6;
+        base[9] = 6;
         //
         base[10] = 4;
         base[11] = 7;
