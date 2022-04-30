@@ -54,6 +54,7 @@ public class GameMenu extends Menu {
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
     private static final String BUY_BUILDING = "building --buy";
     private static final String BUILD_BUILDING = "building --build";
+    private static final String SEND_MESSAGE = "to (?<Nickname>\\S+) send (?<Text>.+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -65,6 +66,7 @@ public class GameMenu extends Menu {
     private static final String VALID_BUILDINGS = "valid buildings";
     private static final String INFO_DEMOGRAPHY = "info demography";
     private static final String INFO_RESEARCH = "info research";
+    private static final String INFO_NOTIFICATION = "info notification";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -127,11 +129,6 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NUMBER)) != null) {
                 String result = changeTurnByNumber(matcher);
-                if (result.startsWith("now")) {
-                    turn += Integer.parseInt(matcher.group("amount"));
-                    turn %= numberOfPlayers;
-
-                }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SHOW_TURN)) != null) {
                 System.out.println(GameDatabase.players.get(turn).getNickname());
@@ -328,6 +325,10 @@ public class GameMenu extends Menu {
                 System.out.println(info.infoDemography(turn));
             } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
                 info.infoResearch(turn, scanner);
+            } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
+                System.out.println(sendMessage(matcher));
+            } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {
+                info.infoNotification(turn);
             } else {
                 System.out.println("invalid command");
             }
@@ -411,7 +412,7 @@ public class GameMenu extends Menu {
         for (int i = 0; i < amount; i++) {
             turn = nextTurn();
         }
-        return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
+        return "now it's " + GameDatabase.players.get(turn+amount).getNickname() + " turn!";
 
     }
 
@@ -686,6 +687,20 @@ public class GameMenu extends Menu {
         System.out.println("Great!");
         citySelected.buildBuilding(validBuildings.get(index), build);
         return null;
+    }
+
+    private String sendMessage(Matcher matcher) {
+        String nickname = matcher.group("Nickname");
+        String text = matcher.group("Text");
+        if(!this.gameMenuController.isCivilizationValid(nickname)) {
+            return "there is no civilization with this nickname";
+        }
+        if(GameDatabase.players.get(turn).getNickname().equals(nickname)) {
+            return "you can't send a message for yourself!";
+        }
+        Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);
+        Notification.addNotification(notification);
+        return "Message sent.";
     }
 
     private int nextTurn() {
