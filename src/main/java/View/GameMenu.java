@@ -212,27 +212,82 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
-
+                String result = unitBuildRailRoad();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null) {
-
+                String result = unitBuildMine();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null) {
-
+                String result = unitBuildTradingPost();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null) {
-
+                String result = unitBuildLumberMill();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null) {
-
+                String result = unitBuildPasture();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null) {
-
+                String result = unitBuildCamp();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null) {
-
+                String result = unitBuildPlantation();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null) {
-
+                String result = unitBuildQuarry();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_JUNGLE)) != null) {
-
+                String result = unitRemoveJungle();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_ROUTE)) != null) {
-
+                String result = unitRemoveRoute();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
-
+                String result = unitRepair();
+                if (result.startsWith("unit")){
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
                 String result = mapMove(matcher);
                 if (result == null) {
@@ -455,18 +510,71 @@ public class GameMenu extends Menu {
         return "unit awakened";
     }
     private String unitAttack(){
+        //TODO...
         return null;
     }
     private String unitGarrison(){
+        //TODO...
         return null;
     }
     private String unitSetupRanged(){
+        //TODO...
         return null;
     }
     private String unitDelete(){
+        //TODO...
         return null;
     }
     private String unitBuildRoad(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildRailRoad(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildFarm(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildMine(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildLumberMill(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildPasture(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildTradingPost(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildCamp(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildQuarry(){
+        //TODO...
+        return null;
+    }
+    private String unitBuildPlantation(){
+        //TODO...
+        return null;
+    }
+    private String unitRemoveJungle(){
+        //TODO...
+        return null;
+    }
+    private String unitRemoveRoute(){
+        //TODO...
+        return null;
+    }
+    private String unitRepair(){
+        //TODO...
         return null;
     }
 
