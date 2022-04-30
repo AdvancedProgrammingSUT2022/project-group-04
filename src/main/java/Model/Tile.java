@@ -45,7 +45,7 @@ public class Tile {
     }
 
     public void initializeRoundsTillFinish(int flag) {
-        int[] base = new int[15];
+        int[] base = new int[16];
         base[0] = 3;
         base[1] = 3;
         base[2] = 6;

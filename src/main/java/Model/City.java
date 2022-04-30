@@ -219,13 +219,13 @@ public class City extends Tile {
         this.production += amount;
     }
 
-    public int countFood(){
-        leftoverFood
-    }
-
-    public void createSettler(){
-        hasSettler = true;
-        citizens.add(new Settler(x, y, Vx, Vy, power, 89, 2, , isSleeping, isReady, era, HP, civilizationIndex, isAssigned));
-
-    }
+//    public int countFood(){
+//        leftoverFood
+//    }
+//
+//    public void createSettler(){
+//        hasSettler = true;
+//        citizens.add(new Settler(x, y, Vx, Vy, power, 89, 2, , isSleeping, isReady, era, HP, civilizationIndex, isAssigned));
+//
+//    }
 }
