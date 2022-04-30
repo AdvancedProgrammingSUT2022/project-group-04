@@ -74,6 +74,22 @@ public class GameMenuController {
         return tile.hasRoad() || tile.hasRailroad();
     }
 
+    public boolean isImprovementValidForThisTile(Tile tile, String improvementName) {
+        Improvement improvement = new Improvement(improvementName);
+        if(!GameDatabase.getCivilizationByTile(tile).isTechnologyForThisCivilization(improvement.getRequiredTechnology()));
+        for (String terrainName : improvement.getBaseTerrainThatCanBeBuilt()) {
+            if(tile.getBaseTerrain().getType().equals(terrainName)) {
+                return true;
+            }
+        }
+        for (String featureName : improvement.getTerrainFeaturesThatCanBeBuilt()) {
+            if(tile.getBaseTerrain().getFeature().getType().equals(featureName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
