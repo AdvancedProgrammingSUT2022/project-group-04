@@ -6,8 +6,8 @@ public enum Improvements {
     LumberMill,
     Mine,
     Pasture,
-    Field,
+    Plantation,
     StoneMine,
     TradingPost,
-    Factory,
+    Quarry,
 }
