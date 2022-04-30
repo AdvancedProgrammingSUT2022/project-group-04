@@ -1,6 +1,7 @@
 package Model;
 
 import Database.GameDatabase;
+import Database.GlobalVariables;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class Civilization {
         this.cities = new ArrayList<City>();
         this.gold = 0;
         this.technologies = new ArrayList<Technology>();
-        this.happiness = 50 * GameDatabase.players.size();
+        this.happiness = GlobalVariables.firstHappiness * GameDatabase.players.size();
         this.science = 0;
 
     }
@@ -273,7 +274,7 @@ public class Civilization {
         for (City city : this.cities) {
             population += city.getSettlers().size() + city.getWorkers().size();
         }
-        return -population*this.cities.size();
+        return - population*GlobalVariables.happinessForEachCitizen - this.cities.size()*GlobalVariables.happinessForEachCity;
     }
 
     public int getScience() {

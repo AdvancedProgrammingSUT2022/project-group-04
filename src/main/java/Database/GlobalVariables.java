@@ -11,4 +11,8 @@ public class GlobalVariables {
             "Chivalry", "CivilService", "Currency", "Education", "Engineering", "Machinery", "MetalCasting", "Physics", "Steel", "Theology", "Acoustics",
             "Archaeology", "Banking", "Chemistry", "Economics", "Fertilizer", "Gunpowder", "Metallurgy", "MilitaryScience", "PrintingPress", "Rifling",
             "ScientificTheory", "Biology", "Combustion", "Dynamite", "Electricity", "Radio", "Railroad", "ReplaceableParts", "SteamPower", "Telegraph"};
+
+    public static final int firstHappiness = 50;
+    public static final int happinessForEachCitizen = 1;
+    public static final int happinessForEachCity = 1;
 }
