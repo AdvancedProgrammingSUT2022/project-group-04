@@ -44,9 +44,35 @@ public class Info {
         }
     }
 
+    private boolean isResourceNew(ArrayList<String> resourcesName, String resourceName) {
+        for (String resource : resourcesName) {
+            if(resource.equals(resourceName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void printResources(int turn) {
+        System.out.println("Resources:");
+        ArrayList<String> resourcesName = new ArrayList<String>();
+        for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
+            if(Resources.isResourceOnTileValidForDiscovering(tile)) {
+                if(isResourceNew(resourcesName, tile.getBaseTerrain().getResources().getName())) {
+                    resourcesName.add(tile.getBaseTerrain().getResources().getName());
+                    String resourceString = "Resource " + tile.getBaseTerrain().getResources().getName() + " on tile X: " +
+                            Integer.toString(tile.getX()) + " and Y: " + Integer.toString(tile.getY());
+                    System.out.println(resourceString);
+                }
+            }
+        }
+    }
+
     public void infoResearch(int turn, Scanner scanner) {
+        printResources(turn);
+        System.out.println("Technologies");
         if(GameDatabase.players.get(turn).getCities().size() == 0) {
-            System.out.println("Create a city first!");
+            System.out.println("For research on new technologies, Create a city first!");
             return;
         }
         // TODO = start and stop technology

@@ -272,6 +272,9 @@ public class Resources {
     }
 
     public static boolean isResourceOnTileValidForDiscovering(Tile tile) {
+        if(tile.getBaseTerrain().getResources() == null) {
+            return false;
+        }
         Resources resources = new Resources(tile.getBaseTerrain().getResources().getName());
         for (Improvement improvement : tile.getImprovements()) {
             if(resources.getImprovementNeeded().equals(improvement)) {
@@ -281,7 +284,7 @@ public class Resources {
         return false;
     }
 
-    public boolean isResourceValidForThisCivilization(Civilization civilization) {
+    public boolean isResourceVisibleForThisCivilization(Civilization civilization) {
         return civilization.isImprovementReachedByThisCivilization(this.improvementNeeded.getName());
     }
 

@@ -34,7 +34,11 @@ public class StrategicsResources extends Resources {
         }
     }
 
+    @Override
     public boolean isResourceVisibleForThisCivilization(Civilization civilization) {
+        if(!civilization.isImprovementReachedByThisCivilization(this.improvementNeeded.getName())) {
+            return true;
+        }
         return civilization.isTechnologyForThisCivilization(this.technologyNeededForVisibility);
     }
 
