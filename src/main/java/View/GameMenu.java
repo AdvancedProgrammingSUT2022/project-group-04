@@ -497,7 +497,7 @@ public class GameMenu extends Menu {
                 int x = mainX + i;
                 int y = mainY + j;
                 Tile tile = GameDatabase.getTileByXAndY(x, y);
-                if (tile == null || i == -2 || i == 2) {
+                if (tile == null || (i == 2 && mainY%2==1) || i == -2) {
                     for (int k = 0; k < 3; k++) {
                         linesOfHexagons[i + 2][j + 2][k] = Colors.ANSI_RESET;
                         for (int k1 = 0; k1 < 2 * (k + 4); k1++)
