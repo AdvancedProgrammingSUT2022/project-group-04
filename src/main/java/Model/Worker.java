@@ -20,7 +20,7 @@ public class Worker extends Citizen {
         workToIndex.put("Pasture", 6);
         workToIndex.put("Camp", 7);
         workToIndex.put("Field", 8);
-        workToIndex.put("quarry", 9);//TODO might change
+        workToIndex.put("StoneMine", 9);
         workToIndex.put("removeJungle", 10);//forest in the doc
         workToIndex.put("removeDenseJungle", 11);
         workToIndex.put("removePrairie", 12);
