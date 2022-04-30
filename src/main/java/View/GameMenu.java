@@ -24,6 +24,31 @@ public class GameMenu extends Menu {
     private static final String SELECT_NONCOMBAT = "select noncombat (?<x>\\d+) (?<y>\\d+)";
     private static final String SHOW_TURN = "show turn";
     private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
+    private static final String UNIT_SLEEP = "unit sleep";
+    private static final String UNIT_ALERT = "unit alert";
+    private static final String UNIT_FORTIFY = "unit fortify";
+    private static final String UNIT_FORTIFY_HEAL = "unit fortify heal";
+    private static final String UNIT_GARRISON = "unit garrison";
+    private static final String UNIT_SETUP_RANGE = "unit setup range";
+    private static final String UNIT_ATTACK_POSITION = "unit attack (?<x>\\d+) (?<y>\\d+)";
+    private static final String UNIT_FOUND_CITY = "unit found city";
+    private static final String CANCEL_MISSION = "unit cancel mission";
+    private static final String UNIT_WAKE = "unit wake";
+    private static final String UNIT_DELETE = "unit delete";
+    private static final String UNIT_CANCEL_MISSION = "unit cancel mission";
+    private static final String UNIT_BUILD_ROAD = "unit build road";
+    private static final String UNIT_BUILD_RAILROAD = "unit build railraod";
+    private static final String UNIT_BUILD_FARM = "unit build farm";
+    private static final String UNIT_BUILD_MINE = "unit build mine";
+    private static final String UNIT_BUILD_TRADINGPOST = "unit build tradingpost";
+    private static final String UNIT_BUILD_LUMBERMILL = "unit build lumbermill";
+    private static final String UNIT_BUILD_PASTURE = "unit build pasture";
+    private static final String UNIT_BUILD_CAMP = "unit build camp";
+    private static final String UNIT_BUILD_PLANTATION = "unit build plantation";
+    private static final String UNIT_BUILD_QUARRY = "unit build quarry";
+    private static final String UNIT_REMOVE_JUNGLE = "unit remove jungle";
+    private static final String UNIT_REMOVE_ROUTE = "unit remove route";
+    private static final String UNIT_REPAIR = "unit repair";
     private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
     private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
@@ -117,6 +142,52 @@ public class GameMenu extends Menu {
                     turn = nextTurn();
                 }
                 System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, UNIT_SLEEP)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_ALERT)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_WAKE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_DELETE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_JUNGLE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_ROUTE)) != null){
+
+            } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
+
             } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
                 String result = mapMove(matcher);
                 if (result == null) {
@@ -246,17 +317,58 @@ public class GameMenu extends Menu {
         if (unitSelected == null) {
             return "you must select a unit first";
         }
-        if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
         }
-        if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
+        else if(!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
         }
-        if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+        else if(!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
             return "invalid to move";
-
+        }
+        else{
+            unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
         }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
+    }
+
+    private String unitSleep(){
+        if (unitSelected == null){
+            return "you must select a unit first";
+        }
+        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        }
+        else{
+            unitSelected.setSleeping(true);
+        }
+        return "unit slept";
+    }
+
+    private String unitAlert(){
+        if (unitSelected == null){
+            return "you must select a unit first";
+        }
+        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        }
+        else{
+            //TODO... check if unit is a combat unit
+        }
+        return "unit is ready";
+    }
+
+    private String unitFortify(){
+        if (unitSelected == null){
+            return "you must select a unit first";
+        }
+        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        }
+        else {
+
+        }
+        return "unit fortified";
     }
 
     private String mapMove(Matcher matcher) {
