@@ -210,5 +210,9 @@ public class Soldier extends Unit {
         city.setHP(city.getHP() - this.combatStrength);
     }
 
+    public boolean isCombatUnit(){
+        return true;
+    }
+
 
 }

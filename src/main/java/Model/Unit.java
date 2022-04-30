@@ -257,4 +257,16 @@ public class Unit {
         }
         return true;
     }
+
+    public boolean isCombatUnit(){
+        return true;
+    }
+
+    public void fortify(){
+        //TODO...
+    }
+    public void fortifyHeal(){
+        //TODO...
+    }
+
 }
