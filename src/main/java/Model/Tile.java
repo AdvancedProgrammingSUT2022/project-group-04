@@ -18,7 +18,6 @@ public class Tile {
     protected boolean[] isRiver;
     protected boolean hasRoad;
     protected boolean hasRailroad;
-    protected City city;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     protected int[] roundsTillFinish;
     public boolean[] getIsRiver() {
@@ -42,6 +41,14 @@ public class Tile {
             this.isRiver[i] = false;
         }
         initializeRoundsTillFinish(-1);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public boolean hasRailroad() {
+        return hasRailroad;
     }
 
     public void initializeRoundsTillFinish(int flag) {

@@ -45,9 +45,33 @@ public class GameMenuController {
         return false;
     }
 
+    public boolean isUnitSoldier(Unit unitSelected){
+        return !unitSelected.getUnitType().startsWith("Civilian");
+    }
+
+    public boolean isUnitCivilian(Unit unitSelected) {
+        return !isUnitSoldier(unitSelected);
+    }
+
+    public boolean isUnitWorker(Unit unitSelected) {
+        return unitSelected.getUnitType().equals("Civilian Worker");
+    }
+
+    public boolean isUnitSettler(Unit unitSelected) {
+        return unitSelected.getUnitType().equals("Civilian Settler");
+    }
+
     public boolean isCityValid(String cityName) {
         City city = GameDatabase.getCityByName(cityName);
         return city != null;
+    }
+
+    public boolean isJungleInThisTile(Tile tile) {
+        return tile.getBaseTerrain().getFeature().getType().endsWith("Jungle");
+    }
+
+    public boolean isRouteInThisTile(Tile tile) {
+        return tile.hasRoad() || tile.hasRailroad();
     }
 
     public boolean isCombatUnitInThisPosition(int x, int y) {
