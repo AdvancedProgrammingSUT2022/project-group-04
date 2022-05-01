@@ -280,4 +280,12 @@ public class City extends Tile {
     public void removeSettler() {
         settlers.remove(0);
     }
+
+    public void addResource(Resources resources) {
+        discoveredResources.add(resources);
+        if(resources.getType().equals("luxury")
+            && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
+            GameDatabase.getCivilizationByNickname(this.civilizationName).addHappiness(4);
+        }
+    }
 }
