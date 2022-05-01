@@ -317,4 +317,15 @@ public class Civilization {
         }
         return null;
     }
+
+    public boolean isResourceNew(Resources newResource) {
+        for (City city : this.cities) {
+            for (Resources resource : city.getDiscoveredResources()) {
+                if(resource.getName().equals(newResource.getName())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
