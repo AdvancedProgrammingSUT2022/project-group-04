@@ -88,6 +88,7 @@ public class Info {
     }
 
     private void printValidTechnologiesForResearch(ArrayList<Technology> validTechnologies, int turn) {
+        System.out.println("valid technologies");
         for (String technologyName : GlobalVariables.TECHNOLOGIES) {
             Technology technology = new Technology(technologyName);
             if (technology.isTechnologyValidForCivilization(GameDatabase.players.get(turn))) {
@@ -97,6 +98,15 @@ public class Info {
                 }
             }
         }
+    }
+
+    private boolean isNewResearchValid(ArrayList<Technology> technologiesUnderResearch, int turn) {
+        for (Technology technologyUnderResearch : technologiesUnderResearch) {
+            if(!technologyUnderResearch.isStopped()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void infoResearch(int turn, Scanner scanner) {
@@ -110,7 +120,10 @@ public class Info {
         stopTechnologiesResearchMenu(technologiesUnderResearch, turn, scanner);
         printTechnologiesUnderResearch(technologiesUnderResearch, turn);
         printTechnologiesYouHave(turn);
-        System.out.println("valid technologies");
+        if(!isNewResearchValid(technologiesUnderResearch, turn)) {
+            System.out.println("you can't have a new research because you are busy with another technology.");
+            return;
+        }
         ArrayList<Technology> validTechnologies = new ArrayList<Technology>();
         printValidTechnologiesForResearch(validTechnologies, turn);
         selectTechnologyMenu(validTechnologies, turn, scanner);
