@@ -332,7 +332,7 @@ public class Technology {
     }
 
     public void nextTurn() {
-        if(!wasReached()) {
+        if(!wasReached() && !isStopped) {
             this.turnsNeedToResearch--;
         }
     }
