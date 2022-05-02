@@ -198,6 +198,13 @@ public class Tile {
         return false;
     }
 
+    @Override
+    public String toString() {
+        String result = "type = " + this.type + "\n";
+        result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y);
+        return result;
+    }
+
     public ArrayList<Tile> getAdjacentTiles(){
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (this.y % 2 == 0){

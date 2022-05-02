@@ -54,8 +54,16 @@ public class Info {
 
     public void cityBanner(City city, Scanner scanner) {
         String command;
+        System.out.println(city);
+        for (Tile cityTile : city.getTiles()) {
+            System.out.println(cityTile);
+        }
         while(true) {
-
+            command = scanner.nextLine();
+            if(command.equals("BACK")) {
+                return;
+            }
+            System.out.println("enter BACK to back to info city");
         }
     }
 
