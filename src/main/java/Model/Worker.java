@@ -46,6 +46,11 @@ public class Worker extends Citizen {
     }
 
     @Override
+    public boolean isWorker(){
+        return true;
+    }
+
+    @Override
     public boolean isSettler(){
         return false;
     }
@@ -64,12 +69,16 @@ public class Worker extends Citizen {
     }
 
     public void pauseProject() {
-        if (isAssigned) this.isAssigned = false;
+        if (isAssigned) {
+            Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+            this.isAssigned = false;
+            tile.setIsGettingWorkedOn(false);
+        }
     }
 
     public void assignNewProject(String type) {
-        if (!isAssigned) {
-            Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+        if (!isAssigned && !tile.getIsGettingWorkedOn()) {
             if (typeOfWork.equals(type)) {
                 isAssigned = true;
             } else {
@@ -81,6 +90,7 @@ public class Worker extends Citizen {
                 //if repair then initiate the index of array again
                 if (indexOfProject > 12) tile.initializeRoundsTillFinish(indexOfProject);
             }
+            tile.setIsGettingWorkedOn(true);
         }
     }
 
@@ -138,6 +148,7 @@ public class Worker extends Citizen {
 
     public void finishWork() {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        tile.setIsGettingWorkedOn(false);
         switch (indexOfProject) {
             case 0:
             case 15:

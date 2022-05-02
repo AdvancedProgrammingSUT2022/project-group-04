@@ -21,8 +21,14 @@ public class Citizen extends Unit {
         return false;
     }
 
+    @Override
     public boolean isSettler(){
         return true;
+    }
+
+    @Override
+    public boolean isWorker(){
+        return false;
     }
 
 }

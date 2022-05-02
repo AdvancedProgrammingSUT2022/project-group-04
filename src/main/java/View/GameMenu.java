@@ -38,14 +38,14 @@ public class GameMenu extends Menu {
     private static final String UNIT_CANCEL_MISSION = "unit cancel mission";
     private static final String UNIT_BUILD_ROAD = "unit build road";
     private static final String UNIT_BUILD_RAILROAD = "unit build railraod";
-    private static final String UNIT_BUILD_FARM = "unit build farm";
-    private static final String UNIT_BUILD_MINE = "unit build mine";
-    private static final String UNIT_BUILD_TRADINGPOST = "unit build tradingpost";
-    private static final String UNIT_BUILD_LUMBERMILL = "unit build lumbermill";
-    private static final String UNIT_BUILD_PASTURE = "unit build pasture";
-    private static final String UNIT_BUILD_CAMP = "unit build camp";
-    private static final String UNIT_BUILD_PLANTATION = "unit build plantation";
-    private static final String UNIT_BUILD_QUARRY = "unit build quarry";
+//    private static final String UNIT_BUILD_FARM = "unit build farm";
+//    private static final String UNIT_BUILD_MINE = "unit build mine";
+//    private static final String UNIT_BUILD_TRADINGPOST = "unit build tradingpost";
+//    private static final String UNIT_BUILD_LUMBERMILL = "unit build lumbermill";
+//    private static final String UNIT_BUILD_PASTURE = "unit build pasture";
+//    private static final String UNIT_BUILD_CAMP = "unit build camp";
+//    private static final String UNIT_BUILD_PLANTATION = "unit build plantation";
+//    private static final String UNIT_BUILD_QUARRY = "unit build quarry";
     private static final String UNIT_REMOVE_JUNGLE = "unit remove jungle";
     private static final String UNIT_REMOVE_ROUTE = "unit remove route";
     private static final String UNIT_REPAIR = "unit repair";
@@ -57,6 +57,8 @@ public class GameMenu extends Menu {
     private static final String BUILD_CITY = "build city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String SEND_MESSAGE = "to (?<Nickname>\\S+) send (?<Text>.+)";
     private static final String ADD_TILE_TO_CITY = "add tile to city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
+    //improvement should be PascalCase
+    private static final String UNIT_BUILD_IMPROVEMENT = "unit build (?<improvement>[a-z]+) (?<x>\\d+) (?<y>\\d+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -204,74 +206,25 @@ public class GameMenu extends Menu {
                     turn = nextTurn();
                 }
                 System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null) {
-                Improvement Road = new Improvement("Road");
-                String result = unitBuild(Road);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null) {//TODO fix
+//                Improvement Road = new Improvement("Road");
+//                String result = unitBuild(Road);
+//                if (result.startsWith("unit")) {
+//                    unitSelected = null;
+//                    turn = nextTurn();
+//                }
+//                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
-                Improvement RailRoad = new Improvement("RailRoad");
-                String result = unitBuild(RailRoad);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null) {
-                Improvement Mine = new Improvement("Mine");
-                String result = unitBuild(Mine);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null) {
-                Improvement TradingPost = new Improvement("TradingPost");
-                String result = unitBuild(TradingPost);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null) {
-                Improvement LumberMill = new Improvement("LumberMill");
-                String result = unitBuild(LumberMill);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null) {
-                Improvement Pasture = new Improvement("Pasture");
-                String result = unitBuild(Pasture);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null) {
-                Improvement Camp = new Improvement("Camp");
-                String result = unitBuild(Camp);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null) {
-                Improvement Plantation = new Improvement("Plantation");
-                String result = unitBuild(Plantation);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null) {
-                Improvement Quarry = new Improvement("Quarry");
-                String result = unitBuild(Quarry);
-                if (result.startsWith("unit")) {
+//                Improvement RailRoad = new Improvement("RailRoad");
+//                String result = unitBuild(RailRoad);
+//                if (result.startsWith("unit")) {
+//                    unitSelected = null;
+//                    turn = nextTurn();
+//                }
+//                System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_IMPROVEMENT)) != null) {
+                String result = unitBuild(matcher);
+                if (result.startsWith("worker")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -558,7 +511,28 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String unitBuild(Improvement improvement) {
+    private String unitBuild(Matcher matcher) {
+        String improvementName = matcher.group("improvement");
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if (!gameMenuController.isImprovementValid(improvementName)){
+            return "invalid improvement";
+        }
+        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        if (tile == null) return "invalid tile";
+        if (tile.getIsGettingWorkedOn()) return "tile is already in a project";
+        Worker worker = tile.getAvailableWorker();
+        if (worker == null) return "there is no worker in this tile to do the project";
+        worker.assignNewProject(improvementName);
+        return "worker successfully assigned";
+    }
+
+    private String getUnitBuildRoad() {
+        //TODO...
+        return null;
+    }
+
+    private String getUnitBuildRailroad() {
         //TODO...
         return null;
     }

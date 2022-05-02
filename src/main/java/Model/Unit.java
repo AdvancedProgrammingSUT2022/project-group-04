@@ -292,4 +292,8 @@ public class Unit {
     public boolean isSettler() {
         return false;
     }
+
+    public boolean isWorker(){
+        return false;
+    }
 }
