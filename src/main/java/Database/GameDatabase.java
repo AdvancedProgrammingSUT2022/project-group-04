@@ -60,8 +60,8 @@ public class GameDatabase {
     public static City getCityByXAndY(int x, int y) {
         for (Civilization player : GameDatabase.players) {
             for (City city : player.getCities()) {
-                if(city.getX() == x
-                  && city.getY() == y) {
+                if (city.getX() == x
+                        && city.getY() == y) {
                     return city;
                 }
             }
@@ -155,14 +155,20 @@ public class GameDatabase {
             }
         }
         //random initialize river
-        int[] deltaX = {-1, -1, 0, 1, 0, -1};
-        int[] deltaY = {0, 1, 1, 0, -1, -1};
+        int[] deltaX0 = {-1, 0, 1, 1, 1, 0};
+        int[] deltaY0 = {0, 1, 1, 0, -1, -1};
+        int[] deltaX1 = {-1, -1, 0, 1, 0, -1};
+        int[] deltaY1 = {0, 1, 1, 0, -1, -1};
         int[] numbOfEdge = {3, 4, 5, 0, 1, 2};
         for (int i = 0; i < map.size(); i++) {
             Tile tile = map.get(i);
             for (int j = 0; j < 6; j++) {
-                int xOfTile = tile.getX() + deltaX[j];
-                int yOfTile = tile.getY() + deltaY[j];
+                int xOfTile = tile.getX() + deltaX1[j];
+                int yOfTile = tile.getY() + deltaY1[j];
+                if (tile.getY() % 2 == 0) {
+                    xOfTile = tile.getX() + deltaX0[j];
+                    yOfTile = tile.getY() + deltaY0[j];
+                }
                 if ((xOfTile >= length || xOfTile < 0
                         || yOfTile >= width || yOfTile < 0)
                         || (tile.getBaseTerrainType().equals("Ocean")
@@ -211,8 +217,12 @@ public class GameDatabase {
             int xRandomGenerate = random.nextInt(length);
             int yRandomGenerate = random.nextInt(length);
             int direction = random.nextInt(6);
-            int x1 = xRandomGenerate + deltaX[direction];
-            int y1 = yRandomGenerate + deltaY[direction];
+            int x1 = xRandomGenerate + deltaX0[direction];
+            int y1 = yRandomGenerate + deltaY0[direction];
+            if (yRandomGenerate % 2 == 1) {
+                x1 = xRandomGenerate + deltaX1[direction];
+                y1 = yRandomGenerate + deltaY1[direction];
+            }
             if (getTileByXAndY(xRandomGenerate, yRandomGenerate) == null
                     || getTileByXAndY(x1, y1) == null
                     || getTileByXAndY(xRandomGenerate, yRandomGenerate).getBaseTerrainType().equals("Ocean")
@@ -256,7 +266,7 @@ public class GameDatabase {
     public static Civilization getCivilizationForCity(String cityName) {
         for (Civilization player : GameDatabase.players) {
             for (City city : player.getCities()) {
-                if(city.getName().equals(cityName)) {
+                if (city.getName().equals(cityName)) {
                     return player;
                 }
             }

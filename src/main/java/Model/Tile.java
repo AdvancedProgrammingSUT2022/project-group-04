@@ -40,6 +40,7 @@ public class Tile {
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
         }
+        setNeighbors(getAdjacentTiles());//set neighbours
         initializeRoundsTillFinish(-1);
     }
 
@@ -52,7 +53,7 @@ public class Tile {
     }
 
     public void initializeRoundsTillFinish(int flag) {
-        int[] base = new int[16];
+        int[] base = new int[25];
         base[0] = 3;
         base[1] = 3;
         base[2] = 6;
@@ -70,10 +71,20 @@ public class Tile {
         base[12] = 6;
         base[13] = 3;
         base[14] = 3;
+        //
         base[15] = 3;
+        base[16] = 3;
+        base[17] = 3;
+        base[18] = 3;
+        base[19] = 3;
+        base[20] = 3;
+        base[21] = 3;
+        base[22] = 3;
+        base[23] = 3;
+        base[24] = 3;
         if (flag == -1) {
-            roundsTillFinish = new int[16];
-            for (int i=0;i<16;i++){
+            roundsTillFinish = new int[25];
+            for (int i=0;i<25;i++){
                 roundsTillFinish[i] = base[i];
             }
         }
@@ -264,5 +275,18 @@ public class Tile {
 
     public void nextTurn() {
 
+    }
+
+    public Settler returnSettler(){
+        for (Unit unit : units) {
+            if (unit.isSettler()) return (Settler)unit;
+        }
+        return null;
+    }
+
+    public void fixImprovementByName(String nameOfImprovement) {
+        for (Improvement improvement : improvements) {
+            if (improvement.getName().equals(nameOfImprovement)) improvement.fix();
+        }
     }
 }

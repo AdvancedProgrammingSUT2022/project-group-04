@@ -289,4 +289,7 @@ public class Unit {
 
     }
 
+    public boolean isSettler() {
+        return false;
+    }
 }

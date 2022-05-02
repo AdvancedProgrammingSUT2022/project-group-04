@@ -3,6 +3,7 @@ package Controller;
 import Database.GameDatabase;
 import Model.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
@@ -225,5 +226,32 @@ public class GameMenuController {
 //
 //        }
         return "";
+    }
+
+    public void createNewCity(Settler settler, String cityName) {
+        settler.createNewCity(cityName);
+    }
+
+    public boolean isAdjacent(Tile tile, City city) {
+        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
+        ArrayList<Tile> tilesOfCity = city.getTiles();
+        for (Tile tile1 : tilesOfCity) {
+            if (neighbours.contains(tile1)) return true;
+        }
+        return false;
+    }
+
+    public void addTileToCity(Tile tile, City city) {
+        city.addTile(tile);
+    }
+
+    public boolean isOperable(Tile tile, City city) {
+        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
+        ArrayList<Tile> tilesOfCity = city.getTiles();
+        for (Tile tile1 : tilesOfCity) {
+            if (neighbours.contains(tile1)
+                    && tile1.returnSettler()!= null) return true;
+        }
+        return false;
     }
 }

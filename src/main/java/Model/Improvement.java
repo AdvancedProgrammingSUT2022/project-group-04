@@ -14,12 +14,14 @@ public class Improvement {
     private int cityFoodChange;
     private int cityProductionChange;
     private int civilizationGoldChange;
+    private boolean isBroken;
 
     public Improvement(String name) {
         this.name = name;
         this.BaseTerrainThatCanBeBuilt = new ArrayList<String>();
         this.TerrainFeaturesThatCanBeBuilt = new ArrayList<String>();
         this.turnsNeed = 6;
+        isBroken = false;
         switch (name) {
             case "Camp":
                 this.requiredTechnology = new Technology("Trapping");
@@ -168,6 +170,14 @@ public class Improvement {
 
     public int getCivilizationGoldChange() {
         return this.civilizationGoldChange;
+    }
+
+    public void fix() {
+        isBroken = false;
+    }
+
+    public void breakImprovement(){
+        isBroken = true;
     }
 }
 
