@@ -70,6 +70,7 @@ public class GameMenu extends Menu {
     private static final String INFO_RESEARCH = "info research";
     private static final String INFO_NOTIFICATION = "info notification";
     private static final String INFO_MILITARY = "info military";
+    private static final String INFO_UNITS = "info units";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -373,6 +374,8 @@ public class GameMenu extends Menu {
                 info.infoNotification(turn);
             } else if ((matcher = getCommandMatcher(command, INFO_MILITARY)) != null) {
                 info.infoMilitary(gameMenuController, turn);
+            } else if ((matcher = getCommandMatcher(command, INFO_UNITS)) != null) {
+                info.infoUnits(gameMenuController, turn, scanner);
             } else {
                 System.out.println("invalid command");
             }

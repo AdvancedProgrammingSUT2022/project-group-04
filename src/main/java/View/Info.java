@@ -42,7 +42,7 @@ public class Info {
                 System.out.println("Enter a number");
             } else {
                 index = Integer.parseInt(command);
-                if(index < 1) {
+                if(index < 1 || index>GameDatabase.players.get(turn).getCities().size()) {
                     System.out.println("invalid number");
                 } else {
                     index--;
@@ -89,14 +89,57 @@ public class Info {
         return true;
     }
 
-    public void infoMilitary(GameMenuController gameMenuController, int turn) {
-        for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
-            for (Unit unit : tile.getUnits()) {
-                if(gameMenuController.isUnitSoldier(unit)) {
-                    System.out.println(unit);
+    private void printSoldiersInUnitPanel(ArrayList<Unit> soldiers) {
+        for (Unit soldier : soldiers) {
+            System.out.println("Unit on X = " + Integer.toString(soldier.getX()) +
+                    " and Y = " + Integer.toString(soldier.getY()) +
+                    " is ready = " + Boolean.toString(soldier.isReady()));
+        }
+    }
+
+    public void infoUnits(GameMenuController gameMenuController, int turn, Scanner scanner) {
+        ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
+        printSoldiersInUnitPanel(soldiers);
+        String command;
+        int index;
+        while(true) {
+            System.out.println("Enter info military to go to info military");
+            command = scanner.nextLine();
+            if(command.equals("info military")) {
+                infoMilitary(gameMenuController, turn);
+            } else if (command.equals("EXIT")) {
+                return;
+            } else if (!command.matches("^-?\\d+$")) {
+                System.out.println("enter a number");
+            } else {
+                index = Integer.parseInt(command);
+                if(index<1 || index>soldiers.size()) {
+                    System.out.println("enter a valid number");
+                } else {
+                    soldiers.get(index).setReady(!soldiers.get(index).isReady());
+                    printSoldiersInUnitPanel(soldiers);
                 }
             }
         }
+    }
+
+    public void infoMilitary(GameMenuController gameMenuController, int turn) {
+        ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
+        for (Unit soldier : soldiers) {
+            System.out.println(soldier);
+        }
+    }
+
+    private ArrayList<Unit> getSoldiers(GameMenuController gameMenuController, int turn) {
+        ArrayList<Unit> soldiers = new ArrayList<Unit>();
+        for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
+            for (Unit unit : tile.getUnits()) {
+                if(gameMenuController.isUnitSoldier(unit)) {
+                    soldiers.add(unit);
+                }
+            }
+        }
+        return soldiers;
     }
 
     private void printResources(int turn) {
