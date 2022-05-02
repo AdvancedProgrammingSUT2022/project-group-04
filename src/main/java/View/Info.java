@@ -22,14 +22,38 @@ public class Info {
         return instance;
     }
 
-    public void infoCity(int turn) {
+    public void infoCity(Scanner scanner, int turn) {
         Civilization civilization = GameDatabase.players.get(turn);
         if (civilization.getCities().size() == 0) {
             System.out.println("NO CITY");
+            return;
         }
-        for (City city : civilization.getCities()) {
-            System.out.println(city);
+        String command;
+        int index;
+        while(true) {
+            command = scanner.nextLine();
+            if(command.equals("EXIT")) {
+                return;
+            }
+            for (City city : civilization.getCities()) {
+                System.out.println(city);
+            }
+            if(!command.matches("^-?\\d+$")) {
+                System.out.println("Enter a number");
+            } else {
+                index = Integer.parseInt(command);
+                if(index < 1) {
+                    System.out.println("invalid number");
+                } else {
+                    index--;
+                    cityBanner(GameDatabase.players.get(turn).getCities().get(index), scanner);
+                }
+            }
         }
+    }
+
+    public void cityBanner(City city, Scanner scanner) {
+
     }
 
     public Demography infoDemography(int turn) {
