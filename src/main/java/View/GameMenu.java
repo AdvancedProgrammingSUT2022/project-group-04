@@ -679,11 +679,28 @@ public class GameMenu extends Menu {
         return "Message sent.";
     }
 
+    private void printUnhappyCivilizations() {
+        ArrayList<Civilization> unhappyCivilizations = new ArrayList<Civilization>();
+        for (Civilization civilization : GameDatabase.players) {
+            if(!civilization.isHappy()) {
+                unhappyCivilizations.add(civilization);
+            }
+        }
+        if(unhappyCivilizations.size() == 0) {
+            return;
+        }
+        System.out.println("Attention: These Civilizations are not happy!");
+        for (Civilization civilization : unhappyCivilizations) {
+            System.out.println(civilization.getNickname() + " - Happiness: " + Integer.toString(civilization.getHappiness()));
+        }
+    }
+
     private int nextTurn() {
         if (turn != this.numberOfPlayers - 1) {
             return turn++;
         }
         GameDatabase.nextTurn();
+        printUnhappyCivilizations();
         return 0;
     }
 

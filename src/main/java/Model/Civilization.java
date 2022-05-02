@@ -279,10 +279,16 @@ public class Civilization {
 
     private int happinessCalculator() {
         int population = 0;
+        int colonizedCount = 0;
         for (City city : this.cities) {
             population += city.getSettlers().size() + city.getWorkers().size();
+            if(city.isColonized()) {
+                colonizedCount++;
+            }
         }
-        return - population*GlobalVariables.happinessForEachCitizen - this.cities.size()*GlobalVariables.happinessForEachCity;
+        return - population*GlobalVariables.happinessForEachCitizen
+                - this.cities.size()*GlobalVariables.happinessForEachCity
+                - colonizedCount*GlobalVariables.happinessForColonizedCities;
     }
 
     public int getScience() {
