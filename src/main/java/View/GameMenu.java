@@ -68,6 +68,7 @@ public class GameMenu extends Menu {
     private static final String INFO_DEMOGRAPHY = "info demography";
     private static final String INFO_RESEARCH = "info research";
     private static final String INFO_NOTIFICATION = "info notification";
+    private static final String INFO_MILITARY = "info military";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -341,6 +342,8 @@ public class GameMenu extends Menu {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {
                 info.infoNotification(turn);
+            } else if ((matcher = getCommandMatcher(command, INFO_MILITARY)) != null) {
+                info.infoMilitary(gameMenuController, turn);
             } else {
                 System.out.println("invalid command");
             }
