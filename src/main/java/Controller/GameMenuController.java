@@ -163,15 +163,8 @@ public class GameMenuController {
                     return false;
                 }
             }
-            return true;
-        } else {
-            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (isUnitCivilian(unit1)) {
-                    return false;
-                }
-            }
-            return true;
         }
+        return true;
     }
 
     public boolean isCivilizationValid(String civilizationName) {
