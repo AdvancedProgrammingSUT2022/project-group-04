@@ -338,27 +338,11 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
                 info.infoResearch(turn, scanner);
             } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null) {
-                String cityName = matcher.group("cityName");
-                int x = Integer.parseInt(matcher.group("x"));
-                int y = Integer.parseInt(matcher.group("y"));
-                City city = GameDatabase.getCityByName(cityName);
-                if (city != null){
-                    System.out.println("there is already a city with this name");
+                String result = buildCity(matcher);
+                if(result.startsWith("city")) {
+                    turn = nextTurn();
                 }
-                else if (GameDatabase.getCityByXAndY(x,y) != null){
-                    System.out.println("there is already a city in this tile");
-                }
-                else {
-                    Tile tile = GameDatabase.getTileByXAndY(x,y);
-                    Settler settler = tile.returnSettler();
-                    if (settler == null){
-                        System.out.println("there is no settler in this tile");
-                    }
-                    else{
-                        gameMenuController.createNewCity(settler,cityName);
-                        System.out.println("city created successfully!");
-                    }
-                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {//TODO BLAh
                 String cityName = matcher.group("cityName");
                 int x = Integer.parseInt(matcher.group("x"));
@@ -720,6 +704,30 @@ public class GameMenu extends Menu {
         System.out.println("Great!");
         citySelected.buildBuilding(validBuildings.get(index), build);
         return null;
+    }
+
+    private String buildCity(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        City city = GameDatabase.getCityByName(cityName);
+        if (city != null){
+            return "there is already a city with this name";
+        }
+        else if (GameDatabase.getCityByXAndY(x,y) != null){
+            return "there is already a city in this tile";
+        }
+        else {
+            Tile tile = GameDatabase.getTileByXAndY(x,y);
+            Settler settler = tile.returnSettler();
+            if (settler == null){
+                return "there is no settler in this tile";
+            }
+            else{
+                gameMenuController.createNewCity(settler,cityName);
+                return "city created successfully!";
+            }
+        }
     }
 
     private String sendMessage(Matcher matcher) {
