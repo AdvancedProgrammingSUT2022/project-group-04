@@ -57,7 +57,15 @@ public class Civilization {
         this.score += amount;
     }
 
+    public void addScience(int amount) {
+        this.science+= amount;
+    }
+
     public void addGold(int amount) {
+        if(amount<0 && this.gold<=0) {
+            addScience(amount);
+            return;
+        }
         this.gold += amount;
     }
 
