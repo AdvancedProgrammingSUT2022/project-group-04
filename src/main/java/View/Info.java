@@ -53,7 +53,10 @@ public class Info {
     }
 
     public void cityBanner(City city, Scanner scanner) {
+        String command;
+        while(true) {
 
+        }
     }
 
     public Demography infoDemography(int turn) {
