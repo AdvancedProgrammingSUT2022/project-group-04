@@ -14,16 +14,15 @@ import com.google.gson.GsonBuilder;
 
 public class UserDatabase {
 
-    private static ArrayList<User> users = new ArrayList<>();
 
     /**
      * @param username
      * @return selected user
      */
     public static User getUserByUsername(String username) {
-        for (int i = 0; i < UserDatabase.users.size(); i++) {
-            if (UserDatabase.users.get(i).getUsername().equals(username)) {
-                return UserDatabase.users.get(i);
+        for (int i = 0; i < User.users.size(); i++) {
+            if (User.users.get(i).getUsername().equals(username)) {
+                return User.users.get(i);
             }
         }
         return null;
@@ -34,9 +33,9 @@ public class UserDatabase {
      * @return selected user
      */
     public static User getUserByNickname(String nickname) {
-        for (int i = 0; i < UserDatabase.users.size(); i++) {
-            if (UserDatabase.users.get(i).getNickname().equals(nickname)) {
-                return UserDatabase.users.get(i);
+        for (int i = 0; i < User.users.size(); i++) {
+            if (User.users.get(i).getNickname().equals(nickname)) {
+                return User.users.get(i);
             }
         }
         return null;
@@ -48,14 +47,14 @@ public class UserDatabase {
      * @param newUser
      */
     public static void addUser(User newUser) {
-        UserDatabase.users.add(newUser);
+        User.users.add(newUser);
     }
 
     /**
      * @return all of users in database
      */
     public static ArrayList<User> getAllUsers() {
-        return UserDatabase.users;
+        return User.users;
     }
 
     /**
@@ -75,7 +74,7 @@ public class UserDatabase {
 
         for (int i = 0; i < jsonStringUserDatabase.size(); i++) {
             User tempUser = gson.fromJson(jsonStringUserDatabase.get(i).toString(), User.class);
-            UserDatabase.users.add(tempUser);
+            User.users.add(tempUser);
         }
     }
 
@@ -89,7 +88,7 @@ public class UserDatabase {
         Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
         Path userPath = Paths.get(fileName);
         Writer writer = Files.newBufferedWriter(userPath);
-        gsonBuilder.toJson(UserDatabase.users, writer);
+        gsonBuilder.toJson(User.users, writer);
         writer.close();
     }
 }
