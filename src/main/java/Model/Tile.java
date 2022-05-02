@@ -20,6 +20,7 @@ public class Tile {
     protected boolean hasRailroad;
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     protected int[] roundsTillFinish;
+    protected boolean isGettingWorkedOn;
     public boolean[] getIsRiver() {
         return isRiver;
     }
@@ -295,5 +296,20 @@ public class Tile {
         for (Improvement improvement : improvements) {
             if (improvement.getName().equals(nameOfImprovement)) improvement.fix();
         }
+    }
+
+    public Worker getAvailableWorker(){
+        for (Unit unit : units) {
+            if (unit.isWorker()) return (Worker) unit;
+        }
+        return null;
+    }
+
+    public void setIsGettingWorkedOn(boolean workedOn){
+        this.isGettingWorkedOn = workedOn;
+    }
+
+    public boolean getIsGettingWorkedOn() {
+        return isGettingWorkedOn;
     }
 }

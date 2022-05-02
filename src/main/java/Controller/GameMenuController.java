@@ -254,4 +254,21 @@ public class GameMenuController {
         }
         return false;
     }
+
+    public boolean isImprovementValid(String name) {
+        switch (name){
+            case "Camp":
+            case "Farm":
+            case "LumberMill":
+            case "Mine":
+            case "Pasture":
+            case "Plantation":
+            case "StoneMine":
+            case "TradingPost":
+            case "Quarry":
+                return true;
+            default:
+                return false;
+        }
+    }
 }

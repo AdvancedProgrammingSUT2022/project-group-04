@@ -327,4 +327,5 @@ public class City extends Tile {
     public Tile getCapital() {
         return capital;
     }
+
 }
