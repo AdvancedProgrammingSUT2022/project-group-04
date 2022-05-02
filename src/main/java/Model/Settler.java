@@ -14,19 +14,15 @@ public class Settler extends Citizen {
 
     }
 
-    public void createCity(String name, int xOfCity, int yOfCity) {
-        Tile tile = GameDatabase.getTileByXAndY(xOfCity, yOfCity);
-        Tile tileOfOriginalCity = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tileOfOriginalCity);
-        ArrayList<Tile> tiles = tile.getNeighbors();
-        if (!civilization.isCityInCivilization(xOfCity,yOfCity)
-                && tiles.contains(tileOfOriginalCity)) {
-            //TODO edit if there is more than one turn for creating city
-            civilization.addCity(new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 0,
-                    tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(this.x, this.y)).getNickname(),
-                    false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY()));
-            civilization.getCityByXAndY(x,y).removeSettler();//kill the settler after making city
-        }
+    public void createCity(String name) {
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        //TODO edit if there is more than one turn for creating city
+        civilization.addCity(new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 0,
+                tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(this.x, this.y)).getNickname(),
+                false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY()));
+        civilization.getCityByXAndY(x, y).removeSettler();//kill the settler after making city
+        tile.removeUnit(this);
     }
 
     @Override

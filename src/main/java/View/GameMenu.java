@@ -54,7 +54,7 @@ public class GameMenu extends Menu {
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
     private static final String BUY_BUILDING = "building --buy";
     private static final String BUILD_BUILDING = "building --build";
-    private static final String BUILD_CITY = "build city (?<name>\\S+) (?<x>\\d+) (?<y>\\d+)";
+    private static final String BUILD_CITY = "build city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String SEND_MESSAGE = "to (?<Nickname>\\S+) send (?<Text>.+)";
 
     //Cheat
@@ -142,28 +142,28 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SLEEP)) != null) {
                 String result = unitSleep();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_ALERT)) != null) {
                 String result = unitAlert();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY)) != null) {
                 String result = unitFortify();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null) {
                 String result = unitFortifyHeal();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -176,28 +176,28 @@ public class GameMenu extends Menu {
                 //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
                 String result = unitFoundCity();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null) {
                 String result = unitCancelMission();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_WAKE)) != null) {
                 String result = unitWake();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_DELETE)) != null) {
                 String result = unitDelete();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -205,7 +205,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_ROAD)) != null) {
                 Improvement Road = new Improvement("Road");
                 String result = unitBuild(Road);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -213,7 +213,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
                 Improvement RailRoad = new Improvement("RailRoad");
                 String result = unitBuild(RailRoad);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -221,7 +221,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_MINE)) != null) {
                 Improvement Mine = new Improvement("Mine");
                 String result = unitBuild(Mine);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -229,7 +229,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_TRADINGPOST)) != null) {
                 Improvement TradingPost = new Improvement("TradingPost");
                 String result = unitBuild(TradingPost);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -237,7 +237,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_LUMBERMILL)) != null) {
                 Improvement LumberMill = new Improvement("LumberMill");
                 String result = unitBuild(LumberMill);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -245,7 +245,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PASTURE)) != null) {
                 Improvement Pasture = new Improvement("Pasture");
                 String result = unitBuild(Pasture);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -253,7 +253,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_CAMP)) != null) {
                 Improvement Camp = new Improvement("Camp");
                 String result = unitBuild(Camp);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -261,7 +261,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_PLANTATION)) != null) {
                 Improvement Plantation = new Improvement("Plantation");
                 String result = unitBuild(Plantation);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -269,28 +269,28 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_QUARRY)) != null) {
                 Improvement Quarry = new Improvement("Quarry");
                 String result = unitBuild(Quarry);
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_JUNGLE)) != null) {
                 String result = unitRemoveJungle();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_ROUTE)) != null) {
                 String result = unitRemoveRoute();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
                 String result = unitRepair();
-                if (result.startsWith("unit")){
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -335,8 +335,28 @@ public class GameMenu extends Menu {
                 System.out.println(info.infoDemography(turn));
             } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
                 info.infoResearch(turn, scanner);
-            } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null){
-                System.out.println(gameMenuController.buildCity(matcher));
+            } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null) {
+                String cityName = matcher.group("cityName");
+                int x = Integer.parseInt(matcher.group("x"));
+                int y = Integer.parseInt(matcher.group("y"));
+                City city = GameDatabase.getCityByName(cityName);
+                if (city != null){
+                    System.out.println("there is already a city with this name");
+                }
+                else if (GameDatabase.getCityByXAndY(x,y) != null){
+                    System.out.println("there is already a city in this tile");
+                }
+                else {
+                    Tile tile = GameDatabase.getTileByXAndY(x,y);
+                    Settler settler = tile.returnSettler();
+                    if (settler == null){
+                        System.out.println("there is no settler in this tile");
+                    }
+                    else{
+                        settler.createCity(cityName);
+                        System.out.println("city created successfully!");
+                    }
+                }
             } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {
@@ -424,7 +444,7 @@ public class GameMenu extends Menu {
         for (int i = 0; i < amount; i++) {
             turn = nextTurn();
         }
-        return "now it's " + GameDatabase.players.get(turn+amount).getNickname() + " turn!";
+        return "now it's " + GameDatabase.players.get(turn + amount).getNickname() + " turn!";
 
     }
 
@@ -461,7 +481,7 @@ public class GameMenu extends Menu {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        } else if(!unitSelected.isCombatUnit()) {
+        } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
             unitSelected.setReady(true);
@@ -474,7 +494,7 @@ public class GameMenu extends Menu {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        } else if(!unitSelected.isCombatUnit()) {
+        } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
             unitSelected.fortify();
@@ -482,12 +502,12 @@ public class GameMenu extends Menu {
         return "unit fortified";
     }
 
-    private String unitFortifyHeal(){
+    private String unitFortifyHeal() {
         if (unitSelected == null) {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        } else if(!unitSelected.isCombatUnit()) {
+        } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
             unitSelected.fortifyHeal();
@@ -495,12 +515,12 @@ public class GameMenu extends Menu {
         return "unit fortifyHealed";
     }
 
-    private String unitFoundCity(){
+    private String unitFoundCity() {
         if (unitSelected == null) {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        } else if(unitSelected.isCombatUnit()) {
+        } else if (unitSelected.isCombatUnit()) {
             return "this is not a settler unit";
         } else {
             unitSelected.createCity(unitSelected.getX(), unitSelected.getY());
@@ -509,10 +529,11 @@ public class GameMenu extends Menu {
 
     }
 
-    private String unitCancelMission(){
+    private String unitCancelMission() {
         return null;
     }
-    private String unitWake(){
+
+    private String unitWake() {
         if (unitSelected == null) {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
@@ -522,35 +543,43 @@ public class GameMenu extends Menu {
         }
         return "unit awakened";
     }
-    private String unitAttack(){
+
+    private String unitAttack() {
         //TODO...
         return null;
     }
-    private String unitGarrison(){
+
+    private String unitGarrison() {
         //TODO...
         return null;
     }
-    private String unitSetupRanged(){
+
+    private String unitSetupRanged() {
         //TODO...
         return null;
     }
-    private String unitDelete(){
+
+    private String unitDelete() {
         //TODO...
         return null;
     }
-    private String unitBuild(Improvement improvement){
+
+    private String unitBuild(Improvement improvement) {
         //TODO...
         return null;
     }
-    private String unitRemoveJungle(){
+
+    private String unitRemoveJungle() {
         //TODO...
         return null;
     }
-    private String unitRemoveRoute(){
+
+    private String unitRemoveRoute() {
         //TODO...
         return null;
     }
-    private String unitRepair(){
+
+    private String unitRepair() {
         //TODO...
         return null;
     }
@@ -668,10 +697,10 @@ public class GameMenu extends Menu {
     private String sendMessage(Matcher matcher) {
         String nickname = matcher.group("Nickname");
         String text = matcher.group("Text");
-        if(!this.gameMenuController.isCivilizationValid(nickname)) {
+        if (!this.gameMenuController.isCivilizationValid(nickname)) {
             return "there is no civilization with this nickname";
         }
-        if(GameDatabase.players.get(turn).getNickname().equals(nickname)) {
+        if (GameDatabase.players.get(turn).getNickname().equals(nickname)) {
             return "you can't send a message for yourself!";
         }
         Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);

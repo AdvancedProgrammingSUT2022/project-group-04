@@ -5,8 +5,8 @@ import Database.GameDatabase;
 import java.util.HashMap;
 
 public class Worker extends Citizen {
-    private boolean isAssigned;
-    private int indexOfProject;
+    protected boolean isAssigned;
+    protected int indexOfProject;
     private String typeOfWork;
     private static HashMap<String, Integer> workToIndex;
 
@@ -26,7 +26,16 @@ public class Worker extends Citizen {
         workToIndex.put("removePrairie", 12);
         workToIndex.put("removeRoad", 13);
         workToIndex.put("removeRailroad", 14);
-        workToIndex.put("repair", 15);
+        workToIndex.put("repairRoad", 15);
+        workToIndex.put("repairRailroad", 16);
+        workToIndex.put("repairFarm", 17);
+        workToIndex.put("repairMine", 18);
+        workToIndex.put("repairTradingPost", 19);
+        workToIndex.put("repairLumberMill", 20);
+        workToIndex.put("repairPasture", 21);
+        workToIndex.put("repairCamp", 22);
+        workToIndex.put("repairField", 23);
+        workToIndex.put("repairStoneMine", 24);
     }
 
     public Worker(int x, int y, int Vx, int Vy, int power ,int movementPoint, String era, int HP, int civilizationIndex, boolean isAssigned) {
@@ -59,15 +68,19 @@ public class Worker extends Citizen {
     }
 
     public void assignNewProject(String type) {
-        if (typeOfWork.equals(type)) {
-            isAssigned = true;
-        } else {
+        if (!isAssigned) {
             Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-            if (tile.getRoundsTillFinishProjectByIndex(indexOfProject) != 0)
-                tile.initializeRoundsTillFinish(indexOfProject);
-            indexOfProject = workToIndex.get(type);
-            typeOfWork = type;
-            isAssigned = true;
+            if (typeOfWork.equals(type)) {
+                isAssigned = true;
+            } else {
+                if (tile.getRoundsTillFinishProjectByIndex(indexOfProject) != 0)
+                    tile.initializeRoundsTillFinish(indexOfProject);
+                indexOfProject = workToIndex.get(type);
+                typeOfWork = type;
+                isAssigned = true;
+                //if repair then initiate the index of array again
+                if (indexOfProject > 12) tile.initializeRoundsTillFinish(indexOfProject);
+            }
         }
     }
 
@@ -127,9 +140,14 @@ public class Worker extends Citizen {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         switch (indexOfProject) {
             case 0:
+            case 15:
                 tile.hasRoad = true;
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
                 break;
-            case 1://TODO railroad
+            case 1:
+            case 16://TODO railroad
                 tile.hasRailroad = true;
                 break;
             case 2:
@@ -181,7 +199,15 @@ public class Worker extends Citizen {
                 indexOfProject = -1;
                 isAssigned = false;
                 break;
-            case 15:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+                //TODO
 
         }
         isAssigned = false;

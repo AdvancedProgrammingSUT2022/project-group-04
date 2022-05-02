@@ -237,10 +237,10 @@ public class City extends Tile {
         }
         //sub citizens food
         for (Citizen citizen : workers) {
-            count -= 2;
+            if (citizen.isAssigned) count -= 2;
         }
         for (Settler settler : settlers) {
-            count -=2;
+            if (settler.isAssigned) count -=2;
         }
         if (count < 0) {
             count = citizensDyingForHunger(count);
@@ -287,5 +287,21 @@ public class City extends Tile {
             && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
             GameDatabase.getCivilizationByNickname(this.civilizationName).addHappiness(4);
         }
+    }
+
+    public ArrayList<Worker> getUnemployedWorkers(){
+        ArrayList<Worker> workerArrayList = new ArrayList<>();
+        for (Worker worker : workers) {
+            if (!worker.isAssigned) workerArrayList.add(worker);
+        }
+        return workerArrayList;
+    }
+
+    public ArrayList<Settler> getUnemployedSettlers(){
+        ArrayList<Settler> settlerArrayList = new ArrayList<>();
+        for (Settler settler : settlers) {
+            if (!settler.isAssigned) settlerArrayList.add(settler);
+        }
+        return settlerArrayList;
     }
 }
