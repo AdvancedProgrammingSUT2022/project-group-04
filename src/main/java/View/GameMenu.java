@@ -56,6 +56,7 @@ public class GameMenu extends Menu {
     private static final String BUILD_BUILDING = "building --build";
     private static final String BUILD_CITY = "build city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String SEND_MESSAGE = "to (?<Nickname>\\S+) send (?<Text>.+)";
+    private static final String ADD_TILE_TO_CITY = "add tile to city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -354,10 +355,34 @@ public class GameMenu extends Menu {
                         System.out.println("there is no settler in this tile");
                     }
                     else{
-                        settler.createCity(cityName);
+                        gameMenuController.createNewCity(settler,cityName);
                         System.out.println("city created successfully!");
                     }
                 }
+            } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {//TODO BLAh
+                String cityName = matcher.group("cityName");
+                int x = Integer.parseInt(matcher.group("x"));
+                int y = Integer.parseInt(matcher.group("y"));
+                City city = GameDatabase.getCityByName(cityName);
+                if (city == null){
+                    System.out.println("there is no city with this name");
+                }
+                else if (GameDatabase.getCityByXAndY(x,y) != null){
+                    System.out.println("there is already a city in this tile");
+                }
+                else {
+                    Tile tile = GameDatabase.getTileByXAndY(x,y);
+                    if (!gameMenuController.isAdjacent(tile,city)){
+                        System.out.println("chosen tile isn't adjacent to city");
+                    }
+                    else if (!gameMenuController.isOperable(tile,city)){
+                        System.out.println("there is no settler in adjacent tiles in city");
+                    }
+                    else {
+                        gameMenuController.addTileToCity(tile,city);
+                        System.out.println("tile added to the city successfully!");
+                    }
+                }//TODO fix generate map (river part)
             } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {

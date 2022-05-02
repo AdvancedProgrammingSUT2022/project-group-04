@@ -4,6 +4,8 @@ import Database.GameDatabase;
 import Enums.Resource;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
 public class City extends Tile {
 
@@ -21,6 +23,8 @@ public class City extends Tile {
     private ArrayList<Building> buildings;
     private ArrayList<Resources> discoveredResources;
     private ArrayList<Settler> settlers;
+    private Tile capital;
+    private ArrayList<Tile> tiles;
     private boolean isGarrison;
     private boolean isDivision;
     private int HP;
@@ -32,7 +36,7 @@ public class City extends Tile {
     private int production;
     private boolean isGettingWorkedOn;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y) {
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y, Tile capital) {
         super(type, baseTerrainType, x, y);
         this.name = name;
         this.power = power;
@@ -54,6 +58,7 @@ public class City extends Tile {
         this.food = 0;
         this.leftoverFood = 0;
         this.production = 0;
+        this.capital = capital;
     }
 
     public String getName() {
@@ -277,8 +282,8 @@ public class City extends Tile {
         }
     }
 
-    public void removeSettler() {
-        settlers.remove(0);
+    public void removeSettler(Settler settler) {
+        settlers.remove(settler);
     }
 
     public void addResource(Resources resources) {
@@ -303,5 +308,23 @@ public class City extends Tile {
             if (!settler.isAssigned) settlerArrayList.add(settler);
         }
         return settlerArrayList;
+    }
+
+    public void addTile(Tile tile){
+        tiles.add(tile);
+    }
+
+    public void changeCapital(Tile newCapital){
+        this.capital = newCapital;
+    }
+
+    public ArrayList<Tile> getTiles() {
+        ArrayList<Tile> tileArrayList = new ArrayList<>();
+        Collections.copy(tileArrayList,tiles);
+        return tileArrayList;
+    }
+
+    public Tile getCapital() {
+        return capital;
     }
 }
