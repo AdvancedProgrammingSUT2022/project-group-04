@@ -598,7 +598,7 @@ public class GameMenu extends Menu {
         if (citySelected == null) {
             return "you must select a city first";
         }
-        if (!gameMenuController.isCityForThisCivilization(turn % numberOfPlayers, citySelected)) {
+        if (!gameMenuController.isCityForThisCivilization(turn, citySelected)) {
             return "this city is not for you";
         }
         ArrayList<Building> validBuildings = new ArrayList<Building>();
