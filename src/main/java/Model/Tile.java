@@ -21,6 +21,8 @@ public class Tile {
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     protected int[] roundsTillFinish;
     protected boolean isGettingWorkedOn;
+    protected boolean isRoadBroken;
+    protected boolean isRailroadBroken;
     public boolean[] getIsRiver() {
         return isRiver;
     }
@@ -312,4 +314,5 @@ public class Tile {
     public boolean getIsGettingWorkedOn() {
         return isGettingWorkedOn;
     }
+
 }

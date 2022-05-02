@@ -2,6 +2,8 @@ package Model;
 
 import Database.GameDatabase;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Worker extends Citizen {
@@ -19,8 +21,8 @@ public class Worker extends Citizen {
         workToIndex.put("LumberMill", 5);
         workToIndex.put("Pasture", 6);
         workToIndex.put("Camp", 7);
-        workToIndex.put("Field", 8);
-        workToIndex.put("StoneMine", 9);
+        workToIndex.put("Plantation", 8);
+        workToIndex.put("Quarry", 9);
         workToIndex.put("removeJungle", 10);//forest in the doc
         workToIndex.put("removeDenseJungle", 11);
         workToIndex.put("removePrairie", 12);
@@ -34,8 +36,8 @@ public class Worker extends Citizen {
         workToIndex.put("repairLumberMill", 20);
         workToIndex.put("repairPasture", 21);
         workToIndex.put("repairCamp", 22);
-        workToIndex.put("repairField", 23);
-        workToIndex.put("repairStoneMine", 24);
+        workToIndex.put("repairPlantation", 23);
+        workToIndex.put("repairQuarry", 24);
     }
 
     public Worker(int x, int y, int Vx, int Vy, int power ,int movementPoint, String era, int HP, int civilizationIndex, boolean isAssigned) {
@@ -76,9 +78,10 @@ public class Worker extends Citizen {
         }
     }
 
-    public void assignNewProject(String type) {
+    public boolean assignNewProject(String type) {
         Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
         if (!isAssigned && !tile.getIsGettingWorkedOn()) {
+            boolean isPossible = true;
             if (typeOfWork.equals(type)) {
                 isAssigned = true;
             } else {
@@ -89,12 +92,78 @@ public class Worker extends Citizen {
                 isAssigned = true;
                 //if repair then initiate the index of array again
                 if (indexOfProject > 12) tile.initializeRoundsTillFinish(indexOfProject);
+                switch (indexOfProject){
+                    case 0:
+                        //isPossible = makeRoad();
+                        break;
+                    case 1:
+                        //makeRailRoad();
+                        break;
+                    case 2:
+                        makeFarm();
+                        break;
+                    case 3:
+                        makeMine();
+                        break;
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        makeImprovement();
+                        break;
+                    case 10:
+                    case 11:
+                    case 12:
+                        break;
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 16:
+
+                }
             }
-            tile.setIsGettingWorkedOn(true);
+            if (isPossible) {
+                tile.setIsGettingWorkedOn(true);
+                return true;
+            }
         }
+        return false;
     }
 
-    public void makeFarm() {
+    private boolean makeImprovement() {
+        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        Improvement improvement = new Improvement(typeOfWork);
+        boolean isImprovementInTile = tile.isImprovementForThisTile(typeOfWork);
+        if (civilization == null
+                || !civilization.isTechnologyInCivilization(improvement.getRequiredTechnology().getName())
+                || isImprovementInTile){
+            indexOfProject = -1;
+            typeOfWork = "";
+            isAssigned = false;
+            return false;
+        }
+        return true;
+    }
+
+    private boolean makeRepair(){
+        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
+        if (indexOfProject == 15 && tile.hasRoad && tile.isRoadBroken){
+            return true;
+        }
+        if (indexOfProject == 16 && tile.hasRailroad && tile.isRailroadBroken){
+            return true;
+        }
+        if (indexOfProject >= )
+        indexOfProject = -1;
+        typeOfWork = "";
+        isAssigned = false;
+        return false;
+    }
+
+    public boolean makeFarm() {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Agriculture")
@@ -105,10 +174,15 @@ public class Worker extends Citizen {
             indexOfProject = workToIndex.get("Farm");
             typeOfWork = "Farm";
             isAssigned = true;
+            return true;
         }
+        indexOfProject = -1;
+        typeOfWork = "";
+        isAssigned = false;
+        return false;
     }
 
-    public void makeMine() {
+    public boolean makeMine() {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("")
@@ -120,7 +194,12 @@ public class Worker extends Citizen {
             indexOfProject = workToIndex.get("Mine");
             typeOfWork = "Mine";
             isAssigned = true;
+            return true;
         }
+        indexOfProject = -1;
+        typeOfWork = "";
+        isAssigned = false;
+        return false;
     }
 
     public void makeRoad() {
@@ -151,15 +230,18 @@ public class Worker extends Citizen {
         tile.setIsGettingWorkedOn(false);
         switch (indexOfProject) {
             case 0:
-            case 15:
                 tile.hasRoad = true;
+                tile.isRoadBroken = false;
                 typeOfWork = "";
                 indexOfProject = -1;
                 isAssigned = false;
                 break;
             case 1:
-            case 16://TODO railroad
                 tile.hasRailroad = true;
+                tile.isRailroadBroken = false;
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
                 break;
             case 2:
                 //TODO edit when feature and resources are fixed
@@ -183,13 +265,13 @@ public class Worker extends Citizen {
             case 6:
             case 7:
             case 8:
+            case 9:
                 improvement = new Improvement(typeOfWork);
                 tile.improvements.add(improvement);
                 typeOfWork = "";
                 indexOfProject = -1;
                 isAssigned = false;
                 break;
-            case 9://TODO others
             case 10:
             case 11:
             case 12:
@@ -206,6 +288,18 @@ public class Worker extends Citizen {
                 break;
             case 14:
                 tile.hasRailroad = false;
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
+                break;
+            case 15:
+                tile.isRoadBroken = false;
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
+                break;
+            case 16:
+                tile.isRailroadBroken = false;
                 typeOfWork = "";
                 indexOfProject = -1;
                 isAssigned = false;
