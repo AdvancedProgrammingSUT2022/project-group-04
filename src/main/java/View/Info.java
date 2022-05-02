@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GameMenuController;
 import Database.GameDatabase;
 import Database.GlobalVariables;
 import Model.*;
@@ -51,6 +52,16 @@ public class Info {
             }
         }
         return true;
+    }
+
+    public void infoMilitary(GameMenuController gameMenuController, int turn) {
+        for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
+            for (Unit unit : tile.getUnits()) {
+                if(gameMenuController.isUnitSoldier(unit)) {
+                    System.out.println(unit);
+                }
+            }
+        }
     }
 
     private void printResources(int turn) {

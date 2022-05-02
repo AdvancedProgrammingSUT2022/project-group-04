@@ -68,6 +68,7 @@ public class GameMenu extends Menu {
     private static final String INFO_DEMOGRAPHY = "info demography";
     private static final String INFO_RESEARCH = "info research";
     private static final String INFO_NOTIFICATION = "info notification";
+    private static final String INFO_MILITARY = "info military";
 
 
     public GameMenu(GameMenuController gameMenuController) {
@@ -361,6 +362,8 @@ public class GameMenu extends Menu {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {
                 info.infoNotification(turn);
+            } else if ((matcher = getCommandMatcher(command, INFO_MILITARY)) != null) {
+                info.infoMilitary(gameMenuController, turn);
             } else {
                 System.out.println("invalid command");
             }
@@ -708,11 +711,28 @@ public class GameMenu extends Menu {
         return "Message sent.";
     }
 
+    private void printUnhappyCivilizations() {
+        ArrayList<Civilization> unhappyCivilizations = new ArrayList<Civilization>();
+        for (Civilization civilization : GameDatabase.players) {
+            if(!civilization.isHappy()) {
+                unhappyCivilizations.add(civilization);
+            }
+        }
+        if(unhappyCivilizations.size() == 0) {
+            return;
+        }
+        System.out.println("Attention: These Civilizations are not happy!");
+        for (Civilization civilization : unhappyCivilizations) {
+            System.out.println(civilization.getNickname() + " - Happiness: " + Integer.toString(civilization.getHappiness()));
+        }
+    }
+
     private int nextTurn() {
         if (turn != this.numberOfPlayers - 1) {
             return turn++;
         }
         GameDatabase.nextTurn();
+        printUnhappyCivilizations();
         return 0;
     }
 

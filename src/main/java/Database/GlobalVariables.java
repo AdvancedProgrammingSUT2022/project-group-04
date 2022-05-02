@@ -15,4 +15,5 @@ public class GlobalVariables {
     public static final int firstHappiness = 50;
     public static final int happinessForEachCitizen = 1;
     public static final int happinessForEachCity = 1;
+    public static final int happinessForColonizedCities = 1;
 }

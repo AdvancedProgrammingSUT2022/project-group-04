@@ -30,6 +30,10 @@ public class User {
         return this.score;
     }
 
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
     public void changeNickname(String nickname) {
         this.nickname = nickname;
     }

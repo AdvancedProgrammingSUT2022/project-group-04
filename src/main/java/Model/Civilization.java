@@ -57,7 +57,15 @@ public class Civilization {
         this.score += amount;
     }
 
+    public void addScience(int amount) {
+        this.science+= amount;
+    }
+
     public void addGold(int amount) {
+        if(amount<0 && this.gold<=0) {
+            addScience(amount);
+            return;
+        }
         this.gold += amount;
     }
 
@@ -271,10 +279,16 @@ public class Civilization {
 
     private int happinessCalculator() {
         int population = 0;
+        int colonizedCount = 0;
         for (City city : this.cities) {
             population += city.getSettlers().size() + city.getWorkers().size();
+            if(city.isColonized()) {
+                colonizedCount++;
+            }
         }
-        return - population*GlobalVariables.happinessForEachCitizen - this.cities.size()*GlobalVariables.happinessForEachCity;
+        return - population*GlobalVariables.happinessForEachCitizen
+                - this.cities.size()*GlobalVariables.happinessForEachCity
+                - colonizedCount*GlobalVariables.happinessForColonizedCities;
     }
 
     public int getScience() {
