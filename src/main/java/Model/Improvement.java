@@ -75,7 +75,7 @@ public class Improvement {
                 this.cityProductionChange = 0;
                 this.civilizationGoldChange = 0;
                 break;
-            case "Field":
+            case "Plantation":
                 this.requiredTechnology = new Technology("Calendar");
                 this.BaseTerrainThatCanBeBuilt.add("Desert");
                 this.BaseTerrainThatCanBeBuilt.add("Plain");
@@ -88,7 +88,7 @@ public class Improvement {
                 this.cityProductionChange = 0;
                 this.civilizationGoldChange = 0;
                 break;
-            case "StoneMine":
+            case "Quarry":
                 this.requiredTechnology = new Technology("Masonry");
                 this.BaseTerrainThatCanBeBuilt.add("Desert");
                 this.BaseTerrainThatCanBeBuilt.add("Plain");

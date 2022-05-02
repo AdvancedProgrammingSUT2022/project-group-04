@@ -97,6 +97,10 @@ public class Info {
         }
     }
 
+    public void infoEconomy(int turn, Scanner scanner) {
+
+    }
+
     public void infoUnits(GameMenuController gameMenuController, int turn, Scanner scanner) {
         ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
         printSoldiersInUnitPanel(soldiers);
