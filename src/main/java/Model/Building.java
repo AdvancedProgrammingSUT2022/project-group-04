@@ -319,9 +319,119 @@ public class Building {
         return this.turnsNeedToBuild == 0;
     }
 
+    private int libraryScienceCalculator() {
+        int population = GameDatabase.getCityByName(this.cityName).getWorkers().size()
+                + GameDatabase.getCityByName(this.cityName).getSettlers().size();
+        return population/2;
+    }
+
     public void nextTurn() {
-        GameDatabase.getCivilizationForCity(this.cityName).addGold(-this.cost);
-        // TODO nextTurn for Buildings
+        GameDatabase.getCivilizationForCity(this.cityName).addGold(-this.maintenance);
+        switch (this.name) {
+            case "Barracks":
+                //TODO
+                break;
+            case "Granary":
+                GameDatabase.getCityByName(this.cityName).addFood(2);
+                break;
+            case "Library":
+                GameDatabase.getCivilizationForCity(this.cityName).addScience(libraryScienceCalculator());
+                break;
+            case "Monument":
+                break;
+            case "Walls":
+                //TODO
+                break;
+            case "Water_Mill":
+                GameDatabase.getCityByName(this.cityName).addFood(2);
+                break;
+            case "Armory":
+                //TODO
+                break;
+            case "Burial_Tomb":
+                GameDatabase.getCivilizationForCity(this.cityName).addHappiness(2);
+                //TODO
+                break;
+            case "Circus":
+                GameDatabase.getCivilizationForCity(this.cityName).addHappiness(3);
+                break;
+            case "Colosseum":
+                GameDatabase.getCivilizationForCity(this.cityName).addHappiness(4);
+                break;
+            case "Courthouse":
+                //TODO
+                break;
+            case "Stable":
+                //TODO
+                break;
+            case "Temple":
+                break;
+            case "Castle":
+                // TODO
+                break;
+            case "Forge":
+                // TODO
+                break;
+            case "Garden":
+                // TODO
+                break;
+            case "Market":
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/4);
+                break;
+            case "Mint":
+                // TODO
+                break;
+            case "Monastery":
+                break;
+            case "University":
+                GameDatabase.getCivilizationForCity(this.cityName).addScience(Math.abs(GameDatabase.getCivilizationForCity(this.cityName).getScience()/2));
+                break;
+            case "Workshop":
+                // TODO
+                break;
+            case "Bank":
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/4);
+                break;
+            case "MilitaryAcademy":
+                // TODO
+                break;
+            case "Museum":
+                break;
+            case "OperaHouse":
+                break;
+            case "PublicSchool":
+                GameDatabase.getCivilizationForCity(this.cityName).addScience(Math.abs(GameDatabase.getCivilizationForCity(this.cityName).getScience()/2));
+                break;
+            case "SatrapsCourt":
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/4);
+                GameDatabase.getCivilizationForCity(this.cityName).addHappiness(2);
+                break;
+            case "Theater":
+                GameDatabase.getCivilizationForCity(this.cityName).addHappiness(4);
+                break;
+            case "Windmill":
+                // TODO
+                break;
+            case "Arsenal":
+                // TODO
+                break;
+            case "BroadcastTower":
+                break;
+            case "Factory":
+                // TODO
+                break;
+            case "Hospital":
+                GameDatabase.getCityByName(this.cityName).addFood(-GameDatabase.getCityByName(this.cityName).getFoodGeneratingRate()/2);
+                break;
+            case "MilitaryBase":
+                // TODO
+                break;
+            case "StockExchange":
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/3);
+                break;
+            default:
+                break;
+        }
     }
 }
 
