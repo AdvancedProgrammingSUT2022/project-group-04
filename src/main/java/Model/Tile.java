@@ -282,4 +282,10 @@ public class Tile {
         }
         return null;
     }
+
+    public void fixImprovementByName(String nameOfImprovement) {
+        for (Improvement improvement : improvements) {
+            if (improvement.getName().equals(nameOfImprovement)) improvement.fix();
+        }
+    }
 }

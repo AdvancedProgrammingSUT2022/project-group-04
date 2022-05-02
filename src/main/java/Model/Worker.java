@@ -207,8 +207,12 @@ public class Worker extends Citizen {
             case 22:
             case 23:
             case 24:
-                //TODO
-
+                String nameOfImprovement = typeOfWork.substring(6);
+                tile.fixImprovementByName(nameOfImprovement);
+                typeOfWork = "";
+                indexOfProject = -1;
+                isAssigned = false;
+                break;
         }
         isAssigned = false;
     }
