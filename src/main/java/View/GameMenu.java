@@ -323,7 +323,7 @@ public class GameMenu extends Menu {
                 System.out.println(cheatGold(matcher));
 
             } else if ((matcher = getCommandMatcher(command, INFO_CITY)) != null) {
-                info.infoCity(turn);
+                info.infoCity(scanner, turn);
             } else if ((matcher = getCommandMatcher(command, VALID_BUILDINGS)) != null) {
                 String result = validBuildings(scanner);
                 if (result == null) {
