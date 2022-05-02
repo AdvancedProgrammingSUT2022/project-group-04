@@ -5,24 +5,33 @@ import Database.UserDatabase;
 public class ProfileMenuModel {
 
     /**
+     *
+     * @param loggedInUser
+     * @param username
+     */
+    public void changeUsername(User loggedInUser, String username) {
+        loggedInUser.changeUsername(username);
+    }
+
+    /**
      * changes nickname
      *
-     * @param loggedinUser
+     * @param loggedInUser
      * @param nickname
      */
-    public void changeNickname(User loggedinUser, String nickname) {
-        String username = loggedinUser.getUsername();
+    public void changeNickname(User loggedInUser, String nickname) {
+        String username = loggedInUser.getUsername();
         UserDatabase.getUserByUsername(username).changeNickname(nickname);
     }
 
     /**
      * changes password
      *
-     * @param loggedinUser
+     * @param loggedInUser
      * @param password
      */
-    public void changePassword(User loggedinUser, String password) {
-        String username = loggedinUser.getUsername();
+    public void changePassword(User loggedInUser, String password) {
+        String username = loggedInUser.getUsername();
         UserDatabase.getUserByUsername(username).changePassword(password);
     }
 }

@@ -20,7 +20,19 @@ public class ProfileMenuController {
         return false;
     }
 
-    public boolean isNewPasswordDiffrent(String password, String newPassword) {
+    /**
+     * @param username
+     * @return true if username was unique
+     */
+    public boolean isUsernameUnique(String username) {
+        User user = UserDatabase.getUserByUsername(username);
+        if (user == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isNewPasswordDifferent(String password, String newPassword) {
         if (password.equals(newPassword)) {
             return false;
         }
@@ -28,19 +40,27 @@ public class ProfileMenuController {
     }
 
     /**
-     * @param loggedinUser
-     * @param nickname
+     * @param loggedInUser
+     * @param username
      */
-    public void changeNickname(User loggedinUser, String nickname) {
-        this.profileMenuModel.changeNickname(loggedinUser, nickname);
+    public void changeUsername(User loggedInUser, String username) {
+        this.profileMenuModel.changeUsername(loggedInUser, username);
     }
 
     /**
-     * @param loggedinUser
+     * @param loggedInUser
+     * @param nickname
+     */
+    public void changeNickname(User loggedInUser, String nickname) {
+        this.profileMenuModel.changeNickname(loggedInUser, nickname);
+    }
+
+    /**
+     * @param loggedInUser
      * @param password
      */
-    public void changePassword(User loggedinUser, String password) {
-        this.profileMenuModel.changePassword(loggedinUser, password);
+    public void changePassword(User loggedInUser, String password) {
+        this.profileMenuModel.changePassword(loggedInUser, password);
     }
 
     /**
@@ -80,7 +100,7 @@ public class ProfileMenuController {
         String[] splitCommand = command.split(" ");
         String correctCommand = "profile change ";
 
-        // sreach for --password or -p
+        // search for --password or -p
         for (int i = 0; i < splitCommand.length; i++) {
             if (splitCommand[i].equals("--password") || splitCommand[i].equals("-p")) {
                 correctCommand += splitCommand[i] + " ";
