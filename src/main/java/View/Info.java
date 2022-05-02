@@ -30,24 +30,18 @@ public class Info {
         }
         String command;
         int index;
-        while(true) {
+        while (true) {
             command = scanner.nextLine();
-            if(command.equals("EXIT")) {
+            if (command.equals("EXIT")) {
                 return;
             }
             for (City city : civilization.getCities()) {
                 System.out.println(city);
             }
-            if(!command.matches("^-?\\d+$")) {
+            if (!command.matches("^-?\\d+$")) {
                 System.out.println("Enter a number");
             } else {
-                index = Integer.parseInt(command);
-                if(index < 1 || index>GameDatabase.players.get(turn).getCities().size()) {
-                    System.out.println("invalid number");
-                } else {
-                    index--;
-                    cityBanner(GameDatabase.players.get(turn).getCities().get(index), scanner);
-                }
+                goToCityPanel(turn, scanner, command);
             }
         }
     }
@@ -58,12 +52,12 @@ public class Info {
         for (Tile cityTile : city.getTiles()) {
             System.out.println(cityTile);
         }
-        while(true) {
+        while (true) {
             command = scanner.nextLine();
-            if(command.equals("BACK")) {
+            if (command.equals("BACK")) {
                 return;
             }
-            System.out.println("enter BACK to back to info city");
+            System.out.println("enter BACK to enter the upper menu");
         }
     }
 
@@ -97,8 +91,44 @@ public class Info {
         }
     }
 
-    public void infoEconomy(int turn, Scanner scanner) {
+    private void printEconomy(int turn) {
+        for (City city : GameDatabase.players.get(turn).getCities()) {
+            System.out.println(city);
+            for (Building building : city.getBuildings()) {
+                System.out.println(building);
+            }
+        }
+    }
 
+    public void infoEconomy(int turn, Scanner scanner) {
+        System.out.println("Your science is " + Integer.toString(GameDatabase.players.get(turn).getScience()));
+        System.out.println("Your happiness is " + Integer.toString(GameDatabase.players.get(turn).getScience()));
+        printEconomy(turn);
+        String command;
+        int index;
+        while (true) {
+            command = scanner.nextLine();
+            if (command.equals("EXIT")) {
+                return;
+            }
+            if (!command.matches("^-?\\d+$")) {
+                System.out.println("enter a number");
+            } else {
+                goToCityPanel(turn, scanner, command);
+                printEconomy(turn);
+            }
+        }
+    }
+
+    private void goToCityPanel(int turn, Scanner scanner, String command) {
+        int index;
+        index = Integer.parseInt(command);
+        if (index < 1 || index > GameDatabase.players.get(turn).getCities().size()) {
+            System.out.println("invalid number");
+        } else {
+            index--;
+            cityBanner(GameDatabase.players.get(turn).getCities().get(index), scanner);
+        }
     }
 
     public void infoUnits(GameMenuController gameMenuController, int turn, Scanner scanner) {
@@ -106,10 +136,10 @@ public class Info {
         printSoldiersInUnitPanel(soldiers);
         String command;
         int index;
-        while(true) {
+        while (true) {
             System.out.println("Enter info military to go to info military");
             command = scanner.nextLine();
-            if(command.equals("info military")) {
+            if (command.equals("info military")) {
                 infoMilitary(gameMenuController, turn);
             } else if (command.equals("EXIT")) {
                 return;
@@ -117,7 +147,7 @@ public class Info {
                 System.out.println("enter a number");
             } else {
                 index = Integer.parseInt(command);
-                if(index<1 || index>soldiers.size()) {
+                if (index < 1 || index > soldiers.size()) {
                     System.out.println("enter a valid number");
                 } else {
                     soldiers.get(index).setReady(!soldiers.get(index).isReady());
@@ -138,7 +168,7 @@ public class Info {
         ArrayList<Unit> soldiers = new ArrayList<Unit>();
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
             for (Unit unit : tile.getUnits()) {
-                if(gameMenuController.isUnitSoldier(unit)) {
+                if (gameMenuController.isUnitSoldier(unit)) {
                     soldiers.add(unit);
                 }
             }
@@ -195,7 +225,7 @@ public class Info {
 
     private boolean isNewResearchValid(ArrayList<Technology> technologiesUnderResearch, int turn) {
         for (Technology technologyUnderResearch : technologiesUnderResearch) {
-            if(!technologyUnderResearch.isStopped()) {
+            if (!technologyUnderResearch.isStopped()) {
                 return false;
             }
         }
@@ -213,7 +243,7 @@ public class Info {
         stopTechnologiesResearchMenu(technologiesUnderResearch, turn, scanner);
         printTechnologiesUnderResearch(technologiesUnderResearch, turn);
         printTechnologiesYouHave(turn);
-        if(!isNewResearchValid(technologiesUnderResearch, turn)) {
+        if (!isNewResearchValid(technologiesUnderResearch, turn)) {
             System.out.println("you can't have a new research because you are busy with another technology.");
             return;
         }
