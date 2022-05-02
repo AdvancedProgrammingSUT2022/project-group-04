@@ -315,4 +315,12 @@ public class Tile {
         return isGettingWorkedOn;
     }
 
+    public boolean isImprovementBroken(String improvementName) {
+        for (Improvement improvement : this.improvements) {
+            if(improvementName.equals(improvement.getName()) && improvement.isBroken()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

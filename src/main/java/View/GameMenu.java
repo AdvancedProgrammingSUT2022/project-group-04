@@ -7,6 +7,7 @@ import Model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.regex.Matcher;
 
 public class GameMenu extends Menu {
@@ -37,18 +38,9 @@ public class GameMenu extends Menu {
     private static final String UNIT_DELETE = "unit delete";
     private static final String UNIT_CANCEL_MISSION = "unit cancel mission";
     private static final String UNIT_BUILD_ROAD = "unit build road";
-    private static final String UNIT_BUILD_RAILROAD = "unit build railraod";
-//    private static final String UNIT_BUILD_FARM = "unit build farm";
-//    private static final String UNIT_BUILD_MINE = "unit build mine";
-//    private static final String UNIT_BUILD_TRADINGPOST = "unit build tradingpost";
-//    private static final String UNIT_BUILD_LUMBERMILL = "unit build lumbermill";
-//    private static final String UNIT_BUILD_PASTURE = "unit build pasture";
-//    private static final String UNIT_BUILD_CAMP = "unit build camp";
-//    private static final String UNIT_BUILD_PLANTATION = "unit build plantation";
-//    private static final String UNIT_BUILD_QUARRY = "unit build quarry";
+    private static final String UNIT_BUILD_RAILROAD = "unit build railroad";
     private static final String UNIT_REMOVE_JUNGLE = "unit remove jungle";
     private static final String UNIT_REMOVE_ROUTE = "unit remove route";
-    private static final String UNIT_REPAIR = "unit repair";
     private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
     private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
@@ -59,6 +51,7 @@ public class GameMenu extends Menu {
     private static final String ADD_TILE_TO_CITY = "add tile to city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
     //improvement should be PascalCase
     private static final String UNIT_BUILD_IMPROVEMENT = "unit build (?<improvement>[a-z]+) (?<x>\\d+) (?<y>\\d+)";
+    private static final String UNIT_REPAIR = "unit repair (?<typeOfRepair>\\S+) (?<x>\\d+) (?<y>\\d+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -216,7 +209,7 @@ public class GameMenu extends Menu {
 //                    turn = nextTurn();
 //                }
 //                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {
+            } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_RAILROAD)) != null) {//TODO later
 //                Improvement RailRoad = new Improvement("RailRoad");
 //                String result = unitBuild(RailRoad);
 //                if (result.startsWith("unit")) {
@@ -246,8 +239,8 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
-                String result = unitRepair();
-                if (result.startsWith("unit")) {
+                String result = unitRepair(matcher);
+                if (result.startsWith("worker")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -529,8 +522,9 @@ public class GameMenu extends Menu {
         if (tile.getIsGettingWorkedOn()) return "tile is already in a project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        worker.assignNewProject(improvementName);
-        return "worker successfully assigned";
+        if (worker.assignNewProject(improvementName)) return "worker successfully assigned";
+        return "you can't do that because either this improvement is already in this tile or " +
+                "you don't have the pre-requisite technology";
     }
 
     private String getUnitBuildRoad() {
@@ -553,9 +547,24 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String unitRepair() {
-        //TODO...
-        return null;
+    private String unitRepair(Matcher matcher) {
+        String type = matcher.group("typeOfRepair");
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        if (tile == null) return "invalid tile";
+        if (tile.getIsGettingWorkedOn()) return "there is already a project going on in this tile";
+        Worker worker = tile.getAvailableWorker();
+        if (worker == null) return "there is no available worker in this tile";
+        if (type.equals("Road") || type.equals("Railroad")){
+            if (worker.assignNewProject("repair" + type)) return "worker successfully assigned";
+            else return "you can't do this because either tile doesn't have the (rail)road or it isn't broken";
+        }
+        if (!gameMenuController.isImprovementValid(type)){
+            return "invalid improvement";
+        }
+        if (worker.assignNewProject("repair" + type)) return "worker successfully assigned";
+        else return "you can't do this because either tile doesn't have the improvement or it isn't broken";
     }
 
     private String mapMove(Matcher matcher) {

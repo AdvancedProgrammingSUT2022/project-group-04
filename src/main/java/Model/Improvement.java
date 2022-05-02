@@ -179,5 +179,9 @@ public class Improvement {
     public void breakImprovement(){
         isBroken = true;
     }
+
+    public boolean isBroken(){
+        return isBroken;
+    }
 }
 
