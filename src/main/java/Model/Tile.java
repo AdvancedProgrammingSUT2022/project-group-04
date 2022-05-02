@@ -40,6 +40,7 @@ public class Tile {
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
         }
+        setNeighbors(getAdjacentTiles());//set neighbours
         initializeRoundsTillFinish(-1);
     }
 
