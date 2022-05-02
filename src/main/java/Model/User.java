@@ -1,6 +1,10 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class User {
+
+    public static ArrayList<User> users = new ArrayList<User>();
 
     private String username;
     private String nickname;

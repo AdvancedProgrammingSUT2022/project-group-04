@@ -196,6 +196,17 @@ public class Building {
 
     }
 
+    @Override
+    public String toString() {
+        String result = this.name;
+        if(wasBuilt()) {
+            result += " was built.";
+            return result;
+        }
+        result += " " + Integer.toString(this.turnsNeedToBuild) + " turns need to build.";
+        return result;
+     }
+
     public Technology getTechnologyRequired() {
         return technologyRequired;
     }

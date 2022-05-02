@@ -105,7 +105,7 @@ public class City extends Tile {
         return workers;
     }
 
-    public ArrayList<Settler> getSettlers(){
+    public ArrayList<Settler> getSettlers() {
         return settlers;
     }
 
@@ -245,7 +245,7 @@ public class City extends Tile {
             if (citizen.isAssigned) count -= 2;
         }
         for (Settler settler : settlers) {
-            if (settler.isAssigned) count -=2;
+            if (settler.isAssigned) count -= 2;
         }
         if (count < 0) {
             count = citizensDyingForHunger(count);
@@ -260,15 +260,15 @@ public class City extends Tile {
         double size = (double) workers.size() + (double) workers.size();
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
-            workers.add(new Worker(x, y, 0, 0, 0, 0,"sth", 0, 0, false));
+            workers.add(new Worker(x, y, 0, 0, 0, 0, "sth", 0, 0, false));
         }
         return count;
     }
 
     private int citizensDyingForHunger(int count) {
         while (count > 0) {
-            if (settlers.size()>0) settlers.remove(0);
-            else if (workers.size()>0) workers.remove(0);
+            if (settlers.size() > 0) settlers.remove(0);
+            else if (workers.size() > 0) workers.remove(0);
             count += 2;
         }
         return count;
@@ -288,13 +288,13 @@ public class City extends Tile {
 
     public void addResource(Resources resources) {
         discoveredResources.add(resources);
-        if(resources.getType().equals("luxury")
-            && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
+        if (resources.getType().equals("luxury")
+                && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
             GameDatabase.getCivilizationByNickname(this.civilizationName).addHappiness(4);
         }
     }
 
-    public ArrayList<Worker> getUnemployedWorkers(){
+    public ArrayList<Worker> getUnemployedWorkers() {
         ArrayList<Worker> workerArrayList = new ArrayList<>();
         for (Worker worker : workers) {
             if (!worker.isAssigned) workerArrayList.add(worker);
@@ -302,7 +302,7 @@ public class City extends Tile {
         return workerArrayList;
     }
 
-    public ArrayList<Settler> getUnemployedSettlers(){
+    public ArrayList<Settler> getUnemployedSettlers() {
         ArrayList<Settler> settlerArrayList = new ArrayList<>();
         for (Settler settler : settlers) {
             if (!settler.isAssigned) settlerArrayList.add(settler);
@@ -310,17 +310,17 @@ public class City extends Tile {
         return settlerArrayList;
     }
 
-    public void addTile(Tile tile){
+    public void addTile(Tile tile) {
         tiles.add(tile);
     }
 
-    public void changeCapital(Tile newCapital){
+    public void changeCapital(Tile newCapital) {
         this.capital = newCapital;
     }
 
     public ArrayList<Tile> getTiles() {
         ArrayList<Tile> tileArrayList = new ArrayList<>();
-        Collections.copy(tileArrayList,tiles);
+        Collections.copy(tileArrayList, tiles);
         return tileArrayList;
     }
 
