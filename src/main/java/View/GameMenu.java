@@ -359,7 +359,7 @@ public class GameMenu extends Menu {
                         System.out.println("city created successfully!");
                     }
                 }
-            } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {//TODO BLAh
+            } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {
                 String cityName = matcher.group("cityName");
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
@@ -382,7 +382,7 @@ public class GameMenu extends Menu {
                         gameMenuController.addTileToCity(tile,city);
                         System.out.println("tile added to the city successfully!");
                     }
-                }//TODO fix generate map (river part)
+                }
             } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {
