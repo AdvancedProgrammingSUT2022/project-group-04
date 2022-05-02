@@ -21,6 +21,8 @@ public class Tile {
     ArrayList<Tile> neighbors = new ArrayList<Tile>();
     protected int[] roundsTillFinish;
     protected boolean isGettingWorkedOn;
+    protected boolean isRoadBroken;
+    protected boolean isRailroadBroken;
     public boolean[] getIsRiver() {
         return isRiver;
     }
@@ -311,5 +313,14 @@ public class Tile {
 
     public boolean getIsGettingWorkedOn() {
         return isGettingWorkedOn;
+    }
+
+    public boolean isImprovementBroken(String improvementName) {
+        for (Improvement improvement : this.improvements) {
+            if(improvementName.equals(improvement.getName()) && improvement.isBroken()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
