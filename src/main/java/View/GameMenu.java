@@ -339,34 +339,16 @@ public class GameMenu extends Menu {
                 info.infoResearch(turn, scanner);
             } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null) {
                 String result = buildCity(matcher);
-                if(result.startsWith("city")) {
+                if (result.startsWith("city")) {
                     turn = nextTurn();
                 }
                 System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {//TODO BLAh
-                String cityName = matcher.group("cityName");
-                int x = Integer.parseInt(matcher.group("x"));
-                int y = Integer.parseInt(matcher.group("y"));
-                City city = GameDatabase.getCityByName(cityName);
-                if (city == null){
-                    System.out.println("there is no city with this name");
+            } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {
+                String result = getAddTileToCity(matcher);
+                if (result.startsWith("tile")) {
+                    turn = nextTurn();
                 }
-                else if (GameDatabase.getCityByXAndY(x,y) != null){
-                    System.out.println("there is already a city in this tile");
-                }
-                else {
-                    Tile tile = GameDatabase.getTileByXAndY(x,y);
-                    if (!gameMenuController.isAdjacent(tile,city)){
-                        System.out.println("chosen tile isn't adjacent to city");
-                    }
-                    else if (!gameMenuController.isOperable(tile,city)){
-                        System.out.println("there is no settler in adjacent tiles in city");
-                    }
-                    else {
-                        gameMenuController.addTileToCity(tile,city);
-                        System.out.println("tile added to the city successfully!");
-                    }
-                }//TODO fix generate map (river part)
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
                 System.out.println(sendMessage(matcher));
             } else if ((matcher = getCommandMatcher(command, INFO_NOTIFICATION)) != null) {
@@ -711,20 +693,17 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         City city = GameDatabase.getCityByName(cityName);
-        if (city != null){
+        if (city != null) {
             return "there is already a city with this name";
-        }
-        else if (GameDatabase.getCityByXAndY(x,y) != null){
+        } else if (GameDatabase.getCityByXAndY(x, y) != null) {
             return "there is already a city in this tile";
-        }
-        else {
-            Tile tile = GameDatabase.getTileByXAndY(x,y);
+        } else {
+            Tile tile = GameDatabase.getTileByXAndY(x, y);
             Settler settler = tile.returnSettler();
-            if (settler == null){
+            if (settler == null) {
                 return "there is no settler in this tile";
-            }
-            else{
-                gameMenuController.createNewCity(settler,cityName);
+            } else {
+                gameMenuController.createNewCity(settler, cityName);
                 return "city created successfully!";
             }
         }
@@ -747,11 +726,11 @@ public class GameMenu extends Menu {
     private void printUnhappyCivilizations() {
         ArrayList<Civilization> unhappyCivilizations = new ArrayList<Civilization>();
         for (Civilization civilization : GameDatabase.players) {
-            if(!civilization.isHappy()) {
+            if (!civilization.isHappy()) {
                 unhappyCivilizations.add(civilization);
             }
         }
-        if(unhappyCivilizations.size() == 0) {
+        if (unhappyCivilizations.size() == 0) {
             return;
         }
         System.out.println("Attention: These Civilizations are not happy!");
@@ -767,6 +746,28 @@ public class GameMenu extends Menu {
         GameDatabase.nextTurn();
         printUnhappyCivilizations();
         return 0;
+    }
+
+    private String getAddTileToCity(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        City city = GameDatabase.getCityByName(cityName);
+        if (city == null) {
+            return "there is no city with this name";
+        }
+        if (GameDatabase.getCityByXAndY(x, y) != null) {
+            return "there is already a city in this tile";
+        }
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (!gameMenuController.isAdjacent(tile, city)) {
+            return "chosen tile isn't adjacent to city";
+        } else if (!gameMenuController.isOperable(tile, city)) {
+            return "there is no settler in adjacent tiles in city";
+        } else {
+            gameMenuController.addTileToCity(tile, city);
+            return "tile added to the city successfully!";
+        }
     }
 
     public void printMap(int mainX, int mainY) {
