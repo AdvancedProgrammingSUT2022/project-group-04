@@ -44,4 +44,7 @@ public class Settler extends Citizen {
         return true;
     }
 
+    public boolean isAssigned() {
+        return isAssigned;
+    }
 }

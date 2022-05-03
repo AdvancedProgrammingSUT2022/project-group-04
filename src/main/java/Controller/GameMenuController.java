@@ -287,4 +287,12 @@ public class GameMenuController {
         }
         return workerArrayList;
     }
+
+    public ArrayList<Settler> getListOfUnemployedSettlers(City city) {
+        ArrayList<Settler> settlerArrayList = new ArrayList<>();
+        for (Settler settler : city.getSettlers()) {
+            if (!settler.isAssigned()) settlerArrayList.add(settler);
+        }
+        return settlerArrayList;
+    }
 }

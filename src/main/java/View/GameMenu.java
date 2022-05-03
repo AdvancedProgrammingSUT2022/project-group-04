@@ -54,6 +54,8 @@ public class GameMenu extends Menu {
     private static final String UNIT_REMOVE_FEATURE = "unit remove (?<feature>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String REMOVE_CITIZEN_FROM_WORK = "remove citizen from work (?<x>\\d+) (?<y>\\d+)";
     private static final String LOCK_CITIZEN_TO_TILE = "lock citizen to tile (?<x>\\d+) (?<y>\\d+)";
+    private static final String GET_UNEMPLOYED_SECTION_BY_COORDINATE = "get unemployed section (?<x>\\d+) (?<y>\\d+)";
+    private static final String GET_UNEMPLOYED_SECTION_BY_CITY_NAME = "get unemployed section (?<cityName>[a-zA-Z]+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -253,6 +255,12 @@ public class GameMenu extends Menu {
                 } else {
                     System.out.println(result);
                 }
+            } else if ((matcher = getCommandMatcher(command, GET_UNEMPLOYED_SECTION_BY_COORDINATE)) != null) {
+                String result = citySelectByName(matcher, true);
+                System.out.print(result);
+            } else if ((matcher = getCommandMatcher(command, GET_UNEMPLOYED_SECTION_BY_CITY_NAME)) != null) {
+                String result = unemployedSection(matcher, false);
+                System.out.print(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_CITY_BY_POSITION)) != null) {
                 String result = citySelectByPosition(matcher);
                 if (result == null) {
@@ -319,23 +327,30 @@ public class GameMenu extends Menu {
         return "worker started locking process successfully!";
     }
 
-    private String unemployedSection(Matcher matcher){
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        Tile tile = GameDatabase.getTileByXAndY(x, y);
-        City city = GameDatabase.getCityByXAndY(x, y);
-        if (tile == null) return "invalid tile\n";
+    private String unemployedSection(Matcher matcher, boolean isCoordinate) {
+        City city;
+        if (isCoordinate) {
+            int x = Integer.parseInt(matcher.group("x"));
+            int y = Integer.parseInt(matcher.group("y"));
+            city = GameDatabase.getCityByXAndY(x, y);
+        } else {
+            city = GameDatabase.getCityByName(matcher.group("cityName"));
+        }
         if (city == null) return "this tile is in no city\n";
         ArrayList<Worker> unemployedWorkers = gameMenuController.getListOfUnemployedWorkers(city);
-        for (Worker unemployedWorker : unemployedWorkers) {
-            System.out.println();
-        }
-        ArrayList<Settler> settlers = gameMenuController.getListOfUnemployedSettlers(city);
+        ArrayList<Settler> unemployedSettlers = gameMenuController.getListOfUnemployedSettlers(city);
         return "";
     }
 
-    private void printUnemployedSection(ArrayList<Worker> workers,ArrayList<Settler> settlers){
-
+    private void printUnemployedSection(ArrayList<Worker> workers, ArrayList<Settler> settlers) {
+        int i = 0;
+        for (Worker worker : workers) {
+            System.out.println(i + "th unemployed worker: x = " + worker.getX() + ", y = " + worker.getY());
+        }
+        i = 0;
+        for (Settler settler : settlers) {
+            System.out.println(i + "th unemployed worker: x = " + settler.getX() + ", y = " + settler.getY());
+        }
     }
 
     private String unitStopWork(Matcher matcher) {
