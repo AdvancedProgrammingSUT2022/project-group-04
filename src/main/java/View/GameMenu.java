@@ -319,7 +319,7 @@ public class GameMenu extends Menu {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
         if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
-        Worker worker = tile.getAvailableWorker();`
+        Worker worker = tile.getAvailableWorker();
         City city = GameDatabase.getCityByXAndY(x, y);
         if (city == null) return "this tile is in no city";
         if (worker == null) worker = gameMenuController.findAvailableWorkerInCity(city);
