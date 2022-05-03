@@ -294,14 +294,6 @@ public class City extends Tile {
         }
     }
 
-    public ArrayList<Worker> getUnemployedWorkers() {
-        ArrayList<Worker> workerArrayList = new ArrayList<>();
-        for (Worker worker : workers) {
-            if (!worker.isAssigned) workerArrayList.add(worker);
-        }
-        return workerArrayList;
-    }
-
     public ArrayList<Settler> getUnemployedSettlers() {
         ArrayList<Settler> settlerArrayList = new ArrayList<>();
         for (Settler settler : settlers) {
