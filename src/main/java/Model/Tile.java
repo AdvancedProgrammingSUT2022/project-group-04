@@ -303,7 +303,9 @@ public class Tile {
     public Worker getAvailableWorker(){
         for (Unit unit : units) {
             if (unit.isWorker()) {
-                if (((Worker)unit).isLocked()) return (Worker) unit;
+                if (!((Worker) unit).isLocked() && !((Worker) unit).isAssigned) {
+                    return (Worker) unit;
+                }
             }
         }
         return null;

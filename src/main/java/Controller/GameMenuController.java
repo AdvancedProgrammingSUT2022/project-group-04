@@ -271,4 +271,11 @@ public class GameMenuController {
                 return false;
         }
     }
+
+    public Worker findAvailableWorkerInCity(City city) {
+        for (Tile tile : city.getTiles()) {
+            if (tile.getAvailableWorker() != null) return tile.getAvailableWorker();
+        }
+        return null;
+    }
 }

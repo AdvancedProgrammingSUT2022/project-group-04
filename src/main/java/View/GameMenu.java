@@ -307,18 +307,27 @@ public class GameMenu extends Menu {
     private String lockCitizen(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
-
+        Worker worker = tile.getAvailableWorker();
+        City city = GameDatabase.getCityByXAndY(x, y);
+        if (city == null) return "this tile is in no city";
+        if (worker == null)
+            worker = gameMenuController.findAvailableWorkerInCity(city);
+        if (worker == null) return "no available worker to be locked to this tile";
+        worker.lockTheWorker(tile);
+        return "worker started locking process successfully!";
     }
 
     private String unitStopWork(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
+        City city = GameDatabase.getCityByXAndY(x, y);
+        if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
-        if (!tile.getIsGettingWorkedOn() || worker==null) return "this tile isn't getting worked on";
+        if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
         worker.pauseProject();
         return "project stopped successfully";
     }
@@ -524,10 +533,10 @@ public class GameMenu extends Menu {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
-                &&!gameMenuController.isImprovementValid(improvementName)){
+                && !gameMenuController.isImprovementValid(improvementName)) {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
@@ -543,19 +552,19 @@ public class GameMenu extends Menu {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !improvementName.equals("Jungle")
                 && !improvementName.equals("DenseJungle")
-                && !improvementName.equals("Prairie")){
+                && !improvementName.equals("Prairie")) {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (worker.assignNewProject("remove"+improvementName)) return "worker successfully assigned";
+        if (worker.assignNewProject("remove" + improvementName)) return "worker successfully assigned";
         return "you can't do that because this feature is not in this tile";
     }
 
@@ -563,16 +572,16 @@ public class GameMenu extends Menu {
         String type = matcher.group("typeOfRepair");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
         if (tile.getIsGettingWorkedOn()) return "there is already a project going on in this tile";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
-        if (type.equals("Road") || type.equals("Railroad")){
+        if (type.equals("Road") || type.equals("Railroad")) {
             if (worker.assignNewProject("repair" + type)) return "worker successfully assigned";
             else return "you can't do this because either tile doesn't have the (rail)road or it isn't broken";
         }
-        if (!gameMenuController.isImprovementValid(type)){
+        if (!gameMenuController.isImprovementValid(type)) {
             return "invalid improvement";
         }
         if (worker.assignNewProject("repair" + type)) return "worker successfully assigned";
