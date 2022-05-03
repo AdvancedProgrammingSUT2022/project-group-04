@@ -279,4 +279,13 @@ public class GameDatabase {
             player.nextTurn();
         }
     }
+
+    public static Civilization getCivilizationByTurn(int turn) {
+        for (Civilization player : players) {
+            if (player.getTurn() == turn) {
+                return player;
+            }
+        }
+        return null;
+    }
 }
