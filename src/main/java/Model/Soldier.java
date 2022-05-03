@@ -214,5 +214,12 @@ public class Soldier extends Unit {
         return true;
     }
 
+    public void fortify(){
+
+    }
+    public void fortifyHeal(){
+
+    }
+
 
 }
