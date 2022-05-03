@@ -47,7 +47,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean isUnitSoldier(Unit unitSelected){
+    public boolean isUnitSoldier(Unit unitSelected) {
         return !unitSelected.getUnitType().startsWith("Civilian");
     }
 
@@ -78,14 +78,15 @@ public class GameMenuController {
 
     public boolean isImprovementValidForThisTile(Tile tile, String improvementName) {
         Improvement improvement = new Improvement(improvementName);
-        if(!GameDatabase.getCivilizationByTile(tile).isTechnologyForThisCivilization(improvement.getRequiredTechnology()));
+        if (!GameDatabase.getCivilizationByTile(tile).isTechnologyForThisCivilization(improvement.getRequiredTechnology()))
+            ;
         for (String terrainName : improvement.getBaseTerrainThatCanBeBuilt()) {
-            if(tile.getBaseTerrain().getType().equals(terrainName)) {
+            if (tile.getBaseTerrain().getType().equals(terrainName)) {
                 return true;
             }
         }
         for (String featureName : improvement.getTerrainFeaturesThatCanBeBuilt()) {
-            if(tile.getBaseTerrain().getFeature().getType().equals(featureName)) {
+            if (tile.getBaseTerrain().getFeature().getType().equals(featureName)) {
                 return true;
             }
         }
@@ -196,7 +197,7 @@ public class GameMenuController {
 
     public boolean isCityForThisCivilization(int turn, City citySelected) {
         for (City city : GameDatabase.players.get(turn).getCities()) {
-            if(city.getName().equals(citySelected.getName())) {
+            if (city.getName().equals(citySelected.getName())) {
                 return true;
             }
         }
@@ -206,7 +207,7 @@ public class GameMenuController {
     public boolean isCityNameUnique(String cityName) {
         for (Civilization player : GameDatabase.players) {
             for (City city : player.getCities()) {
-                if(city.getName().equals(cityName)) {
+                if (city.getName().equals(cityName)) {
                     return false;
                 }
             }
@@ -250,13 +251,13 @@ public class GameMenuController {
         ArrayList<Tile> tilesOfCity = city.getTiles();
         for (Tile tile1 : tilesOfCity) {
             if (neighbours.contains(tile1)
-                    && tile1.returnSettler()!= null) return true;
+                    && tile1.returnSettler() != null) return true;
         }
         return false;
     }
 
     public boolean isImprovementValid(String name) {
-        switch (name){
+        switch (name) {
             case "Camp":
             case "Farm":
             case "LumberMill":
@@ -277,5 +278,13 @@ public class GameMenuController {
             if (tile.getAvailableWorker() != null) return tile.getAvailableWorker();
         }
         return null;
+    }
+
+    public ArrayList<Worker> getListOfUnemployedWorkers(City city) {
+        ArrayList<Worker> workerArrayList = new ArrayList<>();
+        for (Worker worker : city.getWorkers()) {
+            if (!worker.isAssigned()) workerArrayList.add(worker);
+        }
+        return workerArrayList;
     }
 }

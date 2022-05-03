@@ -7,6 +7,7 @@ import Model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.regex.Matcher;
 
@@ -316,6 +317,25 @@ public class GameMenu extends Menu {
         if (worker == null) return "no available worker to be locked to this tile";
         worker.lockTheWorker(tile);
         return "worker started locking process successfully!";
+    }
+
+    private String unemployedSection(Matcher matcher){
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        City city = GameDatabase.getCityByXAndY(x, y);
+        if (tile == null) return "invalid tile\n";
+        if (city == null) return "this tile is in no city\n";
+        ArrayList<Worker> unemployedWorkers = gameMenuController.getListOfUnemployedWorkers(city);
+        for (Worker unemployedWorker : unemployedWorkers) {
+            System.out.println();
+        }
+        ArrayList<Settler> settlers = gameMenuController.getListOfUnemployedSettlers(city);
+        return "";
+    }
+
+    private void printUnemployedSection(ArrayList<Worker> workers,ArrayList<Settler> settlers){
+
     }
 
     private String unitStopWork(Matcher matcher) {
