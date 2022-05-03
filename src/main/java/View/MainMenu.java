@@ -1,5 +1,6 @@
 package View;
 
+import Controller.CombatController;
 import Controller.GameMenuController;
 import Controller.MainMenuController;
 import Controller.ProfileMenuController;
@@ -129,7 +130,8 @@ public class MainMenu extends Menu {
 
         GameModel gameModel = new GameModel();
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        GameMenu gameMenu = new GameMenu(gameMenuController);
+        CombatController combatController = new CombatController();
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
 
         GameDatabase.setPlayers(players);
         GameDatabase.generateMap(splitCommand.length - 1);
