@@ -587,8 +587,14 @@ public class GameMenu extends Menu {
     }
 
     private String unitDelete() {
-        //TODO...
-        return null;
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else {
+             gameMenuController.deleteUnit(unitSelected);
+             return "unit deleted";
+        }
     }
 
     private String unitBuild(Matcher matcher) {
