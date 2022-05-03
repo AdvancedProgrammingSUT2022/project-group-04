@@ -191,6 +191,22 @@ public class Soldier extends Unit {
         }
     }
 
+    public String getCombatType() {
+        return combatType;
+    }
+
+    public void setCombatType(String combatType) {
+        this.combatType = combatType;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
     public void attackUnit(Unit unit){
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
@@ -214,7 +230,13 @@ public class Soldier extends Unit {
         return true;
     }
 
-
-
+    public boolean isTileInRangeOfUnit(Tile tile){
+        for (int i = 1; i < 100; i++){
+            if (tile.getAdjacentTilesByLayer(i).contains(tile)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

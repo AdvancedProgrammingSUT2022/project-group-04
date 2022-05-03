@@ -1,5 +1,6 @@
 package Controller;
 
+import Database.GameDatabase;
 import Model.*;
 
 import java.util.ArrayList;
@@ -27,20 +28,14 @@ public class CombatController {
         }
     }
 
-    public void meleeCombatUnits(Soldier soldier1, Soldier soldier2){
-
-    }
-
-    public void meleeCombatUnitsCity(Soldier soldier1, City city1){
-
-    }
-
-    public void rangedCombatUnit(LongRangedSoldier soldier1, LongRangedSoldier soldier2){
-
-    }
-
-    public void rangedCombatUnitCity(LongRangedSoldier soldier1, City city1){
-
+    public boolean UnitAttackPosition(Unit unit1, int x, int y){
+        if (unit1 instanceof Soldier){
+            Soldier soldier1 = (Soldier) unit1;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void Unit1CanSeeUnit2(Unit unit1, Unit unit2){
@@ -63,11 +58,25 @@ public class CombatController {
         //Todo... check to see if is in friendly tile or ...
     }
 
-    public void Strengthen(){
+    public void healUnit(Unit unit){
+        Tile currentTile = GameDatabase.getTileByXAndY(unit.getX(), unit.getY());
+        Civilization currentCivilization = GameDatabase.getCivilizationByTile(currentTile);
+        if (currentCivilization.getAllUnitsOfCivilization().contains(unit)){
+            if (currentTile.getCity() == null){
+                unit.regainHP(2);
+            }
+            else {
+                unit.regainHP(3);
+            }
+        }
+        else{
+            unit.regainHP(1);
+        }
 
     }
 
-
-
-
+    public void fortifyUnit(Unit unit){
+        int a = 3; //todo find the amount to add to the power of unit
+        unit.setPower(unit.getPower() + a);
+    }
 }

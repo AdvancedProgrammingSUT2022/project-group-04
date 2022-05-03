@@ -1,5 +1,6 @@
 package View;
 
+import Controller.CombatController;
 import Controller.GameMenuController;
 import Database.GameDatabase;
 import Database.GlobalVariables;
@@ -14,6 +15,7 @@ import java.util.regex.Matcher;
 public class GameMenu extends Menu {
 
     private GameMenuController gameMenuController;
+    private CombatController combatController;
     int numberOfPlayers;
     int turn;
     Unit unitSelected;
@@ -73,8 +75,9 @@ public class GameMenu extends Menu {
     private static final String INFO_ECONOMY = "info economy";
 
 
-    public GameMenu(GameMenuController gameMenuController) {
+    public GameMenu(GameMenuController gameMenuController, CombatController combatController) {
         this.gameMenuController = gameMenuController;
+        this.combatController = combatController;
         this.turn = 0;
         this.citySelected = null;
         this.unitSelected = null;
@@ -496,7 +499,7 @@ public class GameMenu extends Menu {
         } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
-            gameMenuController.fortifyUnit(unitSelected);
+            combatController.fortifyUnit(unitSelected);
         }
         return "unit fortified";
     }
@@ -509,7 +512,7 @@ public class GameMenu extends Menu {
         } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
-            gameMenuController.healUnit(unitSelected);
+            combatController.healUnit(unitSelected);
         }
         return "unit fortifyHealed";
     }
@@ -526,6 +529,7 @@ public class GameMenu extends Menu {
                Settler settler = (Settler) unitSelected;
                String cityName = matcher.group("name");
                settler.createNewCity(cityName);
+               //TODO should fix the MVC
             }
         }
         return "unit found city";
@@ -547,9 +551,25 @@ public class GameMenu extends Menu {
         return "unit awakened";
     }
 
-    private String unitAttack() {
-        //TODO...
-        return null;
+    private String unitAttack(Matcher matcher) {
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)){
+            return "this unit is not a combat unit";
+        } else {
+            int x = Integer.parseInt(matcher.group("x"));
+            int y = Integer.parseInt(matcher.group("y"));
+            Soldier soldier = (Soldier) unitSelected;
+            if (soldier.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x, y))) {
+                combatController.UnitAttackPosition(soldier, x, y);
+                return "unit attacked desired position";
+            }
+            else {
+                return "selected position is in not in range of unit";
+            }
+        }
     }
 
     private String unitGarrison() {
