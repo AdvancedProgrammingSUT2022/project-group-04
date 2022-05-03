@@ -342,4 +342,8 @@ public class Civilization {
         }
         return true;
     }
+    public ArrayList<Tile> getFriendlyTiles(){
+        ArrayList<Tile> friendlyTiles = new ArrayList<>();
+        return friendlyTiles;
+    }
 }
