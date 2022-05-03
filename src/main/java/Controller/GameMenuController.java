@@ -295,4 +295,200 @@ public class GameMenuController {
         }
         return settlerArrayList;
     }
+
+    public void pauseProject(Worker worker,int x,int y) {
+        if (worker.isAssigned() && !worker.isMoving() && worker.isLocked()) {
+            Tile tile = GameDatabase.getTileByXAndY(x, y);
+            worker.setIsAssigned(false);
+            tile.setIsGettingWorkedOn(false);
+        }
+    }
+
+    public boolean assignNewProject(Worker worker, String type) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        if (!worker.isAssigned() && !tile.getIsGettingWorkedOn()) {
+            boolean isPossible = true;
+            if (worker.getTypeOfWork().equals(type)) {
+                worker.setIsAssigned(true);
+            } else {
+                if (tile.getRoundsTillFinishProjectByIndex(worker.getIndexOfProject()) != 0)
+                    tile.initializeRoundsTillFinish(worker.getIndexOfProject());
+                worker.setIndexOfProject(Worker.workToIndex.get(type));
+                worker.setTypeOfWork(type);
+                worker.setIsAssigned(true);
+                //if repair then initiate the index of array again
+                if (worker.getIndexOfProject() > 12) tile.initializeRoundsTillFinish(worker.getIndexOfProject());
+                switch (worker.getIndexOfProject()) {
+                    case 0:
+                        isPossible = makeRoad(worker);
+                        break;
+                    case 1:
+                        isPossible = makeRailRoad(worker);
+                        break;
+                    case 2:
+                        isPossible = makeFarm(worker);
+                        break;
+                    case 3:
+                        isPossible = makeMine(worker);
+                        break;
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        isPossible = makeImprovement(worker);
+                        break;
+                    case 10:
+                    case 11:
+                    case 12:
+                        break;
+                    case 13:
+                        isPossible = removeRoad(worker);
+                        break;
+                    case 14:
+                        //isPossible = removeRailroad();
+                        break;
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                    case 20:
+                    case 21:
+                    case 22:
+                    case 23:
+                    case 24:
+                        isPossible = makeRepair(worker);
+                        break;
+                }
+            }
+            if (isPossible) {
+                tile.setIsGettingWorkedOn(true);
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean makeRailRoad(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        if (civilization.isTechnologyInCivilization("SteamPower")
+                && !tile.hasRailroad()
+                && !tile.getBaseTerrainType().equals("Ice")
+                && !tile.getBaseTerrainType().equals("Ocean")
+                && !tile.getBaseTerrainType().equals("Mountain")) {
+            worker.setIndexOfProject(1);
+            worker.setIsAssigned (true);
+            worker.setTypeOfWork("Railroad");
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
+
+    private boolean removeRoad(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        if (tile.hasRoad()) {
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
+
+    private boolean makeImprovement(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        Improvement improvement = new Improvement(worker.getTypeOfWork());
+        boolean isImprovementInTile = tile.isImprovementForThisTile(worker.getTypeOfWork());
+        if (civilization == null
+                || !civilization.isTechnologyInCivilization(improvement.getRequiredTechnology().getName())
+                || isImprovementInTile) {
+            worker.setIndexOfProject(-1);
+            worker.setIsAssigned (false);
+            worker.setTypeOfWork("");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean makeRepair(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        if (worker.getIndexOfProject() == 15 && tile.hasRoad() && tile.isRoadBroken()) {
+            return true;
+        }
+        if (worker.getIndexOfProject() == 16 && tile.hasRailroad() && tile.isRailroadBroken()) {
+            return true;
+        }
+        String improvementName = worker.getTypeOfWork().substring(6);
+        if (worker.getIndexOfProject() >= 17 && tile.isImprovementBroken(improvementName)) {
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
+
+    public boolean makeFarm(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        if (civilization.isTechnologyInCivilization("Agriculture")
+                && !tile.getBaseTerrain().getType().equals("Ice")
+                && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
+                || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
+                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
+            worker.setIndexOfProject(Worker.workToIndex.get("Farm"));
+            worker.setIsAssigned (true);
+            worker.setTypeOfWork("Farm");
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
+
+    public boolean makeMine(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        if (civilization.isTechnologyInCivilization("")
+                && !tile.getBaseTerrain().getType().equals("Ice")
+                && (tile.getBaseTerrainType().equals("Hill"))
+                && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
+                || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
+                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
+            worker.setIndexOfProject(Worker.workToIndex.get("Mine"));
+            worker.setIsAssigned (true);
+            worker.setTypeOfWork("Mine");
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
+
+    public boolean makeRoad(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        if (civilization.isTechnologyInCivilization("Wheel")
+                && !tile.hasRoad()
+                && !tile.getBaseTerrainType().equals("Ice")
+                && !tile.getBaseTerrainType().equals("Ocean")
+                && !tile.getBaseTerrainType().equals("Mountain")) {
+            worker.setIndexOfProject(Worker.workToIndex.get("Road"));
+            worker.setIsAssigned (true);
+            worker.setTypeOfWork("Road");
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
 }

@@ -22,6 +22,7 @@ public class Settler extends Citizen {
                 tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(this.x, this.y)).getNickname(),
                 false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY(),tile));
         civilization.getCityByXAndY(x, y).removeSettler(this);//kill the settler after making city
+
         tile.removeUnit(this);
     }
 

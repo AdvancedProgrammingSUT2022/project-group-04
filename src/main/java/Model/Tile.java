@@ -337,4 +337,12 @@ public class Tile {
         }
         return false;
     }
+
+    public boolean isRoadBroken() {
+        return isRoadBroken;
+    }
+
+    public boolean isRailroadBroken() {
+        return isRailroadBroken;
+    }
 }

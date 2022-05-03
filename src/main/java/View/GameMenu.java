@@ -362,7 +362,7 @@ public class GameMenu extends Menu {
         if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
         if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
-        worker.pauseProject();
+        gameMenuController.pauseProject(worker,x,y);
         return "project stopped successfully";
     }
 
@@ -577,7 +577,7 @@ public class GameMenu extends Menu {
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (worker.assignNewProject(improvementName)) return "worker successfully assigned";
+        if (gameMenuController.assignNewProject(worker,improvementName)) return "worker successfully assigned";
         return "you can't do that because either this improvement/(rail)road is already in this tile or " +
                 "you don't have the pre-requisite technology";
     }
@@ -598,7 +598,7 @@ public class GameMenu extends Menu {
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (worker.assignNewProject("remove" + improvementName)) return "worker successfully assigned";
+        if (gameMenuController.assignNewProject(worker,"remove" + improvementName)) return "worker successfully assigned";
         return "you can't do that because this feature is not in this tile";
     }
 
@@ -612,13 +612,13 @@ public class GameMenu extends Menu {
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
         if (type.equals("Road") || type.equals("Railroad")) {
-            if (worker.assignNewProject("repair" + type)) return "worker successfully assigned";
+            if (gameMenuController.assignNewProject(worker,"repair" + type)) return "worker successfully assigned";
             else return "you can't do this because either tile doesn't have the (rail)road or it isn't broken";
         }
         if (!gameMenuController.isImprovementValid(type)) {
             return "invalid improvement";
         }
-        if (worker.assignNewProject("repair" + type)) return "worker successfully assigned";
+        if (gameMenuController.assignNewProject(worker,"repair" + type)) return "worker successfully assigned";
         else return "you can't do this because either tile doesn't have the improvement or it isn't broken";
     }
 

@@ -13,7 +13,7 @@ public class Worker extends Citizen {
     private boolean isMoving;
     private Tile desTile;
     private boolean isLocked;
-    private static HashMap<String, Integer> workToIndex;
+    public static HashMap<String, Integer> workToIndex;
     //TODO implement railroad
 
     public static void setHashMap() {
@@ -85,208 +85,12 @@ public class Worker extends Citizen {
         }
     }
 
-    public void pauseProject() {
-        if (isAssigned && !isMoving && isLocked) {
-            Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-            this.isAssigned = false;
-            tile.setIsGettingWorkedOn(false);
-        }
-    }
-
     public void lockTheWorker(Tile tile){
         isMoving = true;
         moveUnitFromTo(this,GameDatabase.getTileByXAndY(this.x,this.y),tile);
         this.desTile = tile;
     }
 
-    public boolean assignNewProject(String type) {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        if (!isAssigned && !tile.getIsGettingWorkedOn()) {
-            boolean isPossible = true;
-            if (typeOfWork.equals(type)) {
-                isAssigned = true;
-            } else {
-                if (tile.getRoundsTillFinishProjectByIndex(indexOfProject) != 0)
-                    tile.initializeRoundsTillFinish(indexOfProject);
-                indexOfProject = workToIndex.get(type);
-                typeOfWork = type;
-                isAssigned = true;
-                //if repair then initiate the index of array again
-                if (indexOfProject > 12) tile.initializeRoundsTillFinish(indexOfProject);
-                switch (indexOfProject) {
-                    case 0:
-                        isPossible = makeRoad();
-                        break;
-                    case 1:
-                        isPossible = makeRailRoad();
-                        break;
-                    case 2:
-                        isPossible = makeFarm();
-                        break;
-                    case 3:
-                        isPossible = makeMine();
-                        break;
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                        isPossible = makeImprovement();
-                        break;
-                    case 10:
-                    case 11:
-                    case 12:
-                        break;
-                    case 13:
-                        isPossible = removeRoad();
-                        break;
-                    case 14:
-                        //isPossible = removeRailroad();
-                        break;
-                    case 15:
-                    case 16:
-                    case 17:
-                    case 18:
-                    case 19:
-                    case 20:
-                    case 21:
-                    case 22:
-                    case 23:
-                    case 24:
-                        isPossible = makeRepair();
-                        break;
-                }
-            }
-            if (isPossible) {
-                tile.setIsGettingWorkedOn(true);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean makeRailRoad() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        if (civilization.isTechnologyInCivilization("SteamPower")
-                && !tile.hasRailroad
-                && !tile.getBaseTerrainType().equals("Ice")
-                && !tile.getBaseTerrainType().equals("Ocean")
-                && !tile.getBaseTerrainType().equals("Mountain")) {
-            indexOfProject = 1;
-            isAssigned = true;
-            typeOfWork = "Railroad";
-            return true;
-        }
-        indexOfProject = -1;
-        isAssigned = false;
-        typeOfWork = "";
-        return false;
-    }
-
-    private boolean removeRoad() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        if (tile.hasRoad) {
-            return true;
-        }
-        indexOfProject = -1;
-        isAssigned = false;
-        typeOfWork = "";
-        return false;
-    }
-
-    private boolean makeImprovement() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        Improvement improvement = new Improvement(typeOfWork);
-        boolean isImprovementInTile = tile.isImprovementForThisTile(typeOfWork);
-        if (civilization == null
-                || !civilization.isTechnologyInCivilization(improvement.getRequiredTechnology().getName())
-                || isImprovementInTile) {
-            indexOfProject = -1;
-            typeOfWork = "";
-            isAssigned = false;
-            return false;
-        }
-        return true;
-    }
-
-    private boolean makeRepair() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        if (indexOfProject == 15 && tile.hasRoad && tile.isRoadBroken) {
-            return true;
-        }
-        if (indexOfProject == 16 && tile.hasRailroad && tile.isRailroadBroken) {
-            return true;
-        }
-        String improvementName = typeOfWork.substring(6);
-        if (indexOfProject >= 17 && tile.isImprovementBroken(improvementName)) {
-            return true;
-        }
-        indexOfProject = -1;
-        typeOfWork = "";
-        isAssigned = false;
-        return false;
-    }
-
-    public boolean makeFarm() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        if (civilization.isTechnologyInCivilization("Agriculture")
-                && !tile.getBaseTerrain().getType().equals("Ice")
-                && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
-                || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
-                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
-            indexOfProject = workToIndex.get("Farm");
-            typeOfWork = "Farm";
-            isAssigned = true;
-            return true;
-        }
-        indexOfProject = -1;
-        typeOfWork = "";
-        isAssigned = false;
-        return false;
-    }
-
-    public boolean makeMine() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        if (civilization.isTechnologyInCivilization("")
-                && !tile.getBaseTerrain().getType().equals("Ice")
-                && (tile.getBaseTerrainType().equals("Hill"))
-                && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
-                || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
-                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
-            indexOfProject = workToIndex.get("Mine");
-            typeOfWork = "Mine";
-            isAssigned = true;
-            return true;
-        }
-        indexOfProject = -1;
-        typeOfWork = "";
-        isAssigned = false;
-        return false;
-    }
-
-    public boolean makeRoad() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        if (civilization.isTechnologyInCivilization("Wheel")
-                && !tile.hasRoad
-                && !tile.getBaseTerrainType().equals("Ice")
-                && !tile.getBaseTerrainType().equals("Ocean")
-                && !tile.getBaseTerrainType().equals("Mountain")) {
-            indexOfProject = 0;
-            isAssigned = true;
-            typeOfWork = "Road";
-            return true;
-        }
-        indexOfProject = -1;
-        isAssigned = false;
-        typeOfWork = "";
-        return false;
-    }
 //    public void removeRoad(){//TODO change if more than 1 turn is needed for removal
 //        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
 //        tile.hasRoad = false;
@@ -396,5 +200,30 @@ public class Worker extends Citizen {
 
     public boolean isLocked() {
         return isLocked;
+    }
+
+    public String getTypeOfWork() {
+        return typeOfWork;
+    }
+
+    public void setIsAssigned(boolean isAssigned) {
+        this.isAssigned = isAssigned;
+    }
+
+    public int getIndexOfProject() {
+        return this.indexOfProject;
+    }
+
+    public void setIndexOfProject(int newIndexOfProject) {
+        this.indexOfProject = newIndexOfProject;
+    }
+
+
+    public void setTypeOfWork(String type) {
+        this.typeOfWork = type;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
     }
 }
