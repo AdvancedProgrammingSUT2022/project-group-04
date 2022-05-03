@@ -291,4 +291,11 @@ public class Unit {
         return false;
     }
 
+    public void fortify(){
+
+    }
+    public void fortifyHeal(){
+
+    }
+
 }
