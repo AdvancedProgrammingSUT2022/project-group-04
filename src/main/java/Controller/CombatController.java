@@ -29,8 +29,32 @@ public class CombatController {
     }
 
     public boolean UnitAttackPosition(Unit unit1, int x, int y){
+        City cityOfPosition = GameDatabase.getCityByXAndY(x, y);
+        ArrayList<Unit> unitsInPosition = GameDatabase.getTileByXAndY(x, y).getUnits();
         if (unit1 instanceof Soldier){
             Soldier soldier1 = (Soldier) unit1;
+            if (soldier1.getRange() == 0){
+                //melee attack
+                for (Unit unit : unitsInPosition){
+                    ((Soldier) unit1).attackUnitMelee(unit);
+                }
+                ((Soldier) unit1).attackCityMelee(cityOfPosition);
+            }
+            else {
+                //longRange attack
+                for (Unit unit : unitsInPosition){
+                    ((Soldier) unit1).attackUnitRanged(unit);
+                }
+                ((Soldier) unit1).attackCityRanged(cityOfPosition);
+            }
+            for (Unit unit : unitsInPosition){
+                if (unit.getHP() <= 0){
+                    killUnit(unit);
+                }
+            }
+            if (cityOfPosition.getHP() <= 0){
+                //Todo ...
+            }
             return true;
         }
         else{
@@ -78,5 +102,10 @@ public class CombatController {
     public void fortifyUnit(Unit unit){
         int a = 3; //todo find the amount to add to the power of unit
         unit.setPower(unit.getPower() + a);
+    }
+
+    public void killUnit(Unit unit){
+        unit.getTileOfUnit().removeUnit(unit);
+        // ToDO think there should be more to this funciton
     }
 }

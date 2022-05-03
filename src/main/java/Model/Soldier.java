@@ -207,23 +207,47 @@ public class Soldier extends Unit {
         this.range = range;
     }
 
-    public void attackUnit(Unit unit){
+    public void attackUnitMelee(Unit unit){
+        int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
-                this.combatStrength -= ((10 - i) / 20) * this.combatStrength;
+                amount += this.combatStrength - ((10 - i) / 20) * this.combatStrength;
                 break;
             }
         }
-        unit.setHP(unit.getHP() - this.combatStrength);
+        unit.setHP(unit.getHP() - amount + unit.getPower());
     }
-    public void attackCity(City city){
+    public void attackUnitRanged(Unit unit){
+        int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
-                this.combatStrength -= ((10 - i) / 20) * this.combatStrength;
+                amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
                 break;
             }
         }
-        city.setHP(city.getHP() - this.combatStrength);
+        unit.setHP(unit.getHP() - amount + unit.getPower());
+    }
+
+    public void attackCityMelee(City city){
+        int amount = 0;
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                amount += this.combatStrength - ((10 - i) / 20) * this.combatStrength;
+                break;
+            }
+        }
+        city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
+    }
+
+    public void attackCityRanged(City city){
+        int amount = 0;
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
+                break;
+            }
+        }
+        city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
     }
 
     public boolean isCombatUnit(){
