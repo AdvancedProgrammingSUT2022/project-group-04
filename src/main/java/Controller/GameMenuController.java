@@ -491,4 +491,27 @@ public class GameMenuController {
         worker.setTypeOfWork("");
         return false;
     }
+
+    public void healUnit(Unit unit){
+        Tile currentTile = GameDatabase.getTileByXAndY(unit.getX(), unit.getY());
+        Civilization currentCivilization = GameDatabase.getCivilizationByTile(currentTile);
+        if (currentCivilization.getAllUnitsOfCivilization().contains(unit)){
+            if (currentTile.getCity() == null){
+                unit.regainHP(2);
+            }
+            else {
+                unit.regainHP(3);
+            }
+        }
+        else{
+            unit.regainHP(1);
+        }
+
+    }
+
+    public void fortifyUnit(Unit unit){
+        int a = 3; //todo find the amount to add to the power of unit
+        unit.setPower(unit.getPower() + a);
+    }
+
 }

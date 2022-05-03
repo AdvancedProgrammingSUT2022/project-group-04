@@ -33,7 +33,7 @@ public class GameMenu extends Menu {
     private static final String UNIT_GARRISON = "unit garrison";
     private static final String UNIT_SETUP_RANGE = "unit setup range";
     private static final String UNIT_ATTACK_POSITION = "unit attack (?<x>\\d+) (?<y>\\d+)";
-    private static final String UNIT_FOUND_CITY = "unit found city";
+    private static final String UNIT_FOUND_CITY = "unit found city (?<name>\\w+)";
     private static final String CANCEL_MISSION = "unit cancel mission";
     private static final String UNIT_WAKE = "unit wake";
     private static final String UNIT_DELETE = "unit delete";
@@ -165,7 +165,7 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null) {
-                String result = unitFortifyHeal();
+                String result = unitHeal();
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
@@ -178,7 +178,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
                 //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
-                String result = unitFoundCity();
+                String result = unitFoundCity(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
@@ -362,7 +362,7 @@ public class GameMenu extends Menu {
         if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
         if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
-        gameMenuController.pauseProject(worker,x,y);
+        gameMenuController.pauseProject(worker, x, y);
         return "project stopped successfully";
     }
 
@@ -496,12 +496,12 @@ public class GameMenu extends Menu {
         } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
-            unitSelected.fortify();
+            gameMenuController.fortifyUnit(unitSelected);
         }
         return "unit fortified";
     }
 
-    private String unitFortifyHeal() {
+    private String unitHeal() {
         if (unitSelected == null) {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
@@ -509,12 +509,12 @@ public class GameMenu extends Menu {
         } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
         } else {
-            unitSelected.fortifyHeal();
+            gameMenuController.healUnit(unitSelected);
         }
         return "unit fortifyHealed";
     }
 
-    private String unitFoundCity() {
+    private String unitFoundCity(Matcher matcher) {
         if (unitSelected == null) {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
@@ -522,7 +522,11 @@ public class GameMenu extends Menu {
         } else if (unitSelected.isCombatUnit()) {
             return "this is not a settler unit";
         } else {
-            unitSelected.createCity(unitSelected.getX(), unitSelected.getY());
+            if(unitSelected instanceof Settler){
+               Settler settler = (Settler) unitSelected;
+               String cityName = matcher.group("name");
+               settler.createNewCity(cityName);
+            }
         }
         return "unit found city";
 
@@ -577,7 +581,7 @@ public class GameMenu extends Menu {
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (gameMenuController.assignNewProject(worker,improvementName)) return "worker successfully assigned";
+        if (gameMenuController.assignNewProject(worker, improvementName)) return "worker successfully assigned";
         return "you can't do that because either this improvement/(rail)road is already in this tile or " +
                 "you don't have the pre-requisite technology";
     }
@@ -598,7 +602,8 @@ public class GameMenu extends Menu {
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (gameMenuController.assignNewProject(worker,"remove" + improvementName)) return "worker successfully assigned";
+        if (gameMenuController.assignNewProject(worker, "remove" + improvementName))
+            return "worker successfully assigned";
         return "you can't do that because this feature is not in this tile";
     }
 
@@ -612,13 +617,13 @@ public class GameMenu extends Menu {
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
         if (type.equals("Road") || type.equals("Railroad")) {
-            if (gameMenuController.assignNewProject(worker,"repair" + type)) return "worker successfully assigned";
+            if (gameMenuController.assignNewProject(worker, "repair" + type)) return "worker successfully assigned";
             else return "you can't do this because either tile doesn't have the (rail)road or it isn't broken";
         }
         if (!gameMenuController.isImprovementValid(type)) {
             return "invalid improvement";
         }
-        if (gameMenuController.assignNewProject(worker,"repair" + type)) return "worker successfully assigned";
+        if (gameMenuController.assignNewProject(worker, "repair" + type)) return "worker successfully assigned";
         else return "you can't do this because either tile doesn't have the improvement or it isn't broken";
     }
 
