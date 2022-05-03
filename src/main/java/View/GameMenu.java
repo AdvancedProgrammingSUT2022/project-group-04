@@ -312,8 +312,7 @@ public class GameMenu extends Menu {
         Worker worker = tile.getAvailableWorker();
         City city = GameDatabase.getCityByXAndY(x, y);
         if (city == null) return "this tile is in no city";
-        if (worker == null)
-            worker = gameMenuController.findAvailableWorkerInCity(city);
+        if (worker == null) worker = gameMenuController.findAvailableWorkerInCity(city);
         if (worker == null) return "no available worker to be locked to this tile";
         worker.lockTheWorker(tile);
         return "worker started locking process successfully!";
