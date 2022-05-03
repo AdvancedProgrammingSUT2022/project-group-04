@@ -2,10 +2,9 @@ package Controller;
 
 import Model.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class combatController {
+public class CombatController {
     //will add a combat model class;
     ArrayList<Unit> unitsInWar;
 

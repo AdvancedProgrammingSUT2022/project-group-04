@@ -278,12 +278,6 @@ public class Unit {
         return true;
     }
 
-    public void fortify(){
-        //TODO...
-    }
-    public void fortifyHeal(){
-        //TODO...
-    }
 
     public void createCity(int xOfTile,int yOfTile){
 
@@ -295,6 +289,13 @@ public class Unit {
 
     public boolean isWorker(){
         return false;
+    }
+
+    public void fortify(){
+
+    }
+    public void fortifyHeal(){
+
     }
 
 }
