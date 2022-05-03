@@ -256,7 +256,7 @@ public class GameMenu extends Menu {
                     System.out.println(result);
                 }
             } else if ((matcher = getCommandMatcher(command, GET_UNEMPLOYED_SECTION_BY_COORDINATE)) != null) {
-                String result = citySelectByName(matcher, true);
+                String result = unemployedSection(matcher, true);
                 System.out.print(result);
             } else if ((matcher = getCommandMatcher(command, GET_UNEMPLOYED_SECTION_BY_CITY_NAME)) != null) {
                 String result = unemployedSection(matcher, false);
