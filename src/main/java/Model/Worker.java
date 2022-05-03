@@ -10,6 +10,9 @@ public class Worker extends Citizen {
     protected boolean isAssigned;
     protected int indexOfProject;
     private String typeOfWork;
+    private boolean isMoving;
+    private Tile desTile;
+    private boolean isLocked;
     private static HashMap<String, Integer> workToIndex;
     //TODO implement railroad
 
@@ -46,6 +49,12 @@ public class Worker extends Citizen {
         isAssigned = false;
         indexOfProject = -1;
         typeOfWork = "";
+        isLocked = false;
+        isMoving = false;
+    }
+
+    public boolean isAssigned(){
+        return isAssigned;
     }
 
     @Override
@@ -59,8 +68,8 @@ public class Worker extends Citizen {
     }
 
     public void nextTurn() {
-        if (isAssigned) {
-            Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        if (isAssigned && !isMoving && isLocked) {
             int roundsTillFinishProject = tile.getRoundsTillFinishProjectByIndex(indexOfProject);
             tile.reduceRoundsByIndex(indexOfProject);
             roundsTillFinishProject--;
@@ -70,14 +79,24 @@ public class Worker extends Citizen {
                 typeOfWork = "";
             }
         }
+        if (tile == desTile){
+            isMoving = false;
+            isLocked = true;
+        }
     }
 
     public void pauseProject() {
-        if (isAssigned) {
+        if (isAssigned && !isMoving && isLocked) {
             Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
             this.isAssigned = false;
             tile.setIsGettingWorkedOn(false);
         }
+    }
+
+    public void lockTheWorker(Tile tile){
+        isMoving = true;
+        moveUnitFromTo(this,GameDatabase.getTileByXAndY(this.x,this.y),tile);
+        this.desTile = tile;
     }
 
     public boolean assignNewProject(String type) {
@@ -167,8 +186,8 @@ public class Worker extends Citizen {
     }
 
     private boolean removeRoad() {
-        Tile tile = GameDatabase.getTileByXAndY(this.x,this.y);
-        if (tile.hasRoad){
+        Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
+        if (tile.hasRoad) {
             return true;
         }
         indexOfProject = -1;
@@ -373,5 +392,9 @@ public class Worker extends Citizen {
                 break;
         }
         isAssigned = false;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
     }
 }

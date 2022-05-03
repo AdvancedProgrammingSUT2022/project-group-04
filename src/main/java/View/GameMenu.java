@@ -51,6 +51,8 @@ public class GameMenu extends Menu {
     private static final String UNIT_BUILD_IMPROVEMENT = "unit build (?<improvement>[a-z]+) (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_REPAIR = "unit repair (?<typeOfRepair>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_REMOVE_FEATURE = "unit remove (?<feature>\\S+) (?<x>\\d+) (?<y>\\d+)";
+    private static final String REMOVE_CITIZEN_FROM_WORK = "remove citizen from work (?<x>\\d+) (?<y>\\d+)";
+    private static final String LOCK_CITIZEN_TO_TILE = "lock citizen to tile (?<x>\\d+) (?<y>\\d+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -221,6 +223,20 @@ public class GameMenu extends Menu {
                     turn = nextTurn();
                 }
                 System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, REMOVE_CITIZEN_FROM_WORK)) != null) {
+                String result = unitStopWork(matcher);
+                if (result.startsWith("project")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, LOCK_CITIZEN_TO_TILE)) != null) {
+                String result = lockCitizen(matcher);
+                if (result.startsWith("project")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
                 String result = mapMove(matcher);
                 if (result == null) {
@@ -286,6 +302,25 @@ public class GameMenu extends Menu {
                 System.out.println("invalid command");
             }
         }
+    }
+
+    private String lockCitizen(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        if (tile == null) return "invalid tile";
+
+    }
+
+    private String unitStopWork(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        Tile tile = GameDatabase.getTileByXAndY(x,y);
+        if (tile == null) return "invalid tile";
+        Worker worker = tile.getActiveWorker();
+        if (!tile.getIsGettingWorkedOn() || worker==null) return "this tile isn't getting worked on";
+        worker.pauseProject();
+        return "project stopped successfully";
     }
 
     @Override
