@@ -191,30 +191,76 @@ public class Soldier extends Unit {
         }
     }
 
-    public void attackUnit(Unit unit){
-        for (double i = 1; i < 10; i++) {
-            if (this.HP == i) {
-                this.combatStrength -= ((10 - i) / 20) * this.combatStrength;
-                break;
-            }
-        }
-        unit.setHP(unit.getHP() - this.combatStrength);
+    public String getCombatType() {
+        return combatType;
     }
-    public void attackCity(City city){
+
+    public void setCombatType(String combatType) {
+        this.combatType = combatType;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    public void attackUnitMelee(Unit unit){
+        int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
-                this.combatStrength -= ((10 - i) / 20) * this.combatStrength;
+                amount += this.combatStrength - ((10 - i) / 20) * this.combatStrength;
                 break;
             }
         }
-        city.setHP(city.getHP() - this.combatStrength);
+        unit.setHP(unit.getHP() - amount + unit.getPower());
+    }
+    public void attackUnitRanged(Unit unit){
+        int amount = 0;
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
+                break;
+            }
+        }
+        unit.setHP(unit.getHP() - amount + unit.getPower());
+    }
+
+    public void attackCityMelee(City city){
+        int amount = 0;
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                amount += this.combatStrength - ((10 - i) / 20) * this.combatStrength;
+                break;
+            }
+        }
+        city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
+    }
+
+    public void attackCityRanged(City city){
+        int amount = 0;
+        for (double i = 1; i < 10; i++) {
+            if (this.HP == i) {
+                amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
+                break;
+            }
+        }
+        city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
     }
 
     public boolean isCombatUnit(){
         return true;
     }
 
-
-
+    public boolean isTileInRangeOfUnit(Tile tile){
+        for (int i = 1; i < 100; i++){
+            if (tile.getAdjacentTilesByLayer(i).contains(tile)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

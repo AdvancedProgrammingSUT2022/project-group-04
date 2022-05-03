@@ -23,6 +23,7 @@ public class Tile {
     protected boolean isGettingWorkedOn;
     protected boolean isRoadBroken;
     protected boolean isRailroadBroken;
+    protected City city;
     public boolean[] getIsRiver() {
         return isRiver;
     }
@@ -126,6 +127,14 @@ public class Tile {
 
     public void setVisited(boolean visited) {
         this.visited = visited;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public Tile getPrev() {
