@@ -491,7 +491,4 @@ public class GameMenuController {
         worker.setTypeOfWork("");
         return false;
     }
-
-
-
 }

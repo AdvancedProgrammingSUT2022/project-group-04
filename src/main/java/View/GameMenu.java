@@ -317,10 +317,11 @@ public class GameMenu extends Menu {
     }
 
     private String lockCitizen(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
+        int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
+        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
         Worker worker = tile.getAvailableWorker();
         City city = GameDatabase.getCityByXAndY(x, y);
         if (city == null) return "this tile is in no city";
@@ -336,6 +337,8 @@ public class GameMenu extends Menu {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
             city = GameDatabase.getCityByXAndY(x, y);
+            Tile tile = GameDatabase.getTileByXAndY(x,y);
+            if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro\n";
         } else {
             city = GameDatabase.getCityByName(matcher.group("cityName"));
         }
@@ -360,8 +363,9 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if (tile == null) return "invalid tile";
         City city = GameDatabase.getCityByXAndY(x, y);
+        if (tile == null) return "invalid tile";
+        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
         if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
         if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
@@ -598,6 +602,7 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
+        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
@@ -619,6 +624,7 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
+        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
@@ -633,6 +639,7 @@ public class GameMenu extends Menu {
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
+        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "there is already a project going on in this tile";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
