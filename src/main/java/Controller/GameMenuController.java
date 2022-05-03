@@ -491,4 +491,13 @@ public class GameMenuController {
         worker.setTypeOfWork("");
         return false;
     }
+
+    public boolean isTileInCivilization(Tile tile, int turn) {
+        Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
+        if (civilization == null
+                && !civilization.isTileInCivilization(tile.getX(), tile.getX())) {
+            return false;
+        }
+        return true;
+    }
 }
