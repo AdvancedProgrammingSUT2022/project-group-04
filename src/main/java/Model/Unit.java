@@ -238,7 +238,40 @@ public class Unit {
         result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.power);
         return result;
     }
-
+    public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
+        if (!destTile.canBePassed())
+            return false;
+        Graph graph = new Graph();
+        ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
+        Tile currentInCopy = null;
+        Tile destInCopy = null;
+        for (Tile tile : copyOfMap) {
+            if (tile.getX() == currentTile.getX() && tile.getY() == currentTile.getY())
+                currentInCopy = tile;
+            if (tile.getX() == destTile.getX() && tile.getY() == destTile.getY())
+                destInCopy = tile;
+        }
+        ArrayList<Tile> path = new ArrayList<>();
+        for (Tile copyTile : graph.route(currentInCopy, destInCopy, copyOfMap)) {
+            for (Tile mainTile : GameDatabase.map) {
+                if (mainTile.getX() == copyTile.getX() && mainTile.getY() == copyTile.getY()) {
+                    path.add(mainTile);
+                }
+            }
+        }
+        //Todo.. make each movement round based
+        for (int i = 1; i < path.size(); i++) {
+            if (selectedUnit.getMovementPoint() >= path.get(i).movementPriceForTile()) {
+                selectedUnit.moveToAdjacentTile(path.get(i));
+                path.get(i).addUnit(selectedUnit);
+                path.get(i - 1).removeUnit(selectedUnit);
+            }
+            else {
+                break;
+            }
+        }
+        return true;
+    }
 
     public boolean isCombatUnit(){
         return true;
