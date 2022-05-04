@@ -463,10 +463,10 @@ public class GameMenu extends Menu {
             return "this unit is not for you";
         } else if (!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
-        } else if (!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+        } else if (!gameMenuController.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
             return "invalid to move";
         } else {
-            unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
+            gameMenuController.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
         }
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }
