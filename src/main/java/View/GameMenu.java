@@ -20,6 +20,8 @@ public class GameMenu extends Menu {
     int turn;
     Unit unitSelected;
     City citySelected;
+    int x;
+    int y;
 
     //Commands
     private static final String MAP_SHOW_POSITION = "map show (?<x>\\d+) (?<y>\\d+)";
@@ -58,6 +60,7 @@ public class GameMenu extends Menu {
     private static final String LOCK_CITIZEN_TO_TILE = "lock citizen to tile (?<x>\\d+) (?<y>\\d+)";
     private static final String GET_UNEMPLOYED_SECTION_BY_COORDINATE = "get unemployed section (?<x>\\d+) (?<y>\\d+)";
     private static final String GET_UNEMPLOYED_SECTION_BY_CITY_NAME = "get unemployed section (?<cityName>[a-zA-Z]+)";
+    private static final String SHOW_HAPPINESS_LEVEL = "show happiness level";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -84,6 +87,8 @@ public class GameMenu extends Menu {
         this.turn = 0;
         this.citySelected = null;
         this.unitSelected = null;
+        this.x = 0;
+        this.y = 0;
     }
 
     public void run(Scanner scanner) {
@@ -126,12 +131,16 @@ public class GameMenu extends Menu {
                 String result = selectCombat(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    x = Integer.parseInt(matcher.group("x"));
+                    y = Integer.parseInt(matcher.group("y"));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
                 String result = selectNonCombat(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    x = Integer.parseInt(matcher.group("x"));
+                    y = Integer.parseInt(matcher.group("y"));
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
@@ -260,6 +269,8 @@ public class GameMenu extends Menu {
                 String result = citySelectByName(matcher);
                 if (result == null) {
                     citySelected = GameDatabase.getCityByName(matcher.group("cityName"));
+                    x = citySelected.getX();
+                    y = citySelected.getY();
                     System.out.println(citySelected);
                 } else {
                     System.out.println(result);
@@ -274,6 +285,8 @@ public class GameMenu extends Menu {
                 String result = citySelectByPosition(matcher);
                 if (result == null) {
                     citySelected = GameDatabase.getCityByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    x = citySelected.getX();
+                    y = citySelected.getY();
                     System.out.println(citySelected);
                 } else {
                     System.out.println(result);
@@ -320,10 +333,31 @@ public class GameMenu extends Menu {
                 System.out.println(makeHappy());;
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_SCIENCE)) != null) {
                 System.out.println(addScience(matcher));;
+            } else if ((matcher = getCommandMatcher(command, SHOW_HAPPINESS_LEVEL)) != null) {
+                showHappinessLevel();
             } else {
                 System.out.println("invalid command");
             }
         }
+    }
+
+    private void showHappinessLevel() {
+        String nickname = GameDatabase.players.get(turn).getNickname();
+        System.out.println("your civilization is:");
+        if(GameDatabase.players.get(turn).isHappy()) {
+            System.out.println("\t HAPPY!");
+        } else {
+            System.out.println("\t UNHAPPY :(");
+        }
+        System.out.println("your happiness is : " + Integer.toString(GameDatabase.players.get(turn).getHappiness()));
+        System.out.println("other civilizations:");
+        for (Civilization civilization : GameDatabase.players) {
+            if(civilization.getNickname().equals(nickname)) {
+                continue;
+            }
+            System.out.println(civilization.getNickname() + " happiness is " + Integer.toString(civilization.getHappiness()));
+        }
+
     }
 
     private String lockCitizen(Matcher matcher) {
@@ -848,12 +882,22 @@ public class GameMenu extends Menu {
     }
 
     private int nextTurn() {
+        printMap(x, y);
+        showNextTurn();
         if (turn != this.numberOfPlayers - 1) {
             return turn++;
         }
         GameDatabase.nextTurn();
         printUnhappyCivilizations();
         return 0;
+    }
+
+    private void showNextTurn() {
+        if (turn != this.numberOfPlayers - 1) {
+            System.out.println(GameDatabase.players.get(turn++).getNickname());
+            return;
+        }
+        System.out.println(GameDatabase.players.get(0).getNickname());
     }
 
     private String getAddTileToCity(Matcher matcher) {
