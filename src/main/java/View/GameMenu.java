@@ -92,6 +92,7 @@ public class GameMenu extends Menu {
     }
 
     public void run(Scanner scanner) {
+        System.out.println(GameDatabase.players.get(0).getNickname());
         String command;
         Info info = Info.getInstance();
         while (true) {
