@@ -63,6 +63,9 @@ public class GameMenu extends Menu {
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
     private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String CHEAT_GOLD = "gold increase (?<amount>-?\\d+)";
+    private static final String CHEAT_MAKE_HAPPY = "make happy";
+    private static final String CHEAT_ADD_SCIENCE = "add science (?<amount>-?\\d+)";
+    private static final String CHEAT_WIN = "win";
 
     //Info
     private static final String INFO_CITY = "info city";
@@ -90,7 +93,10 @@ public class GameMenu extends Menu {
             numberOfPlayers = GameDatabase.players.size();
             Matcher matcher;
             command = scanner.nextLine();
-            if (command.equals("menu exit")) {
+            if (command.equals("menu exit") || command.equals(CHEAT_WIN)) {
+                if(command.equals(CHEAT_WIN)) {
+                    System.out.println(GameDatabase.players.get(turn).getNickname() + " is the winner!");
+                }
                 break;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
@@ -310,6 +316,10 @@ public class GameMenu extends Menu {
                 info.infoUnits(gameMenuController, turn, scanner);
             } else if ((matcher = getCommandMatcher(command, INFO_ECONOMY)) != null) {
                 info.infoEconomy(turn, scanner);
+            } else if ((matcher = getCommandMatcher(command, CHEAT_MAKE_HAPPY)) != null) {
+                System.out.println(makeHappy());;
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_SCIENCE)) != null) {
+                System.out.println(addScience(matcher));;
             } else {
                 System.out.println("invalid command");
             }
@@ -597,6 +607,14 @@ public class GameMenu extends Menu {
         }
     }
 
+    private String makeHappy() {
+        if(GameDatabase.players.get(turn).isHappy()) {
+            return "you are happy now";
+        }
+        GameDatabase.players.get(turn).happy();
+        return "now your happiness is 0";
+    }
+
     private String unitBuild(Matcher matcher) {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
@@ -707,6 +725,15 @@ public class GameMenu extends Menu {
         }
         GameDatabase.players.get(turn).addGold(amount);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
+    }
+
+    private String addScience(Matcher matcher) {
+        int science = Integer.parseInt(matcher.group("science"));
+        if (!this.gameMenuController.isAmountValidForScience(science)) {
+            return "invalid amount";
+        }
+        GameDatabase.players.get(turn).addScience(science);
+        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " science.";
     }
 
 
