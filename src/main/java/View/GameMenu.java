@@ -100,7 +100,7 @@ public class GameMenu extends Menu {
             Matcher matcher;
             command = scanner.nextLine();
             if (command.equals("menu exit") || command.equals(CHEAT_WIN)) {
-                if(command.equals(CHEAT_WIN)) {
+                if (command.equals(CHEAT_WIN)) {
                     System.out.println(GameDatabase.players.get(turn).getNickname() + " is the winner!");
                 }
                 break;
@@ -331,9 +331,11 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, INFO_ECONOMY)) != null) {
                 info.infoEconomy(turn, scanner);
             } else if ((matcher = getCommandMatcher(command, CHEAT_MAKE_HAPPY)) != null) {
-                System.out.println(makeHappy());;
+                System.out.println(makeHappy());
+                ;
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_SCIENCE)) != null) {
-                System.out.println(addScience(matcher));;
+                System.out.println(addScience(matcher));
+                ;
             } else if ((matcher = getCommandMatcher(command, SHOW_HAPPINESS_LEVEL)) != null) {
                 showHappinessLevel();
             } else {
@@ -345,7 +347,7 @@ public class GameMenu extends Menu {
     private void showHappinessLevel() {
         String nickname = GameDatabase.players.get(turn).getNickname();
         System.out.println("your civilization is:");
-        if(GameDatabase.players.get(turn).isHappy()) {
+        if (GameDatabase.players.get(turn).isHappy()) {
             System.out.println("\t HAPPY!");
         } else {
             System.out.println("\t UNHAPPY :(");
@@ -353,7 +355,7 @@ public class GameMenu extends Menu {
         System.out.println("your happiness is : " + Integer.toString(GameDatabase.players.get(turn).getHappiness()));
         System.out.println("other civilizations:");
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getNickname().equals(nickname)) {
+            if (civilization.getNickname().equals(nickname)) {
                 continue;
             }
             System.out.println(civilization.getNickname() + " happiness is " + Integer.toString(civilization.getHappiness()));
@@ -366,7 +368,7 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         Worker worker = tile.getAvailableWorker();
         City city = GameDatabase.getCityByXAndY(x, y);
         if (city == null) return "this tile is in no city";
@@ -382,8 +384,8 @@ public class GameMenu extends Menu {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
             city = GameDatabase.getCityByXAndY(x, y);
-            Tile tile = GameDatabase.getTileByXAndY(x,y);
-            if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro\n";
+            Tile tile = GameDatabase.getTileByXAndY(x, y);
+            if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro\n";
         } else {
             city = GameDatabase.getCityByName(matcher.group("cityName"));
         }
@@ -410,7 +412,7 @@ public class GameMenu extends Menu {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x, y);
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
         if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
@@ -574,11 +576,11 @@ public class GameMenu extends Menu {
         } else if (unitSelected.isCombatUnit()) {
             return "this is not a settler unit";
         } else {
-            if(unitSelected instanceof Settler){
-               Settler settler = (Settler) unitSelected;
-               String cityName = matcher.group("name");
-               settler.createNewCity(cityName);
-               //TODO should fix the MVC
+            if (unitSelected instanceof Settler) {
+                Settler settler = (Settler) unitSelected;
+                String cityName = matcher.group("name");
+                settler.createNewCity(cityName);
+                //TODO should fix the MVC
             }
         }
         return "unit found city";
@@ -605,7 +607,7 @@ public class GameMenu extends Menu {
             return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        } else if (!(unitSelected instanceof Soldier)){
+        } else if (!(unitSelected instanceof Soldier)) {
             return "this unit is not a combat unit";
         } else {
             int x = Integer.parseInt(matcher.group("x"));
@@ -614,8 +616,7 @@ public class GameMenu extends Menu {
             if (soldier.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x, y))) {
                 combatController.UnitAttackPosition(soldier, x, y);
                 return "unit attacked desired position";
-            }
-            else {
+            } else {
                 return "selected position is in not in range of unit";
             }
         }
@@ -637,13 +638,13 @@ public class GameMenu extends Menu {
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
         } else {
-             gameMenuController.deleteUnit(unitSelected);
-             return "unit deleted";
+            gameMenuController.deleteUnit(unitSelected);
+            return "unit deleted";
         }
     }
 
     private String makeHappy() {
-        if(GameDatabase.players.get(turn).isHappy()) {
+        if (GameDatabase.players.get(turn).isHappy()) {
             return "you are happy now";
         }
         GameDatabase.players.get(turn).happy();
@@ -661,7 +662,7 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
@@ -683,7 +684,7 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
@@ -698,7 +699,7 @@ public class GameMenu extends Menu {
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile,turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "there is already a project going on in this tile";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
@@ -977,8 +978,16 @@ public class GameMenu extends Menu {
                     linesOfHexagons[i + 2][j + 2][2] = Colors.ANSI_RESET + colorOfHexagon +
                             ("    " + x + "," + y + "        ").substring(0, 12);//coordinates
                     //
+                    String unitNames = "";
+                    ArrayList<Unit> units = tile.getUnits();
+                    boolean isFirst = true;
+                    for (Unit unit : units) {
+                        if (!isFirst) unitNames += "-";
+                        if (isFirst) isFirst = false;
+                        unitNames += unit.getUnitType().substring(0, 1);
+                    }
                     linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
-                            ("                ").substring(0, 12);//TODO Unit to print
+                            (unitNames + "                ").substring(0, 12);//TODO Unit to print
                     //showing Features
                     String allFeatures = " ";
                     for (int k = 0; k < tile.getBaseTerrain().getPossibleFeatures().size(); k++) {
