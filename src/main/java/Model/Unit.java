@@ -238,7 +238,6 @@ public class Unit {
         result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.power);
         return result;
     }
-
     public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
         if (!destTile.canBePassed())
             return false;
@@ -262,8 +261,8 @@ public class Unit {
         }
         //Todo.. make each movement round based
         for (int i = 1; i < path.size(); i++) {
-            if (movementPoint >= path.get(i).movementPriceForTile()) {
-                moveToAdjacentTile(path.get(i));
+            if (selectedUnit.getMovementPoint() >= path.get(i).movementPriceForTile()) {
+                selectedUnit.moveToAdjacentTile(path.get(i));
                 path.get(i).addUnit(selectedUnit);
                 path.get(i - 1).removeUnit(selectedUnit);
             }

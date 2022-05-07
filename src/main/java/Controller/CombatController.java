@@ -33,6 +33,7 @@ public class CombatController {
         ArrayList<Unit> unitsInPosition = GameDatabase.getTileByXAndY(x, y).getUnits();
         if (unit1 instanceof Soldier){
             Soldier soldier1 = (Soldier) unit1;
+            boolean won = true;
             if (soldier1.getRange() == 0){
                 //melee attack
                 for (Unit unit : unitsInPosition){
@@ -48,12 +49,21 @@ public class CombatController {
                 ((Soldier) unit1).attackCityRanged(cityOfPosition);
             }
             for (Unit unit : unitsInPosition){
-                if (unit.getHP() <= 0){
+                if (unit.getHP() > 0){
+                    won = false;
+                }
+                else {
                     killUnit(unit);
                 }
             }
-            if (cityOfPosition.getHP() <= 0){
+            if (cityOfPosition.getHP() > 0){
+                won = false;
+            }
+            else{
                 //Todo ...
+            }
+            if (won){
+                unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
             }
             return true;
         }
@@ -76,10 +86,6 @@ public class CombatController {
         for (Unit unit :unitsInWar){
             unit.setXP(unit.getXP() + XP);
         }
-    }
-
-    public void regainHP(Unit unit){
-        //Todo... check to see if is in friendly tile or ...
     }
 
     public void healUnit(Unit unit){

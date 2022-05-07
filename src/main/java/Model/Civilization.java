@@ -299,6 +299,12 @@ public class Civilization {
         return happiness >= 0;
     }
 
+    public void happy() {
+        if(this.happiness < 0) {
+            this.happiness = 0;
+        }
+    }
+
     public boolean isTechnologyInCivilization(String technology){
         for (Technology technology1 : technologies) {
             if (technology1.getName().equals(technology))

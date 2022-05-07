@@ -169,6 +169,10 @@ public class GameMenuController {
         return true;
     }
 
+    public boolean isAmountValidForScience(int amount) {
+        return isAmountValid(amount);
+    }
+
     public boolean isCivilizationValid(String civilizationName) {
         Civilization civilization = GameDatabase.getCivilizationByNickname(civilizationName);
         if (civilization == null) {
@@ -188,11 +192,15 @@ public class GameMenuController {
         return true;
     }
 
-    public boolean isAmountValidForTurn(int amount) {
+    public boolean isAmountValid(int amount) {
         if (amount < 1) {
             return false;
         }
         return true;
+    }
+
+    public boolean isAmountValidForTurn(int amount) {
+        return isAmountValid(amount);
     }
 
     public boolean isCityForThisCivilization(int turn, City citySelected) {
@@ -216,7 +224,7 @@ public class GameMenuController {
     }
 
     public boolean isAmountValidForGold(int amount) {
-        return isAmountValidForTurn(amount);
+        return isAmountValid(amount);
     }
 
     public String buildCity(Matcher matcher) {
@@ -505,5 +513,7 @@ public class GameMenuController {
         GameDatabase.getCivilizationByTile(unit.getTileOfUnit()).addGold(amount);
         unit.getTileOfUnit().removeUnit(unit);
     }
+
+
 
 }
