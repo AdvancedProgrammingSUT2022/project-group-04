@@ -280,7 +280,7 @@ public class Civilization {
             }
         }
         for (Technology technology : this.technologies) {
-            technology.nextTurn();
+            technology.nextTurn(this.nickname);
         }
         maintenanceOfUnits();
 
