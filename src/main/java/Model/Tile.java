@@ -221,6 +221,7 @@ public class Tile {
         if(!isEdgeValid(edge)) {
             return;
         }
+        System.out.printf("Edge = %d | X = %d, Y = %d", edge, this.x, this.y);
         this.isRiver[edge] = false;
     }
 
@@ -233,7 +234,7 @@ public class Tile {
             if(tile != null) {
                 int edge = tile.getTileEdge(GameDatabase.getTileByXAndY(this.x, this.y));
                 if(isEdgeValid(edge)) {
-                    tile.dryUpByEdge(5 - edge);
+                    tile.dryUpByEdge(edge);
                 }
             }
         }
@@ -243,25 +244,47 @@ public class Tile {
         if(tile == null) {
             return -1;
         }
+        System.out.printf("Tile with X %d and Y %d", this.x, this.y);
         int tileX = tile.getX();
         int tileY = tile.getY();
-        if(tileX == this.x - 1 && tileY == this.y) {
-            return 0;
-        }
-        if(tileX == this.x - 1 && tileY == this.y + 1) {
-            return 1;
-        }
-        if(tileX == this.x && tileY == this.y + 1) {
-            return 2;
-        }
-        if(tileX == this.x + 1 && tileY == this.y) {
-            return 3;
-        }
-        if(tileX == this.x && tileY == this.y - 1) {
-            return 4;
-        }
-        if(tileX == this.x - 1 && tileY == this.y - 1) {
-            return 5;
+        if(this.y % 2 != 0) {
+            if (tileX == this.x - 1 && tileY == this.y) {
+                return 0;
+            }
+            if (tileX == this.x - 1 && tileY == this.y + 1) {
+                return 1;
+            }
+            if (tileX == this.x && tileY == this.y + 1) {
+                return 2;
+            }
+            if (tileX == this.x + 1 && tileY == this.y) {
+                return 3;
+            }
+            if (tileX == this.x && tileY == this.y - 1) {
+                return 4;
+            }
+            if (tileX == this.x - 1 && tileY == this.y - 1) {
+                return 5;
+            }
+        } else {
+            if (tileX == this.x - 1 && tileY == this.y) {
+                return 0;
+            }
+            if (tileX == this.x && tileY == this.y + 1) {
+                return 1;
+            }
+            if (tileX == this.x + 1 && tileY == this.y + 1) {
+                return 2;
+            }
+            if (tileX == this.x + 1 && tileY == this.y) {
+                return 3;
+            }
+            if (tileX == this.x + 1 && tileY == this.y - 1) {
+                return 4;
+            }
+            if (tileX == this.x && tileY == this.y - 1) {
+                return 5;
+            }
         }
         return -1;
     }
