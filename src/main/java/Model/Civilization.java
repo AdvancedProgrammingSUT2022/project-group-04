@@ -261,6 +261,14 @@ public class Civilization {
         return clearTiles;
     }
 
+    public void maintenanceOfUnits() {
+        for (Tile tile : this.getTiles()) {
+            for (Unit unit : tile.getUnits()) {
+                this.gold -= unit.getMaintenance();
+            }
+        }
+    }
+
     public void nextTurn() {
         happiness+= happinessCalculator();
         for (City city : this.cities) {
@@ -274,6 +282,7 @@ public class Civilization {
         for (Technology technology : this.technologies) {
             technology.nextTurn();
         }
+        maintenanceOfUnits();
 
     }
 
