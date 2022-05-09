@@ -6,8 +6,13 @@ import java.util.ArrayList;
 
 public class Settler extends Citizen {
 
-    public Settler(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, boolean isAssigned) {
-        super(x, y, Vx, Vy, power, cost, movementPoint, "Civilian Settler", isSleeping, isReady, era, HP, civilizationIndex, isAssigned);
+    public Settler(int x, int y, int HP, int civilizationIndex, boolean isAssigned) {
+        super(x, y,"Civilian Settler", HP, civilizationIndex, isAssigned);
+        this.cost = 89;
+        this.HP = 1;
+        this.combatStrength = 0;
+        this.rangedCombatStrength = 0;
+        this.isHostage = false;
     }
 
     public void nextTurn() {

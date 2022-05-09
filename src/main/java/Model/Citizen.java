@@ -4,7 +4,7 @@ public class Citizen extends Unit {
     protected boolean isHostage;
     protected boolean isAssigned;
 
-    public Citizen(int x, int y, int Vx, int Vy, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, boolean isAssigned) {
+    public Citizen(int x, int y, String unitType, int HP, int civilizationIndex, boolean isAssigned) {
         super(x, y, unitType, HP, civilizationIndex, 0);
         this.isAssigned = false;
     }

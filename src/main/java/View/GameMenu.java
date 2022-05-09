@@ -199,7 +199,12 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null) {
-                //TODO...
+                String result = unitGarrison();
+                if (result.startsWith("unit")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null) {
                 //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
@@ -714,8 +719,21 @@ public class GameMenu extends Menu {
     }
 
     private String unitGarrison() {
-        //TODO...
-        return null;
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)) {
+            return "this unit is not a combat unit";
+        } else {
+            boolean success = gameMenuController.garrisonUnitToCity(unitSelected);
+            if (success){
+                return "unit garrisoned to city";
+            }
+            else {
+                return "this units tile is not a city";
+            }
+        }
     }
 
     private String unitSetupRanged() {
@@ -754,7 +772,7 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
+        //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";

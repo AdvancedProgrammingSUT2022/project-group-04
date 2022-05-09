@@ -25,7 +25,8 @@ public class City extends Tile {
     private ArrayList<Unit> attackingUnits;
     private Tile capital;
     private ArrayList<Tile> tiles;
-    private boolean isGarrison;
+    private Unit garrison;
+    private boolean isGarrisoned;
     private boolean isDivision;
     private int HP;
     private String civilizationName;
@@ -70,6 +71,10 @@ public class City extends Tile {
 
     public int getPower() {
         return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
     }
 
     public int getLongRangePower() {
@@ -134,6 +139,22 @@ public class City extends Tile {
 
     public String getCivilizationName() {
         return civilizationName;
+    }
+
+    public Unit getGarrison() {
+        return garrison;
+    }
+
+    public void setGarrison(Unit garrison) {
+        this.garrison = garrison;
+    }
+
+    public boolean isGarrisoned() {
+        return isGarrisoned;
+    }
+
+    public void setGarrisoned(boolean garrisoned) {
+        isGarrisoned = garrisoned;
     }
 
     public boolean isCapital() {
@@ -278,7 +299,7 @@ public class City extends Tile {
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
             //TODO blah
-            Citizen newCitizen = new Citizen(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+            Citizen newCitizen = new Citizen(x, y,  "sth", 1, 0, false);
             citizens.add(newCitizen);
             capital.addUnit(newCitizen);
         }
@@ -309,14 +330,14 @@ public class City extends Tile {
     //
     public void createSettler(int x, int y) {
         if (citizens.size() > 1 && settler == null) {
-            this.settler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
+            this.settler = new Settler(x, y, 1, 0, false);
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
 
     public void createWorker(int x, int y) {
-        Worker newWorker = new Worker(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+        Worker newWorker = new Worker(x, y, 1, 0, false);
         this.worker = newWorker;
         GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
     }
