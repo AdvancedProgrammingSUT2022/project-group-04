@@ -58,6 +58,7 @@ public class City extends Tile {
         this.production = 0;
         this.capital = capital;
         this.attackingUnits = new ArrayList<>();
+        this.tiles = addFirstTiles();
     }
 
     public String getName() {
@@ -331,6 +332,39 @@ public class City extends Tile {
 
     public Tile getCapital() {
         return capital;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private ArrayList<Tile> addFirstTiles() {
+        ArrayList<Tile> firstTiles = new ArrayList<Tile>();
+        firstTiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
+        ArrayList<Tile> nearTiles = getAdjacentTiles();
+        for (Tile tile : nearTiles) {
+            if(tile.isTileValidForAddingToCity()) {
+                firstTiles.add(tile);
+            }
+        }
+        return firstTiles;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    public boolean isTileForThisCity(Tile tile) {
+        for (Tile cityTile : this.tiles) {
+            if(cityTile.equals(tile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof City)) {
+            return false;
+        }
+        if(this.name.equals(((City) obj).getName())) {
+            return true;
+        }
+        return false;
     }
 
 }

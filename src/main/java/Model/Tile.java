@@ -82,7 +82,9 @@ public class Tile {
         this.baseTerrain.discoverResource();
     }
 
-
+    public boolean isTileValidForAddingToCity() {
+        return GameDatabase.isTileForACity(this);
+    }
 
     public boolean isResourceDiscoveredByThisTile(String resourceName) {
         for (Resources resource : this.discoveredResources) {
