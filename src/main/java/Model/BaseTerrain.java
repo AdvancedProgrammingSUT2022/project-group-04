@@ -180,6 +180,10 @@ public class BaseTerrain {
         this.resources = resource;
     }
 
+    public void discoverResource() {
+        this.resources = null;
+    }
+
     public Resources getResources() {
         return resources;
     }
