@@ -538,15 +538,25 @@ public class GameMenuController {
         unit.getTileOfUnit().removeUnit(unit);
     }
 
-    public void createUnit(String combatOrCitizen, Tile tile){
-
+    public boolean createUnit(String combatOrNonCombat,String unitType, Tile tile, int civilizationIndex){
+        if (combatOrNonCombat.equals("Combat")){
+            createCombatUnit(unitType, tile, civilizationIndex);
+            return true;
+        }
+        else if (combatOrNonCombat.equals("nonCombat")){
+            createNonCombatUnit(unitType, tile, civilizationIndex);
+            return true;
+        }
+        return false;
     }
-     public void createCombatUnit(String unitType, Tile tile){
-
+     public void createCombatUnit(String unitType, Tile tile, int civilizationIndex){
+        Soldier soldier = new Soldier(tile.getX(), tile.getY(), unitType ,civilizationIndex);
+        tile.addUnit(soldier);
+        soldier.setTileOfUnit(tile);
      }
 
-     public void createNonCombatUnit(String unitType, Tile tile){
-
+     public void createNonCombatUnit(String unitType, Tile tile, int civilizationIndex){
+        //todo...
      }
 
 }
