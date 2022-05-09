@@ -253,14 +253,13 @@ public class City extends Tile {
         //adding Food is already handled
         int count = leftoverFood;
         //sub citizens food
-        for (Citizen citizen : workers) {
-            if (citizen.isAssigned) count -= 2;
-        }
-        for (Settler settler : settlers) {
-            if (settler.isAssigned) count -= 2;
-        }
+        if (worker!= null && worker.isAssigned) count-=2;
+        if (settler!= null && settler.isAssigned) count-=2;
         for (Unit unit : units) {
             count -= 2;
+        }
+        for (Citizen citizen : citizens) {
+            count -=2;
         }
         if (count < 0) {
             count = citizensDyingForHunger(count);
@@ -276,7 +275,7 @@ public class City extends Tile {
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
             //TODO blah
-            Worker newCitizen = new Citizen(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+            Citizen newCitizen = new Citizen(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
             citizens.add(newCitizen);
             capital.addUnit(newCitizen);
         }
@@ -286,11 +285,8 @@ public class City extends Tile {
     private int citizensDyingForHunger(int count) {
         while (count > 0) {
             if (citizens.size() > 0) {
-                GameDatabase.findTileBySettler(citizens.get(0)).remove(citizens.get(0));
+                GameDatabase.findTileByCitizen(citizens.get(0)).removeCitizen(citizens.get(0));
                 citizens.remove(0);
-            } else if (workers.size() > 0) {
-                workers.remove(0);
-                GameDatabase.findTileByWorker(workers.get(0)).units.remove(workers.get(0));
             }
             count += 2;
         }
@@ -299,30 +295,21 @@ public class City extends Tile {
 
     //
     public void createSettler(int x, int y) {
-        if (workers.size() + settlers.size() > 1) {
-            Settler newSettler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
-            settlers.add(newSettler);
-            GameDatabase.getCityByXAndY(x, y).addUnit(newSettler);
+        if (citizens.size() > 1 && settler == null) {
+            this.settler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
+            GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
 
     public void createWorker(int x, int y) {
         Worker newWorker = new Worker(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
-        workers.add(newWorker);
-        GameDatabase.getCityByXAndY(x, y).addUnit(newWorker);
+        this.worker = newWorker;
+        GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
     }
 
     public void removeSettler(Settler settler) {
-        settlers.remove(settler);
-    }
-
-    public ArrayList<Settler> getUnemployedSettlers() {
-        ArrayList<Settler> settlerArrayList = new ArrayList<>();
-        for (Settler settler : settlers) {
-            if (!settler.isAssigned) settlerArrayList.add(settler);
-        }
-        return settlerArrayList;
+        if (settler== this.settler) this.settler = null;
     }
 
     public void addTile(Tile tile) {
