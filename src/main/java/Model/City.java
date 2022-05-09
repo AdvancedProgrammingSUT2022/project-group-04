@@ -58,8 +58,10 @@ public class City extends Tile {
         this.leftoverFood = 0;
         this.production = 0;
         this.capital = capital;
+        this.citizens = new ArrayList<Citizen>();
         this.attackingUnits = new ArrayList<>();
-        this.tiles = addFirstTiles();
+        //this.tiles = addFirstTiles();
+        this.tiles = new ArrayList<Tile>();
     }
 
     public String getName() {
