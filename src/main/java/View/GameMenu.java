@@ -747,13 +747,14 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
+
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !gameMenuController.isImprovementValid(improvementName)) {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
