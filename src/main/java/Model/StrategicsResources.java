@@ -5,17 +5,18 @@ import java.util.ArrayList;
 public class StrategicsResources extends Resources {
 
     private Technology technologyNeededForVisibility;
-    private ArrayList<Unit> relatedUnits;
+    private ArrayList<String> relatedUnits;
     private ArrayList<Building> relatedBuilding;
 
     public StrategicsResources(String name) {
         super(name);
-        this.relatedUnits = new ArrayList<Unit>();
+        this.relatedUnits = new ArrayList<String>();
         this.relatedBuilding = new ArrayList<Building>();
         switch (name) {
             case "Coal":
                 technologyNeededForVisibility = new Technology("ScientificTheory");
-                //
+                relatedUnits.add("Panzer");
+                relatedUnits.add("Tank");
                 relatedBuilding.add(new Building("Factory"));
                 break;
             case "Horse":
