@@ -524,25 +524,6 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean makeRailroad(Worker worker) {
-        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
-        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        if (civilization.isTechnologyInCivilization("Wheel")
-                && !tile.hasRailroad()
-                && !tile.getBaseTerrainType().equals("Ice")
-                && !tile.getBaseTerrainType().equals("Ocean")
-                && !tile.getBaseTerrainType().equals("Mountain")) {
-            worker.setIndexOfProject(Worker.workToIndex.get("Railroad"));
-            worker.setIsAssigned (true);
-            worker.setTypeOfWork("Railroad");
-            return true;
-        }
-        worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
-        worker.setTypeOfWork("");
-        return false;
-    }
-
     public boolean isTileInCivilization(Tile tile, int turn) {
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
         if (civilization == null
