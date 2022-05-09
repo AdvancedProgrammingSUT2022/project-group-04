@@ -23,6 +23,7 @@ public class City extends Tile {
     private ArrayList<Building> buildings;
     //private ArrayList<Resources> discoveredResources;
     private ArrayList<Settler> settlers;
+    private ArrayList<Unit> attackingUnits;
     private Tile capital;
     private ArrayList<Tile> tiles;
     private boolean isGarrison;
@@ -59,6 +60,7 @@ public class City extends Tile {
         this.leftoverFood = 0;
         this.production = 0;
         this.capital = capital;
+        this.attackingUnits = new ArrayList<>();
     }
 
     public String getName() {
@@ -238,6 +240,8 @@ public class City extends Tile {
 //    //public ArrayList<Resources> getDiscoveredResources() {
 //        return discoveredResources;
 //    }
+
+
 
     public int getFood() {
         return leftoverFood;
