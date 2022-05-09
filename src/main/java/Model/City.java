@@ -174,7 +174,7 @@ public class City extends Tile {
         result += "\t production: " + Integer.toString(this.production);
         result += "\t food: " + Integer.toString(this.leftoverFood);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t population: " + Integer.toString(this.workers.size() + this.settlers.size());
+        result += "\t population: " + Integer.toString(this.citizens.size());
         result += "\t Hit Point: " + Integer.toString(this.HP);
         return result;
     }
@@ -280,6 +280,16 @@ public class City extends Tile {
             capital.addUnit(newCitizen);
         }
         return count;
+    }
+
+    public void removeCapital() {
+        if(isCapital()) {
+            this.isCapital = false;
+        }
+    }
+
+    public void setCapital() {
+        this.isCapital = true;
     }
 
     private int citizensDyingForHunger(int count) {

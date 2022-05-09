@@ -191,6 +191,10 @@ public class GameMenuController {
         return true;
     }
 
+    public boolean isCityCapital(String cityName) {
+        return GameDatabase.getCityByName(cityName).isCapital();
+    }
+
     public boolean isAmountValidForScience(int amount) {
         return isAmountValid(amount);
     }
