@@ -379,7 +379,7 @@ public class GameMenuController {
                         isPossible = removeRoad(worker);
                         break;
                     case 14:
-                        //isPossible = removeRailroad();
+                        isPossible = removeRailroad(worker);
                         break;
                     case 15:
                     case 16:
@@ -402,6 +402,18 @@ public class GameMenuController {
         }
         return false;
     }
+
+    private boolean removeRailroad(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        if (tile.hasRailroad()) {
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned (false);
+        worker.setTypeOfWork("");
+        return false;
+    }
+
     private boolean makeRailRoad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);

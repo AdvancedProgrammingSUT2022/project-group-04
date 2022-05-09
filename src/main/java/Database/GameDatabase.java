@@ -106,6 +106,7 @@ public class GameDatabase {
     }
 
     public static void generateMap(int numberOfPlayers) {
+        Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
         int sumOfPossibilities = 0;
