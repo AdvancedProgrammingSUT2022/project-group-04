@@ -169,8 +169,8 @@ public class Civilization {
     }
 
     public boolean hasResource(Resources resources) {
-        for (City city : this.cities) {
-            for (Resources resource : city.getDiscoveredResources()) {
+        for (Tile tile : this.tiles) {
+            for (Resources resource : tile.getDiscoveredResources()) {
                 if(resource.getName().equals(resources.getName())) {
                     return true;
                 }
@@ -348,8 +348,8 @@ public class Civilization {
     }
 
     public boolean isResourceNew(Resources newResource) {
-        for (City city : this.cities) {
-            for (Resources resource : city.getDiscoveredResources()) {
+        for (Tile tile : this.tiles)  {
+            for (Resources resource : tile.getDiscoveredResources()) {
                 if(resource.getName().equals(newResource.getName())) {
                     return false;
                 }
