@@ -76,6 +76,7 @@ public class GameMenu extends Menu {
     private static final String CHEAT_ADD_CITY_HIT_POINT = "add hit point (?<amount>-?\\d+) city (?<cityName>\\S+)";
     private static final String CHEAT_ADD_UNIT_HIT_POINT = "add hit point (?<amount>-?\\d+) position (?<x>\\d+) (?<y>\\d+)";
     private static final String CHEAT_DRY_UP = "dry up (?<x>\\d+) (?<y>\\d+)";
+    private static final String CHEAT_CHANGE_CAPITAL = "change capital (?<cityName>\\S+)";
 
     //Info
     private static final String INFO_CITY = "info city";
@@ -352,8 +353,10 @@ public class GameMenu extends Menu {
                 showHappinessLevel();
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_CITY_HIT_POINT)) != null) {
                 System.out.println(addHitPointCity(matcher));
-            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_UNIT_HIT_POINT)) != null) {
-                System.out.println(addHitPointUnit(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_CITY_HIT_POINT)) != null) {
+                System.out.println(addHitPointCity(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_CHANGE_CAPITAL)) != null) {
+                System.out.println(changeCapital(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_DRY_UP)) != null) {
                 String result = dryUp(matcher);
                 if(result != null) {
@@ -403,6 +406,21 @@ public class GameMenu extends Menu {
             System.out.println(civilization.getNickname() + " happiness is " + Integer.toString(civilization.getHappiness()));
         }
 
+    }
+
+    private String changeCapital(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        if(!this.gameMenuController.isCityValid(cityName)) {
+            return "invalid city";
+        }
+        if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
+            return "selected city is not for your civilization";
+        }
+        if(this.gameMenuController.isCityCapital(cityName)) {
+            return "selected city is already capital of your civilization";
+        }
+        GameDatabase.players.get(turn).changeCapital(cityName);
+        return "capital changed successfully";
     }
 
     private String lockCitizen(Matcher matcher) {
@@ -729,13 +747,14 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
+
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !gameMenuController.isImprovementValid(improvementName)) {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";

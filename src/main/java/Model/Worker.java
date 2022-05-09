@@ -17,6 +17,7 @@ public class Worker extends Citizen {
     //TODO implement railroad
 
     public static void setHashMap() {
+        workToIndex = new HashMap<>();
         workToIndex.put("Road", 0);
         workToIndex.put("Railroad", 1);
         workToIndex.put("Farm", 2);

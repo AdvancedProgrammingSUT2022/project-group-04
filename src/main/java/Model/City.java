@@ -283,6 +283,16 @@ public class City extends Tile {
         return count;
     }
 
+    public void removeCapital() {
+        if(isCapital()) {
+            this.isCapital = false;
+        }
+    }
+
+    public void setCapital() {
+        this.isCapital = true;
+    }
+
     private int citizensDyingForHunger(int count) {
         while (count > 0) {
             if (citizens.size() > 0) {
