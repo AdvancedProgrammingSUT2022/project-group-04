@@ -21,6 +21,7 @@ public class City extends Tile {
     private ArrayList<Worker> workers;
     private ArrayList<Building> buildings;
     private ArrayList<Settler> settlers;
+    private ArrayList<Unit> attackingUnits;
     private Tile capital;
     private ArrayList<Tile> tiles;
     private boolean isGarrison;
@@ -56,6 +57,7 @@ public class City extends Tile {
         this.leftoverFood = 0;
         this.production = 0;
         this.capital = capital;
+        this.attackingUnits = new ArrayList<>();
     }
 
     public String getName() {
@@ -232,6 +234,7 @@ public class City extends Tile {
         costFood();//setting the food for the next turn
     }
 
+
     public int getFood() {
         return leftoverFood;
     }
@@ -291,11 +294,11 @@ public class City extends Tile {
     }
 
     //
-    public void createSettler() {
+    public void createSettler(int x,int y) {
         if (workers.size() + settlers.size() > 1) {
             Settler newSettler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
             settlers.add(newSettler);
-            capital.addUnit(newSettler);
+            GameDatabase.getCityByXAndY(x,y).addUnit(newSettler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
