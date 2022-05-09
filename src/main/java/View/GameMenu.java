@@ -23,6 +23,8 @@ public class GameMenu extends Menu {
     int x;
     int y;
 
+
+    private final int priceOfBuyingTile = 20;
     //Commands
     private static final String MAP_SHOW_POSITION = "map show (?<x>\\d+) (?<y>\\d+)";
     private static final String MAP_SHOW_CITY = "map show (?<cityName>.+)";
@@ -378,15 +380,13 @@ public class GameMenu extends Menu {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
+        Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
-        Worker worker = tile.getWorker();
-        City city = GameDatabase.getCityByXAndY(x, y);
-        if (city == null) return "this tile is in no city";
-        if (worker == null) worker = gameMenuController.findAvailableWorkerInCity(city);
-        if (worker == null) return "no available worker to be locked to this tile";
-        worker.lockTheWorker(tile);
-        return "worker started locking process successfully!";
+        if (gameMenuController.isTileInCivilization(tile,turn)) return "you already have this tile!";
+        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization)) return "this tile ain't adjacent to your tiles bro";
+        if (civilization.getGold() < priceOfBuyingTile) return "bro you dont have enough gold";
+        gameMenuController.addTileToCivilization(tile,civilization);
+        return "congrats bro you bought it";
     }
 
     private void showHappinessLevel() {
@@ -450,8 +450,8 @@ public class GameMenu extends Menu {
             city = GameDatabase.getCityByName(matcher.group("cityName"));
         }
         if (city == null) return "this tile is in no city\n";
-        ArrayList<Worker> unemployedWorkers = gameMenuController.getListOfUnemployedWorkers(city);
-        ArrayList<Settler> unemployedSettlers = gameMenuController.getListOfUnemployedSettlers(city);
+        ArrayList<Worker> unemployedWorkers = gameMenuController.getListOfUnemployedWorker(city);
+        ArrayList<Settler> unemployedSettlers = gameMenuController.getListOfUnemployedSettler(city);
         return "";
     }
 

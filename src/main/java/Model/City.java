@@ -174,7 +174,9 @@ public class City extends Tile {
         result += "\t production: " + Integer.toString(this.production);
         result += "\t food: " + Integer.toString(this.leftoverFood);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t population: " + Integer.toString(this.citizens.size());
+        result += "\t population: " + Integer.toString(this.citizens.size() + (this.settler==null?0:1)
+                + (this.worker==null?0:1));
+
         result += "\t Hit Point: " + Integer.toString(this.HP);
         return result;
     }
