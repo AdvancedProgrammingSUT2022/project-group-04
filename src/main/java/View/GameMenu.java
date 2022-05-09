@@ -340,6 +340,8 @@ public class GameMenu extends Menu {
                 showHappinessLevel();
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_CITY_HIT_POINT)) != null) {
                 System.out.println(addHitPointCity(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_UNIT_HIT_POINT)) != null) {
+                System.out.println(addHitPointUnit(matcher));
             } else {
                 System.out.println("invalid command");
             }
@@ -464,6 +466,20 @@ public class GameMenu extends Menu {
         unitSelected = this.gameMenuController.selectCombatUnit(x, y);
         System.out.println(unitSelected);
         return "unit selected";
+    }
+
+    private String addHitPointUnit(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        int amount = Integer.parseInt(matcher.group("amount"));
+        if (!this.gameMenuController.isPositionValid(x, y)) {
+            return "position is not valid";
+        }
+        if (!this.gameMenuController.isCombatUnitInThisPosition(x, y)) {
+            return "you can't change hit point of non combat units";
+        }
+        this.gameMenuController.selectCombatUnit(x, y).addHP(amount);
+        return Integer.toString(amount) + " hit point added to unit in position " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
     private String selectNonCombat(Matcher matcher) {

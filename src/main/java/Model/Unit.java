@@ -135,6 +135,10 @@ public class Unit {
         this.HP = HP;
     }
 
+    public void addHP(int amount) {
+        this.HP += amount;
+    }
+
     public int getXP() {
         return XP;
     }
