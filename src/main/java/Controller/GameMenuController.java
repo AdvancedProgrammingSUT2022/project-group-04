@@ -283,7 +283,7 @@ public class GameMenuController {
         ArrayList<Tile> tilesOfCity = city.getTiles();
         for (Tile tile1 : tilesOfCity) {
             if (neighbours.contains(tile1)
-                    && tile1.returnSettler() != null) return true;
+                    && tile1.getSettler() != null) return true;
         }
         return false;
     }
@@ -312,20 +312,12 @@ public class GameMenuController {
         return null;
     }
 
-    public ArrayList<Worker> getListOfUnemployedWorkers(City city) {
-        ArrayList<Worker> workerArrayList = new ArrayList<>();
-        for (Worker worker : city.getWorkers()) {
-            if (!worker.isAssigned()) workerArrayList.add(worker);
+    public ArrayList<Citizen> getListOfUnemployedCitizens(City city) {
+        ArrayList<Citizen> citizenArrayList = new ArrayList<>();
+        for (Citizen citizen : city.getCitizens()) {
+            citizenArrayList.add(citizen);
         }
-        return workerArrayList;
-    }
-
-    public ArrayList<Settler> getListOfUnemployedSettlers(City city) {
-        ArrayList<Settler> settlerArrayList = new ArrayList<>();
-        for (Settler settler : city.getSettlers()) {
-            if (!settler.isAssigned()) settlerArrayList.add(settler);
-        }
-        return settlerArrayList;
+        return citizenArrayList;
     }
 
     public void pauseProject(Worker worker,int x,int y) {

@@ -275,7 +275,8 @@ public class Civilization {
         for (City city : this.cities) {
             city.nextTurn();
             gold+= city.getGoldGeneratingRate();
-            science+= city.getWorkers().size() + city.getSettlers().size();
+            science+= (city.getWorker()!=null?1:0) +
+                    (city.getSettler()!=null?1:0);
             if(city.isCapital()) {
                 science+= 3;
             }
@@ -291,7 +292,8 @@ public class Civilization {
         int population = 0;
         int colonizedCount = 0;
         for (City city : this.cities) {
-            population += city.getSettlers().size() + city.getWorkers().size();
+            population += (city.getSettler()!=null?1:0) +
+                    (city.getWorker()!=null?1:0);
             if(city.isColonized()) {
                 colonizedCount++;
             }

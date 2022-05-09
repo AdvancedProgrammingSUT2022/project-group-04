@@ -61,6 +61,7 @@ public class GameMenu extends Menu {
     private static final String GET_UNEMPLOYED_SECTION_BY_COORDINATE = "get unemployed section (?<x>\\d+) (?<y>\\d+)";
     private static final String GET_UNEMPLOYED_SECTION_BY_CITY_NAME = "get unemployed section (?<cityName>[a-zA-Z]+)";
     private static final String SHOW_HAPPINESS_LEVEL = "show happiness level";
+    private static final String BUYING_TILE = "buying tile (?<x>\\d+) (?<y>\\d+)";
 
     //Cheat
     private static final String CHEAT_TURN_BY_NAME = "turn change (?<civilizationName>\\S+)";
@@ -350,10 +351,31 @@ public class GameMenu extends Menu {
                 } else {
                     turn = nextTurn();
                 }
-            } else {
+            }else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null){
+                String result = buyTileWithCoordinate(matcher);
+                if (result.startsWith("tile")) {
+                    turn = nextTurn();
+                }
+                System.out.println(result);
+            }else {
                 System.out.println("invalid command");
             }
         }
+    }
+
+    private String buyTileWithCoordinate(Matcher matcher) {
+        int y = Integer.parseInt(matcher.group("y"));
+        int x = Integer.parseInt(matcher.group("x"));
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (tile == null) return "invalid tile";
+        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
+        Worker worker = tile.getWorker();
+        City city = GameDatabase.getCityByXAndY(x, y);
+        if (city == null) return "this tile is in no city";
+        if (worker == null) worker = gameMenuController.findAvailableWorkerInCity(city);
+        if (worker == null) return "no available worker to be locked to this tile";
+        worker.lockTheWorker(tile);
+        return "worker started locking process successfully!";
     }
 
     private void showHappinessLevel() {
@@ -381,7 +403,7 @@ public class GameMenu extends Menu {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile == null) return "invalid tile";
         if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
-        Worker worker = tile.getAvailableWorker();
+        Worker worker = tile.getWorker();
         City city = GameDatabase.getCityByXAndY(x, y);
         if (city == null) return "this tile is in no city";
         if (worker == null) worker = gameMenuController.findAvailableWorkerInCity(city);
@@ -913,7 +935,7 @@ public class GameMenu extends Menu {
             return "there is already a city in this tile";
         } else {
             Tile tile = GameDatabase.getTileByXAndY(x, y);
-            Settler settler = tile.returnSettler();
+            Settler settler = tile.getSettler();
             if (settler == null) {
                 return "there is no settler in this tile";
             } else {
