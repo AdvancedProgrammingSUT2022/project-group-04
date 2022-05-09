@@ -69,6 +69,8 @@ public class GameMenu extends Menu {
     private static final String CHEAT_MAKE_HAPPY = "make happy";
     private static final String CHEAT_ADD_SCIENCE = "add science (?<amount>-?\\d+)";
     private static final String CHEAT_WIN = "win";
+    private static final String CHEAT_ADD_CITY_HIT_POINT = "add hit point (?<amount>-?\\d+) city (?<cityName>\\S+)";
+    private static final String CHEAT_ADD_UNIT_HIT_POINT = "add hit point (?<amount>-?\\d+) position (?<x>\\d+) (?<y>\\d+)";
 
     //Info
     private static final String INFO_CITY = "info city";
@@ -332,12 +334,12 @@ public class GameMenu extends Menu {
                 info.infoEconomy(turn, scanner);
             } else if ((matcher = getCommandMatcher(command, CHEAT_MAKE_HAPPY)) != null) {
                 System.out.println(makeHappy());
-                ;
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_SCIENCE)) != null) {
                 System.out.println(addScience(matcher));
-                ;
             } else if ((matcher = getCommandMatcher(command, SHOW_HAPPINESS_LEVEL)) != null) {
                 showHappinessLevel();
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_CITY_HIT_POINT)) != null) {
+                System.out.println(addHitPointCity(matcher));
             } else {
                 System.out.println("invalid command");
             }
@@ -732,6 +734,19 @@ public class GameMenu extends Menu {
         this.gameMenuController.x = x;
         this.gameMenuController.y = y;
         return null;
+    }
+
+    private String addHitPointCity(Matcher matcher) {
+        String cityName = matcher.group("cityName");
+        int amount = Integer.parseInt(matcher.group("amount"));
+        if (!this.gameMenuController.isCityValid(cityName)) {
+            return "invalid city";
+        }
+        if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
+            return "city is not for your civilization";
+        }
+        GameDatabase.getCityByName(cityName).addHP(amount);
+        return Integer.toString(amount) + " hit point added to city " + cityName;
     }
 
     private String citySelectByName(Matcher matcher) {
