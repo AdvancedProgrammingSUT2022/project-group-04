@@ -217,6 +217,83 @@ public class Tile {
         return result;
     }
 
+    public void dryUpByEdge(int edge) {
+        if(!isEdgeValid(edge)) {
+            return;
+        }
+        this.isRiver[edge] = false;
+    }
+
+    private boolean isEdgeValid(int edge) {
+        return edge >= 0 && edge < this.isRiver.length;
+    }
+
+    private void dryInNeighbors() {
+        for (Tile tile : getAdjacentTiles()) {
+            if(tile != null) {
+                int edge = tile.getTileEdge(GameDatabase.getTileByXAndY(this.x, this.y));
+                if(isEdgeValid(edge)) {
+                    tile.dryUpByEdge(edge);
+                }
+            }
+        }
+    }
+
+    public int getTileEdge(Tile tile) {
+        if(tile == null) {
+            return -1;
+        }
+        int tileX = tile.getX();
+        int tileY = tile.getY();
+        if(this.y % 2 != 0) {
+            if (tileX == this.x - 1 && tileY == this.y) {
+                return 0;
+            }
+            if (tileX == this.x - 1 && tileY == this.y + 1) {
+                return 1;
+            }
+            if (tileX == this.x && tileY == this.y + 1) {
+                return 2;
+            }
+            if (tileX == this.x + 1 && tileY == this.y) {
+                return 3;
+            }
+            if (tileX == this.x && tileY == this.y - 1) {
+                return 4;
+            }
+            if (tileX == this.x - 1 && tileY == this.y - 1) {
+                return 5;
+            }
+        } else {
+            if (tileX == this.x - 1 && tileY == this.y) {
+                return 0;
+            }
+            if (tileX == this.x && tileY == this.y + 1) {
+                return 1;
+            }
+            if (tileX == this.x + 1 && tileY == this.y + 1) {
+                return 2;
+            }
+            if (tileX == this.x + 1 && tileY == this.y) {
+                return 3;
+            }
+            if (tileX == this.x + 1 && tileY == this.y - 1) {
+                return 4;
+            }
+            if (tileX == this.x && tileY == this.y - 1) {
+                return 5;
+            }
+        }
+        return -1;
+    }
+
+    public void dryUp() {
+        for(int i=0; i<this.isRiver.length; i++) {
+            dryUpByEdge(i);
+        }
+        dryInNeighbors();
+    }
+
     public ArrayList<Tile> getAdjacentTiles(){
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (this.y % 2 == 0){
