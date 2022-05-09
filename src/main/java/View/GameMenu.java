@@ -71,6 +71,7 @@ public class GameMenu extends Menu {
     private static final String CHEAT_WIN = "win";
     private static final String CHEAT_ADD_CITY_HIT_POINT = "add hit point (?<amount>-?\\d+) city (?<cityName>\\S+)";
     private static final String CHEAT_ADD_UNIT_HIT_POINT = "add hit point (?<amount>-?\\d+) position (?<x>\\d+) (?<y>\\d+)";
+    private static final String CHEAT_DRY_UP = "dry up (?<x>\\d+) (?<y>\\d+)";
 
     //Info
     private static final String INFO_CITY = "info city";
@@ -342,6 +343,13 @@ public class GameMenu extends Menu {
                 System.out.println(addHitPointCity(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_UNIT_HIT_POINT)) != null) {
                 System.out.println(addHitPointUnit(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_DRY_UP)) != null) {
+                String result = dryUp(matcher);
+                if(result != null) {
+                    System.out.println(result);
+                } else {
+                    turn = nextTurn();
+                }
             } else {
                 System.out.println("invalid command");
             }
@@ -472,11 +480,20 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
+        if(!this.gameMenuController.isAmountValidForHP(amount)) {
+            return "invalid amount";
+        }
+        if(this.gameMenuController.isAmountALot(amount)) {
+            return "please cheat with another amount of HP!";
+        }
         if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
         if (!this.gameMenuController.isCombatUnitInThisPosition(x, y)) {
             return "you can't change hit point of non combat units";
+        }
+        if (!this.gameMenuController.isUnitForThisCivilization(turn, this.gameMenuController.selectCombatUnit(x, y))) {
+            return "unit in this position is not for your civilization";
         }
         this.gameMenuController.selectCombatUnit(x, y).addHP(amount);
         return Integer.toString(amount) + " hit point added to unit in position " + Integer.toString(x) + " and " + Integer.toString(y);
@@ -515,7 +532,7 @@ public class GameMenu extends Menu {
         for (int i = 0; i < amount; i++) {
             turn = nextTurn();
         }
-        return "now it's " + GameDatabase.players.get(turn + amount).getNickname() + " turn!";
+        return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
 
     }
 
@@ -752,9 +769,31 @@ public class GameMenu extends Menu {
         return null;
     }
 
+    private String dryUp(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "invalid position";
+        }
+        if(this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) {
+            return "you can not dry up an ocean";
+        }
+        if(!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) {
+            return "no river in this tile";
+        }
+        GameDatabase.getTileByXAndY(x, y).dryUp();
+        return null;
+    }
+
     private String addHitPointCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         int amount = Integer.parseInt(matcher.group("amount"));
+        if(!this.gameMenuController.isAmountValidForHP(amount)) {
+            return "invalid amount";
+        }
+        if(this.gameMenuController.isAmountALot(amount)) {
+            return "please cheat with another amount of HP!";
+        }
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
         }
@@ -918,7 +957,7 @@ public class GameMenu extends Menu {
         printMap(x, y);
         showNextTurn();
         if (turn != this.numberOfPlayers - 1) {
-            return turn++;
+            return turn + 1;
         }
         GameDatabase.nextTurn();
         printUnhappyCivilizations();
@@ -926,8 +965,10 @@ public class GameMenu extends Menu {
     }
 
     private void showNextTurn() {
-        if (turn != this.numberOfPlayers - 1) {
-            System.out.println(GameDatabase.players.get(turn++).getNickname());
+        int tempTurn = turn;
+        if (tempTurn != this.numberOfPlayers - 1) {
+            tempTurn++;
+            System.out.println(GameDatabase.players.get(tempTurn).getNickname());
             return;
         }
         System.out.println(GameDatabase.players.get(0).getNickname());
