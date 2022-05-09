@@ -29,6 +29,7 @@ public class GameMenu extends Menu {
     private static final String SELECT_COMBAT = "select combat (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_NONCOMBAT = "select noncombat (?<x>\\d+) (?<y>\\d+)";
     private static final String SHOW_TURN = "show turn";
+    //unit related
     private static final String UNIT_MOVE_TO = "unit moveto (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_SLEEP = "unit sleep";
     private static final String UNIT_ALERT = "unit alert";
@@ -42,8 +43,8 @@ public class GameMenu extends Menu {
     private static final String UNIT_WAKE = "unit wake";
     private static final String UNIT_DELETE = "unit delete";
     private static final String UNIT_CANCEL_MISSION = "unit cancel mission";
-    private static final String UNIT_BUILD_ROAD = "unit build road";
-    private static final String UNIT_BUILD_RAILROAD = "unit build railroad";
+    private static final String CREATE_UNIT = "create (?<unitType>\\w+) (?<x>\\d+) (?<y>\\d+)";
+
     private static final String MAP_MOVE = "map move (?<direction>\\S+)( (?<c>\\d+))?";
     private static final String SELECT_CITY_BY_POSITION = "select city (?<x>\\d+) (?<y>\\d+)";
     private static final String SELECT_CITY_BY_NAME = "select city (?<cityName>\\S+)";
@@ -244,6 +245,13 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
                 String result = unitRepair(matcher);
                 if (result.startsWith("worker")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, CREATE_UNIT)) != null) {
+                String result = createUnit(matcher);
+                if (result.startsWith("")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -553,6 +561,14 @@ public class GameMenu extends Menu {
         return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
+    private String createUnit(Matcher matcher){
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if (gameMenuController.isTileInCivilization(null, turn % numberOfPlayers)){
+
+        }
+        return null;
+    }
     private String unitSleep() {
         if (unitSelected == null) {
             return "you must select a unit first";
