@@ -265,6 +265,9 @@ public class City extends Tile {
         for (Settler settler : settlers) {
             if (settler.isAssigned) count -= 2;
         }
+        for (Unit unit : units) {
+            count -= 2;
+        }
         if (count < 0) {
             count = citizensDyingForHunger(count);
         } else {

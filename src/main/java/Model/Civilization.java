@@ -168,16 +168,16 @@ public class Civilization {
 
     }
 
-    public boolean hasResource(Resources resources) {
-        for (City city : this.cities) {
-            for (Resources resource : city.getDiscoveredResources()) {
-                if(resource.getName().equals(resources.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    public boolean hasResource(Resources resources) {
+//        for (City city : this.cities) {
+//            for (Resources resource : city.getDiscoveredResources()) {
+//                if(resource.getName().equals(resources.getName())) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     public ArrayList<Unit> getAllUnitsOfCivilization(){
 
@@ -347,16 +347,16 @@ public class Civilization {
         return null;
     }
 
-    public boolean isResourceNew(Resources newResource) {
-        for (City city : this.cities) {
-            for (Resources resource : city.getDiscoveredResources()) {
-                if(resource.getName().equals(newResource.getName())) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//    public boolean isResourceNew(Resources newResource) {
+//        for (City city : this.cities) {
+//            for (Resources resource : city.getDiscoveredResources()) {
+//                if(resource.getName().equals(newResource.getName())) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
     public ArrayList<Tile> getFriendlyTiles(){
         ArrayList<Tile> friendlyTiles = new ArrayList<>();
         return friendlyTiles;
