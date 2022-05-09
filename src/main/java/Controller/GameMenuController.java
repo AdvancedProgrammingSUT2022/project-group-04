@@ -47,6 +47,22 @@ public class GameMenuController {
         return false;
     }
 
+    public boolean isTileOcean(Tile tile) {
+        if(tile == null) {
+            return false;
+        }
+        return tile.getBaseTerrain().getType().equals("Ocean");
+    }
+
+    public boolean tileHasRiver(Tile tile) {
+        for (boolean isRiver : tile.getIsRiver()) {
+            if(isRiver) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isUnitSoldier(Unit unitSelected) {
         return !unitSelected.getUnitType().startsWith("Civilian");
     }
@@ -190,6 +206,14 @@ public class GameMenuController {
             return false;
         }
         return true;
+    }
+
+    public boolean isAmountValidForHP(int amount) {
+        return isAmountValid(amount);
+    }
+
+    public boolean isAmountALot(int amount) {
+        return amount > 10;
     }
 
     public boolean isAmountValid(int amount) {
