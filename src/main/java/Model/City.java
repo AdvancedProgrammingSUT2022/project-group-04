@@ -21,7 +21,7 @@ public class City extends Tile {
     private int timeTopPopulate;
     private ArrayList<Worker> workers;
     private ArrayList<Building> buildings;
-    private ArrayList<Resources> discoveredResources;
+    //private ArrayList<Resources> discoveredResources;
     private ArrayList<Settler> settlers;
     private Tile capital;
     private ArrayList<Tile> tiles;
@@ -31,7 +31,7 @@ public class City extends Tile {
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
-    private int food;
+    //private int food;
     private int leftoverFood;
     private int production;
     private boolean isGettingWorkedOn;
@@ -51,11 +51,11 @@ public class City extends Tile {
         this.workers = new ArrayList<Worker>();
         this.settlers = new ArrayList<Settler>();
         this.buildings = new ArrayList<Building>();
-        this.discoveredResources = new ArrayList<Resources>();
+        //this.discoveredResources = new ArrayList<Resources>();
         this.HP = 10;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
-        this.food = 0;
+        //this.food = 0;
         this.leftoverFood = 0;
         this.production = 0;
         this.capital = capital;
@@ -171,7 +171,7 @@ public class City extends Tile {
         String result = this.name + ": \n";
         result += "\t Type: " + this.baseTerrain.getType() + "\n";
         result += "\t production: " + Integer.toString(this.production);
-        result += "\t food: " + Integer.toString(this.food);
+        result += "\t food: " + Integer.toString(this.leftoverFood);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
         result += "\t population: " + Integer.toString(this.workers.size() + this.settlers.size());
         result += "\t Hit Point: " + Integer.toString(this.HP);
@@ -188,8 +188,8 @@ public class City extends Tile {
     }
 
     public boolean isResourceDiscoveredByThisCity(String resourceName) {
-        for (Resources discoveredResource : this.discoveredResources) {
-            if (discoveredResource.getName().equals(resourceName)) {
+        for (Tile tile : tiles) {
+            if (tile.baseTerrain.getResources().getName().equals(resourceName)){
                 return true;
             }
         }
@@ -197,13 +197,15 @@ public class City extends Tile {
     }
 
     public void addFood(int amount) {
-        this.food += amount;
+        this.leftoverFood += amount;
     }
 
     @Override
     public void nextTurn() {
+        int addingFood = 0;
         this.production += this.productionGenerating;
-        this.food += this.foodGeneratingRate;
+        addingFood += this.foodGeneratingRate;
+        //adding building bonus
         for (Building building : this.buildings) {
             if (!building.wasBuilt()) {
                 building.build();
@@ -211,23 +213,34 @@ public class City extends Tile {
                 building.nextTurn();
             }
         }
+        for (Tile tile : tiles) {
+            //adding feature bonus
+            addingFood += tile.baseTerrain.getFoodNum();
+            //adding resources bonus
+            addingFood += tile.baseTerrain.getResources().foodNum;
+        }
+        //adding improvement bonus
         for (Improvement improvement : this.improvements) {
-            this.food += improvement.getCityFoodChange();
+            addingFood += improvement.getCityFoodChange();
             this.production += improvement.getCityProductionChange();
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(improvement.getCivilizationGoldChange());
         }
-        for (Resources resource : this.discoveredResources) {
-            resource.nextTurn(this.name);
-        }
-        countFood();//setting the food for the next turn
+//        for (Resources resource : this.discoveredResources) {
+//            resource.nextTurn(this.name);
+//            addingFood += resource.foodNum;
+//        }
+        Civilization civilization = GameDatabase.getCivilizationForCity(this.name);
+        if (!civilization.isHappy()) addingFood /= 3;
+        this.leftoverFood += addingFood;
+        costFood();//setting the food for the next turn
     }
 
-    public ArrayList<Resources> getDiscoveredResources() {
-        return discoveredResources;
-    }
+//    //public ArrayList<Resources> getDiscoveredResources() {
+//        return discoveredResources;
+//    }
 
     public int getFood() {
-        return food;
+        return leftoverFood;
     }
 
     public int getProduction() {
@@ -238,12 +251,9 @@ public class City extends Tile {
         this.production += amount;
     }
 
-    public void countFood() {
-        int count = food + leftoverFood;
-        //add resources food
-        for (Resources discoveredResource : discoveredResources) {
-            count += discoveredResource.foodNum;
-        }
+    public void costFood() {
+        //adding Food is already handled
+        int count = leftoverFood;
         //sub citizens food
         for (Citizen citizen : workers) {
             if (citizen.isAssigned) count -= 2;
@@ -264,15 +274,24 @@ public class City extends Tile {
         double size = (double) workers.size() + (double) workers.size();
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
-            workers.add(new Worker(x, y, 0, 0, 0, 0, "sth", 0, 0, false));
+            //TODO blah
+            Worker newWorker = new Worker(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+            workers.add(newWorker);
+            capital.addUnit(newWorker);
         }
         return count;
     }
 
     private int citizensDyingForHunger(int count) {
         while (count > 0) {
-            if (settlers.size() > 0) settlers.remove(0);
-            else if (workers.size() > 0) workers.remove(0);
+            if (settlers.size() > 0) {
+                GameDatabase.findTileBySettler(settlers.get(0)).units.remove(settlers.get(0));
+                settlers.remove(0);
+            }
+            else if (workers.size() > 0){
+                workers.remove(0);
+                GameDatabase.findTileByWorker(workers.get(0)).units.remove(workers.get(0));
+            }
             count += 2;
         }
         return count;
@@ -281,7 +300,9 @@ public class City extends Tile {
     //
     public void createSettler() {
         if (workers.size() + settlers.size() > 1) {
-            settlers.add(new Settler(x, y, 0, 0, 0, 89, 0, true, true, "?", 0, 0, false));//TODO change initializing fields
+            Settler newSettler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
+            settlers.add(newSettler);
+            capital.addUnit(newSettler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
@@ -290,13 +311,13 @@ public class City extends Tile {
         settlers.remove(settler);
     }
 
-    public void addResource(Resources resources) {
-        discoveredResources.add(resources);
-        if (resources.getType().equals("luxury")
-                && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
-            GameDatabase.getCivilizationByNickname(this.civilizationName).addHappiness(4);
-        }
-    }
+//    public void addResource(Resources resources) {
+//        discoveredResources.add(resources);
+//        if (resources.getType().equals("luxury")
+//                && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
+//            GameDatabase.getCivilizationByNickname(this.civilizationName).addHappiness(4);
+//        }
+//    }
 
     public ArrayList<Settler> getUnemployedSettlers() {
         ArrayList<Settler> settlerArrayList = new ArrayList<>();
