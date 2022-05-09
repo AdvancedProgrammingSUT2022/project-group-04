@@ -117,6 +117,10 @@ public class City extends Tile {
         this.HP = HP;
     }
 
+    public void addHP(int amount) {
+        this.HP += amount;
+    }
+
     public void reduceHP(int amount) {
         this.HP -= amount;
     }
