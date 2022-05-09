@@ -189,7 +189,7 @@ public class City extends Tile {
 
     public boolean isResourceDiscoveredByThisCity(String resourceName) {
         for (Tile tile : tiles) {
-            if (tile.isResourceDiscoveredByThisTile(resourceName)){
+            if (tile.isResourceDiscoveredByThisTile(resourceName)) {
                 return true;
             }
         }
@@ -258,6 +258,9 @@ public class City extends Tile {
         for (Settler settler : settlers) {
             if (settler.isAssigned) count -= 2;
         }
+        for (Unit unit : units) {
+            count -= 2;
+        }
         if (count < 0) {
             count = citizensDyingForHunger(count);
         } else {
@@ -284,8 +287,7 @@ public class City extends Tile {
             if (settlers.size() > 0) {
                 GameDatabase.findTileBySettler(settlers.get(0)).units.remove(settlers.get(0));
                 settlers.remove(0);
-            }
-            else if (workers.size() > 0){
+            } else if (workers.size() > 0) {
                 workers.remove(0);
                 GameDatabase.findTileByWorker(workers.get(0)).units.remove(workers.get(0));
             }
@@ -295,13 +297,19 @@ public class City extends Tile {
     }
 
     //
-    public void createSettler(int x,int y) {
+    public void createSettler(int x, int y) {
         if (workers.size() + settlers.size() > 1) {
             Settler newSettler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
             settlers.add(newSettler);
-            GameDatabase.getCityByXAndY(x,y).addUnit(newSettler);
+            GameDatabase.getCityByXAndY(x, y).addUnit(newSettler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
+    }
+
+    public void createWorker(int x, int y) {
+        Worker newWorker = new Worker(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+        workers.add(newWorker);
+        GameDatabase.getCityByXAndY(x, y).addUnit(newWorker);
     }
 
     public void removeSettler(Settler settler) {
@@ -333,13 +341,14 @@ public class City extends Tile {
     public Tile getCapital() {
         return capital;
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private ArrayList<Tile> addFirstTiles() {
         ArrayList<Tile> firstTiles = new ArrayList<Tile>();
         firstTiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
         ArrayList<Tile> nearTiles = getAdjacentTiles();
         for (Tile tile : nearTiles) {
-            if(tile.isTileValidForAddingToCity()) {
+            if (tile.isTileValidForAddingToCity()) {
                 firstTiles.add(tile);
             }
         }
@@ -349,7 +358,7 @@ public class City extends Tile {
 
     public boolean isTileForThisCity(Tile tile) {
         for (Tile cityTile : this.tiles) {
-            if(cityTile.equals(tile)) {
+            if (cityTile.equals(tile)) {
                 return true;
             }
         }
@@ -360,7 +369,7 @@ public class City extends Tile {
         ArrayList<Resources> strategicsResources = new ArrayList<Resources>();
         for (Tile tile : this.tiles) {
             for (Resources resource : tile.getDiscoveredResources()) {
-                if(resource.getType().equals("Strategics")) {
+                if (resource.getType().equals("Strategics")) {
                     strategicsResources.add(resource);
                 }
             }
@@ -370,10 +379,10 @@ public class City extends Tile {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof City)) {
+        if (!(obj instanceof City)) {
             return false;
         }
-        if(this.name.equals(((City) obj).getName())) {
+        if (this.name.equals(((City) obj).getName())) {
             return true;
         }
         return false;

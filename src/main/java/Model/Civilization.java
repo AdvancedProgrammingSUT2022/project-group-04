@@ -168,6 +168,7 @@ public class Civilization {
 
     }
 
+
     public boolean hasResource(Resources resources) {
         for (Tile tile : this.tiles) {
             for (Resources resource : tile.getDiscoveredResources()) {
@@ -347,6 +348,7 @@ public class Civilization {
         return null;
     }
 
+
     public boolean isResourceNew(Resources newResource) {
         for (Tile tile : this.tiles)  {
             for (Resources resource : tile.getDiscoveredResources()) {
@@ -357,6 +359,8 @@ public class Civilization {
         }
         return true;
     }
+
+
     public ArrayList<Tile> getFriendlyTiles(){
         ArrayList<Tile> friendlyTiles = new ArrayList<>();
         return friendlyTiles;
