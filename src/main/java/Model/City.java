@@ -1,7 +1,6 @@
 package Model;
 
 import Database.GameDatabase;
-import Enums.Resource;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +20,6 @@ public class City extends Tile {
     private int timeTopPopulate;
     private ArrayList<Worker> workers;
     private ArrayList<Building> buildings;
-    //private ArrayList<Resources> discoveredResources;
     private ArrayList<Settler> settlers;
     private ArrayList<Unit> attackingUnits;
     private Tile capital;
@@ -52,7 +50,6 @@ public class City extends Tile {
         this.workers = new ArrayList<Worker>();
         this.settlers = new ArrayList<Settler>();
         this.buildings = new ArrayList<Building>();
-        //this.discoveredResources = new ArrayList<Resources>();
         this.HP = 10;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
@@ -61,6 +58,7 @@ public class City extends Tile {
         this.production = 0;
         this.capital = capital;
         this.attackingUnits = new ArrayList<>();
+        this.tiles = addFirstTiles();
     }
 
     public String getName() {
@@ -191,7 +189,7 @@ public class City extends Tile {
 
     public boolean isResourceDiscoveredByThisCity(String resourceName) {
         for (Tile tile : tiles) {
-            if (tile.baseTerrain.getResources().getName().equals(resourceName)){
+            if (tile.isResourceDiscoveredByThisTile(resourceName)){
                 return true;
             }
         }
@@ -236,11 +234,6 @@ public class City extends Tile {
         this.leftoverFood += addingFood;
         costFood();//setting the food for the next turn
     }
-
-//    //public ArrayList<Resources> getDiscoveredResources() {
-//        return discoveredResources;
-//    }
-
 
 
     public int getFood() {
@@ -318,14 +311,6 @@ public class City extends Tile {
         settlers.remove(settler);
     }
 
-//    public void addResource(Resources resources) {
-//        discoveredResources.add(resources);
-//        if (resources.getType().equals("luxury")
-//                && GameDatabase.getCivilizationByNickname(this.civilizationName).isResourceNew(resources)) {
-//            GameDatabase.getCivilizationByNickname(this.civilizationName).addHappiness(4);
-//        }
-//    }
-
     public ArrayList<Settler> getUnemployedSettlers() {
         ArrayList<Settler> settlerArrayList = new ArrayList<>();
         for (Settler settler : settlers) {
@@ -350,6 +335,39 @@ public class City extends Tile {
 
     public Tile getCapital() {
         return capital;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private ArrayList<Tile> addFirstTiles() {
+        ArrayList<Tile> firstTiles = new ArrayList<Tile>();
+        firstTiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
+        ArrayList<Tile> nearTiles = getAdjacentTiles();
+        for (Tile tile : nearTiles) {
+            if(tile.isTileValidForAddingToCity()) {
+                firstTiles.add(tile);
+            }
+        }
+        return firstTiles;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    public boolean isTileForThisCity(Tile tile) {
+        for (Tile cityTile : this.tiles) {
+            if(cityTile.equals(tile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof City)) {
+            return false;
+        }
+        if(this.name.equals(((City) obj).getName())) {
+            return true;
+        }
+        return false;
     }
 
 }

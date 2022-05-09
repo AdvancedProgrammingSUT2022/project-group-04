@@ -1,5 +1,6 @@
 package Model;
 
+import Database.GameDatabase;
 import Database.GlobalVariables;
 
 import java.util.ArrayList;
@@ -331,10 +332,21 @@ public class Technology {
         return result;
     }
 
-    public void nextTurn() {
+    public void nextTurn(String civilizationName) {
         if(!wasReached() && !isStopped) {
             this.turnsNeedToResearch--;
+            if(wasReached()) {
+                sendNotification(civilizationName);
+            }
         }
+    }
+
+    private void sendNotification(String civilizationName) {
+        String source = GlobalVariables.SYSTEM_NAME;
+        String text = "you reached " + this.name + "technology";
+        String destination = GameDatabase.getCivilizationByNickname(civilizationName).getNickname();
+        Notification notification = new Notification(source, destination, text);
+        Notification.addNotification(notification);
     }
 }
 

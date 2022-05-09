@@ -178,15 +178,12 @@ public class Info {
 
     private void printResources(int turn) {
         System.out.println("Resources:");
-        ArrayList<String> resourcesName = new ArrayList<String>();
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
             if (Resources.isResourceOnTileValidForDiscovering(tile)) {
-                if (isResourceNew(resourcesName, tile.getBaseTerrain().getResources().getName())) {
-                    resourcesName.add(tile.getBaseTerrain().getResources().getName());
-                    String resourceString = "Resource " + tile.getBaseTerrain().getResources().getName() + " on tile X: " +
-                            Integer.toString(tile.getX()) + " and Y: " + Integer.toString(tile.getY());
-                    System.out.println(resourceString);
-                }
+                String resourceString = "Resource " + tile.getBaseTerrain().getResources().getName() + " on tile X: " +
+                        Integer.toString(tile.getX()) + " and Y: " + Integer.toString(tile.getY()) + "is valid for discovering";
+                tile.discoverResource();
+                System.out.println(resourceString);
             }
         }
     }

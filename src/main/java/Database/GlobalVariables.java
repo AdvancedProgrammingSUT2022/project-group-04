@@ -16,4 +16,5 @@ public class GlobalVariables {
     public static final int happinessForEachCitizen = 1;
     public static final int happinessForEachCity = 1;
     public static final int happinessForColonizedCities = 1;
+    public static final String SYSTEM_NAME = "SYSTEM";
 }

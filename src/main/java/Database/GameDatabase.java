@@ -74,6 +74,16 @@ public class GameDatabase {
 
     }
 
+    public static boolean isTileForACity(Tile tile) {
+        for (Civilization civilization : GameDatabase.players) {
+            for (City city : civilization.getCities()) {
+                if(city.isTileForThisCity(tile)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public static Civilization getCivilizationByTile(Tile tile) {
         for (int i = 0; i < GameDatabase.players.size(); i++) {

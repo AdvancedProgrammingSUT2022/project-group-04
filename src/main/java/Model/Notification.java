@@ -20,7 +20,6 @@ public class Notification {
 
     public static void addNotification(Notification notification) {
         Notification.notifications.add(notification);
-        System.out.println(Notification.notifications.size());
     }
 
     public static ArrayList<Notification> get(Civilization civilization) {
