@@ -181,6 +181,12 @@ public class GameMenuController {
                     return false;
                 }
             }
+        } else {
+            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
+                if (isUnitCivilian(unit1)) {
+                    return false;
+                }
+            }
         }
         return true;
     }

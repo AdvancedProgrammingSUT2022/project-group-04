@@ -107,7 +107,7 @@ public class CombatController {
 
     public void fortifyUnit(Unit unit){
         int a = 3; //todo find the amount to add to the power of unit
-        unit.setPower(unit.getPower() + a);
+        unit.setCombatStrength(unit.getCombatStrength() + a);
     }
 
     public void killUnit(Unit unit){
