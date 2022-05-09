@@ -332,8 +332,8 @@ public class Building {
     }
 
     private int libraryScienceCalculator() {
-        int population = GameDatabase.getCityByName(this.cityName).getWorkers().size()
-                + GameDatabase.getCityByName(this.cityName).getSettlers().size();
+        int population = (GameDatabase.getCityByName(this.cityName).getWorker()!=null?1:0)
+                + (GameDatabase.getCityByName(this.cityName).getSettler()!=null?1:0);
         return population/2;
     }
 

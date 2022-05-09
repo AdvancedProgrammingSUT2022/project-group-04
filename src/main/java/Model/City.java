@@ -18,9 +18,10 @@ public class City extends Tile {
     private int productionGenerating;
     private int timeToExtendBorders;
     private int timeTopPopulate;
-    private ArrayList<Worker> workers;
+    private Worker worker;
     private ArrayList<Building> buildings;
-    private ArrayList<Settler> settlers;
+    private Settler settler;
+    private ArrayList<Citizen> citizens;
     private ArrayList<Unit> attackingUnits;
     private Tile capital;
     private ArrayList<Tile> tiles;
@@ -47,8 +48,8 @@ public class City extends Tile {
         this.productionGenerating = productionGenerating;
         this.timeToExtendBorders = timeToExtendBorders;
         this.timeTopPopulate = timeTopPopulate;
-        this.workers = new ArrayList<Worker>();
-        this.settlers = new ArrayList<Settler>();
+        this.worker = null;
+        this.settler = null;
         this.buildings = new ArrayList<Building>();
         this.HP = 10;
         this.civilizationName = civilizationName;
@@ -101,12 +102,12 @@ public class City extends Tile {
         return timeTopPopulate;
     }
 
-    public ArrayList<Worker> getWorkers() {
-        return workers;
+    public Worker getWorker() {
+        return worker;
     }
 
-    public ArrayList<Settler> getSettlers() {
-        return settlers;
+    public Settler getSettler() {
+        return settler;
     }
 
     public int getHP() {
@@ -271,22 +272,22 @@ public class City extends Tile {
     }
 
     private int checkNewCitizen(int count) {
-        double size = (double) workers.size() + (double) workers.size();
+        double size = (double) citizens.size();
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
             //TODO blah
-            Worker newWorker = new Worker(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
-            workers.add(newWorker);
-            capital.addUnit(newWorker);
+            Worker newCitizen = new Citizen(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+            citizens.add(newCitizen);
+            capital.addUnit(newCitizen);
         }
         return count;
     }
 
     private int citizensDyingForHunger(int count) {
         while (count > 0) {
-            if (settlers.size() > 0) {
-                GameDatabase.findTileBySettler(settlers.get(0)).units.remove(settlers.get(0));
-                settlers.remove(0);
+            if (citizens.size() > 0) {
+                GameDatabase.findTileBySettler(citizens.get(0)).remove(citizens.get(0));
+                citizens.remove(0);
             } else if (workers.size() > 0) {
                 workers.remove(0);
                 GameDatabase.findTileByWorker(workers.get(0)).units.remove(workers.get(0));
@@ -388,4 +389,7 @@ public class City extends Tile {
         return false;
     }
 
+    public ArrayList<Citizen> getCitizens() {
+        return citizens;
+    }
 }

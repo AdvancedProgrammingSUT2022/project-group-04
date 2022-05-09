@@ -12,6 +12,8 @@ public class Tile {
     protected int x;
     protected int y;
     protected String contains;
+    protected Worker worker;
+    protected Settler settler;
     protected ArrayList<Unit> units;
     protected ArrayList<Building> buildings;
     protected ArrayList<Improvement> improvements;
@@ -25,9 +27,11 @@ public class Tile {
     protected boolean isRoadBroken;
     protected boolean isRailroadBroken;
     protected City city;
+    protected ArrayList<Citizen> citizens;
     public boolean[] getIsRiver() {
         return isRiver;
     }
+
 
     boolean visited;
     Tile prev;
@@ -414,38 +418,14 @@ public class Tile {
 
     }
 
-    public Settler returnSettler(){
-        for (Unit unit : units) {
-            if (unit.isSettler()) return (Settler)unit;
-        }
-        return null;
+    public Settler getSettler(){
+        return settler;
     }
 
     public void fixImprovementByName(String nameOfImprovement) {
         for (Improvement improvement : improvements) {
             if (improvement.getName().equals(nameOfImprovement)) improvement.fix();
         }
-    }
-
-    public Worker getAvailableWorker(){
-        for (Unit unit : units) {
-            if (unit.isWorker()) {
-                if (!((Worker) unit).isLocked() && !((Worker) unit).isAssigned) {
-                    return (Worker) unit;
-                }
-            }
-        }
-        return null;
-    }
-
-    public Worker getActiveWorker(){
-        for (Unit unit : units) {
-            if (unit.isWorker()){
-                Worker worker = (Worker) unit;
-                if (worker.isAssigned) return (Worker) unit;
-            }
-        }
-        return null;
     }
 
     public void setIsGettingWorkedOn(boolean workedOn){
@@ -472,4 +452,19 @@ public class Tile {
     public boolean isRailroadBroken() {
         return isRailroadBroken;
     }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public Worker getAvailableWorker() {
+        if (worker.isAssigned) return null;
+        return worker;
+    }
+
+    public Worker getActiveWorker() {
+        if (!worker.isAssigned) return null;
+        return worker;
+    }
+
 }
