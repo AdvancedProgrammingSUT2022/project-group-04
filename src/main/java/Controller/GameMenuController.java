@@ -555,25 +555,38 @@ public class GameMenuController {
     }
 
 
-    public boolean createUnit(String combatOrNonCombat,String unitType, Tile tile, int civilizationIndex){
-        if (combatOrNonCombat.equals("Combat")){
-            createCombatUnit(unitType, tile, civilizationIndex);
+    public boolean createUnit(String unitType, int x, int y, int civilizationIndex){
+        if (unitType.equals("settler")
+                || unitType.equals("worker" )){
+            return createNonCombatUnit(unitType, x, y, civilizationIndex);
+        }
+        else {
+            createCombatUnit(unitType, x, y, civilizationIndex);
             return true;
         }
-        else if (combatOrNonCombat.equals("nonCombat")){
-            createNonCombatUnit(unitType, tile, civilizationIndex);
-            return true;
-        }
-        return false;
     }
-     public void createCombatUnit(String unitType, Tile tile, int civilizationIndex){
-        Soldier soldier = new Soldier(tile.getX(), tile.getY(), unitType ,civilizationIndex);
-        tile.addUnit(soldier);
-        soldier.setTileOfUnit(tile);
+     public void createCombatUnit(String unitType, int x, int y, int civilizationIndex){
+        Soldier soldier = new Soldier(x, y, unitType ,civilizationIndex);
+        GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
+        soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
      }
 
-     public void createNonCombatUnit(String unitType, Tile tile, int civilizationIndex){
-        //todo...
+     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex){
+        if(GameDatabase.getCityByXAndY(x, y) != null){
+            if (unitType.equals("settler")) {
+                GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
+                return true;
+            }
+            else if (unitType.equals("worker")){
+                GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
+                return true;
+            }
+            else
+                return false;
+        }
+        else {
+            return false;
+        }
      }
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
