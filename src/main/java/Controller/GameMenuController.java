@@ -538,6 +538,15 @@ public class GameMenuController {
         unit.getTileOfUnit().removeUnit(unit);
     }
 
+    public void createUnit(String combatOrCitizen, Tile tile){
 
+    }
+     public void createCombatUnit(String unitType, Tile tile){
+
+     }
+
+     public void createNonCombatUnit(String unitType, Tile tile){
+
+     }
 
 }
