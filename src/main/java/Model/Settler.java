@@ -26,19 +26,19 @@ public class Settler extends Citizen {
         tile.removeUnit(this);
     }
 
-    public void addTileToTheCity(int xOfCity, int yOfCity) {
-        Tile tile = GameDatabase.getTileByXAndY(xOfCity, yOfCity);
-        Tile tileOfOriginalCity = GameDatabase.getTileByXAndY(this.x, this.y);
-        Civilization civilization = GameDatabase.getCivilizationByTile(tileOfOriginalCity);
-        //ArrayList<Tile> tiles = tile.getNeighbors();
-        City city = GameDatabase.getCityByXAndY(this.x,this.y);
-        if (!civilization.isCityInCivilization(xOfCity,yOfCity)) {
-            //TODO edit if there is more than one turn for creating city
-            city.addTile(tile);
-            civilization.getCityByXAndY(x,y).removeSettler(this);//kill the settler after making city
-            tile.removeUnit(this);
-        }
-    }
+//    public void addTileToTheCity(int xOfCity, int yOfCity) {
+//        Tile tile = GameDatabase.getTileByXAndY(xOfCity, yOfCity);
+//        Tile tileOfOriginalCity = GameDatabase.getTileByXAndY(this.x, this.y);
+//        Civilization civilization = GameDatabase.getCivilizationByTile(tileOfOriginalCity);
+//        //ArrayList<Tile> tiles = tile.getNeighbors();
+//        City city = GameDatabase.getCityByXAndY(this.x,this.y);
+//        if (!civilization.isCityInCivilization(xOfCity,yOfCity)) {
+//            //TODO edit if there is more than one turn for creating city
+//            city.addTile(tile);
+//            civilization.getCityByXAndY(x,y).removeSettler(this);//kill the settler after making city
+//            tile.removeUnit(this);
+//        }
+//    }
 
     @Override
     public boolean isSettler() {

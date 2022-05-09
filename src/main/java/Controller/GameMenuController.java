@@ -2,6 +2,7 @@ package Controller;
 
 import Database.GameDatabase;
 import Model.*;
+import com.sun.jdi.ArrayReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -571,4 +572,32 @@ public class GameMenuController {
         //todo...
      }
 
+    public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
+        for (City city : civilization.getCities()) {
+            if (city.getAdjacentTiles().contains(tile)) return true;
+        }
+        return false;
+    }
+
+    public void addTileToCivilization(Tile tile,Civilization civilization) {
+        for (City city : civilization.getCities()) {
+            if (city.getAdjacentTiles().contains(tile)) {
+                city.addTile(tile);
+                break;
+            }
+        }
+    }
+
+    public ArrayList<Worker> getListOfUnemployedWorker(City city) {
+        ArrayList<Worker> workers = new ArrayList<>();
+        if (city.getWorker()!= null) workers.add(city.getWorker());
+        return workers;
+    }
+
+
+    public ArrayList<Settler> getListOfUnemployedSettler(City city) {
+        ArrayList<Settler> settlers = new ArrayList<>();
+        if (city.getSettler() != null) settlers.add(city.getSettler());
+        return settlers;
+    }
 }
