@@ -302,11 +302,11 @@ public class City extends Tile {
     }
 
     //
-    public void createSettler() {
+    public void createSettler(int x,int y) {
         if (workers.size() + settlers.size() > 1) {
             Settler newSettler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
             settlers.add(newSettler);
-            capital.addUnit(newSettler);
+            GameDatabase.getCityByXAndY(x,y).addUnit(newSettler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
