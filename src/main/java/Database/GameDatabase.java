@@ -1,11 +1,6 @@
 package Database;
 
-import Model.City;
-import Model.Civilization;
-import Model.Tile;
-import Model.Resources;
-import Model.BaseTerrain;
-import Model.TerrainFeatures;
+import Model.*;
 
 
 import java.util.ArrayList;
@@ -284,6 +279,32 @@ public class GameDatabase {
         for (Civilization player : players) {
             if (player.getTurn() == turn) {
                 return player;
+            }
+        }
+        return null;
+    }
+
+    public static Tile findTileBySettler(Settler settler) {
+        for (Tile tile : map) {
+            ArrayList<Unit> soldiers = tile.getUnits();
+            for (Unit soldier : soldiers) {
+                if (soldier.getUnitType().equals("Settler")
+                        && settler == soldier){
+                    return tile;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Tile findTileByWorker(Worker worker) {
+        for (Tile tile : map) {
+            ArrayList<Unit> soldiers = tile.getUnits();
+            for (Unit soldier : soldiers) {
+                if (soldier.getUnitType().equals("Worker")
+                        && worker == soldier){
+                    return tile;
+                }
             }
         }
         return null;
