@@ -1,6 +1,7 @@
 package Model;
 
 import Database.GameDatabase;
+import Database.GlobalVariables;
 
 import java.util.ArrayList;
 
@@ -313,6 +314,17 @@ public class Building {
 
     public void build() {
         this.turnsNeedToBuild--;
+        if(wasBuilt()) {
+            sendNotification();
+        }
+    }
+
+    private void sendNotification() {
+        String source = GlobalVariables.SYSTEM_NAME;
+        String text = "Building " + this.name + " was built on city " + this.cityName;
+        String destination = GameDatabase.getCivilizationForCity(cityName).getNickname();
+        Notification notification = new Notification(source, destination, text);
+        Notification.addNotification(notification);
     }
 
     public boolean wasBuilt() {
