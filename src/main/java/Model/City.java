@@ -52,7 +52,7 @@ public class City extends Tile {
         this.settlers = new ArrayList<Settler>();
         this.buildings = new ArrayList<Building>();
         //this.discoveredResources = new ArrayList<Resources>();
-        this.HP = 0;
+        this.HP = 10;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
         //this.food = 0;

@@ -23,9 +23,14 @@ public class Unit {
     protected int XP;
     protected Tile tileOfUnit;
     protected int civilizationIndex;
+    protected int maintenance;
 
     public int getX() {
         return x;
+    }
+
+    public int getMaintenance() {
+        return this.maintenance;
     }
 
     public void setX(int x) {
@@ -151,7 +156,7 @@ public class Unit {
         return civilizationIndex;
     }
 
-    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex) {
+    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, int maintenance) {
         this.x = x;
         this.y = y;
         this.vX = vX;
@@ -164,6 +169,7 @@ public class Unit {
         this.era = era;
         this.HP = HP;
         this.civilizationIndex = civilizationIndex;
+        this.maintenance = maintenance;
     }
 
     public void setTileOfUnit(Tile isOnTile) {
@@ -242,6 +248,7 @@ public class Unit {
         result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.power);
         return result;
     }
+
     public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
         if (!destTile.canBePassed())
             return false;
