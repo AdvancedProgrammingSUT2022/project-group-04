@@ -46,9 +46,37 @@ public class Info {
         }
     }
 
+    private void cityOutput(City city) {
+        System.out.println("Time to extend borders = " + Integer.toString(city.getTimeToExtendBorders()));
+        System.out.println("Time to populate = " + Integer.toString(city.getTimeTopPopulate()));
+    }
+
+    private void printStrategicResourcesOfCity(City city) {
+        ArrayList<Resources> strategicResources = city.getStrategicResources();
+        if(strategicResources.size() == 0) {
+            System.out.println("No strategic Resources");
+        }
+        System.out.println("Strategic Resources:");
+        for (Resources strategicResource : strategicResources) {
+            if(isResourceNew(strategicResources, strategicResource)) {
+                System.out.println(strategicResource.getName());
+            }
+        }
+
+    }
+
+    private void civilizationOutput(City city) {
+        System.out.println("Science rate of this city = " + Integer.toString(city.getScienceGenerating()));
+        System.out.println("Gold rate of this city = " + Integer.toString(city.getGoldGeneratingRate()));
+        System.out.println("Civilization Happiness = " + Integer.toString(GameDatabase.getCivilizationForCity(city.getName()).getHappiness()));
+        printStrategicResourcesOfCity(city);
+    }
+
     public void cityBanner(City city, Scanner scanner) {
         String command;
         System.out.println(city);
+        cityOutput(city);
+        civilizationOutput(city);
         for (Tile cityTile : city.getTiles()) {
             System.out.println(cityTile);
         }
@@ -74,9 +102,9 @@ public class Info {
         }
     }
 
-    private boolean isResourceNew(ArrayList<String> resourcesName, String resourceName) {
-        for (String resource : resourcesName) {
-            if (resource.equals(resourceName)) {
+    private boolean isResourceNew(ArrayList<Resources> resourcesList, Resources resource) {
+        for (Resources resources : resourcesList) {
+            if(resources.getName().equals(resource.getName())) {
                 return false;
             }
         }
@@ -178,15 +206,12 @@ public class Info {
 
     private void printResources(int turn) {
         System.out.println("Resources:");
-        ArrayList<String> resourcesName = new ArrayList<String>();
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
             if (Resources.isResourceOnTileValidForDiscovering(tile)) {
-                if (isResourceNew(resourcesName, tile.getBaseTerrain().getResources().getName())) {
-                    resourcesName.add(tile.getBaseTerrain().getResources().getName());
-                    String resourceString = "Resource " + tile.getBaseTerrain().getResources().getName() + " on tile X: " +
-                            Integer.toString(tile.getX()) + " and Y: " + Integer.toString(tile.getY());
-                    System.out.println(resourceString);
-                }
+                String resourceString = "Resource " + tile.getBaseTerrain().getResources().getName() + " on tile X: " +
+                        Integer.toString(tile.getX()) + " and Y: " + Integer.toString(tile.getY()) + "is valid for discovering";
+                tile.discoverResource();
+                System.out.println(resourceString);
             }
         }
     }

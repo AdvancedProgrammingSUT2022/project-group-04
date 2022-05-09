@@ -74,6 +74,16 @@ public class GameDatabase {
 
     }
 
+    public static boolean isTileForACity(Tile tile) {
+        for (Civilization civilization : GameDatabase.players) {
+            for (City city : civilization.getCities()) {
+                if(city.isTileForThisCity(tile)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public static Civilization getCivilizationByTile(Tile tile) {
         for (int i = 0; i < GameDatabase.players.size(); i++) {
@@ -106,6 +116,7 @@ public class GameDatabase {
     }
 
     public static void generateMap(int numberOfPlayers) {
+        Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
         int sumOfPossibilities = 0;

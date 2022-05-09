@@ -1,6 +1,7 @@
 package Model;
 
 import Database.GameDatabase;
+import Database.GlobalVariables;
 
 import java.util.ArrayList;
 
@@ -282,6 +283,18 @@ public class Resources {
             }
         }
         return false;
+    }
+
+    public void discover(Tile tile) {
+        sendNotification(tile);
+    }
+
+    private void sendNotification(Tile tile) {
+        String source = GlobalVariables.SYSTEM_NAME;
+        String text = "Resource " + this.name + " discovered on tile X = " + Integer.toString(tile.getX()) + " and Y = " + Integer.toString(tile.getY());
+        String destination = GameDatabase.getCivilizationByTile(tile).getNickname();
+        Notification notification = new Notification(source, destination, text);
+        Notification.addNotification(notification);
     }
 
     public boolean isResourceVisibleForThisCivilization(Civilization civilization) {

@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Tile {
     protected String type; //fogOfWar , Visible , Clear
     protected BaseTerrain baseTerrain;
+    private ArrayList<Resources> discoveredResources;
     protected int x;
     protected int y;
     protected String contains;
@@ -40,6 +41,7 @@ public class Tile {
         this.y = y;
         this.units = new ArrayList<Unit>();
         this.improvements = new ArrayList<Improvement>();
+        this.discoveredResources = new ArrayList<Resources>();
         this.isRiver = new boolean[6];
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
@@ -55,6 +57,45 @@ public class Tile {
     public boolean hasRailroad() {
         return hasRailroad;
     }
+
+
+    public ArrayList<Resources> getDiscoveredResources() {
+        return discoveredResources;
+   }
+
+
+
+   public void addResource(Resources resources) {
+        discoveredResources.add(resources);
+        if (resources.getType().equals("luxury")
+                && GameDatabase.getCivilizationByTile(this).isResourceNew(resources)) {
+            GameDatabase.getCivilizationByTile(this).addHappiness(4);
+        }
+    }
+
+    public void discoverResource() {
+        if(this.baseTerrain.getResources() == null) {
+            return;
+        }
+        addResource(this.baseTerrain.getResources());
+        this.baseTerrain.getResources().discover(this);
+        this.baseTerrain.discoverResource();
+    }
+
+    public boolean isTileValidForAddingToCity() {
+        return GameDatabase.isTileForACity(this);
+    }
+
+    public boolean isResourceDiscoveredByThisTile(String resourceName) {
+        for (Resources resource : this.discoveredResources) {
+            if(resource.getName().equals(resourceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     public void initializeRoundsTillFinish(int flag) {
         int[] base = new int[25];

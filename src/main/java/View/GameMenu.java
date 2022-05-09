@@ -1073,6 +1073,7 @@ public class GameMenu extends Menu {
                         if (!isFirst) unitNames += "-";
                         if (isFirst) isFirst = false;
                         unitNames += unit.getUnitType().substring(0, 1);
+                        unitNames += GameDatabase.getCivilizationByTurn(unit.getCivilizationIndex()).getNickname().substring(0,1);
                     }
                     linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
                             (unitNames + "                ").substring(0, 12);//TODO Unit to print

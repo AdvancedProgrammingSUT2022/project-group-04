@@ -168,9 +168,10 @@ public class Civilization {
 
     }
 
+
     public boolean hasResource(Resources resources) {
-        for (City city : this.cities) {
-            for (Resources resource : city.getDiscoveredResources()) {
+        for (Tile tile : this.tiles) {
+            for (Resources resource : tile.getDiscoveredResources()) {
                 if(resource.getName().equals(resources.getName())) {
                     return true;
                 }
@@ -280,7 +281,7 @@ public class Civilization {
             }
         }
         for (Technology technology : this.technologies) {
-            technology.nextTurn();
+            technology.nextTurn(this.nickname);
         }
         maintenanceOfUnits();
 
@@ -347,9 +348,10 @@ public class Civilization {
         return null;
     }
 
+
     public boolean isResourceNew(Resources newResource) {
-        for (City city : this.cities) {
-            for (Resources resource : city.getDiscoveredResources()) {
+        for (Tile tile : this.tiles)  {
+            for (Resources resource : tile.getDiscoveredResources()) {
                 if(resource.getName().equals(newResource.getName())) {
                     return false;
                 }
@@ -357,6 +359,8 @@ public class Civilization {
         }
         return true;
     }
+
+
     public ArrayList<Tile> getFriendlyTiles(){
         ArrayList<Tile> friendlyTiles = new ArrayList<>();
         return friendlyTiles;
