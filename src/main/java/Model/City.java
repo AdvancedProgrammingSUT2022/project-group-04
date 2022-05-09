@@ -299,7 +299,7 @@ public class City extends Tile {
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
             //TODO blah
-            Citizen newCitizen = new Citizen(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+            Citizen newCitizen = new Citizen(x, y,  "sth", 1, 0, false);
             citizens.add(newCitizen);
             capital.addUnit(newCitizen);
         }
@@ -330,14 +330,14 @@ public class City extends Tile {
     //
     public void createSettler(int x, int y) {
         if (citizens.size() > 1 && settler == null) {
-            this.settler = new Settler(x, y, 1, 1, 0, 89, 2, true, true, "?", 1, 0, false);
+            this.settler = new Settler(x, y, 1, 0, false);
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
         }
     }
 
     public void createWorker(int x, int y) {
-        Worker newWorker = new Worker(x, y, 1, 1, 0, 2, "sth", 1, 0, false);
+        Worker newWorker = new Worker(x, y, 1, 0, false);
         this.worker = newWorker;
         GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
     }

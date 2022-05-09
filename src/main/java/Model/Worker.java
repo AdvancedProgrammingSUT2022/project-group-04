@@ -45,8 +45,8 @@ public class Worker extends Citizen {
         workToIndex.put("repairQuarry", 24);
     }
 
-    public Worker(int x, int y, int Vx, int Vy, int power, int movementPoint, String era, int HP, int civilizationIndex, boolean isAssigned) {
-        super(x, y, Vx, Vy, power, 70, movementPoint, "Civilian Worker", true, true, era, HP, civilizationIndex, isAssigned);
+    public Worker(int x, int y, int HP, int civilizationIndex, boolean isAssigned) {
+        super(x, y, "worker" , HP, civilizationIndex, isAssigned);
         isAssigned = false;
         indexOfProject = -1;
         typeOfWork = "";

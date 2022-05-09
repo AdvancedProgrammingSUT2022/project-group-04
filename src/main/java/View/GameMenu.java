@@ -772,7 +772,7 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
+        //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
