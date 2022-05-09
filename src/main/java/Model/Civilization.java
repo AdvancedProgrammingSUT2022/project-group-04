@@ -288,6 +288,22 @@ public class Civilization {
 
     }
 
+    public City getCapital() {
+        for (City city : this.cities) {
+            if(city.isCapital()) {
+                return city;
+            }
+        }
+        return null;
+    }
+
+    public void changeCapital(String cityName) {
+        if(getCapital() != null) {
+            getCapital().removeCapital();
+        }
+        GameDatabase.getCityByName(cityName).setCapital();
+    }
+
     private int happinessCalculator() {
         int population = 0;
         int colonizedCount = 0;
