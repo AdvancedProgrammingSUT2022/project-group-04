@@ -5,11 +5,10 @@ public class Soldier extends Unit {
     private String combatType;
     private Technology requiredTechnology;
     private Resources requiredResources;
-    private int rangedCombatStrength;
-    private int combatStrength;
 
-    public Soldier(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex) {
-        super(x, y, vX, vY, power, cost, movementPoint, unitType, isSleeping, isReady, era, HP, civilizationIndex, 2);
+
+    public Soldier(int x, int y, String unitType, int civilizationIndex) {
+        super(x, y, unitType,10, civilizationIndex, 2);
         switch (unitType) {
             case "Archer":
                 this.range = 2;
@@ -17,6 +16,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 4;
                 this.rangedCombatStrength = 6;
                 this.requiredTechnology = new Technology("Archery");
+                this.cost = 70;
+                this.speed = 2;
+                this.era = "Ancient";
                 break;
             case "ChariotArcher":
                 this.range = 4;
@@ -25,19 +27,18 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 6;
                 this.requiredTechnology = new Technology("TheWheel");
                 this.requiredResources = new Resources("Horse");
+                this.cost = 60;
+                this.speed = 4;
+                this.era = "Ancient";
                 break;
             case "Scout":
                 this.range = 2;
                 this.combatType = "Recon";
                 this.combatStrength = 4;
                 this.rangedCombatStrength = 0;
-                break;
-            case "Settler":
-            case "Worker":
-                this.range = 2;
-                this.combatType = "Civilian";
-                this.combatStrength = 0;
-                this.rangedCombatStrength = 0;
+                this.cost = 25;
+                this.speed = 2;
+                this.era = "Ancient";
                 break;
             case "Spearman":
                 this.range = 2;
@@ -45,12 +46,18 @@ public class Soldier extends Unit {
                 this.combatStrength = 7;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("BronzeWorking");
+                this.cost = 50;
+                this.speed = 2;
+                this.era = "Ancient";
                 break;
             case "Warrior":
                 this.range = 2;
                 this.combatType = "Archery";
                 this.combatStrength = 6;
                 this.rangedCombatStrength = 0;
+                this.cost = 40;
+                this.speed = 2;
+                this.era = "Ancient";
                 break;
             case "Catapult":
                 this.range = 2;
@@ -59,6 +66,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 14;
                 this.requiredTechnology = new Technology("Mathematics");
                 this.requiredResources = new Resources("Iron");
+                this.cost = 100;
+                this.speed = 2;
+                this.era = "Classical";
                 break;
             case "Horseman":
                 this.range = 4;
@@ -67,6 +77,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("HorsebackRiding");
                 this.requiredResources = new Resources("Horse");
+                this.cost = 80;
+                this.speed = 4;
+                this.era = "Classical";
                 break;
             case "Swordsman":
                 this.range = 2;
@@ -75,6 +88,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("IronWorking");
                 this.requiredResources = new Resources("Iron");
+                this.cost = 80;
+                this.speed = 2;
+                this.era = "Classical";
                 break;
             case "Crossbowman":
                 this.range = 2;
@@ -82,6 +98,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 6;
                 this.rangedCombatStrength = 12;
                 this.requiredTechnology = new Technology("Machinery");
+                this.cost = 120;
+                this.speed = 2;
+                this.era = "Medieval";
                 break;
             case "Knight":
                 this.range = 3;
@@ -90,6 +109,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("Chivalry");
                 this.requiredResources = new Resources("Horse");
+                this.cost = 150;
+                this.speed = 3;
+                this.era = "Medieval";
                 break;
             case "Longswordsman":
                 this.range = 3;
@@ -98,6 +120,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 0;
                 this.requiredResources = new Resources("Iron");
                 this.requiredTechnology = new Technology("Steel");
+                this.cost = 150;
+                this.speed = 3;
+                this.era = "Medieval";
                 break;
             case "Pikeman":
                 this.range = 2;
@@ -105,6 +130,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 0;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("CivilService");
+                this.cost = 100;
+                this.speed = 2;
+                this.era = "Medieval";
                 break;
             case "Trebuchet":
                 this.range = 2;
@@ -113,6 +141,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 2;
                 this.requiredResources = new Resources("Iron");
                 this.requiredTechnology = new Technology("Physics");
+                this.cost = 170;
+                this.speed = 2;
+                this.era = "Medieval";
                 break;
             case "Canon":
                 this.range = 2;
@@ -120,6 +151,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 10;
                 this.rangedCombatStrength = 26;
                 this.requiredTechnology = new Technology("Chemistry");
+                this.cost = 250;
+                this.speed = 2;
+                this.era = "Renaissance";
                 break;
             case "Cavalry":
                 this.range = 3;
@@ -128,6 +162,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 0;
                 this.requiredResources = new Resources("Horse");
                 this.requiredTechnology = new Technology("MilitaryScience");
+                this.cost = 260;
+                this.speed = 3;
+                this.era = "Renaissance";
                 break;
             case "Lancer":
                 this.range = 4;
@@ -136,6 +173,9 @@ public class Soldier extends Unit {
                 this.rangedCombatStrength = 0;
                 this.requiredResources = new Resources("Horse");
                 this.requiredTechnology = new Technology("Metallurgy");
+                this.cost = 220;
+                this.speed = 4;
+                this.era = "Renaissance";
                 break;
             case "Musketman":
                 this.range = 2;
@@ -143,6 +183,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 16;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("Gunpowder");
+                this.cost = 120;
+                this.speed = 2;
+                this.era = "Renaissance";
                 break;
             case "Rifleman":
                 this.range = 2;
@@ -150,6 +193,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 25;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("Rifling");
+                this.cost = 200;
+                this.speed = 2;
+                this.era = "Renaissance";
                 break;
             case "AntiTankGun":
                 this.range = 2;
@@ -157,6 +203,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 32;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("ReplaceableParts");
+                this.cost = 300;
+                this.speed = 2;
+                this.era = "Industrial";
                 break;
             case "Artillery":
                 this.range = 2;
@@ -164,6 +213,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 16;
                 this.rangedCombatStrength = 32;
                 this.requiredTechnology = new Technology("Dynamite");
+                this.cost = 420;
+                this.speed = 2;
+                this.era = "Industrial";
                 break;
             case "Infantry":
                 this.range = 2;
@@ -171,6 +223,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 36;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("ReplaceableParts");
+                this.cost = 300;
+                this.speed = 2;
+                this.era = "Industrial";
                 break;
             case "Panzer":
                 this.range = 5;
@@ -178,6 +233,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 60;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("Combustion");
+                this.cost = 450;
+                this.speed = 5;
+                this.era = "Industrial";
                 break;
             case "Tank":
                 this.range = 4;
@@ -185,6 +243,9 @@ public class Soldier extends Unit {
                 this.combatStrength = 50;
                 this.rangedCombatStrength = 0;
                 this.requiredTechnology = new Technology("Combustion");
+                this.cost = 450;
+                this.speed = 4;
+                this.era = "Industrial";
                 break;
             default:
                 break;
@@ -215,7 +276,7 @@ public class Soldier extends Unit {
                 break;
             }
         }
-        unit.setHP(unit.getHP() - amount + unit.getPower());
+        unit.setHP(unit.getHP() - amount + unit.getCombatStrength());
     }
     public void attackUnitRanged(Unit unit){
         int amount = 0;
@@ -225,7 +286,7 @@ public class Soldier extends Unit {
                 break;
             }
         }
-        unit.setHP(unit.getHP() - amount + unit.getPower());
+        unit.setHP(unit.getHP() - amount + unit.getCombatStrength());
     }
 
     public void attackCityMelee(City city){

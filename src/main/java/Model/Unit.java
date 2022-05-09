@@ -8,9 +8,9 @@ public class Unit {
 
     protected int x;
     protected int y;
-    protected int vX;
-    protected int vY;
-    protected int power;
+    protected int speed;
+    protected int rangedCombatStrength;
+    protected int combatStrength;
     protected int cost;
     protected Technology technologyRequired;
     protected Resources resourcesRequired;
@@ -45,28 +45,28 @@ public class Unit {
         y = y;
     }
 
-    public int getVX() {
-        return vX;
+    public int getSpeed() {
+        return speed;
     }
 
-    public void setVX(int vX) {
-        vX = vX;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
-    public int getVY() {
-        return vY;
+    public int getRangedCombatStrength() {
+        return rangedCombatStrength;
     }
 
-    public void setVY(int vY) {
-        vY = vY;
+    public void setRangedCombatStrength(int rangedCombatStrength) {
+        this.rangedCombatStrength = rangedCombatStrength;
     }
 
-    public int getPower() {
-        return power;
+    public int getCombatStrength() {
+        return combatStrength;
     }
 
-    public void setPower(int power) {
-        this.power = power;
+    public void setCombatStrength(int combatStrength) {
+        this.combatStrength = combatStrength;
     }
 
     public int getCost() {
@@ -156,17 +156,10 @@ public class Unit {
         return civilizationIndex;
     }
 
-    public Unit(int x, int y, int vX, int vY, int power, int cost, int movementPoint, String unitType, boolean isSleeping, boolean isReady, String era, int HP, int civilizationIndex, int maintenance) {
+    public Unit(int x, int y, String unitType, int HP, int civilizationIndex, int maintenance) {
         this.x = x;
         this.y = y;
-        this.vX = vX;
-        this.vY = vY;
-        this.power = power;
-        this.movementPoint = movementPoint;
         this.unitType = unitType;
-        this.isSleeping = isSleeping;
-        this.isReady = isReady;
-        this.era = era;
         this.HP = HP;
         this.civilizationIndex = civilizationIndex;
         this.maintenance = maintenance;
@@ -180,7 +173,7 @@ public class Unit {
         return tileOfUnit;
     }
 
-    public void moveOneTile(int direction) { //this function is to be used with graphics
+    /*public void moveOneTile(int direction) { //this function is to be used with graphics
         int x1 = x, y1 = y - 10; // value is temporary , will be changed
         int x2 = x + 7, y2 = y - 7;
         int x3 = x + 7, y3 = y + 7;
@@ -233,7 +226,7 @@ public class Unit {
                 } while (x > x1 - 1 || y > y1 - 1);
                 break;
         }
-    }
+    }*/
 
     public void moveToAdjacentTile(Tile adjacentTile) {
         this.x = adjacentTile.getX();
@@ -245,7 +238,7 @@ public class Unit {
     public String toString() {
         String result = this.unitType;
         result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
-        result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.power);
+        result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
         return result;
     }
 
@@ -286,11 +279,6 @@ public class Unit {
 
     public boolean isCombatUnit(){
         return true;
-    }
-
-
-    public void createCity(int xOfTile,int yOfTile){
-
     }
 
     public boolean isSettler() {
