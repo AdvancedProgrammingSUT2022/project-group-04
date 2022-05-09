@@ -356,6 +356,18 @@ public class City extends Tile {
         return false;
     }
 
+    public ArrayList<Resources> getStrategicResources() {
+        ArrayList<Resources> strategicsResources = new ArrayList<Resources>();
+        for (Tile tile : this.tiles) {
+            for (Resources resource : tile.getDiscoveredResources()) {
+                if(resource.getType().equals("Strategics")) {
+                    strategicsResources.add(resource);
+                }
+            }
+        }
+        return strategicsResources;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof City)) {
