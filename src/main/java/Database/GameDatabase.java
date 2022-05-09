@@ -320,4 +320,12 @@ public class GameDatabase {
         }
         return null;
     }
+
+    public static Tile findTileByCitizen(Citizen citizen) {
+        for (Tile tile : map) {
+            ArrayList<Citizen> citizens = tile.getCitizens();
+            if (citizens.contains(citizen)) return tile;
+        }
+        return null;
+    }
 }
