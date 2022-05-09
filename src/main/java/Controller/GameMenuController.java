@@ -604,4 +604,20 @@ public class GameMenuController {
         if (city.getSettler() != null) settlers.add(city.getSettler());
         return settlers;
     }
+
+    public boolean garrisonUnitToCity(Unit unit){
+
+        City city = GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY());
+        if (city != null) {
+            city.setGarrison(unit);
+            city.setPower(city.getPower() + 5);
+            city.setGarrisoned(true);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
 }

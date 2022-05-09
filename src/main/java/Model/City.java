@@ -25,7 +25,8 @@ public class City extends Tile {
     private ArrayList<Unit> attackingUnits;
     private Tile capital;
     private ArrayList<Tile> tiles;
-    private boolean isGarrison;
+    private Unit garrison;
+    private boolean isGarrisoned;
     private boolean isDivision;
     private int HP;
     private String civilizationName;
@@ -70,6 +71,10 @@ public class City extends Tile {
 
     public int getPower() {
         return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
     }
 
     public int getLongRangePower() {
@@ -134,6 +139,22 @@ public class City extends Tile {
 
     public String getCivilizationName() {
         return civilizationName;
+    }
+
+    public Unit getGarrison() {
+        return garrison;
+    }
+
+    public void setGarrison(Unit garrison) {
+        this.garrison = garrison;
+    }
+
+    public boolean isGarrisoned() {
+        return isGarrisoned;
+    }
+
+    public void setGarrisoned(boolean garrisoned) {
+        isGarrisoned = garrisoned;
     }
 
     public boolean isCapital() {
