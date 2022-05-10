@@ -205,6 +205,9 @@ public class GameMenuController {
     }
 
     public boolean isDestinationOkForMove(Unit unit, int x, int y) {
+        if(!isPositionValid(x, y)) {
+            return false;
+        }
         if (isUnitSoldier(unit)) {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
                 if (isUnitSoldier(unit1)) {
