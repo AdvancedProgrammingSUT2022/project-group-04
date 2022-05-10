@@ -35,7 +35,7 @@ public class MainMenu extends Menu {
                 System.out.println("user logged out successfully!");
                 break;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
-                System.out.println(menuShow(matcher));
+                System.out.println(menuShow());
             } else if ((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
                 System.out.println(menuExit(matcher));
             }  else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
@@ -59,7 +59,7 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    public String menuShow(Matcher matcher) {
+    public String menuShow() {
         return "Main Menu";
     }
 
