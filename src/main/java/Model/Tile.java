@@ -190,6 +190,14 @@ public class Tile {
         this.prev = prev;
     }
 
+    public void setRoadBroken(boolean roadBroken) {
+        isRoadBroken = roadBroken;
+    }
+
+    public void setRailroadBroken(boolean railroadBroken) {
+        isRailroadBroken = railroadBroken;
+    }
+
     public ArrayList<Building> getBuildings() {
         return buildings;
     }
