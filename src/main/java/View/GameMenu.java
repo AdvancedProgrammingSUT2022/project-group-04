@@ -598,8 +598,8 @@ public class GameMenu extends Menu {
             return "this unit is not for you";
         } else if (!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
-        } else if (!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
-            return "invalid to move";
+        //} //else if (!unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y))) {
+           // return "invalid to move";
         } else {
             unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
         }
@@ -614,9 +614,9 @@ public class GameMenu extends Menu {
             return "this tile is not for you";
         }
         else {
-            boolean success = gameMenuController.createUnit(unitType, x, y, 0); //todo civilization index what to do?
+            boolean success = gameMenuController.createUnit(unitType, x, y, turn); //todo civilization index what to do?
             if (success){
-                return "unit" + unitType + "created";
+                return "unit " + unitType + " created";
             }
             else {
                 return "cannot create a unit here";

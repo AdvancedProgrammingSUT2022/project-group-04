@@ -561,14 +561,20 @@ public class GameMenuController {
             return createNonCombatUnit(unitType, x, y, civilizationIndex);
         }
         else {
-            createCombatUnit(unitType, x, y, civilizationIndex);
-            return true;
+            return createCombatUnit(unitType, x, y, civilizationIndex);
         }
     }
-     public void createCombatUnit(String unitType, int x, int y, int civilizationIndex){
+     public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex){
         Soldier soldier = new Soldier(x, y, unitType ,civilizationIndex);
-        GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
-        soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
+        if (soldier.getCost() <= GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(x, y)).getGold()) {
+            GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
+            soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
+            GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(x, y)).addGold(-soldier.getCost());
+            return true;
+        }
+        else{
+            return false;
+        }
      }
 
      public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex){
