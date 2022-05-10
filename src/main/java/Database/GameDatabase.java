@@ -287,12 +287,7 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByTurn(int turn) {
-        for (Civilization player : players) {
-            if (player.getTurn() == turn) {
-                return player;
-            }
-        }
-        return null;
+        return GameDatabase.players.get(turn);
     }
 
     public static Tile findTileBySettler(Settler settler) {

@@ -627,13 +627,16 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         String unitType = matcher.group("unitType");
-        if (!gameMenuController.isTileInCivilization(null, turn % numberOfPlayers)){
+        if(!this.gameMenuController.isPositionValid(x, y)) {
+            return "invalid position";
+        }
+        if (!gameMenuController.isTileInCivilization(GameDatabase.getTileByXAndY(x, y), turn % numberOfPlayers)){
             return "this tile is not for you";
         }
         else {
             boolean success = gameMenuController.createUnit(unitType, x, y, 0); //todo civilization index what to do?
             if (success){
-                return "unit" + unitType + "created";
+                return "unit " + unitType + " created";
             }
             else {
                 return "cannot create a unit here";
