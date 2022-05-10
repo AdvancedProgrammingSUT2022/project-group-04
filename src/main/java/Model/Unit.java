@@ -292,4 +292,12 @@ public class Unit {
         return false;
     }
 
+    public boolean isInItsCivilization(){
+        if (GameDatabase.getCivilizationByTurn(civilizationIndex) == GameDatabase.getCivilizationByTile(this.tileOfUnit)){
+            return true;
+        }
+        return false;
+
+    }
+
 }
