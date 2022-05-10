@@ -10,7 +10,7 @@ public class Menu {
     protected static final String MENU_ENTER = "menu enter (?<MenuName>.+)";
     protected static final String MENU_EXIT = "menu exit";
 
-    public String menuShow(Matcher matcher) {
+    public String menuShow() {
         return "Menu";
     }
 
