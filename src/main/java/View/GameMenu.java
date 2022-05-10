@@ -1162,6 +1162,16 @@ public class GameMenu extends Menu {
                         unitNames += unit.getUnitType().substring(0, 1);
                         unitNames += GameDatabase.getCivilizationByTurn(unit.getCivilizationIndex()).getNickname().substring(0,1);
                     }
+                    if (tile.getWorker()!= null){
+                        unitNames += "-";
+                        unitNames += "W";
+                        unitNames += GameDatabase.getCivilizationByTurn(tile.getWorker().getCivilizationIndex()).getNickname().substring(0,1);
+                    }
+                    if (tile.getSettler()!= null){
+                        unitNames += "-";
+                        unitNames += "S";
+                        unitNames += GameDatabase.getCivilizationByTurn(tile.getWorker().getCivilizationIndex()).getNickname().substring(0,1);
+                    }
                     linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
                             (unitNames + "                ").substring(0, 12);//TODO Unit to print
                     //showing Features

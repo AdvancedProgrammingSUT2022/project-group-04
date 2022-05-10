@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Settler extends Citizen {
 
+
     public Settler(int x, int y, int civilizationIndex) {
         super(x, y,"Civilian Settler", 1, civilizationIndex, false);
         this.cost = 89;
@@ -25,7 +26,7 @@ public class Settler extends Citizen {
         //TODO edit if there is more than one turn for creating city
         civilization.addCity(new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 0,
                 tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(this.x, this.y)).getNickname(),
-                false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY(),tile));
+                false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY(), tile));
         civilization.getCityByXAndY(x, y).removeSettler(this);//kill the settler after making city
 
         tile.removeUnit(this);
