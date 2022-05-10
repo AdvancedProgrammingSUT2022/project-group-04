@@ -247,7 +247,9 @@ public class Tile {
 
     public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
-        movementPriceSum += getBaseTerrain().getFeature().getMovementPrice();
+        if (getBaseTerrain().getFeature() != null) {
+            movementPriceSum += getBaseTerrain().getFeature().getMovementPrice();
+        }
         return movementPriceSum;
     }
 

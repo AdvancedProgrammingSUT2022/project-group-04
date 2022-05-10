@@ -28,8 +28,8 @@ public class LoginTest {
     @Mock
     Scanner scanner;
 
-
-
+    LoginMenuController loginMenuControllerTest;
+    LoginMenuModel loginMenuModelTest;
 
     @BeforeEach
     public void setUp() {

@@ -242,9 +242,9 @@ public class Unit {
         return result;
     }
 
-    public boolean moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
+    public int moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
         if (!destTile.canBePassed())
-            return false;
+            return -1;
         Graph graph = new Graph();
         ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
         Tile currentInCopy = null;
@@ -256,7 +256,8 @@ public class Unit {
                 destInCopy = tile;
         }
         ArrayList<Tile> path = new ArrayList<>();
-        for (Tile copyTile : graph.route(currentInCopy, destInCopy, copyOfMap)) {
+        ArrayList<Tile> temp = graph.route(currentInCopy, destInCopy, copyOfMap);
+        for (Tile copyTile : temp) {
             for (Tile mainTile : GameDatabase.map) {
                 if (mainTile.getX() == copyTile.getX() && mainTile.getY() == copyTile.getY()) {
                     path.add(mainTile);
@@ -264,17 +265,19 @@ public class Unit {
             }
         }
         //Todo.. make each movement round based
+        System.out.println(path.size() + "aslkdhjgwelkjahgluakehlisugryaiu");
         for (int i = 1; i < path.size(); i++) {
             if (selectedUnit.getMovementPoint() >= path.get(i).movementPriceForTile()) {
                 selectedUnit.moveToAdjacentTile(path.get(i));
-                path.get(i).addUnit(selectedUnit);
-                path.get(i - 1).removeUnit(selectedUnit);
+                path.get(i).units.add(selectedUnit);
+                path.get(i - 1).units.remove(selectedUnit);
+                System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());
             }
             else {
-                break;
+               return -2;
             }
         }
-        return true;
+        return 0;
     }
 
     public boolean isCombatUnit(){

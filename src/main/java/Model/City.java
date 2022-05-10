@@ -299,7 +299,7 @@ public class City extends Tile {
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
             //TODO blah
-            Citizen newCitizen = new Citizen(x, y, "sth", 1, 0, false);
+            Citizen newCitizen = new Citizen(x, y, "Civilian Citizen", 1, 0, false);
             citizens.add(newCitizen);
             capital.addUnit(newCitizen);
         }
