@@ -33,6 +33,9 @@ public class CombatController {
         ArrayList<Unit> unitsInPosition = GameDatabase.getTileByXAndY(x, y).getUnits();
         if (unit1 instanceof Soldier){
             Soldier soldier1 = (Soldier) unit1;
+            if (soldier1.getCombatType().equals("siege") && soldier1.getSiegeReady() == 0){
+                return false;
+            }
             boolean won = true;
             if (soldier1.getRange() == 0){
                 //melee attack
@@ -115,8 +118,11 @@ public class CombatController {
         // ToDO think there should be more to this funciton
     }
 
-    public void getSiegeUnitReady(Soldier soldier){
-        //todo...
+    public boolean getSiegeUnitReady(Soldier soldier){
+        if (soldier.getCombatType().equals("siege")){
+            soldier.setSiegeReady(1);
+        }
+        return false;
     }
 
 }
