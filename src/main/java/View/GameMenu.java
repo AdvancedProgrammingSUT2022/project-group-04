@@ -367,6 +367,8 @@ public class GameMenu extends Menu {
                 if(result != null) {
                     System.out.println(result);
                 } else {
+                    x = Integer.parseInt(matcher.group("x"));
+                    y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
                 }
             }else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null){
