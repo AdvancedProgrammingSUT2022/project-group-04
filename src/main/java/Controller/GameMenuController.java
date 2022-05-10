@@ -170,6 +170,35 @@ public class GameMenuController {
         return false;
     }
 
+    public void addHP(int x, int y, int amount) {
+        selectCombatUnit(x, y).addHP(amount);
+    }
+
+    public void addHP(String cityName, int amount) {
+        GameDatabase.getCityByName(cityName).addHP(amount);
+    }
+
+    public void makeHappy(int turn) {
+        GameDatabase.players.get(turn).happy();
+    }
+
+    public void dryUp(int x, int y) {
+        GameDatabase.getTileByXAndY(x, y).dryUp();
+    }
+
+    public void addGold(int turn, int amount) {
+        GameDatabase.players.get(turn).addGold(amount);
+    }
+
+    public void addScience(int turn, int science) {
+        GameDatabase.players.get(turn).addScience(science);
+    }
+
+    public void sendMessage(int turn, String nickname, String text) {
+        Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);
+        Notification.addNotification(notification);
+    }
+
     public boolean isCityPositionValid(int x, int y) {
         City city = GameDatabase.getCityByXAndY(x, y);
         return city != null;
@@ -297,6 +326,14 @@ public class GameMenuController {
                     && tile1.getSettler() != null) return true;
         }
         return false;
+    }
+
+    public boolean isAmountValidForProduction(int amount) {
+        return isAmountValid(amount);
+    }
+
+    public void addProduction(String cityName, int amount) {
+        GameDatabase.getCityByName(cityName).addProduction(amount);
     }
 
     public boolean isImprovementValid(String name) {

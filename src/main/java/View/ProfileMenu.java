@@ -24,6 +24,7 @@ public class ProfileMenu extends Menu {
     }
 
     public User run(Scanner scanner, User loggedInUser) {
+        System.out.println("Profile Menu");
         String command;
         while (true) {
             Matcher matcher;

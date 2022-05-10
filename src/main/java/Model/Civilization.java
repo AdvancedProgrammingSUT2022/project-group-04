@@ -271,6 +271,7 @@ public class Civilization {
     }
 
     public void nextTurn() {
+        this.turn++;
         happiness+= happinessCalculator();
         for (City city : this.cities) {
             city.nextTurn();
