@@ -76,6 +76,7 @@ public class GameMenu extends Menu {
     private static final String CHEAT_DRY_UP = "dry up (?<x>\\d+) (?<y>\\d+)";
     private static final String CHEAT_CHANGE_CAPITAL = "change capital (?<cityName>\\S+)";
     private static final String CHEAT_ADD_PRODUCTION = "add production (?<amount>-?\\d+) city (?<cityName>\\S+)";
+    private static final String CHEAT_ADD_SCORE = "add score (?<amount>-?\\d+)";
 
     //Info
     private static final String INFO_CITY = "info city";
@@ -629,6 +630,9 @@ public class GameMenu extends Menu {
         String unitType = matcher.group("unitType");
         if(!this.gameMenuController.isPositionValid(x, y)) {
             return "invalid position";
+        }
+        if(!this.gameMenuController.isTileValidForCreatingUnit(x, y, turn)) {
+            return "you can't create unit on this tile";
         }
         if (!gameMenuController.isTileInCivilization(GameDatabase.getTileByXAndY(x, y), turn % numberOfPlayers)){
             return "this tile is not for you";
