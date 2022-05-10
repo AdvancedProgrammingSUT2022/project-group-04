@@ -40,6 +40,7 @@ public class GameMenu extends Menu {
     private static final String UNIT_ATTACK_POSITION = "unit attack (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_FOUND_CITY = "unit found city (?<name>\\w+)";
     private static final String CANCEL_MISSION = "unit cancel mission";
+    private static final String UNIT_PILLAGE = "unit pillage tile";
     private static final String UNIT_WAKE = "unit wake";
     private static final String UNIT_DELETE = "unit delete";
     private static final String UNIT_CANCEL_MISSION = "unit cancel mission";
@@ -258,7 +259,14 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CREATE_UNIT)) != null) {
                 String result = createUnit(matcher);
-                if (result.startsWith("")) {
+                if (result.startsWith("unit")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
+            } else if ((matcher = getCommandMatcher(command, UNIT_PILLAGE)) != null){
+                String result = unitPillageCurrentTile();
+                if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
                 }
@@ -722,6 +730,25 @@ public class GameMenu extends Menu {
         }
         return "unit found city";
 
+    }
+
+    private String unitPillageCurrentTile(){
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        }
+        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        }
+        else if (!unitSelected.isCombatUnit()) {
+            return "this is not a combat unit";
+        }
+        else if (unitSelected.isInItsCivilization()){
+            return "this is your civilization";
+        }
+        else {
+            gameMenuController.pillageCurrentTile(unitSelected);
+            return "unit pillaged tile";
+        }
     }
 
     private String unitCancelMission() {

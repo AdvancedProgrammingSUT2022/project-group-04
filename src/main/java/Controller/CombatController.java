@@ -114,4 +114,9 @@ public class CombatController {
         unit.getTileOfUnit().removeUnit(unit);
         // ToDO think there should be more to this funciton
     }
+
+    public void getSiegeUnitReady(Soldier soldier){
+        //todo...
+    }
+
 }

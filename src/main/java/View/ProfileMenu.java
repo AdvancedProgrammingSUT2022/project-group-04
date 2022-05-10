@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 public class ProfileMenu extends Menu {
 
     private ProfileMenuController profileMenuController;
-    private UserController userController;
     private static final String PROFILE_CHANGE_USERNAME = "profile change --username (?<username>\\S+)";
     private static final String PROFILE_CHANGE_NICKNAME = "profile change --nickname (?<nickname>\\S+)";
     private static final String PROFILE_CHANGE_PASSWORD = "profile change --password --current (?<currentPassword>\\S+) --new (?<newPassword>\\S+)";
@@ -20,7 +19,6 @@ public class ProfileMenu extends Menu {
 
     public ProfileMenu(ProfileMenuController profileMenuController) {
         this.profileMenuController = profileMenuController;
-        this.userController = new UserController();
     }
 
     public User run(Scanner scanner, User loggedInUser) {
@@ -55,7 +53,7 @@ public class ProfileMenu extends Menu {
         return "Profile Menu";
     }
 
-    private String menuEnter(Matcher matcher) {
+    public String menuEnter(Matcher matcher) {
         return "menu navigation is not possible";
     }
 
@@ -66,7 +64,7 @@ public class ProfileMenu extends Menu {
      * @param matcher
      * @return
      */
-    private String changeUsername(User loggedInUser, Matcher matcher) {
+    public String changeUsername(User loggedInUser, Matcher matcher) {
         String username = matcher.group("username");
         if (!this.profileMenuController.isUsernameUnique(username)) {
             return "user with username " + username + " already exists";
@@ -81,7 +79,7 @@ public class ProfileMenu extends Menu {
      * @param loggedInUser
      * @param matcher
      */
-    private String changeNickname(User loggedInUser, Matcher matcher) {
+    public String changeNickname(User loggedInUser, Matcher matcher) {
         String nickname = matcher.group("nickname");
         if (!this.profileMenuController.isNicknameUnique(nickname)) {
             return "user with nickname " + nickname + " already exists";
@@ -96,10 +94,11 @@ public class ProfileMenu extends Menu {
      * @param loggedInUser
      * @param matcher
      */
-    private String changePassword(User loggedInUser, Matcher matcher) {
+    public String changePassword(User loggedInUser, Matcher matcher) {
         String password = matcher.group("currentPassword");
         String newPassword = matcher.group("newPassword");
-        if (!this.userController.isPasswordCorrect(loggedInUser.getUsername(), password)) {
+        String username = loggedInUser.getUsername();
+        if (!this.profileMenuController.isPasswordCorrect(username, password)) {
             return "current password is invalid";
         }
         if (!this.profileMenuController.isNewPasswordDifferent(password, newPassword)) {

@@ -190,6 +190,14 @@ public class Tile {
         this.prev = prev;
     }
 
+    public void setRoadBroken(boolean roadBroken) {
+        isRoadBroken = roadBroken;
+    }
+
+    public void setRailroadBroken(boolean railroadBroken) {
+        isRailroadBroken = railroadBroken;
+    }
+
     public ArrayList<Building> getBuildings() {
         return buildings;
     }
@@ -202,7 +210,7 @@ public class Tile {
         return units;
     }
 
-    private void setRaidedModel(boolean isRaided) {
+    public void setRaidedModel(boolean isRaided) {
         this.isRaided = isRaided;
     }
 
