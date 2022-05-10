@@ -52,7 +52,7 @@ public class LoginMenu extends Menu {
         return "Login Menu";
     }
 
-    private String menuEnter(Matcher matcher) {
+    public String menuEnter(Matcher matcher) {
         return "please login first";
     }
 
@@ -75,7 +75,7 @@ public class LoginMenu extends Menu {
         return "user created successfully!";
     }
 
-    private String userLogin(Matcher matcher) {
+    public String userLogin(Matcher matcher) {
         String username = matcher.group("username");
         String password = matcher.group("password");
         if (!this.loginMenuController.isUserExists(username)
@@ -84,10 +84,6 @@ public class LoginMenu extends Menu {
         }
         return "user logged in successfully!";
 
-    }
-
-    public int kooft(){
-        return 10;
     }
 
 }
