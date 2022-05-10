@@ -17,27 +17,33 @@ public class LoginTest {
     @Mock
     LoginMenu loginMenu;
     @Mock
-        LoginMenuController loginMenuController;
+    LoginMenuController loginMenuController;
     @Mock
     LoginMenuModel loginMenuModel;
+    @Mock
+    Matcher matcher;
 
+    LoginMenuController loginMenuControllerTest;
+    LoginMenuModel loginMenuModelTest;
 
     @BeforeEach
     public void setUp() {
-//        loginMenuModel = new LoginMenuModel();
-//        loginMenuController = new LoginMenuController(loginMenuModel);
-//        loginMenu = new LoginMenu(loginMenuController);
+        loginMenuModelTest = new LoginMenuModel();
+        loginMenuControllerTest = new LoginMenuController(loginMenuModelTest);
     }
 
     @Test
     public void testOne() {
-        LoginMenuModel loginMenuModelTest = new LoginMenuModel();
-        LoginMenuController loginMenuControllerTest = new LoginMenuController(loginMenuModelTest);
         LoginMenu loginMenuTest = new LoginMenu(loginMenuControllerTest);
-        //System.out.println(loginMenu.menuShow());
         String loginMenuShow = "Login Menu";
-        when(loginMenu.menuShow()).thenReturn(loginMenuShow);
-        Assertions.assertNotEquals(loginMenu.menuShow(), loginMenuTest.menuShow());
+        ///when(loginMenu.menuShow()).thenReturn(loginMenuShow);
+        Assertions.assertEquals(loginMenuShow, loginMenuTest.menuShow());
+    }
+
+    @Test
+    public void testTwo(){
+        when(loginMenuController.isNicknameUnique()).thenReturn();
+
     }
 
 //    @Test
