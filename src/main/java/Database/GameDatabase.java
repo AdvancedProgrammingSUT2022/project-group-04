@@ -251,8 +251,8 @@ public class GameDatabase {
                 players.get(counter).addTile(getTileByXAndY(xRandomGenerate, yRandomGenerate));
                 players.get(counter).addTile(getTileByXAndY(x1, y1));
                 //set non-attacking units in the beginning
-                getTileByXAndY(xRandomGenerate, yRandomGenerate).addWorker(new Worker());
-                getTileByXAndY(x1, y1).addSettler(new Settler());
+                getTileByXAndY(xRandomGenerate, yRandomGenerate).addWorker(new Worker(xRandomGenerate, yRandomGenerate, counter));
+                getTileByXAndY(x1, y1).addSettler(new Settler(x1, y1, counter));
                 counter++;
             }
         }
@@ -291,12 +291,7 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByTurn(int turn) {
-        for (Civilization player : players) {
-            if (player.getTurn() == turn) {
-                return player;
-            }
-        }
-        return null;
+        return GameDatabase.players.get(turn);
     }
 
     public static Tile findTileBySettler(Settler settler) {
