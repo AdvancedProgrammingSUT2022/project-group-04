@@ -127,17 +127,33 @@ public class Improvement {
         switch (this.name) {
             case "Farm":
                 switch (tile.getBaseTerrain().getFeature().getType()) {
-                    case "Jungle" -> this.turnsNeed = 10;
-                    case "DenseJungle" -> this.turnsNeed = 13;
-                    case "Swamp" -> this.turnsNeed = 12;
-                    default -> this.turnsNeed = 6;
+                    case "Jungle":
+                        this.turnsNeed = 10;
+                        break;
+                    case "DenseJungle":
+                        this.turnsNeed = 13;
+                        break;
+                    case "Swamp":
+                        this.turnsNeed = 12;
+                        break;
+                    default:
+                        this.turnsNeed = 6;
+                        break;
                 }
             case "Mine":
                 switch (tile.getBaseTerrain().getFeature().getType()) {
-                    case "Jungle" -> this.turnsNeed = 10;
-                    case "DenseJungle" -> this.turnsNeed = 13;
-                    case "Swamp" -> this.turnsNeed = 12;
-                    default -> this.turnsNeed = 6;
+                    case "Jungle":
+                        this.turnsNeed = 10;
+                        break;
+                    case "DenseJungle":
+                        this.turnsNeed = 13;
+                        break;
+                    case "Swamp":
+                        this.turnsNeed = 12;
+                        break;
+                    default:
+                        this.turnsNeed = 6;
+                        break;
                 }
             default:
                 this.turnsNeed = 6;

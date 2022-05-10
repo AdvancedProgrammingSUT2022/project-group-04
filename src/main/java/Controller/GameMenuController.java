@@ -170,12 +170,44 @@ public class GameMenuController {
         return false;
     }
 
+    public void addHP(int x, int y, int amount) {
+        selectCombatUnit(x, y).addHP(amount);
+    }
+
+    public void addHP(String cityName, int amount) {
+        GameDatabase.getCityByName(cityName).addHP(amount);
+    }
+
+    public void makeHappy(int turn) {
+        GameDatabase.players.get(turn).happy();
+    }
+
+    public void dryUp(int x, int y) {
+        GameDatabase.getTileByXAndY(x, y).dryUp();
+    }
+
+    public void addGold(int turn, int amount) {
+        GameDatabase.players.get(turn).addGold(amount);
+    }
+
+    public void addScience(int turn, int science) {
+        GameDatabase.players.get(turn).addScience(science);
+    }
+
+    public void sendMessage(int turn, String nickname, String text) {
+        Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);
+        Notification.addNotification(notification);
+    }
+
     public boolean isCityPositionValid(int x, int y) {
         City city = GameDatabase.getCityByXAndY(x, y);
         return city != null;
     }
 
     public boolean isDestinationOkForMove(Unit unit, int x, int y) {
+        if(!isPositionValid(x, y)) {
+            return false;
+        }
         if (isUnitSoldier(unit)) {
             for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
                 if (isUnitSoldier(unit1)) {
@@ -297,6 +329,14 @@ public class GameMenuController {
                     && tile1.getSettler() != null) return true;
         }
         return false;
+    }
+
+    public boolean isAmountValidForProduction(int amount) {
+        return isAmountValid(amount);
+    }
+
+    public void addProduction(String cityName, int amount) {
+        GameDatabase.getCityByName(cityName).addProduction(amount);
     }
 
     public boolean isImprovementValid(String name) {
@@ -556,25 +596,29 @@ public class GameMenuController {
 
 
     public boolean createUnit(String unitType, int x, int y, int civilizationIndex){
-        if (unitType.equals("settler")
-                || unitType.equals("worker" )){
-            return createNonCombatUnit(unitType, x, y, civilizationIndex);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
+            if (unitType.equals("settler")
+                    || unitType.equals("worker")) {
+                return createNonCombatUnit(unitType, x, y, civilizationIndex);
+            } else {
+                createCombatUnit(unitType, x, y, civilizationIndex);
+                return true;
+            }
         }
         else {
-            return createCombatUnit(unitType, x, y, civilizationIndex);
-        }
-    }
-     public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex){
-        Soldier soldier = new Soldier(x, y, unitType ,civilizationIndex);
-        if (soldier.getCost() <= GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(x, y)).getGold()) {
-            GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
-            soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
-            GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(x, y)).addGold(-soldier.getCost());
-            return true;
-        }
-        else{
             return false;
         }
+    }
+
+    public boolean isTileValidForCreatingUnit(int x, int y, int turn) {
+        return GameDatabase.getCivilizationByTurn(turn).getClearTiles().contains(GameDatabase.getTileByXAndY(x, y));
+    }
+
+     public void createCombatUnit(String unitType, int x, int y, int civilizationIndex){
+        Soldier soldier = new Soldier(x, y, unitType ,civilizationIndex);
+        GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
+        soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
      }
 
      public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex){

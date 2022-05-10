@@ -477,11 +477,11 @@ public class Tile {
         if (citizens.contains(citizen)) citizens.remove(citizen);
     }
 
-    protected void addWorker(Worker worker) {
+    public void addWorker(Worker worker) {
         this.worker = worker;
     }
 
-    protected void addSettler(Settler settler){
+    public void addSettler(Settler settler){
         this.settler = settler;
     }
 }
