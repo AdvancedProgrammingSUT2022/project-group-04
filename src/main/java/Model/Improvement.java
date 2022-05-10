@@ -199,5 +199,9 @@ public class Improvement {
     public boolean isBroken(){
         return isBroken;
     }
+
+    public void setIsBroken(boolean b) {
+        isBroken = b;
+    }
 }
 

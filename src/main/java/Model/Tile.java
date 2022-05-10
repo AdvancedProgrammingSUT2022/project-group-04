@@ -484,4 +484,16 @@ public class Tile {
     public void addSettler(Settler settler){
         this.settler = settler;
     }
+
+    public void fixBrokens() {
+        for (Improvement improvement : improvements) {
+            improvement.setIsBroken(false);
+        }
+        isRoadBroken = false;
+        isRailroadBroken = false;
+    }
+
+    public boolean isRaided() {
+        return isRaided;
+    }
 }

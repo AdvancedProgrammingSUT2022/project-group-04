@@ -33,16 +33,7 @@ public class Worker extends Citizen {
         workToIndex.put("removePrairie", 12);
         workToIndex.put("removeRoad", 13);
         workToIndex.put("removeRailroad", 14);
-        workToIndex.put("repairRoad", 15);
-        workToIndex.put("repairRailroad", 16);
-        workToIndex.put("repairFarm", 17);
-        workToIndex.put("repairMine", 18);
-        workToIndex.put("repairTradingPost", 19);
-        workToIndex.put("repairLumberMill", 20);
-        workToIndex.put("repairPasture", 21);
-        workToIndex.put("repairCamp", 22);
-        workToIndex.put("repairPlantation", 23);
-        workToIndex.put("repairQuarry", 24);
+        workToIndex.put("repair", 15);
     }
 
     public Worker(int x, int y, int civilizationIndex) {
@@ -170,30 +161,12 @@ public class Worker extends Citizen {
                 isAssigned = false;
                 break;
             case 15:
-                tile.isRoadBroken = false;
+                tile.fixBrokens();
                 typeOfWork = "";
                 indexOfProject = -1;
                 isAssigned = false;
                 break;
-            case 16:
-                tile.isRailroadBroken = false;
-                typeOfWork = "";
-                indexOfProject = -1;
-                isAssigned = false;
-                break;
-            case 17:
-            case 18:
-            case 19:
-            case 20:
-            case 21:
-            case 22:
-            case 23:
-            case 24:
-                String nameOfImprovement = typeOfWork.substring(6);
-                tile.fixImprovementByName(nameOfImprovement);
-                typeOfWork = "";
-                indexOfProject = -1;
-                isAssigned = false;
+            default:
                 break;
         }
         isAssigned = false;

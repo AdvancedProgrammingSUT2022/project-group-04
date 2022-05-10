@@ -425,15 +425,6 @@ public class GameMenuController {
                         isPossible = removeRailroad(worker);
                         break;
                     case 15:
-                    case 16:
-                    case 17:
-                    case 18:
-                    case 19:
-                    case 20:
-                    case 21:
-                    case 22:
-                    case 23:
-                    case 24:
                         isPossible = makeRepair(worker);
                         break;
                 }
@@ -505,14 +496,7 @@ public class GameMenuController {
 
     private boolean makeRepair(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
-        if (worker.getIndexOfProject() == 15 && tile.hasRoad() && tile.isRoadBroken()) {
-            return true;
-        }
-        if (worker.getIndexOfProject() == 16 && tile.hasRailroad() && tile.isRailroadBroken()) {
-            return true;
-        }
-        String improvementName = worker.getTypeOfWork().substring(6);
-        if (worker.getIndexOfProject() >= 17 && tile.isImprovementBroken(improvementName)) {
+        if (worker.getIndexOfProject() == 15 && tile.isRaided()) {
             return true;
         }
         worker.setIndexOfProject(-1);

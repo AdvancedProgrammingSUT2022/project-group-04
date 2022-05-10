@@ -55,7 +55,7 @@ public class GameMenu extends Menu {
     private static final String ADD_TILE_TO_CITY = "add tile to city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
     //improvement should be PascalCase
     private static final String UNIT_BUILD_IMPROVEMENT = "unit build (?<improvement>[a-z]+) (?<x>\\d+) (?<y>\\d+)";
-    private static final String UNIT_REPAIR = "unit repair (?<typeOfRepair>\\S+) (?<x>\\d+) (?<y>\\d+)";
+    private static final String UNIT_REPAIR = "unit repair (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_REMOVE_FEATURE = "unit remove (?<feature>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String REMOVE_CITIZEN_FROM_WORK = "remove citizen from work (?<x>\\d+) (?<y>\\d+)";
     private static final String LOCK_CITIZEN_TO_TILE = "lock citizen to tile (?<x>\\d+) (?<y>\\d+)";
@@ -478,6 +478,7 @@ public class GameMenu extends Menu {
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x, y);
+        if (tile.isRaided()) return "this tile is raided";
         if (tile == null) return "invalid tile";
         if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (city == null) return "this tile is in no city";
@@ -805,7 +806,7 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-
+        if (tile.isRaided()) return "this tile is raided";
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !gameMenuController.isImprovementValid(improvementName)) {
@@ -844,7 +845,7 @@ public class GameMenu extends Menu {
     }
 
     private String unitRepair(Matcher matcher) {
-        String type = matcher.group("typeOfRepair");
+        //String type = matcher.group("typeOfRepair")
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -853,15 +854,9 @@ public class GameMenu extends Menu {
         if (tile.getIsGettingWorkedOn()) return "there is already a project going on in this tile";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
-        if (type.equals("Road") || type.equals("Railroad")) {
-            if (gameMenuController.assignNewProject(worker, "repair" + type)) return "worker successfully assigned";
-            else return "you can't do this because either tile doesn't have the (rail)road or it isn't broken";
-        }
-        if (!gameMenuController.isImprovementValid(type)) {
-            return "invalid improvement";
-        }
-        if (gameMenuController.assignNewProject(worker, "repair" + type)) return "worker successfully assigned";
-        else return "you can't do this because either tile doesn't have the improvement or it isn't broken";
+        if (!tile.isRaided()) return "this tile is not raided";
+        gameMenuController.assignNewProject(worker, "repair Tile") ;
+        return "worker successfully assigned";
     }
 
     private String mapMove(Matcher matcher) {
