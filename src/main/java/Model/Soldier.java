@@ -6,6 +6,7 @@ public class Soldier extends Unit {
     private Technology requiredTechnology;
     private Resources requiredResources;
 
+    private int siegeReady = -1;
 
     public Soldier(int x, int y, String unitType, int civilizationIndex) {
         super(x, y, unitType,10, civilizationIndex, 2);
@@ -68,6 +69,7 @@ public class Soldier extends Unit {
                 this.requiredResources = new Resources("Iron");
                 this.cost = 100;
                 this.speed = 2;
+                this.siegeReady = 0;
                 this.era = "Classical";
                 break;
             case "Horseman":
@@ -143,6 +145,7 @@ public class Soldier extends Unit {
                 this.requiredTechnology = new Technology("Physics");
                 this.cost = 170;
                 this.speed = 2;
+                this.siegeReady = 0;
                 this.era = "Medieval";
                 break;
             case "Canon":
@@ -153,6 +156,7 @@ public class Soldier extends Unit {
                 this.requiredTechnology = new Technology("Chemistry");
                 this.cost = 250;
                 this.speed = 2;
+                this.siegeReady = 0;
                 this.era = "Renaissance";
                 break;
             case "Cavalry":
@@ -215,6 +219,7 @@ public class Soldier extends Unit {
                 this.requiredTechnology = new Technology("Dynamite");
                 this.cost = 420;
                 this.speed = 2;
+                this.siegeReady = 0;
                 this.era = "Industrial";
                 break;
             case "Infantry":
