@@ -1,5 +1,4 @@
 
-
 import Controller.LoginMenuController;
 import Model.LoginMenuModel;
 import View.LoginMenu;
@@ -7,41 +6,74 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Scanner;
 import java.util.regex.Matcher;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class LoginTest {
     @Mock
-    LoginMenu loginMenu;
+    LoginMenuController loginMenuController;
+
     @Mock
-        LoginMenuController loginMenuController;
+    Matcher matcher;
+
     @Mock
-    LoginMenuModel loginMenuModel;
+    Scanner scanner;
+
+
 
 
     @BeforeEach
     public void setUp() {
-//        loginMenuModel = new LoginMenuModel();
-//        loginMenuController = new LoginMenuController(loginMenuModel);
-//        loginMenu = new LoginMenu(loginMenuController);
+
     }
 
     @Test
-    public void testOne() {
-        LoginMenuModel loginMenuModelTest = new LoginMenuModel();
-        LoginMenuController loginMenuControllerTest = new LoginMenuController(loginMenuModelTest);
-        LoginMenu loginMenuTest = new LoginMenu(loginMenuControllerTest);
-        //System.out.println(loginMenu.menuShow());
-        String loginMenuShow = "Login Menu";
-        when(loginMenu.menuShow()).thenReturn(loginMenuShow);
-        Assertions.assertNotEquals(loginMenu.menuShow(), loginMenuTest.menuShow());
+    public void menuShow() {
+        LoginMenu loginMenu = new LoginMenu(loginMenuController);
+        assertEquals("Login Menu", loginMenu.menuShow());
     }
 
-//    @Test
-//    public void testTwo(){
-//        when(loginMenu.kooft()).thenReturn();
-//    }
+    @Test
+    public void userCreate_testUsernameNotUnique() {
+        LoginMenu loginMenu = new LoginMenu(loginMenuController);
+        when(matcher.group("username")).thenReturn("");
+        when(matcher.group("password")).thenReturn("");
+        when(matcher.group("nickname")).thenReturn("");
+        when(loginMenuController.isUsernameUnique("")).thenReturn(false);
+        assertEquals("user with username  already exists", loginMenu.userCreate(matcher));
+    }
+
+    @Test
+    public void userCreate_testNicknameNotUnique() {
+        LoginMenu loginMenu = new LoginMenu(loginMenuController);
+        when(matcher.group("username")).thenReturn("");
+        when(matcher.group("password")).thenReturn("");
+        when(matcher.group("nickname")).thenReturn("");
+        when(loginMenuController.isUsernameUnique("")).thenReturn(true);
+        when(loginMenuController.isNicknameUnique("")).thenReturn(false);
+        assertEquals("user with nickname  already exists", loginMenu.userCreate(matcher));
+    }
+
+    @Test
+    public void userCreate_testCreateUser() {
+        LoginMenu loginMenu = new LoginMenu(loginMenuController);
+        when(matcher.group("username")).thenReturn("");
+        when(matcher.group("password")).thenReturn("");
+        when(matcher.group("nickname")).thenReturn("");
+        when(loginMenuController.isUsernameUnique("")).thenReturn(true);
+        when(loginMenuController.isNicknameUnique("")).thenReturn(true);
+        assertEquals("user created successfully!", loginMenu.userCreate(matcher));
+    }
+
+
+
 }

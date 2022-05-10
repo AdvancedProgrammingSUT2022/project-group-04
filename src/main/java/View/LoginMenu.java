@@ -61,7 +61,7 @@ public class LoginMenu extends Menu {
      *
      * @param matcher
      */
-    private String userCreate(Matcher matcher) {
+    public String userCreate(Matcher matcher) {
         String username = matcher.group("username");
         String nickname = matcher.group("nickname");
         String password = matcher.group("password");
