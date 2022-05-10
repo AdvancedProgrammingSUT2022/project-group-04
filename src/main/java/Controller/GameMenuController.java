@@ -688,6 +688,10 @@ public class GameMenuController {
             improvement.breakImprovement();
         }
         unit.getTileOfUnit().setRaidedModel(true);
+        if (unit.getTileOfUnit().hasRoad()) {
+            unit.getTileOfUnit().setRoadBroken(true);
+            unit.getTileOfUnit().setRailroadBroken(true);
+        }
     }
 
 }
