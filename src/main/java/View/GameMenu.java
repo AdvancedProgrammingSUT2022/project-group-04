@@ -199,7 +199,12 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null) {
-                //TODO...
+                String result = unitGarrison();
+                if (result.startsWith("unit")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null) {
                 //TODO...
             } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
@@ -604,10 +609,19 @@ public class GameMenu extends Menu {
     private String createUnit(Matcher matcher){
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if (gameMenuController.isTileInCivilization(null, turn % numberOfPlayers)){
-
+        String unitType = matcher.group("unitType");
+        if (!gameMenuController.isTileInCivilization(null, turn % numberOfPlayers)){
+            return "this tile is not for you";
         }
-        return null;
+        else {
+            boolean success = gameMenuController.createUnit(unitType, x, y, 0); //todo civilization index what to do?
+            if (success){
+                return "unit" + unitType + "created";
+            }
+            else {
+                return "cannot create a unit here";
+            }
+        }
     }
     private String unitSleep() {
         if (unitSelected == null) {
@@ -714,8 +728,21 @@ public class GameMenu extends Menu {
     }
 
     private String unitGarrison() {
-        //TODO...
-        return null;
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)) {
+            return "this unit is not a combat unit";
+        } else {
+            boolean success = gameMenuController.garrisonUnitToCity(unitSelected);
+            if (success){
+                return "unit garrisoned to city";
+            }
+            else {
+                return "this units tile is not a city";
+            }
+        }
     }
 
     private String unitSetupRanged() {
@@ -747,13 +774,14 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
+
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !gameMenuController.isImprovementValid(improvementName)) {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
+        //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
