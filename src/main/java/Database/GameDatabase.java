@@ -77,7 +77,7 @@ public class GameDatabase {
     public static boolean isTileForACity(Tile tile) {
         for (Civilization civilization : GameDatabase.players) {
             for (City city : civilization.getCities()) {
-                if(city.isTileForThisCity(tile)) {
+                if (city.isTileForThisCity(tile)) {
                     return false;
                 }
             }
@@ -304,7 +304,7 @@ public class GameDatabase {
             ArrayList<Unit> soldiers = tile.getUnits();
             for (Unit soldier : soldiers) {
                 if (soldier.getUnitType().equals("Settler")
-                        && settler == soldier){
+                        && settler == soldier) {
                     return tile;
                 }
             }
@@ -317,7 +317,7 @@ public class GameDatabase {
             ArrayList<Unit> soldiers = tile.getUnits();
             for (Unit soldier : soldiers) {
                 if (soldier.getUnitType().equals("Worker")
-                        && worker == soldier){
+                        && worker == soldier) {
                     return tile;
                 }
             }

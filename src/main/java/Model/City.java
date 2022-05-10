@@ -197,8 +197,8 @@ public class City extends Tile {
         result += "\t production: " + Integer.toString(this.production);
         result += "\t food: " + Integer.toString(this.leftoverFood);
         result += "\t Power: " + Integer.toString(this.power) + "\n";
-        result += "\t population: " + Integer.toString(this.citizens.size() + (this.settler==null?0:1)
-                + (this.worker==null?0:1));
+        result += "\t population: " + Integer.toString(this.citizens.size() + (this.settler == null ? 0 : 1)
+                + (this.worker == null ? 0 : 1));
         result += "\t Hit Point: " + Integer.toString(this.HP);
         return result;
     }
@@ -277,13 +277,13 @@ public class City extends Tile {
         //adding Food is already handled
         int count = leftoverFood;
         //sub citizens food
-        if (worker!= null && worker.isAssigned) count-=2;
-        if (settler!= null && settler.isAssigned) count-=2;
+        if (worker != null && worker.isAssigned) count -= 2;
+        if (settler != null && settler.isAssigned) count -= 2;
         for (Unit unit : units) {
             count -= 2;
         }
         for (Citizen citizen : citizens) {
-            count -=2;
+            count -= 2;
         }
         if (count < 0) {
             count = citizensDyingForHunger(count);
@@ -299,7 +299,7 @@ public class City extends Tile {
         if (count > Math.pow(2.0, size)) {
             count -= Math.pow(2.0, size);//TODO change initializing fields
             //TODO blah
-            Citizen newCitizen = new Citizen(x, y,  "sth", 1, 0, false);
+            Citizen newCitizen = new Citizen(x, y, "sth", 1, 0, false);
             citizens.add(newCitizen);
             capital.addUnit(newCitizen);
         }
@@ -307,7 +307,7 @@ public class City extends Tile {
     }
 
     public void removeCapital() {
-        if(isCapital()) {
+        if (isCapital()) {
             this.isCapital = false;
         }
     }
@@ -343,7 +343,7 @@ public class City extends Tile {
     }
 
     public void removeSettler(Settler settler) {
-        if (settler== this.settler) this.settler = null;
+        if (settler == this.settler) this.settler = null;
     }
 
     public void addTile(Tile tile) {
