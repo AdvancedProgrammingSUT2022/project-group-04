@@ -634,7 +634,7 @@ public class GameMenu extends Menu {
             return "this tile is not for you";
         }
         else {
-            boolean success = gameMenuController.createUnit(unitType, x, y, 0); //todo civilization index what to do?
+            boolean success = gameMenuController.createUnit(unitType, x, y, turn); //todo civilization index what to do?
             if (success){
                 return "unit " + unitType + " created";
             }

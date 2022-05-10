@@ -162,6 +162,10 @@ public class Info {
     public void infoUnits(GameMenuController gameMenuController, int turn, Scanner scanner) {
         ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
         printSoldiersInUnitPanel(soldiers);
+        if(soldiers.size() == 0) {
+            System.out.println("No Soldiers");
+            return;
+        }
         String command;
         int index;
         while (true) {
@@ -187,6 +191,10 @@ public class Info {
 
     public void infoMilitary(GameMenuController gameMenuController, int turn) {
         ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
+        if(soldiers.size() == 0) {
+            System.out.println("No Soldiers");
+            return;
+        }
         for (Unit soldier : soldiers) {
             System.out.println(soldier);
         }
