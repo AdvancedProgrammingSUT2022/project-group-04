@@ -73,7 +73,4 @@ public class LoginTest {
         when(loginMenuController.isNicknameUnique("")).thenReturn(true);
         assertEquals("user created successfully!", loginMenu.userCreate(matcher));
     }
-
-
-
 }
