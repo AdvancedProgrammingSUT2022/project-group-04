@@ -596,15 +596,25 @@ public class GameMenuController {
 
 
     public boolean createUnit(String unitType, int x, int y, int civilizationIndex){
-        if (unitType.equals("settler")
-                || unitType.equals("worker" )){
-            return createNonCombatUnit(unitType, x, y, civilizationIndex);
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
+            if (unitType.equals("settler")
+                    || unitType.equals("worker")) {
+                return createNonCombatUnit(unitType, x, y, civilizationIndex);
+            } else {
+                createCombatUnit(unitType, x, y, civilizationIndex);
+                return true;
+            }
         }
         else {
-            createCombatUnit(unitType, x, y, civilizationIndex);
-            return true;
+            return false;
         }
     }
+
+    public boolean isTileValidForCreatingUnit(int x, int y, int turn) {
+        return GameDatabase.getCivilizationByTurn(turn).getClearTiles().contains(GameDatabase.getTileByXAndY(x, y));
+    }
+
      public void createCombatUnit(String unitType, int x, int y, int civilizationIndex){
         Soldier soldier = new Soldier(x, y, unitType ,civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);

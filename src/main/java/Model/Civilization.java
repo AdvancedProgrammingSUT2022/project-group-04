@@ -211,7 +211,7 @@ public class Civilization {
 
         ArrayList<Tile> firstClassAdjacentTiles = new ArrayList<>();
         for (Tile tile : tilesOnBorder()){
-            if (!tile.getUnits().isEmpty() || !tile.getBuildings().isEmpty()) {
+            if (!tile.getUnits().isEmpty()) {
                 boolean thereIsUnitOBuildingNearby = false;
                 for (Tile adj :tilesOnBorder()){
                     if (!adj.getUnits().isEmpty() || !adj.getBuildings().isEmpty()){
