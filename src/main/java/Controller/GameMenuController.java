@@ -372,8 +372,8 @@ public class GameMenuController {
     }
 
     public void pauseProject(Worker worker,int x,int y) {
-        if (worker.isAssigned() && !worker.isMoving() && worker.isLocked()) {
             Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (worker.isAssigned() && !worker.isMoving() && worker.isLocked() && tile!=null) {
             worker.setIsAssigned(false);
             tile.setIsGettingWorkedOn(false);
         }
