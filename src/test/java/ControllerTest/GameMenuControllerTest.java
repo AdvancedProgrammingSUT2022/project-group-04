@@ -1,3 +1,5 @@
+package ControllerTest;
+
 import Controller.GameMenuController;
 import Database.GameDatabase;
 import Model.GameModel;
