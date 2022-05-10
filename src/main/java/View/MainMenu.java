@@ -36,7 +36,9 @@ public class MainMenu extends Menu {
                 break;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
-            } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
+                System.out.println(menuExit(matcher));
+            }  else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 String result = menuEnter(matcher);
                 if (result != null) {
                     System.out.println(result);
@@ -70,6 +72,10 @@ public class MainMenu extends Menu {
             return "you must use play game command.";
         }
         return null;
+    }
+
+    private String menuExit(Matcher matcher) {
+        return "use user logout command";
     }
 
     /**

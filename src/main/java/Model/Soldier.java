@@ -324,4 +324,12 @@ public class Soldier extends Unit {
         return false;
     }
 
+    @Override
+    public String toString() {
+        String result = this.unitType;
+        result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
+        result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
+        return result;
+    }
+
 }

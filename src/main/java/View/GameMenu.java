@@ -8,8 +8,6 @@ import Model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.regex.Matcher;
 
 public class GameMenu extends Menu {
@@ -77,6 +75,7 @@ public class GameMenu extends Menu {
     private static final String CHEAT_ADD_UNIT_HIT_POINT = "add hit point (?<amount>-?\\d+) position (?<x>\\d+) (?<y>\\d+)";
     private static final String CHEAT_DRY_UP = "dry up (?<x>\\d+) (?<y>\\d+)";
     private static final String CHEAT_CHANGE_CAPITAL = "change capital (?<cityName>\\S+)";
+    private static final String CHEAT_ADD_PRODUCTION = "add production (?<amount>-?\\d+) city (?<cityName>\\S+)";
 
     //Info
     private static final String INFO_CITY = "info city";
@@ -107,10 +106,8 @@ public class GameMenu extends Menu {
             numberOfPlayers = GameDatabase.players.size();
             Matcher matcher;
             command = scanner.nextLine();
-            if (command.equals("menu exit") || command.equals(CHEAT_WIN)) {
-                if (command.equals(CHEAT_WIN)) {
-                    System.out.println(GameDatabase.players.get(turn).getNickname() + " is the winner!");
-                }
+            if (command.equals(CHEAT_WIN)) {
+                System.out.println(GameDatabase.players.get(turn).getNickname() + " is the winner!");
                 break;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow(matcher));
@@ -362,11 +359,15 @@ public class GameMenu extends Menu {
                 System.out.println(addHitPointUnit(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_CHANGE_CAPITAL)) != null) {
                 System.out.println(changeCapital(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_PRODUCTION)) != null) {
+                System.out.println(addProduction(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_DRY_UP)) != null) {
                 String result = dryUp(matcher);
                 if(result != null) {
                     System.out.println(result);
                 } else {
+                    x = Integer.parseInt(matcher.group("x"));
+                    y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
                 }
             }else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null){
@@ -548,7 +549,7 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isUnitForThisCivilization(turn, this.gameMenuController.selectCombatUnit(x, y))) {
             return "unit in this position is not for your civilization";
         }
-        this.gameMenuController.selectCombatUnit(x, y).addHP(amount);
+        this.gameMenuController.addHP(x, y, amount);
         return Integer.toString(amount) + " hit point added to unit in position " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
@@ -589,12 +590,28 @@ public class GameMenu extends Menu {
 
     }
 
+    private String addProduction(Matcher matcher) {
+        int amount = Integer.parseInt(matcher.group("amount"));
+        String cityName = matcher.group("cityName");
+        if(!this.gameMenuController.isCityValid(cityName)) {
+            return "invalid city";
+        }
+        if(!this.gameMenuController.isAmountValidForProduction(amount)) {
+            return "invalid amount";
+        }
+        if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
+            return "this city is not for your civilization";
+        }
+        this.gameMenuController.addProduction(cityName, amount);
+        return Integer.toString(amount) + " production added to " + cityName;
+    }
+
     private String unitMoveTo(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (unitSelected == null) {
             return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        } else if (!gameMenuController.isUnitForThisCivilization(turn, unitSelected)) {
             return "this unit is not for you";
         } else if (!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
@@ -765,7 +782,7 @@ public class GameMenu extends Menu {
         if (GameDatabase.players.get(turn).isHappy()) {
             return "you are happy now";
         }
-        GameDatabase.players.get(turn).happy();
+        this.gameMenuController.makeHappy(turn);
         return "now your happiness is 0";
     }
 
@@ -865,7 +882,7 @@ public class GameMenu extends Menu {
         if(!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) {
             return "no river in this tile";
         }
-        GameDatabase.getTileByXAndY(x, y).dryUp();
+        this.gameMenuController.dryUp(x, y);
         return null;
     }
 
@@ -884,7 +901,7 @@ public class GameMenu extends Menu {
         if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
             return "city is not for your civilization";
         }
-        GameDatabase.getCityByName(cityName).addHP(amount);
+        this.gameMenuController.addHP(cityName, amount);
         return Integer.toString(amount) + " hit point added to city " + cityName;
     }
 
@@ -913,7 +930,7 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isAmountValidForGold(amount)) {
             return "invalid amount";
         }
-        GameDatabase.players.get(turn).addGold(amount);
+        this.gameMenuController.addGold(turn, amount);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
     }
 
@@ -922,7 +939,7 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isAmountValidForScience(science)) {
             return "invalid amount";
         }
-        GameDatabase.players.get(turn).addScience(science);
+        this.gameMenuController.addScience(turn,science);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " science.";
     }
 
@@ -1016,8 +1033,7 @@ public class GameMenu extends Menu {
         if (GameDatabase.players.get(turn).getNickname().equals(nickname)) {
             return "you can't send a message for yourself!";
         }
-        Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);
-        Notification.addNotification(notification);
+        this.gameMenuController.sendMessage(turn, nickname, text);
         return "Message sent.";
     }
 
