@@ -28,7 +28,7 @@ public class LoginMenu extends Menu {
             if (command.equals("menu exit")) {
                 return null;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
-                System.out.println(menuShow(matcher));
+                System.out.println(menuShow());
             } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
             } else if (((matcher = getCommandMatcher(command, USER_CREATE)) != null)
@@ -48,7 +48,7 @@ public class LoginMenu extends Menu {
     }
 
     @Override
-    public String menuShow(Matcher matcher) {
+    public String menuShow() {
         return "Login Menu";
     }
 
@@ -84,6 +84,10 @@ public class LoginMenu extends Menu {
         }
         return "user logged in successfully!";
 
+    }
+
+    public int kooft(){
+        return 10;
     }
 
 }

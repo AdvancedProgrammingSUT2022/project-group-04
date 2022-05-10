@@ -111,7 +111,7 @@ public class GameMenu extends Menu {
                 System.out.println(GameDatabase.players.get(turn).getNickname() + " is the winner!");
                 break;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
-                System.out.println(menuShow(matcher));
+                System.out.println(menuShow());
             } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 System.out.println(menuEnter(matcher));
             } else if ((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
@@ -488,7 +488,7 @@ public class GameMenu extends Menu {
     }
 
     @Override
-    public String menuShow(Matcher matcher) {
+    public String menuShow() {
         return "Game Menu";
     }
 
