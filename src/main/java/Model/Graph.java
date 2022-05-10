@@ -1,5 +1,8 @@
 package Model;
 
+import Database.GameDatabase;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -121,14 +124,29 @@ public class Graph {
         neighbourTile.getNeighbors().add(origin);
     }
 
-    public boolean bfs(Tile start, Tile end) {
+    public boolean bfs(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
+        System.out.println("kire babat");
         Queue<Tile> queue = new LinkedList<>();
         start.setVisited(true);
         queue.add(start);
         boolean exists = false;
         while (!queue.isEmpty()) {
+            exists = false;
             Tile currentTile = queue.poll();
+            System.out.println(currentTile.getX() + " " + currentTile.getY());
+            /*for (Tile temp : copyOfMap){
+                if (currentTile.getX() == temp.getX() && currentTile.getY() == temp.getY()){
+                    currentTile = temp;
+                }
+            }
+            System.out.println(currentTile.getX() +  " " + currentTile.getY() + " this is a test");
+            for (Tile tile: currentTile.getAdjacentTiles()){
+                add_neighbor(currentTile, tile);
+                //System.out.println(currentTile.getNeighbors().size());
+            }*/
             for (Tile tile : currentTile.neighbors) {
+                System.out.println(currentTile.neighbors.size());
+                System.out.println(tile.getX() + "- " + tile.getY());
                 if (!tile.visited) {
                     tile.visited = true;
                     queue.add(tile);
@@ -140,14 +158,21 @@ public class Graph {
                     }
                 }
             }
+            if (exists)
+                break;
         }
+        System.out.println(exists);
         return exists;
     }
 
     public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
+        for (Tile tile: copyOfMap){
+            tile.neighbors.clear();
+        }
         setEdges(copyOfMap);
 
-        if (bfs(start, end)) {//bfs path exists then return the route
+        if (bfs(start, end, copyOfMap)) {//bfs path exists then return the route
+            System.out.println("salam");
             Tile tile = end;
             ArrayList<Tile> route = new ArrayList<>();
             while (tile != null) {
@@ -157,6 +182,7 @@ public class Graph {
             Collections.reverse(route);
             return route;
         } else { // bfs bath doesn't exist to the point we want
+            System.out.println("bfs path not found");
             ArrayList<Tile> route = new ArrayList<>();
             int minLength = Integer.MAX_VALUE;
             outer:
@@ -164,7 +190,7 @@ public class Graph {
                 boolean found = false;
                 inner:
                 for (Tile adj : end.getAdjacentTilesByLayer(i)) { // trying to find a tile that is reachable
-                    if (bfs(start, adj)) {
+                    if (bfs(start, adj, copyOfMap)) {
                         found = true;
                         Tile tile = end;
                         ArrayList<Tile> routeTemp = new ArrayList<>();
