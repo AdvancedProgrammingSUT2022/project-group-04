@@ -683,4 +683,11 @@ public class GameMenuController {
 
     }
 
+    public void pillageCurrentTile(Unit unit){
+        for (Improvement improvement : unit.getTileOfUnit().getImprovements()){
+            improvement.breakImprovement();
+        }
+        unit.getTileOfUnit().setRaidedModel(true);
+    }
+
 }

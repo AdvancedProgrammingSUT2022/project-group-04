@@ -202,7 +202,7 @@ public class Tile {
         return units;
     }
 
-    private void setRaidedModel(boolean isRaided) {
+    public void setRaidedModel(boolean isRaided) {
         this.isRaided = isRaided;
     }
 
