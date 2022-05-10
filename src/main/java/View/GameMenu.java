@@ -353,8 +353,8 @@ public class GameMenu extends Menu {
                 showHappinessLevel();
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_CITY_HIT_POINT)) != null) {
                 System.out.println(addHitPointCity(matcher));
-            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_CITY_HIT_POINT)) != null) {
-                System.out.println(addHitPointCity(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_UNIT_HIT_POINT)) != null) {
+                System.out.println(addHitPointUnit(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_CHANGE_CAPITAL)) != null) {
                 System.out.println(changeCapital(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_DRY_UP)) != null) {
