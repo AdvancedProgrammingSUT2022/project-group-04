@@ -63,7 +63,7 @@ public class MainMenu extends Menu {
         return "Main Menu";
     }
 
-    private String menuEnter(Matcher matcher) {
+    public String menuEnter(Matcher matcher) {
         String menuName = matcher.group("MenuName");
         if (!this.mainMenuController.isMenuValid(menuName)) {
             return "menu navigation is not possible";
