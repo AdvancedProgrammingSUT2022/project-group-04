@@ -42,7 +42,7 @@ public class LoginTest {
 
     @Test
     public void testTwo(){
-        when(loginMenuController.isNicknameUnique()).thenReturn();
+        //when(loginMenuController.isNicknameUnique()).thenReturn();
 
     }
 
