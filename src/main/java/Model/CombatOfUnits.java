@@ -6,7 +6,7 @@ public class CombatOfUnits {
     private Tile tileSoldier1;
     private Tile tileSoldier2;
 
-    public CombatOfUnits(Soldier soldier1, Soldier soldier2){
+    public CombatOfUnits(Soldier soldier1, Soldier soldier2) {
         this.soldier1 = soldier1;
         this.soldier2 = soldier2;
         this.tileSoldier1 = soldier1.getTileOfUnit();

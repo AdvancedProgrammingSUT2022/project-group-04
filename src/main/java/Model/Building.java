@@ -187,11 +187,11 @@ public class Building {
 
     public void setTurnsNeedToBuild(int production, int productionGeneratingRate) {
         int turns = production - cost;
-        if(turns >= 0) {
+        if (turns >= 0) {
             this.turnsNeedToBuild = 0;
         } else {
             turns = -turns;
-            this.turnsNeedToBuild = turns/productionGeneratingRate + 1;
+            this.turnsNeedToBuild = turns / productionGeneratingRate + 1;
         }
 
 
@@ -200,13 +200,13 @@ public class Building {
     @Override
     public String toString() {
         String result = this.name;
-        if(wasBuilt()) {
+        if (wasBuilt()) {
             result += " was built.";
             return result;
         }
         result += " " + Integer.toString(this.turnsNeedToBuild) + " turns need to build.";
         return result;
-     }
+    }
 
     public Technology getTechnologyRequired() {
         return technologyRequired;
@@ -217,13 +217,13 @@ public class Building {
     }
 
     public boolean isBuildingValidForCivilization(Civilization civilization, City citySelected) {
-        if(!isBuildingValidBecauseOfRequiredBuildings(citySelected)) {
+        if (!isBuildingValidBecauseOfRequiredBuildings(citySelected)) {
             return false;
         }
         if (!isBuildingValidBecauseOfRequiredResources(citySelected)) {
             return false;
         }
-        if (technologyRequired == null && civilization.getGold()>=this.cost) {
+        if (technologyRequired == null && civilization.getGold() >= this.cost) {
             return true;
         }
         return civilization.isTechnologyForThisCivilization(this.technologyRequired)
@@ -231,56 +231,75 @@ public class Building {
     }
 
     private boolean isBuildingValidBecauseOfRequiredResources(City citySelected) {
-        if(this.name.equals("Circus")
+        if (this.name.equals("Circus")
                 && (!citySelected.isResourceDiscoveredByThisCity("Horse")
                 && !citySelected.isResourceDiscoveredByThisCity("Ivory"))) {
             return false;
-        } if(this.name.equals("Stable") && !citySelected.isResourceDiscoveredByThisCity("Horse")) {
+        }
+        if (this.name.equals("Stable") && !citySelected.isResourceDiscoveredByThisCity("Horse")) {
             return false;
-        } if(this.name.equals("Forge") && !citySelected.isResourceDiscoveredByThisCity("Iron")) {
+        }
+        if (this.name.equals("Forge") && !citySelected.isResourceDiscoveredByThisCity("Iron")) {
             return false;
-        } if(this.name.equals("Factory") && !citySelected.isResourceDiscoveredByThisCity("Coal")) {
+        }
+        if (this.name.equals("Factory") && !citySelected.isResourceDiscoveredByThisCity("Coal")) {
             return false;
         }
         return true;
     }
 
     private boolean isBuildingValidBecauseOfRequiredBuildings(City citySelected) {
-        if((this.name.equals("Water_Mill") || this.name.equals("Garden"))
+        if ((this.name.equals("Water_Mill") || this.name.equals("Garden"))
                 && !isWaterMillValidForThisCity(citySelected)) {
             return false;
-        } if(this.name.equals("Armory") && !citySelected.cityHasBuilding("Barracks")) {
+        }
+        if (this.name.equals("Armory") && !citySelected.cityHasBuilding("Barracks")) {
             return false;
-        } if(this.name.equals("Temple") && !citySelected.cityHasBuilding("Monument")) {
+        }
+        if (this.name.equals("Temple") && !citySelected.cityHasBuilding("Monument")) {
             return false;
-        } if(this.name.equals("Castle") && !citySelected.cityHasBuilding("Walls")) {
+        }
+        if (this.name.equals("Castle") && !citySelected.cityHasBuilding("Walls")) {
             return false;
-        } if(this.name.equals("University") && !citySelected.cityHasBuilding("Library")) {
+        }
+        if (this.name.equals("University") && !citySelected.cityHasBuilding("Library")) {
             return false;
-        }  if(this.name.equals("Bank") && !citySelected.cityHasBuilding("Market")) {
+        }
+        if (this.name.equals("Bank") && !citySelected.cityHasBuilding("Market")) {
             return false;
-        } if(this.name.equals("MilitaryAcademy") && !citySelected.cityHasBuilding("Barracks")) {
+        }
+        if (this.name.equals("MilitaryAcademy") && !citySelected.cityHasBuilding("Barracks")) {
             return false;
-        } if(this.name.equals("Museum") && !citySelected.cityHasBuilding("OperaHouse")) {
+        }
+        if (this.name.equals("Museum") && !citySelected.cityHasBuilding("OperaHouse")) {
             return false;
-        } if(this.name.equals("OperaHouse")
+        }
+        if (this.name.equals("OperaHouse")
                 && (!citySelected.cityHasBuilding("Temple") || !citySelected.cityHasBuilding("Burial_Tomb"))) {
             return false;
-        } if(this.name.equals("PublicSchool") && !citySelected.cityHasBuilding("University")) {
+        }
+        if (this.name.equals("PublicSchool") && !citySelected.cityHasBuilding("University")) {
             return false;
-        } if(this.name.equals("SatrapsCourt") && !citySelected.cityHasBuilding("Market")) {
+        }
+        if (this.name.equals("SatrapsCourt") && !citySelected.cityHasBuilding("Market")) {
             return false;
-        } if(this.name.equals("Theater") && !citySelected.cityHasBuilding("Colosseum")) {
+        }
+        if (this.name.equals("Theater") && !citySelected.cityHasBuilding("Colosseum")) {
             return false;
-        } if(this.name.equals("Windmill") && !isWindMillValidForThisCity(citySelected)) {
+        }
+        if (this.name.equals("Windmill") && !isWindMillValidForThisCity(citySelected)) {
             return false;
-        } if(this.name.equals("Arsenal") && !citySelected.cityHasBuilding(" MilitaryAcademy")) {
+        }
+        if (this.name.equals("Arsenal") && !citySelected.cityHasBuilding(" MilitaryAcademy")) {
             return false;
-        } if(this.name.equals("BroadcastTower") && !citySelected.cityHasBuilding("Museum")) {
+        }
+        if (this.name.equals("BroadcastTower") && !citySelected.cityHasBuilding("Museum")) {
             return false;
-        } if(this.name.equals("MilitaryBase") && !citySelected.cityHasBuilding("Castle")) {
+        }
+        if (this.name.equals("MilitaryBase") && !citySelected.cityHasBuilding("Castle")) {
             return false;
-        } if(this.name.equals("StockExchange")
+        }
+        if (this.name.equals("StockExchange")
                 && (!citySelected.cityHasBuilding("Bank") && !citySelected.cityHasBuilding("SatrapsCourt"))) {
             return false;
         }
@@ -289,7 +308,7 @@ public class Building {
 
     private boolean isWaterMillValidForThisCity(City citySelected) {
         for (boolean isRiver : citySelected.getIsRiver()) {
-            if(isRiver) {
+            if (isRiver) {
                 return true;
             }
         }
@@ -298,7 +317,7 @@ public class Building {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Building)) {
+        if (!(obj instanceof Building)) {
             return false;
         }
         return this.name.equals(((Building) obj).getName());
@@ -314,7 +333,7 @@ public class Building {
 
     public void build() {
         this.turnsNeedToBuild--;
-        if(wasBuilt()) {
+        if (wasBuilt()) {
             sendNotification();
         }
     }
@@ -332,9 +351,9 @@ public class Building {
     }
 
     private int libraryScienceCalculator() {
-        int population = (GameDatabase.getCityByName(this.cityName).getWorker()!=null?1:0)
-                + (GameDatabase.getCityByName(this.cityName).getSettler()!=null?1:0);
-        return population/2;
+        int population = (GameDatabase.getCityByName(this.cityName).getWorker() != null ? 1 : 0)
+                + (GameDatabase.getCityByName(this.cityName).getSettler() != null ? 1 : 0);
+        return population / 2;
     }
 
     public void nextTurn() {
@@ -388,7 +407,7 @@ public class Building {
                 // TODO
                 break;
             case "Market":
-                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/4);
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold() / 4);
                 break;
             case "Mint":
                 // TODO
@@ -396,13 +415,13 @@ public class Building {
             case "Monastery":
                 break;
             case "University":
-                GameDatabase.getCivilizationForCity(this.cityName).addScience(Math.abs(GameDatabase.getCivilizationForCity(this.cityName).getScience()/2));
+                GameDatabase.getCivilizationForCity(this.cityName).addScience(Math.abs(GameDatabase.getCivilizationForCity(this.cityName).getScience() / 2));
                 break;
             case "Workshop":
                 // TODO
                 break;
             case "Bank":
-                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/4);
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold() / 4);
                 break;
             case "MilitaryAcademy":
                 // TODO
@@ -412,10 +431,10 @@ public class Building {
             case "OperaHouse":
                 break;
             case "PublicSchool":
-                GameDatabase.getCivilizationForCity(this.cityName).addScience(Math.abs(GameDatabase.getCivilizationForCity(this.cityName).getScience()/2));
+                GameDatabase.getCivilizationForCity(this.cityName).addScience(Math.abs(GameDatabase.getCivilizationForCity(this.cityName).getScience() / 2));
                 break;
             case "SatrapsCourt":
-                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/4);
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold() / 4);
                 GameDatabase.getCivilizationForCity(this.cityName).addHappiness(2);
                 break;
             case "Theater":
@@ -433,13 +452,13 @@ public class Building {
                 // TODO
                 break;
             case "Hospital":
-                GameDatabase.getCityByName(this.cityName).addFood(-GameDatabase.getCityByName(this.cityName).getFoodGeneratingRate()/2);
+                GameDatabase.getCityByName(this.cityName).addFood(-GameDatabase.getCityByName(this.cityName).getFoodGeneratingRate() / 2);
                 break;
             case "MilitaryBase":
                 // TODO
                 break;
             case "StockExchange":
-                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold()/3);
+                GameDatabase.getCivilizationForCity(this.cityName).addGold(GameDatabase.getCivilizationForCity(this.cityName).getGold() / 3);
                 break;
             default:
                 break;

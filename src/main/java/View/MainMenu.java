@@ -38,7 +38,7 @@ public class MainMenu extends Menu {
                 System.out.println(menuShow());
             } else if ((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
                 System.out.println(menuExit(matcher));
-            }  else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 String result = menuEnter(matcher);
                 if (result != null) {
                     System.out.println(result);
@@ -74,7 +74,7 @@ public class MainMenu extends Menu {
         return null;
     }
 
-    private String menuExit(Matcher matcher) {
+    public String menuExit(Matcher matcher) {
         return "use user logout command";
     }
 
@@ -82,14 +82,13 @@ public class MainMenu extends Menu {
      * entered profile menu
      *
      * @param scanner
-     * @param loggedinUser
+     * @param loggedInUser
      */
-    private void enterProfileMenu(Scanner scanner, User loggedinUser) {
+    public void enterProfileMenu(Scanner scanner, User loggedInUser) {
         ProfileMenuModel profileMenuModel = new ProfileMenuModel();
         ProfileMenuController profileMenuController = new ProfileMenuController(profileMenuModel);
         ProfileMenu profileMenu = new ProfileMenu(profileMenuController);
-
-        profileMenu.run(scanner, loggedinUser);
+        profileMenu.run(scanner, loggedInUser);
     }
 
     /**
@@ -108,7 +107,7 @@ public class MainMenu extends Menu {
                 return "at least one username dose not exists.";
             }
         }
-        if(splitCommand.length - 1 == 1) {
+        if (splitCommand.length - 1 == 1) {
             return "you can't play with yourself!";
         }
         return "game started. good luck!";

@@ -113,7 +113,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void changePassword_successful(){
+    public void changePassword_successful() {
         ProfileMenu profileMenu = new ProfileMenu(profileMenuController);
         when(matcher.group("currentPassword")).thenReturn("");
         when(matcher.group("newPassword")).thenReturn("");
