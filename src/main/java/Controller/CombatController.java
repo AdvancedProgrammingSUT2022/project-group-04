@@ -4,6 +4,7 @@ import Database.GameDatabase;
 import Model.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CombatController {
     //will add a combat model class;
