@@ -332,7 +332,9 @@ public class Soldier extends Unit {
     public boolean isTileInRangeOfUnit(Tile tile) {
         for (int i = 1; i < 100; i++) {
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
-                return true;
+                if (i < this.getRange()){
+                    return true;
+                }
             }
         }
         return false;
