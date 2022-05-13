@@ -22,6 +22,8 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
+//@PrepareForTest({InternalUtils.class})
+//@RunWith(PowerMockRunner.class)//TODO add them motherfuckers to the pom for sendMessage func
 public class GameMenuControllerTest {
 
 
@@ -371,6 +373,18 @@ public class GameMenuControllerTest {
         gameMenuController.addScience(turn,amount);
         verify(civilization).addScience(amount);
     }
+
+//    @Test
+//    public void sendMessage(){
+//        Notification notification = Mockito.spy(new Notification(" ", "","            "));
+//        int amount = 10;
+//        int turn = 0;
+//        GameMenuController gameMenuController = new GameMenuController(gameModel);
+//        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+//        when(players.get(turn)).thenReturn(civilization);
+//        gameMenuController.addScience(turn,amount);
+//        verifyStatic
+//    }
 //
     @Test
     public void addScore(){
@@ -631,6 +645,31 @@ public class GameMenuControllerTest {
     }
 
     @Test
+    public void isOperable_False(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile1 = mock(Tile.class);
+        when(tile0.getAdjacentTiles()).thenReturn(tiles);
+        when(city.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile1);
+        when(tiles.contains(tile1)).thenReturn(false);
+        Assertions.assertFalse(gameMenuController.isOperable(tile0,city));
+    }
+
+    @Test
+    public void isOperable_True(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile1 = mock(Tile.class);
+        when(tile0.getAdjacentTiles()).thenReturn(tiles);
+        when(city.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile1);
+        when(tiles.contains(tile1)).thenReturn(true);
+        when(tile1.getSettler()).thenReturn(settler);
+        Assertions.assertTrue(gameMenuController.isOperable(tile0,city));
+    }
+
+    @Test
     public void addProduction(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         String cityName = "gotham";
@@ -842,6 +881,35 @@ public class GameMenuControllerTest {
         assertFalse(gameMenuController.isUnitTypeValid("boz"));
     }
 
+    @Test
+    public void isTileOcean_True(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Ocean"));
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        when(baseTerrain.getType()).thenReturn("Ocean");
+        Assertions.assertTrue(gameMenuController.isTileOcean(tile));
+    }
+
+    @Test
+    public void isTileOcean_False(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertFalse(gameMenuController.isTileOcean(null));
+    }
+
+//    @Test
+//    public void tileHasRiver_True(){
+//        int x = 10;
+//        int y = 20;
+//        Tile tile1 = Mockito.spy(new Tile("","",x,y));
+//        GameMenuController gameMenuController = new GameMenuController(gameModel);
+//        when(tile1.getIsRiver()).thenReturn(new {true,true,true,true,true,true});
+//        Assertions.assertTrue(gameMenuController.tileHasRiver(tile1));
+//    }
+//
+//    @Test
+//    public void tileHasRiver_False(){
+//
+//    }
 
 
 }

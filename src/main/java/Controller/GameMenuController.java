@@ -58,11 +58,17 @@ public class GameMenuController {
     }
 
     public boolean tileHasRiver(Tile tile) {
-        for (boolean isRiver : tile.getIsRiver()) {
-            if (isRiver) {
+        boolean[] rivers = tile.getIsRiver();
+        for (int i=0 ; i<6 ;i++){
+            if (rivers[i]){
                 return true;
             }
         }
+//        for (boolean isRiver : tile.getIsRiver()) {
+//            if (isRiver) {
+//                return true;
+//            }
+//        }
         return false;
     }
 
@@ -354,13 +360,22 @@ public class GameMenuController {
     }
 
     public boolean isOperable(Tile tile, City city) {
-        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
-        ArrayList<Tile> tilesOfCity = city.getTiles();
-        for (Tile tile1 : tilesOfCity) {
-            if (neighbours.contains(tile1)
-                    && tile1.getSettler() != null) return true;
+//        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
+//        ArrayList<Tile> tilesOfCity = city.getTiles();
+        for (int i=0 ;i<city.getTiles().size();i++){
+            if (tile.getAdjacentTiles().contains(city.getTiles().get(i))
+                    && city.getTiles().get(i).getSettler() != null){
+                return true;
+            }
         }
         return false;
+//        for (Tile tile1 : city.getTiles()) {
+//            if (tile.getAdjacentTiles().contains(tile1)
+//                    && tile1.getSettler() != null) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     public boolean isAmountValidForProduction(int amount) {
