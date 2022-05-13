@@ -16,7 +16,7 @@ public class Demography {
     public Demography(Civilization civilization) {
         this.soldiers = soldierCalculator(civilization);
         this.size = civilization.getTiles().size();
-        this.totalHappiness =civilization.getHappiness();
+        this.totalHappiness = civilization.getHappiness();
         this.gold = civilization.getGold();
         this.name = civilization.getNickname();
         this.score = civilization.getScore();
@@ -26,7 +26,7 @@ public class Demography {
         ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
         for (City city : civilization.getCities()) {
             for (Unit unit : city.getUnits()) {
-                if(unit instanceof Soldier) {
+                if (unit instanceof Soldier) {
                     soldiers.add((Soldier) unit);
                 }
             }
@@ -37,7 +37,7 @@ public class Demography {
     private int rank() {
         int rank = 1;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getScore() > this.score) {
+            if (civilization.getScore() > this.score) {
                 rank++;
             }
         }
@@ -47,39 +47,39 @@ public class Demography {
     private int happinessAverage() {
         int totalHappiness = 0;
         for (Civilization civilization : GameDatabase.players) {
-            totalHappiness+= civilization.getHappiness();
+            totalHappiness += civilization.getHappiness();
         }
-        return totalHappiness/GameDatabase.players.size();
+        return totalHappiness / GameDatabase.players.size();
     }
 
     private int scoreAverage() {
         int totalScore = 0;
         for (Civilization civilization : GameDatabase.players) {
-            totalScore+= civilization.getScore();
+            totalScore += civilization.getScore();
         }
-        return totalScore/GameDatabase.players.size();
+        return totalScore / GameDatabase.players.size();
     }
 
     private int goldAverage() {
         int totalGold = 0;
         for (Civilization civilization : GameDatabase.players) {
-            totalGold+= civilization.getGold();
+            totalGold += civilization.getGold();
         }
-        return totalGold/GameDatabase.players.size();
+        return totalGold / GameDatabase.players.size();
     }
 
     private int sizeAverage() {
         int totalSize = 0;
         for (Civilization civilization : GameDatabase.players) {
-            totalSize+= civilization.getTiles().size();
+            totalSize += civilization.getTiles().size();
         }
-        return totalSize/GameDatabase.players.size();
+        return totalSize / GameDatabase.players.size();
     }
 
     private int happinessMin() {
-        int min = Integer.MAX_VALUE/100;
+        int min = Integer.MAX_VALUE / 100;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getHappiness()<min) {
+            if (civilization.getHappiness() < min) {
                 min = civilization.getHappiness();
             }
         }
@@ -87,9 +87,9 @@ public class Demography {
     }
 
     private int scoreMin() {
-        int min = Integer.MAX_VALUE/100;
+        int min = Integer.MAX_VALUE / 100;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getScore()<min) {
+            if (civilization.getScore() < min) {
                 min = civilization.getScore();
             }
         }
@@ -97,9 +97,9 @@ public class Demography {
     }
 
     private int goldMin() {
-        int min = Integer.MAX_VALUE/100;
+        int min = Integer.MAX_VALUE / 100;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getGold()<min) {
+            if (civilization.getGold() < min) {
                 min = civilization.getGold();
             }
         }
@@ -107,9 +107,9 @@ public class Demography {
     }
 
     private int sizeMin() {
-        int min = Integer.MAX_VALUE/100;
+        int min = Integer.MAX_VALUE / 100;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getTiles().size()<min) {
+            if (civilization.getTiles().size() < min) {
                 min = civilization.getTiles().size();
             }
         }
@@ -119,7 +119,7 @@ public class Demography {
     private int happinessMax() {
         int max = 0;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getHappiness()>max) {
+            if (civilization.getHappiness() > max) {
                 max = civilization.getHappiness();
             }
         }
@@ -129,7 +129,7 @@ public class Demography {
     private int scoreMax() {
         int max = 0;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getScore()>max) {
+            if (civilization.getScore() > max) {
                 max = civilization.getScore();
             }
         }
@@ -139,7 +139,7 @@ public class Demography {
     private int goldMax() {
         int max = 0;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getGold()>max) {
+            if (civilization.getGold() > max) {
                 max = civilization.getGold();
             }
         }
@@ -149,7 +149,7 @@ public class Demography {
     private int sizeMax() {
         int max = 0;
         for (Civilization civilization : GameDatabase.players) {
-            if(civilization.getTiles().size()>max) {
+            if (civilization.getTiles().size() > max) {
                 max = civilization.getTiles().size();
             }
         }

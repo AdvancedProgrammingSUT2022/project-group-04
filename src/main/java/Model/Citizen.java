@@ -17,17 +17,17 @@ public class Citizen extends Unit {
         isHostage = hostage;
     }
 
-    public boolean isCombatUnit(){
+    public boolean isCombatUnit() {
         return false;
     }
 
     @Override
-    public boolean isSettler(){
+    public boolean isSettler() {
         return true;
     }
 
     @Override
-    public boolean isWorker(){
+    public boolean isWorker() {
         return false;
     }
 

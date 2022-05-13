@@ -271,8 +271,8 @@ public class Technology {
         for (String technology : GlobalVariables.TECHNOLOGIES) {
             Technology technology1 = new Technology(technology);
             for (Technology prerequisiteTechnology : technology1.prerequisiteTechnologies) {
-                if(prerequisiteTechnology.getName().equals(this.name)) {
-                    leadingTechnologies+= "\t " + technology + "\n";
+                if (prerequisiteTechnology.getName().equals(this.name)) {
+                    leadingTechnologies += "\t " + technology + "\n";
                 }
             }
         }
@@ -283,7 +283,7 @@ public class Technology {
         String leadingBuildings = "Leading buildings: \n";
         for (String building : GlobalVariables.BUILDINGS) {
             Building building1 = new Building(building);
-            if(building1.getTechnologyRequired().getName().equals(this.name)) {
+            if (building1.getTechnologyRequired().getName().equals(this.name)) {
                 leadingBuildings += "\t " + building + "\n";
             }
         }
@@ -304,10 +304,10 @@ public class Technology {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Technology)) {
+        if (!(obj instanceof Technology)) {
             return false;
         }
-        if(((Technology) obj).getName().equals(this.name)) {
+        if (((Technology) obj).getName().equals(this.name)) {
             return true;
         }
         return false;
@@ -320,9 +320,9 @@ public class Technology {
     @Override
     public String toString() {
         String result = this.name + "\n";
-        if(!wasReached() && this.turnsNeedToResearch != 0) {
+        if (!wasReached() && this.turnsNeedToResearch != 0) {
             result += "\t turns need: " + Integer.toString(this.turnsNeedToResearch);
-            if(isStopped) {
+            if (isStopped) {
                 result += "\t Stopped\n";
             }
         } else {
@@ -333,9 +333,9 @@ public class Technology {
     }
 
     public void nextTurn(String civilizationName) {
-        if(!wasReached() && !isStopped) {
+        if (!wasReached() && !isStopped) {
             this.turnsNeedToResearch--;
-            if(wasReached()) {
+            if (wasReached()) {
                 sendNotification(civilizationName);
             }
         }

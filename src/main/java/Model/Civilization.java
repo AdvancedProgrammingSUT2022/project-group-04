@@ -58,11 +58,11 @@ public class Civilization {
     }
 
     public void addScience(int amount) {
-        this.science+= amount;
+        this.science += amount;
     }
 
     public void addGold(int amount) {
-        if(amount<0 && this.gold<=0) {
+        if (amount < 0 && this.gold <= 0) {
             addScience(amount);
             return;
         }
@@ -70,10 +70,10 @@ public class Civilization {
     }
 
     public void addTechnology(Technology newTechnology) {
-        if(science - newTechnology.getCost() < 100) {
+        if (science - newTechnology.getCost() < 100) {
             newTechnology.setTurnsNeedToResearch(1);
         } else {
-            newTechnology.setTurnsNeedToResearch(10 - (science - newTechnology.getCost())/10);
+            newTechnology.setTurnsNeedToResearch(10 - (science - newTechnology.getCost()) / 10);
         }
         this.technologies.add(newTechnology);
         this.science = 0;
@@ -172,7 +172,7 @@ public class Civilization {
     public boolean hasResource(Resources resources) {
         for (Tile tile : this.tiles) {
             for (Resources resource : tile.getDiscoveredResources()) {
-                if(resource.getName().equals(resources.getName())) {
+                if (resource.getName().equals(resources.getName())) {
                     return true;
                 }
             }
@@ -180,26 +180,26 @@ public class Civilization {
         return false;
     }
 
-    public ArrayList<Unit> getAllUnitsOfCivilization(){
+    public ArrayList<Unit> getAllUnitsOfCivilization() {
 
         ArrayList<Unit> allUnits = new ArrayList<>();
-        for (Tile tile : tiles){
+        for (Tile tile : tiles) {
             allUnits.addAll(tile.getUnits());
         }
         return allUnits;
 
     }
 
-    public ArrayList<Tile> tilesOnBorder(){
+    public ArrayList<Tile> tilesOnBorder() {
         ArrayList<Tile> tilesOnBorder = new ArrayList<>();
-        for (Tile tile:tiles){
+        for (Tile tile : tiles) {
             boolean isBorderTile = false;
-            for (Tile adjacent:tile.getAdjacentTiles()){
-                if (!tiles.contains(adjacent)){
+            for (Tile adjacent : tile.getAdjacentTiles()) {
+                if (!tiles.contains(adjacent)) {
                     isBorderTile = true;
                 }
             }
-            if (isBorderTile){
+            if (isBorderTile) {
                 tilesOnBorder.add(tile);
             }
         }
@@ -207,14 +207,14 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> firstClassAdjacentTiles(){
+    public ArrayList<Tile> firstClassAdjacentTiles() {
 
         ArrayList<Tile> firstClassAdjacentTiles = new ArrayList<>();
-        for (Tile tile : tilesOnBorder()){
+        for (Tile tile : tilesOnBorder()) {
             if (!tile.getUnits().isEmpty()) {
                 boolean thereIsUnitOBuildingNearby = false;
-                for (Tile adj :tilesOnBorder()){
-                    if (!adj.getUnits().isEmpty() || !adj.getBuildings().isEmpty()){
+                for (Tile adj : tilesOnBorder()) {
+                    if (!adj.getUnits().isEmpty() || !adj.getBuildings().isEmpty()) {
                         thereIsUnitOBuildingNearby = true;
                     }
                 }
@@ -232,14 +232,14 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> secondClassAdjacentTiles(){
+    public ArrayList<Tile> secondClassAdjacentTiles() {
 
         ArrayList<Tile> secondClassAdjacentTiles = new ArrayList<>();
-        for (Tile tile:firstClassAdjacentTiles()){
+        for (Tile tile : firstClassAdjacentTiles()) {
             if (!tile.getBaseTerrainType().equals("Mountain")
                     && !tile.getBaseTerrainType().equals("Hill")
                     && !tile.getBaseTerrain().hasFeature("Jungle")
-                    && !tile.getBaseTerrain().hasFeature("DenseJungle")){
+                    && !tile.getBaseTerrain().hasFeature("DenseJungle")) {
                 for (Tile adjacent : tile.getAdjacentTiles()) {
                     if (!secondClassAdjacentTiles.contains(adjacent)
                             && !firstClassAdjacentTiles().contains(adjacent)
@@ -253,7 +253,7 @@ public class Civilization {
         return secondClassAdjacentTiles;
     }
 
-    public ArrayList<Tile> getClearTiles(){
+    public ArrayList<Tile> getClearTiles() {
         ArrayList<Tile> clearTiles = new ArrayList<>();
         clearTiles.addAll(tiles);
         clearTiles.addAll(firstClassAdjacentTiles());
@@ -272,14 +272,14 @@ public class Civilization {
 
     public void nextTurn() {
         this.turn++;
-        happiness+= happinessCalculator();
+        happiness += happinessCalculator();
         for (City city : this.cities) {
             city.nextTurn();
-            gold+= city.getGoldGeneratingRate();
-            science+= (city.getWorker()!=null?1:0) +
-                    (city.getSettler()!=null?1:0) + city.getCitizens().size();
-            if(city.isCapital()) {
-                science+= 3;
+            gold += city.getGoldGeneratingRate();
+            science += (city.getWorker() != null ? 1 : 0) +
+                    (city.getSettler() != null ? 1 : 0) + city.getCitizens().size();
+            if (city.isCapital()) {
+                science += 3;
             }
         }
         for (Technology technology : this.technologies) {
@@ -291,7 +291,7 @@ public class Civilization {
 
     public City getCapital() {
         for (City city : this.cities) {
-            if(city.isCapital()) {
+            if (city.isCapital()) {
                 return city;
             }
         }
@@ -299,7 +299,7 @@ public class Civilization {
     }
 
     public void changeCapital(String cityName) {
-        if(getCapital() != null) {
+        if (getCapital() != null) {
             getCapital().removeCapital();
         }
         GameDatabase.getCityByName(cityName).setCapital();
@@ -309,15 +309,15 @@ public class Civilization {
         int population = 0;
         int colonizedCount = 0;
         for (City city : this.cities) {
-            population += (city.getSettler()!=null?1:0) +
-                    (city.getWorker()!=null?1:0) + city.getCitizens().size();
-            if(city.isColonized()) {
+            population += (city.getSettler() != null ? 1 : 0) +
+                    (city.getWorker() != null ? 1 : 0) + city.getCitizens().size();
+            if (city.isColonized()) {
                 colonizedCount++;
             }
         }
-        return - population*GlobalVariables.happinessForEachCitizen
-                - this.cities.size()*GlobalVariables.happinessForEachCity
-                - colonizedCount*GlobalVariables.happinessForColonizedCities;
+        return -population * GlobalVariables.happinessForEachCitizen
+                - this.cities.size() * GlobalVariables.happinessForEachCity
+                - colonizedCount * GlobalVariables.happinessForColonizedCities;
     }
 
     public int getScience() {
@@ -329,12 +329,12 @@ public class Civilization {
     }
 
     public void happy() {
-        if(this.happiness < 0) {
+        if (this.happiness < 0) {
             this.happiness = 0;
         }
     }
 
-    public boolean isTechnologyInCivilization(String technology){
+    public boolean isTechnologyInCivilization(String technology) {
         for (Technology technology1 : technologies) {
             if (technology1.getName().equals(technology))
                 return true;
@@ -344,14 +344,14 @@ public class Civilization {
 
     public boolean isImprovementReachedByThisCivilization(String improvementName) {
         for (Tile tile : this.tiles) {
-            if(tile.isImprovementForThisTile(improvementName)) {
+            if (tile.isImprovementForThisTile(improvementName)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isCityInCivilization(int xCity,int yCity){
+    public boolean isCityInCivilization(int xCity, int yCity) {
         for (City city : cities) {
             if (city.x == xCity && city.y == yCity)
                 return true;
@@ -369,9 +369,9 @@ public class Civilization {
 
 
     public boolean isResourceNew(Resources newResource) {
-        for (Tile tile : this.tiles)  {
+        for (Tile tile : this.tiles) {
             for (Resources resource : tile.getDiscoveredResources()) {
-                if(resource.getName().equals(newResource.getName())) {
+                if (resource.getName().equals(newResource.getName())) {
                     return false;
                 }
             }
@@ -380,7 +380,7 @@ public class Civilization {
     }
 
 
-    public ArrayList<Tile> getFriendlyTiles(){
+    public ArrayList<Tile> getFriendlyTiles() {
         ArrayList<Tile> friendlyTiles = new ArrayList<>();
         return friendlyTiles;
     }

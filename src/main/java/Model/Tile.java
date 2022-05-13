@@ -28,6 +28,7 @@ public class Tile {
     protected boolean isRailroadBroken;
     protected City city;
     protected ArrayList<Citizen> citizens;
+
     public boolean[] getIsRiver() {
         return isRiver;
     }
@@ -65,11 +66,10 @@ public class Tile {
 
     public ArrayList<Resources> getDiscoveredResources() {
         return discoveredResources;
-   }
+    }
 
 
-
-   public void addResource(Resources resources) {
+    public void addResource(Resources resources) {
         discoveredResources.add(resources);
         if (resources.getType().equals("luxury")
                 && GameDatabase.getCivilizationByTile(this).isResourceNew(resources)) {
@@ -78,7 +78,7 @@ public class Tile {
     }
 
     public void discoverResource() {
-        if(this.baseTerrain.getResources() == null) {
+        if (this.baseTerrain.getResources() == null) {
             return;
         }
         addResource(this.baseTerrain.getResources());
@@ -92,13 +92,12 @@ public class Tile {
 
     public boolean isResourceDiscoveredByThisTile(String resourceName) {
         for (Resources resource : this.discoveredResources) {
-            if(resource.getName().equals(resourceName)) {
+            if (resource.getName().equals(resourceName)) {
                 return true;
             }
         }
         return false;
     }
-
 
 
     public void initializeRoundsTillFinish(int flag) {
@@ -133,11 +132,10 @@ public class Tile {
         base[24] = 3;
         if (flag == -1) {
             roundsTillFinish = new int[25];
-            for (int i=0;i<25;i++){
+            for (int i = 0; i < 25; i++) {
                 roundsTillFinish[i] = base[i];
             }
-        }
-        else {
+        } else {
             roundsTillFinish[flag] = base[flag];
         }
     }
@@ -273,7 +271,7 @@ public class Tile {
     }
 
     public void dryUpByEdge(int edge) {
-        if(!isEdgeValid(edge)) {
+        if (!isEdgeValid(edge)) {
             return;
         }
         this.isRiver[edge] = false;
@@ -285,9 +283,9 @@ public class Tile {
 
     private void dryInNeighbors() {
         for (Tile tile : getAdjacentTiles()) {
-            if(tile != null) {
+            if (tile != null) {
                 int edge = tile.getTileEdge(GameDatabase.getTileByXAndY(this.x, this.y));
-                if(isEdgeValid(edge)) {
+                if (isEdgeValid(edge)) {
                     tile.dryUpByEdge(edge);
                 }
             }
@@ -295,12 +293,12 @@ public class Tile {
     }
 
     public int getTileEdge(Tile tile) {
-        if(tile == null) {
+        if (tile == null) {
             return -1;
         }
         int tileX = tile.getX();
         int tileY = tile.getY();
-        if(this.y % 2 != 0) {
+        if (this.y % 2 != 0) {
             if (tileX == this.x - 1 && tileY == this.y) {
                 return 0;
             }
@@ -343,57 +341,55 @@ public class Tile {
     }
 
     public void dryUp() {
-        for(int i=0; i<this.isRiver.length; i++) {
+        for (int i = 0; i < this.isRiver.length; i++) {
             dryUpByEdge(i);
         }
         dryInNeighbors();
     }
 
-    public ArrayList<Tile> getAdjacentTiles(){
+    public ArrayList<Tile> getAdjacentTiles() {
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
-        if (this.y % 2 == 0){
+        if (this.y % 2 == 0) {
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
-            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x, this.y + 1));
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y + 1));
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y));
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y - 1));
-            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y - 1));
-        }
-        else {
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x, this.y - 1));
+        } else {
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
-            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1 , this.y + 1));
-            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x , this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y + 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x, this.y + 1));
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x + 1, this.y));
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x, this.y - 1));
-            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1 , this.y - 1));
+            adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y - 1));
         }
         return adjacentTiles;
     }
 
     @Override
     public boolean equals(Object object) {
-        if(!(object instanceof Tile)) {
+        if (!(object instanceof Tile)) {
             return false;
         }
-        if(this.x == ((Tile) object).getX()
-            && this.y == ((Tile) object).getY()) {
+        if (this.x == ((Tile) object).getX()
+                && this.y == ((Tile) object).getY()) {
             return true;
         }
         return false;
     }
 
-    public ArrayList<Tile> getAdjacentTilesByLayer(int n){
+    public ArrayList<Tile> getAdjacentTilesByLayer(int n) {
 
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
-        if (n == 1){
+        if (n == 1) {
             return getAdjacentTiles();
-        }
-        else{
-            for (Tile tile : getAdjacentTilesByLayer(n - 1)){
+        } else {
+            for (Tile tile : getAdjacentTilesByLayer(n - 1)) {
                 for (Tile adjacent : tile.getAdjacentTiles()) {
                     if (!getAdjacentTilesByLayer(n - 2).contains(adjacent)
                             && !getAdjacentTilesByLayer(n - 1).contains(adjacent)
-                            && !adjacentTiles.contains(adjacent)){
+                            && !adjacentTiles.contains(adjacent)) {
                         adjacentTiles.add(adjacent);
                     }
                 }
@@ -408,12 +404,12 @@ public class Tile {
     }
 
     public void reduceRoundsByIndex(int indexOfProject) {
-        this.roundsTillFinish[indexOfProject] --;
+        this.roundsTillFinish[indexOfProject]--;
     }
 
     public boolean isImprovementForThisTile(String improvementName) {
         for (Improvement improvement : this.improvements) {
-            if(improvementName.equals(improvement.getName())) {
+            if (improvementName.equals(improvement.getName())) {
                 return true;
             }
         }
@@ -428,7 +424,7 @@ public class Tile {
 
     }
 
-    public Settler getSettler(){
+    public Settler getSettler() {
         return settler;
     }
 
@@ -438,7 +434,7 @@ public class Tile {
         }
     }
 
-    public void setIsGettingWorkedOn(boolean workedOn){
+    public void setIsGettingWorkedOn(boolean workedOn) {
         this.isGettingWorkedOn = workedOn;
     }
 
@@ -448,7 +444,7 @@ public class Tile {
 
     public boolean isImprovementBroken(String improvementName) {
         for (Improvement improvement : this.improvements) {
-            if(improvementName.equals(improvement.getName()) && improvement.isBroken()) {
+            if (improvementName.equals(improvement.getName()) && improvement.isBroken()) {
                 return true;
             }
         }
@@ -489,7 +485,7 @@ public class Tile {
         this.worker = worker;
     }
 
-    public void addSettler(Settler settler){
+    public void addSettler(Settler settler) {
         this.settler = settler;
     }
 
