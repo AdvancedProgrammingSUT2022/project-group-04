@@ -39,7 +39,7 @@ public class GameMenu extends Menu {
     private static final String UNIT_SETUP_RANGE = "unit setup range";
     private static final String UNIT_ATTACK_POSITION = "unit attack (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_FOUND_CITY = "unit found city (?<name>\\w+)";
-    private static final String CANCEL_MISSION = "unit cancel mission";
+    //private static final String CANCEL_MISSION = "unit cancel mission";
     private static final String UNIT_PILLAGE = "unit pillage tile";
     private static final String UNIT_WAKE = "unit wake";
     private static final String UNIT_DELETE = "unit delete";
@@ -370,6 +370,8 @@ public class GameMenu extends Menu {
                 System.out.println(changeCapital(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_PRODUCTION)) != null) {
                 System.out.println(addProduction(matcher));
+            } else if ((matcher = getCommandMatcher(command, CHEAT_ADD_SCORE)) != null) {
+                System.out.println(addScore(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_DRY_UP)) != null) {
                 String result = dryUp(matcher);
                 if (result != null) {
@@ -970,6 +972,15 @@ public class GameMenu extends Menu {
         }
         this.gameMenuController.addScience(turn, science);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " science.";
+    }
+
+    private String addScore(Matcher matcher) {
+        int score = Integer.parseInt(matcher.group("score"));
+        if (!this.gameMenuController.isAmountValidForScore(score)) {
+            return "invalid amount";
+        }
+        this.gameMenuController.addScore(turn, score);
+        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScore()) + " score.";
     }
 
 

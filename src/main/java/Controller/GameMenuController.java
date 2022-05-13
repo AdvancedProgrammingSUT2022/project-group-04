@@ -194,6 +194,10 @@ public class GameMenuController {
         GameDatabase.players.get(turn).addScience(science);
     }
 
+    public void addScore(int turn, int score) {
+        GameDatabase.players.get(turn).addScore(score);
+    }
+
     public void sendMessage(int turn, String nickname, String text) {
         Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);
         Notification.addNotification(notification);
@@ -602,6 +606,10 @@ public class GameMenuController {
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
+    }
+
+    public boolean isAmountValidForScore(int amount) {
+        return isAmountValid(amount);
     }
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
