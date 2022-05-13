@@ -7,9 +7,15 @@ import Model.User;
 public class ProfileMenuController {
 
     private ProfileMenuModel profileMenuModel;
+    private UserController userController;
 
     public ProfileMenuController(ProfileMenuModel profileMenuModel) {
         this.profileMenuModel = profileMenuModel;
+        this.userController = new UserController();
+    }
+
+    public boolean isPasswordCorrect(String username, String password) {
+        return this.userController.isPasswordCorrect(username, password);
     }
 
     public boolean isNicknameUnique(String nickname) {
