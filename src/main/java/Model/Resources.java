@@ -246,12 +246,12 @@ public class Resources {
 
     public boolean isResourceValidForThisTile(String tileType) {
         for (String baseTerrainName : this.canBeFoundOnBaseTerrain) {
-            if(baseTerrainName.equals(tileType)) {
+            if (baseTerrainName.equals(tileType)) {
                 return true;
             }
         }
         for (String featureName : this.canBeFoundOnTerrainFeature) {
-            if(featureName.equals(tileType)) {
+            if (featureName.equals(tileType)) {
                 return true;
             }
         }
@@ -260,12 +260,12 @@ public class Resources {
 
     public boolean isResourceValidForThisTile(Tile tile) {
         for (String baseTerrainName : this.canBeFoundOnBaseTerrain) {
-            if(tile.getBaseTerrain().getType().equals(baseTerrainName)) {
+            if (tile.getBaseTerrain().getType().equals(baseTerrainName)) {
                 return true;
             }
         }
         for (String featureName : this.canBeFoundOnTerrainFeature) {
-            if(tile.isThisFeatureForThisTile(featureName)) {
+            if (tile.isThisFeatureForThisTile(featureName)) {
                 return true;
             }
         }
@@ -273,12 +273,12 @@ public class Resources {
     }
 
     public static boolean isResourceOnTileValidForDiscovering(Tile tile) {
-        if(tile.getBaseTerrain().getResources() == null) {
+        if (tile.getBaseTerrain().getResources() == null) {
             return false;
         }
         Resources resources = new Resources(tile.getBaseTerrain().getResources().getName());
         for (Improvement improvement : tile.getImprovements()) {
-            if(resources.getImprovementNeeded().equals(improvement)) {
+            if (resources.getImprovementNeeded().equals(improvement)) {
                 return true;
             }
         }

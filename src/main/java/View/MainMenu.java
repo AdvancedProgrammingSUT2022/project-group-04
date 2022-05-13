@@ -38,7 +38,7 @@ public class MainMenu extends Menu {
                 System.out.println(menuShow());
             } else if ((matcher = getCommandMatcher(command, MENU_EXIT)) != null) {
                 System.out.println(menuExit(matcher));
-            }  else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
+            } else if ((matcher = getCommandMatcher(command, MENU_ENTER)) != null) {
                 String result = menuEnter(matcher);
                 if (result != null) {
                     System.out.println(result);
@@ -107,7 +107,7 @@ public class MainMenu extends Menu {
                 return "at least one username dose not exists.";
             }
         }
-        if(splitCommand.length - 1 == 1) {
+        if (splitCommand.length - 1 == 1) {
             return "you can't play with yourself!";
         }
         return "game started. good luck!";

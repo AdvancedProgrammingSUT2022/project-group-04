@@ -5,7 +5,6 @@ import Database.UserDatabase;
 public class ProfileMenuModel {
 
     /**
-     *
      * @param loggedInUser
      * @param username
      */

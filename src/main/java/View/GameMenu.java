@@ -264,7 +264,7 @@ public class GameMenu extends Menu {
                     turn = nextTurn();
                 }
                 System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_PILLAGE)) != null){
+            } else if ((matcher = getCommandMatcher(command, UNIT_PILLAGE)) != null) {
                 String result = unitPillageCurrentTile();
                 if (result.startsWith("unit")) {
                     unitSelected = null;
@@ -372,20 +372,20 @@ public class GameMenu extends Menu {
                 System.out.println(addProduction(matcher));
             } else if ((matcher = getCommandMatcher(command, CHEAT_DRY_UP)) != null) {
                 String result = dryUp(matcher);
-                if(result != null) {
+                if (result != null) {
                     System.out.println(result);
                 } else {
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
                 }
-            }else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null){
+            } else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null) {
                 String result = buyTileWithCoordinate(matcher);
                 if (result.startsWith("tile")) {
                     turn = nextTurn();
                 }
                 System.out.println(result);
-            }else {
+            } else {
                 System.out.println("invalid command");
             }
         }
@@ -397,10 +397,11 @@ public class GameMenu extends Menu {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
         if (tile == null) return "invalid tile";
-        if (gameMenuController.isTileInCivilization(tile,turn)) return "you already have this tile!";
-        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization)) return "this tile ain't adjacent to your tiles bro";
+        if (gameMenuController.isTileInCivilization(tile, turn)) return "you already have this tile!";
+        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization))
+            return "this tile ain't adjacent to your tiles bro";
         if (civilization.getGold() < priceOfBuyingTile) return "bro you dont have enough gold";
-        gameMenuController.addTileToCivilization(tile,civilization);
+        gameMenuController.addTileToCivilization(tile, civilization);
         return "congrats bro you bought it";
     }
 
@@ -425,13 +426,13 @@ public class GameMenu extends Menu {
 
     private String changeCapital(Matcher matcher) {
         String cityName = matcher.group("cityName");
-        if(!this.gameMenuController.isCityValid(cityName)) {
+        if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
         }
-        if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
+        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
             return "selected city is not for your civilization";
         }
-        if(this.gameMenuController.isCityCapital(cityName)) {
+        if (this.gameMenuController.isCityCapital(cityName)) {
             return "selected city is already capital of your civilization";
         }
         GameDatabase.players.get(turn).changeCapital(cityName);
@@ -544,10 +545,10 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
-        if(!this.gameMenuController.isAmountValidForHP(amount)) {
+        if (!this.gameMenuController.isAmountValidForHP(amount)) {
             return "invalid amount";
         }
-        if(this.gameMenuController.isAmountALot(amount)) {
+        if (this.gameMenuController.isAmountALot(amount)) {
             return "please cheat with another amount of HP!";
         }
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -603,13 +604,13 @@ public class GameMenu extends Menu {
     private String addProduction(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
         String cityName = matcher.group("cityName");
-        if(!this.gameMenuController.isCityValid(cityName)) {
+        if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
         }
-        if(!this.gameMenuController.isAmountValidForProduction(amount)) {
+        if (!this.gameMenuController.isAmountValidForProduction(amount)) {
             return "invalid amount";
         }
-        if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
+        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
             return "this city is not for your civilization";
         }
         this.gameMenuController.addProduction(cityName, amount);
@@ -626,43 +627,40 @@ public class GameMenu extends Menu {
         } else if (!this.gameMenuController.isDestinationOkForMove(unitSelected, x, y)) {
             return "there are two units with one type in a tile";
         } else {
-             int success  = unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
-             if (success == 0){
-                 return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
-             }
-             else if (success == -1){
-                 return "invalid destination";
-             }
-             else{
-                 return "not enough movementpoints";
-             }
+            int success = unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
+            if (success == 0) {
+                return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
+            } else if (success == -1) {
+                return "invalid destination";
+            } else {
+                return "not enough movementpoints";
+            }
         }
 
     }
 
-    private String createUnit(Matcher matcher){
+    private String createUnit(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         String unitType = matcher.group("unitType");
-        if(!this.gameMenuController.isPositionValid(x, y)) {
+        if (!this.gameMenuController.isPositionValid(x, y)) {
             return "invalid position";
         }
-        if(!this.gameMenuController.isTileValidForCreatingUnit(x, y, turn)) {
+        if (!this.gameMenuController.isTileValidForCreatingUnit(x, y, turn)) {
             return "you can't create unit on this tile";
         }
-        if (!gameMenuController.isTileInCivilization(GameDatabase.getTileByXAndY(x, y), turn % numberOfPlayers)){
+        if (!gameMenuController.isTileInCivilization(GameDatabase.getTileByXAndY(x, y), turn % numberOfPlayers)) {
             return "this tile is not for you";
-        }
-        else {
+        } else {
             boolean success = gameMenuController.createUnit(unitType, x, y, turn); //todo civilization index what to do?
-            if (success){
+            if (success) {
                 return "unit " + unitType + " created";
-            }
-            else {
+            } else {
                 return "cannot create a unit here";
             }
         }
     }
+
     private String unitSleep() {
         if (unitSelected == null) {
             return "you must select a unit first";
@@ -732,20 +730,16 @@ public class GameMenu extends Menu {
 
     }
 
-    private String unitPillageCurrentTile(){
+    private String unitPillageCurrentTile() {
         if (unitSelected == null) {
             return "you must select a unit first";
-        }
-        else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
             return "this unit is not for you";
-        }
-        else if (!unitSelected.isCombatUnit()) {
+        } else if (!unitSelected.isCombatUnit()) {
             return "this is not a combat unit";
-        }
-        else if (unitSelected.isInItsCivilization()){
+        } else if (unitSelected.isInItsCivilization()) {
             return "this is your civilization";
-        }
-        else {
+        } else {
             gameMenuController.pillageCurrentTile(unitSelected);
             return "unit pillaged tile";
         }
@@ -795,10 +789,9 @@ public class GameMenu extends Menu {
             return "this unit is not a combat unit";
         } else {
             boolean success = gameMenuController.garrisonUnitToCity(unitSelected);
-            if (success){
+            if (success) {
                 return "unit garrisoned to city";
-            }
-            else {
+            } else {
                 return "this units tile is not a city";
             }
         }
@@ -882,7 +875,7 @@ public class GameMenu extends Menu {
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
         if (!tile.isRaided()) return "this tile is not raided";
-        gameMenuController.assignNewProject(worker, "repair Tile") ;
+        gameMenuController.assignNewProject(worker, "repair Tile");
         return "worker successfully assigned";
     }
 
@@ -909,13 +902,13 @@ public class GameMenu extends Menu {
     private String dryUp(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!this.gameMenuController.isPositionValid(x, y)) {
+        if (!this.gameMenuController.isPositionValid(x, y)) {
             return "invalid position";
         }
-        if(this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) {
+        if (this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) {
             return "you can not dry up an ocean";
         }
-        if(!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) {
+        if (!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) {
             return "no river in this tile";
         }
         this.gameMenuController.dryUp(x, y);
@@ -925,16 +918,16 @@ public class GameMenu extends Menu {
     private String addHitPointCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         int amount = Integer.parseInt(matcher.group("amount"));
-        if(!this.gameMenuController.isAmountValidForHP(amount)) {
+        if (!this.gameMenuController.isAmountValidForHP(amount)) {
             return "invalid amount";
         }
-        if(this.gameMenuController.isAmountALot(amount)) {
+        if (this.gameMenuController.isAmountALot(amount)) {
             return "please cheat with another amount of HP!";
         }
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
         }
-        if(!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
+        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
             return "city is not for your civilization";
         }
         this.gameMenuController.addHP(cityName, amount);
@@ -975,7 +968,7 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isAmountValidForScience(science)) {
             return "invalid amount";
         }
-        this.gameMenuController.addScience(turn,science);
+        this.gameMenuController.addScience(turn, science);
         return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " science.";
     }
 
@@ -1193,17 +1186,17 @@ public class GameMenu extends Menu {
                         if (!isFirst) unitNames += "-";
                         if (isFirst) isFirst = false;
                         unitNames += unit.getUnitType().substring(0, 1);
-                        unitNames += GameDatabase.getCivilizationByTurn(unit.getCivilizationIndex()).getNickname().substring(0,1);
+                        unitNames += GameDatabase.getCivilizationByTurn(unit.getCivilizationIndex()).getNickname().substring(0, 1);
                     }
-                    if (tile.getWorker()!= null){
+                    if (tile.getWorker() != null) {
                         unitNames += "-";
                         unitNames += "W";
-                        unitNames += GameDatabase.getCivilizationByTurn(tile.getWorker().getCivilizationIndex()).getNickname().substring(0,1);
+                        unitNames += GameDatabase.getCivilizationByTurn(tile.getWorker().getCivilizationIndex()).getNickname().substring(0, 1);
                     }
-                    if (tile.getSettler()!= null){
+                    if (tile.getSettler() != null) {
                         unitNames += "-";
                         unitNames += "S";
-                        unitNames += GameDatabase.getCivilizationByTurn(tile.getSettler().getCivilizationIndex()).getNickname().substring(0,1);
+                        unitNames += GameDatabase.getCivilizationByTurn(tile.getSettler().getCivilizationIndex()).getNickname().substring(0, 1);
                     }
                     linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
                             (unitNames + "                ").substring(0, 12);//TODO Unit to print

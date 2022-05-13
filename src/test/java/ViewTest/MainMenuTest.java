@@ -56,7 +56,7 @@ public class MainMenuTest {
     @Test
     public void menuEnter_invalidMenu() {
         MainMenu mainMenu = new MainMenu(mainMenuController);
-        when( matcher.group("MenuName")).thenReturn("");
+        when(matcher.group("MenuName")).thenReturn("");
         when(mainMenuController.isMenuValid("")).thenReturn(false);
         assertEquals("menu navigation is not possible", mainMenu.menuEnter(matcher));
     }
