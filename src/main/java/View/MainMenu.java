@@ -74,7 +74,7 @@ public class MainMenu extends Menu {
         return null;
     }
 
-    private String menuExit(Matcher matcher) {
+    public String menuExit(Matcher matcher) {
         return "use user logout command";
     }
 
@@ -82,14 +82,13 @@ public class MainMenu extends Menu {
      * entered profile menu
      *
      * @param scanner
-     * @param loggedinUser
+     * @param loggedInUser
      */
-    private void enterProfileMenu(Scanner scanner, User loggedinUser) {
+    public void enterProfileMenu(Scanner scanner, User loggedInUser) {
         ProfileMenuModel profileMenuModel = new ProfileMenuModel();
         ProfileMenuController profileMenuController = new ProfileMenuController(profileMenuModel);
         ProfileMenu profileMenu = new ProfileMenu(profileMenuController);
-
-        profileMenu.run(scanner, loggedinUser);
+        profileMenu.run(scanner, loggedInUser);
     }
 
     /**
