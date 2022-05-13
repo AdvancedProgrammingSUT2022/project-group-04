@@ -658,6 +658,9 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isPositionValid(x, y)) {
             return "invalid position";
         }
+        if(!this.gameMenuController.isUnitTypeValid(unitType)){
+            return "invalid unit type";
+        }
         if (!this.gameMenuController.isTileValidForCreatingUnit(x, y, turn)) {
             return "you can't create unit on this tile";
         }
@@ -666,6 +669,8 @@ public class GameMenu extends Menu {
         } else {
             boolean success = gameMenuController.createUnit(unitType, x, y, turn); //todo civilization index what to do?
             if (success) {
+                this.x = x;
+                this.y = y;
                 return "unit " + unitType + " created";
             } else {
                 return "cannot create a unit here";
@@ -1131,10 +1136,10 @@ public class GameMenu extends Menu {
     private int nextTurn() {
         printMap(x, y);
         showNextTurn();
+        GameDatabase.nextTurn();
         if (turn != this.numberOfPlayers - 1) {
             return turn + 1;
         }
-        GameDatabase.nextTurn();
         printUnhappyCivilizations();
         return 0;
     }

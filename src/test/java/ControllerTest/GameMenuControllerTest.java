@@ -297,6 +297,18 @@ public class GameMenuControllerTest {
         assertFalse(gameMenuController.makeRoad(worker));
     }
 
+    @Test
+    public void isUnitTypeValid_valid() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertTrue(gameMenuController.isUnitTypeValid("archer"));
+    }
+
+    @Test
+    public void isUnitTypeValid_invalid() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertFalse(gameMenuController.isUnitTypeValid("boz"));
+    }
+
 
 
 
