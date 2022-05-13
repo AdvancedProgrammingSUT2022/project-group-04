@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.GameDatabase;
+import Database.GlobalVariables;
 import Model.*;
 import com.sun.jdi.ArrayReference;
 import org.mockito.internal.stubbing.defaultanswers.GloballyConfiguredAnswer;
@@ -66,7 +67,9 @@ public class GameMenuController {
     }
 
     public boolean isUnitSoldier(Unit unitSelected) {
-        return !unitSelected.getUnitType().startsWith("Civilian");
+        return !unitSelected.getUnitType().equals("settler")
+                && !unitSelected.getUnitType().equals("worker")
+                && !unitSelected.getUnitType().equals("Citizen");
     }
 
     public boolean isUnitCivilian(Unit unitSelected) {
@@ -79,6 +82,14 @@ public class GameMenuController {
 //
 //    public boolean isUnitSettler(Unit unitSelected) {
 //        return unitSelected.getUnitType().equals("Civilian Settler");
+//    }
+
+//    public boolean isUnitWorker(Unit unitSelected) {
+//        return unitSelected.getUnitType().equals("worker");
+//    }
+//
+//    public boolean isUnitSettler(Unit unitSelected) {
+//        return unitSelected.getUnitType().equals("Settler");
 //    }
 
     public boolean isCityValid(String cityName) {
@@ -211,17 +222,27 @@ public class GameMenuController {
             return false;
         }
         if (isUnitSoldier(unit)) {
-            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (isUnitSoldier(unit1)) {
+            for (int i=0;i<GameDatabase.getTileByXAndY(x, y).getUnits().size();i++){
+                if (isUnitSoldier(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))){
                     return false;
                 }
             }
+//            for (Unit unit1 : GameDatabase) {
+//                if (isUnitSoldier(unit1)) {
+//                    return false;
+//                }
+//            }
         } else {
-            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
-                if (isUnitCivilian(unit1)) {
+            for (int i=0;i<GameDatabase.getTileByXAndY(x, y).getUnits().size();i++){
+                if (isUnitCivilian(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))){
                     return false;
                 }
             }
+//            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
+//                if (isUnitCivilian(unit1)) {
+//                    return false;
+//                }
+//            }
         }
         return true;
     }
@@ -576,11 +597,7 @@ public class GameMenuController {
 
     public boolean isTileInCivilization(Tile tile, int turn) {
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
-        if (civilization == null
-                && !civilization.isTileInCivilization(tile.getX(), tile.getX())) {
-            return false;
-        }
-        return true;
+        return civilization.isTileInCivilization(tile.getX(), tile.getY());
     }
 
     public void deleteUnit(Unit unit) {
@@ -621,7 +638,7 @@ public class GameMenuController {
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         if (GameDatabase.getCityByXAndY(x, y) != null) {
-            if (unitType.equals("settler")) {
+            if (unitType.equals("Settler")) {
                 GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
                 return true;
             } else if (unitType.equals("worker")) {
@@ -664,7 +681,6 @@ public class GameMenuController {
     }
 
     public boolean garrisonUnitToCity(Unit unit) {
-
         City city = GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY());
         if (city != null) {
             city.setGarrison(unit);
@@ -686,6 +702,15 @@ public class GameMenuController {
             unit.getTileOfUnit().setRoadBroken(true);
             unit.getTileOfUnit().setRailroadBroken(true);
         }
+    }
+
+    public boolean isUnitTypeValid(String unitType) {
+        for (String unit : GlobalVariables.UNITS) {
+            if(unitType.equalsIgnoreCase(unit)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
