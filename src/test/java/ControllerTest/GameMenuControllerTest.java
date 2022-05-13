@@ -192,17 +192,53 @@ public class GameMenuControllerTest {
         verify(gameMenuController).selectCombatUnit(x,y);
     }
 
-//    @Test
-//    public void addHPCoordinate(){
-//        int x = 1;
-//        int y = 2;
-//        int amount = 10;
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        gameMenuController.addHP("",amount);
-//        when(gameMenuController.selectUnitCombat(x,y)).thenReturn(unit);
-//        verify(unit).addHP(amount);
-//        //Assertions.assertTrue(gameMenuController.addHP(x,y,amount));
-//    }
+    @Test
+    public void addHPCoordinate(){
+        int x = 1;
+        int y = 2;
+        int amount = 10;
+        String cityName = "Amol";
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        gameMenuController.addHP(cityName,amount);
+        verify(city).addHP(amount);
+    }
+
+    @Test
+    public void makeHappy(){
+        int x = 1;
+        int y = 2;
+        int amount = 10;
+        String cityName = "Amol";
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        gameMenuController.addHP(cityName,amount);
+        verify(city).addHP(amount);
+    }
+
+    @Test
+    public void addHPCoordinate(){
+        int x = 1;
+        int y = 2;
+        int amount = 10;
+        String cityName = "Amol";
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        gameMenuController.addHP(cityName,amount);
+        verify(city).addHP(amount);
+    }
+
+    @Test
+    public void addHPCoordinate(){
+        int x = 1;
+        int y = 2;
+        int amount = 10;
+        String cityName = "Amol";
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        gameMenuController.addHP(cityName,amount);
+        verify(city).addHP(amount);
+    }
 
     @Test
     public void isCityPositionValid_Equals(){
