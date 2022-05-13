@@ -33,6 +33,9 @@ public class CombatController {
         ArrayList<Unit> unitsInPosition = GameDatabase.getTileByXAndY(x, y).getUnits();
         if (unit1 instanceof Soldier) {
             Soldier soldier1 = (Soldier) unit1;
+            if (!soldier1.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x,y))){
+                return false;
+            }
             boolean won = true;
             if (soldier1.getRange() == 0) {
                 //melee attack
