@@ -19,6 +19,9 @@ public class GlobalVariables {
 
     public static final String[] TERRAIN_FEATURES = new String[]{"Prairie", "Jungle", "Ice", "DenseJungle", "Swamp", "Oasis"};
 
+    public static final String[] IMPROVEMENTS = new String[]{"Camp", "Farm", "LumberMill", "Mine", "Pasture", "Plantation", "Quarry",
+            "TradingPost", "Factory"};
+
     public static final int firstHappiness = 50;
     public static final int happinessForEachCitizen = 1;
     public static final int happinessForEachCity = 1;

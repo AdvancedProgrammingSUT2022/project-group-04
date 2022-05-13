@@ -65,7 +65,9 @@ public class GameMenuController {
     }
 
     public boolean isUnitSoldier(Unit unitSelected) {
-        return !unitSelected.getUnitType().startsWith("Civilian");
+        return !unitSelected.getUnitType().equals("Settler")
+                && !unitSelected.getUnitType().equals("worker")
+                && !unitSelected.getUnitType().equals("Citizen");
     }
 
     public boolean isUnitCivilian(Unit unitSelected) {
@@ -73,11 +75,11 @@ public class GameMenuController {
     }
 
     public boolean isUnitWorker(Unit unitSelected) {
-        return unitSelected.getUnitType().equals("Civilian Worker");
+        return unitSelected.getUnitType().equals("worker");
     }
 
     public boolean isUnitSettler(Unit unitSelected) {
-        return unitSelected.getUnitType().equals("Civilian Settler");
+        return unitSelected.getUnitType().equals("Settler");
     }
 
     public boolean isCityValid(String cityName) {
@@ -569,11 +571,7 @@ public class GameMenuController {
 
     public boolean isTileInCivilization(Tile tile, int turn) {
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
-        if (civilization == null
-                && !civilization.isTileInCivilization(tile.getX(), tile.getX())) {
-            return false;
-        }
-        return true;
+        return civilization.isTileInCivilization(tile.getX(), tile.getY());
     }
 
     public void deleteUnit(Unit unit) {
@@ -614,7 +612,7 @@ public class GameMenuController {
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         if (GameDatabase.getCityByXAndY(x, y) != null) {
-            if (unitType.equals("settler")) {
+            if (unitType.equals("Settler")) {
                 GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
                 return true;
             } else if (unitType.equals("worker")) {
@@ -657,7 +655,6 @@ public class GameMenuController {
     }
 
     public boolean garrisonUnitToCity(Unit unit) {
-
         City city = GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY());
         if (city != null) {
             city.setGarrison(unit);

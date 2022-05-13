@@ -2,9 +2,9 @@ package ControllerTest;
 
 import Controller.GameMenuController;
 import Database.GameDatabase;
+import Database.GlobalVariables;
 import Database.UserDatabase;
-import Model.GameModel;
-import Model.Tile;
+import Model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +35,37 @@ public class GameMenuControllerTest {
 
     @Mock
     Tile tile;
+
+    @Mock
+    ArrayList<Improvement> improvements;
+
+    @Mock
+    Improvement improvement;
+
+    @Mock
+    Unit unit;
+
+    @Mock
+    City city;
+
+    @Mock
+    ArrayList<Worker> workers;
+
+    @Mock
+    ArrayList<Settler> settlers;
+
+    @Mock
+    Worker worker;
+
+    @Mock
+    Settler settler;
+
+    @Mock
+    ArrayList<City> cities;
+
+    @Mock
+    Civilization civilization;
+
 
 
     @BeforeAll
@@ -105,4 +136,170 @@ public class GameMenuControllerTest {
 ////        when(GameDatabase.map).thenReturn(map);
 ////        Assertions.assertFalse(gameMenuController.isPositionValid(10,80));
 ////    }
+
+    @Test
+    public void pillageCurrentTile() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(unit.getTileOfUnit()).thenReturn(tile);
+        ArrayList<Improvement> improvements = new ArrayList<Improvement>();
+        for (String improvement : GlobalVariables.IMPROVEMENTS) {
+            improvements.add(new Improvement(improvement));
+        }
+        when(tile.getImprovements()).thenReturn(improvements);
+        when(tile.hasRoad()).thenReturn(true);
+        gameMenuController.pillageCurrentTile(unit);
+    }
+
+    @Test
+    public void garrisonUnitToCity_notNullCity() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(unit.getTileOfUnit()).thenReturn(tile);
+        when(tile.getX()).thenReturn(0);
+        when(tile.getY()).thenReturn(0);
+        database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
+        assertTrue(gameMenuController.garrisonUnitToCity(unit));
+    }
+
+    @Test
+    public void garrisonUnitToCity_NullCity() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(unit.getTileOfUnit()).thenReturn(tile);
+        when(tile.getX()).thenReturn(0);
+        when(tile.getY()).thenReturn(0);
+        database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(null);
+        assertFalse(gameMenuController.garrisonUnitToCity(unit));
+    }
+
+    @Test
+    public void getListOfUnemployedWorker_notNullWorker() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(city.getWorker()).thenReturn(worker);
+        gameMenuController.getListOfUnemployedWorker(city);
+    }
+
+    @Test
+    public void getListOfUnemployedWorker_nullWorker() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(city.getWorker()).thenReturn(null);
+        gameMenuController.getListOfUnemployedWorker(city);
+    }
+
+    @Test
+    public void getListOfUnemployedSettler_notNullSettler() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(city.getSettler()).thenReturn(settler);
+        gameMenuController.getListOfUnemployedSettler(city);
+    }
+
+    @Test
+    public void getListOfUnemployedSettler_nullSettler() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(city.getSettler()).thenReturn(null);
+        gameMenuController.getListOfUnemployedSettler(city);
+    }
+
+    @Test
+    public void addTileToCivilization() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.addTileToCivilization(tile, civilization);
+    }
+
+    @Test
+    public void isTileAdjacentToCivilization() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.isTileAdjacentToCivilization(tile, civilization);
+    }
+
+    @Test
+    public void createNonCombatUnit_nullTile() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(null);
+        assertFalse(gameMenuController.createNonCombatUnit("Spearman", 0, 0, 0));
+    }
+
+    @Test
+    public void createNonCombatUnit_settler() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
+        assertTrue(gameMenuController.createNonCombatUnit("Settler", 0, 0, 0));
+    }
+
+    @Test
+    public void createNonCombatUnit_worker() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
+        assertTrue(gameMenuController.createNonCombatUnit("worker", 0, 0, 0));
+    }
+
+    @Test
+    public void createNonCombatUnit_notCitizen() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
+        assertFalse(gameMenuController.createNonCombatUnit("Spearman", 0, 0, 0));
+    }
+
+    @Test
+    public void isAmountValidForScore() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertFalse(gameMenuController.isAmountValidForScore(0));
+    }
+
+    @Test
+    public void createCombatUnit() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.createNonCombatUnit("Spearman", 0, 0, 0);
+    }
+
+    @Test
+    public void isTileValidForCreatingUnit() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(civilization.getClearTiles()).thenReturn(tiles);
+        database.when(() -> GameDatabase.getTileByXAndY(0, 0)).thenReturn(tile);
+        assertFalse(gameMenuController.isTileValidForCreatingUnit(0, 0, 0));
+    }
+
+    @Test
+    public void createUnit() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getTileByXAndY(0, 0)).thenReturn(tile);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(civilization.getClearTiles()).thenReturn(tiles);
+        assertFalse(gameMenuController.createUnit("worker", 0, 0, 0));
+    }
+
+    @Test
+    public void deleteUnit() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(unit.getCost()).thenReturn(10);
+        when(unit.getTileOfUnit()).thenReturn(tile);
+        gameMenuController.deleteUnit(unit);
+    }
+
+    @Test
+    public void isTileInCivilization_nullCivilization() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        assertFalse(gameMenuController.isTileInCivilization(tile, 0));
+    }
+
+    @Test
+    public void makeRoad() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(0);
+        when(worker.getY()).thenReturn(0);
+        database.when(() -> GameDatabase.getTileByXAndY(0, 0)).thenReturn(tile);
+        database.when(() -> GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Wheel")).thenReturn(true);
+        when(tile.hasRoad()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("Mountain");
+        assertFalse(gameMenuController.makeRoad(worker));
+    }
+
+
+
+
+
+
 }
