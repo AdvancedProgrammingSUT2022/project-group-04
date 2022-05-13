@@ -194,8 +194,6 @@ public class GameMenuControllerTest {
 
     @Test
     public void addHPCoordinate(){
-        int x = 1;
-        int y = 2;
         int amount = 10;
         String cityName = "Amol";
         GameMenuController gameMenuController = mock(GameMenuController.class);
@@ -206,39 +204,60 @@ public class GameMenuControllerTest {
 
     @Test
     public void makeHappy(){
-        int x = 1;
-        int y = 2;
-        int amount = 10;
+        int turn = 0;
         String cityName = "Amol";
         GameMenuController gameMenuController = mock(GameMenuController.class);
-        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
-        gameMenuController.addHP(cityName,amount);
-        verify(city).addHP(amount);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.makeHappy(turn);
+        verify(civilization).happy();
     }
 
     @Test
-    public void addHPCoordinate(){
+    public void dryUp(){
         int x = 1;
         int y = 2;
-        int amount = 10;
-        String cityName = "Amol";
         GameMenuController gameMenuController = mock(GameMenuController.class);
-        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
-        gameMenuController.addHP(cityName,amount);
-        verify(city).addHP(amount);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile0);
+        gameMenuController.dryUp(x,y);
+        verify(tile0).dryUp();
     }
 
     @Test
-    public void addHPCoordinate(){
-        int x = 1;
-        int y = 2;
+    public void addGold(){
         int amount = 10;
-        String cityName = "Amol";
+        int turn = 0;
         GameMenuController gameMenuController = mock(GameMenuController.class);
-        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
-        gameMenuController.addHP(cityName,amount);
-        verify(city).addHP(amount);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.addGold(turn,amount);
+        verify(civilization).addGold(amount);
     }
+
+    @Test
+    public void addScience(){
+        int amount = 10;
+        int turn = 0;
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.addScience(turn,amount);
+        verify(civilization).addScience(amount);
+    }
+
+    @Test
+    public void addScore(){
+        int amount = 10;
+        int turn = 0;
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.addScore(turn,amount);
+        verify(civilization).addScore(amount);
+    }
+
+    //TODO sendMessage function
+
 
     @Test
     public void isCityPositionValid_Equals(){
@@ -452,5 +471,5 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Assertions.assertFalse(gameMenuController.isImprovementValid(name));
     }
-
+    
 }

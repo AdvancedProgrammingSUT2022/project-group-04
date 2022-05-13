@@ -177,7 +177,7 @@ public class GameMenuController {
     }
 
     public void makeHappy(int turn) {
-        GameDatabase.players.get(turn).happy();
+        GameDatabase.getPlayers().get(turn).happy();
     }
 
     public void dryUp(int x, int y) {
@@ -185,19 +185,19 @@ public class GameMenuController {
     }
 
     public void addGold(int turn, int amount) {
-        GameDatabase.players.get(turn).addGold(amount);
+        GameDatabase.getPlayers().get(turn).addGold(amount);
     }
 
     public void addScience(int turn, int science) {
-        GameDatabase.players.get(turn).addScience(science);
+        GameDatabase.getPlayers().get(turn).addScience(science);
     }
 
     public void addScore(int turn, int score) {
-        GameDatabase.players.get(turn).addScore(score);
+        GameDatabase.getPlayers().get(turn).addScore(score);
     }
 
     public void sendMessage(int turn, String nickname, String text) {
-        Notification notification = new Notification(GameDatabase.players.get(turn).getNickname(), nickname, text);
+        Notification notification = new Notification(GameDatabase.getPlayers().get(turn).getNickname(), nickname, text);
         Notification.addNotification(notification);
     }
 
