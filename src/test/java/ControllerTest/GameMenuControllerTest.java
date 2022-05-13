@@ -48,6 +48,15 @@ public class GameMenuControllerTest {
     @Mock
     Civilization civilization;
 
+    @Mock
+    Settler settler;
+
+    @Mock
+    ArrayList<Civilization> players;
+
+    @Mock
+    ArrayList<City> cities;
+
 
     @BeforeAll
     public static void setUp() {
@@ -116,35 +125,35 @@ public class GameMenuControllerTest {
     }
 
     //TODO fix this and implement unit test for others like : isNonCombatUnitInThisPosition, selectNonCombatUnit, selectCombatUnit
-    @Test
-    public void isCombatUnitInThisPosition_True(){
-        int x = 10;
-        int y = 20;
-        GameMenuController gameMenuController = new GameMenuController(gameModel) ;
-        Tile tile1 = new Tile("","",x,y);
-        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile1);
-        //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile1.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
-        when(unit.getUnitType()).thenReturn("Civilian");
-        Assertions.assertTrue(gameMenuController.isCombatUnitInThisPosition(x,y));
-    }
-
-    @Test
-    public void isCombatUnitInThisPosition_False(){
-        int x = 10;
-        int y = 20;
-        GameMenuController gameMenuController = new GameMenuController(gameModel) ;
-        Tile tile1 = new Tile("","",x,y);
-        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile1);
-        //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile1.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
-        when(unit.getUnitType()).thenReturn("Archer");
-        Assertions.assertFalse(gameMenuController.isCombatUnitInThisPosition(x,y));
-    }
+//    @Test
+//    public void isCombatUnitInThisPosition_True(){
+//        int x = 10;
+//        int y = 20;
+//        GameMenuController gameMenuController = new GameMenuController(gameModel) ;
+//        Tile tile1 = new Tile("","",x,y);
+//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile1);
+//        //ArrayList<Unit> units1 = new ArrayList<>();
+//        when(tile1.getUnits()).thenReturn(units);
+//        when(units.size()).thenReturn(1);
+//        when(units.get(0)).thenReturn(unit);
+//        when(unit.getUnitType()).thenReturn("Civilian");
+//        Assertions.assertTrue(gameMenuController.isCombatUnitInThisPosition(x,y));
+//    }
+//
+//    @Test
+//    public void isCombatUnitInThisPosition_False(){
+//        int x = 10;
+//        int y = 20;
+//        GameMenuController gameMenuController = new GameMenuController(gameModel) ;
+//        Tile tile1 = new Tile("","",x,y);
+//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile1);
+//        //ArrayList<Unit> units1 = new ArrayList<>();
+//        when(tile1.getUnits()).thenReturn(units);
+//        when(units.size()).thenReturn(1);
+//        when(units.get(0)).thenReturn(unit);
+//        when(unit.getUnitType()).thenReturn("Archer");
+//        Assertions.assertFalse(gameMenuController.isCombatUnitInThisPosition(x,y));
+//    }
 
     @Test
     public void isDirectionValidForMap_True(){
@@ -176,16 +185,6 @@ public class GameMenuControllerTest {
 
     @Test
     public void addHPCityName(){
-//        int x = 1;
-//        int y = 2;
-//        int amount = 10;
-//        City city1 = mock(City.class);
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getCityByName("")).thenReturn(city1);
-//        gameMenuController.addHP("",amount);
-//        //when(city.addHP(amount)).thenReturn()
-//        verify(city1).addHP(amount);
-//        //Assertions.assertTrue(gameMenuController.addHP(x,y,amount));
         int x = 10;
         int y = 10;
         GameMenuController gameMenuController = mock(GameMenuController.class);
@@ -261,6 +260,13 @@ public class GameMenuControllerTest {
     }
 
     @Test
+    public void isAmountValidForProduction(){
+        int amount = 0;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertFalse(gameMenuController.isAmountValidForProduction(amount));
+    }
+
+    @Test
     public void isAmountValidForHP(){
         int amount = 0;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -285,6 +291,130 @@ public class GameMenuControllerTest {
     public void isCheatForFun_False(){
         int turn = 2;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getCivilizationIndex("")).thenReturn(turn);
         Assertions.assertFalse(gameMenuController.isCheatForTurn("",turn));
     }
+
+    @Test
+    public void isCheatForFun_True(){
+        int turn = 2;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getCivilizationIndex("")).thenReturn(turn+1);
+        Assertions.assertTrue(gameMenuController.isCheatForTurn("",turn));
+    }
+
+    @Test
+    public void isAmountALot(){
+        int amount = 20;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertTrue(gameMenuController.isAmountALot(amount));
+    }
+
+    @Test
+    public void isAmountValid_True(){
+        int amount = 2;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertTrue(gameMenuController.isAmountValid(amount));
+    }
+
+    @Test
+    public void isAmountValid_False(){
+        int amount = -2;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertFalse(gameMenuController.isAmountValid(amount));
+    }
+
+    @Test
+    public void isCityForThisCivilization_True(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        int turn = 0;
+        //when(players.size()).thenReturn(1);
+        when(players.get(turn)).thenReturn(civilization);
+        when(civilization.getCities()).thenReturn(cities);
+        when(cities.size()).thenReturn(1);
+        when(cities.get(0)).thenReturn(city);
+        when(city.getName()).thenReturn("");
+        Assertions.assertTrue(gameMenuController.isCityForThisCivilization(turn,city));
+    }
+
+    @Test
+    public void isCityForThisCivilization_False(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        int turn = 0;
+        //when(players.size()).thenReturn(1);
+        when(players.get(turn)).thenReturn(civilization);
+        when(civilization.getCities()).thenReturn(cities);
+        when(cities.size()).thenReturn(1);
+        City city1 = mock(City.class);
+        when(cities.get(0)).thenReturn(city1);
+        when(city1.getName()).thenReturn("something");
+        when(city.getName()).thenReturn("something else!");
+        Assertions.assertFalse(gameMenuController.isCityForThisCivilization(turn,city));
+    }
+
+    @Test
+    public void addTileToCity(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.addTileToCity(tile0,city);
+        verify(city).addTile(tile0);
+    }
+
+    @Test
+    public void createNewCity(){
+        String cityName = "something cool and funny that makes you laugh";
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.createNewCity(settler,cityName);
+        verify(settler).createNewCity(cityName);
+    }
+
+    @Test
+    public void isAdjacent_False(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile1 = mock(Tile.class);
+        when(tile0.getAdjacentTiles()).thenReturn(tiles);
+        when(city.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile1);
+        when(tiles.contains(tile1)).thenReturn(false);
+        Assertions.assertFalse(gameMenuController.isAdjacent(tile0,city));
+    }
+
+    @Test
+    public void isAdjacent_True(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile1 = mock(Tile.class);
+        when(tile0.getAdjacentTiles()).thenReturn(tiles);
+        when(city.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile1);
+        when(tiles.contains(tile1)).thenReturn(true);
+        Assertions.assertTrue(gameMenuController.isAdjacent(tile0,city));
+    }
+
+    @Test
+    public void addProduction(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        String cityName = "gotham";
+        int amount = 10;
+        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        gameMenuController.addProduction(cityName,amount);
+        verify(city).addProduction(amount);
+    }
+
+    @Test
+    public void isImprovementNameValid_True(){
+        String name = "Quarry";
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertTrue(gameMenuController.isImprovementValid(name));
+    }
+
+    @Test
+    public void isImprovementNameValid_False(){
+        String name = "BandCamp(this one time     at band camp sth)";
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertFalse(gameMenuController.isImprovementValid(name));
+    }
+
 }

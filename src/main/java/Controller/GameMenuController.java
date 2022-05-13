@@ -3,6 +3,7 @@ package Controller;
 import Database.GameDatabase;
 import Model.*;
 import com.sun.jdi.ArrayReference;
+import org.mockito.internal.stubbing.defaultanswers.GloballyConfiguredAnswer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -269,12 +270,18 @@ public class GameMenuController {
     }
 
     public boolean isCityForThisCivilization(int turn, City citySelected) {
-        for (City city : GameDatabase.players.get(turn).getCities()) {
-            if (city.getName().equals(citySelected.getName())) {
+        for (int i=0;i<GameDatabase.getPlayers().get(turn).getCities().size();i++){
+            if (GameDatabase.getPlayers().get(turn).getCities().get(i).getName().equals(citySelected.getName())){
                 return true;
             }
         }
         return false;
+//        for (City city : GameDatabase.getPlayers().get(turn).getCities()) {
+//            if (city.getName().equals(citySelected.getName())) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
 //    public boolean isCityNameUnique(String cityName) {
@@ -292,27 +299,33 @@ public class GameMenuController {
         return isAmountValid(amount);
     }
 
-    public String buildCity(Matcher matcher) {
-        int xOfCity = Integer.parseInt(matcher.group("x"));
-        int yOfCity = Integer.parseInt(matcher.group("y"));
-        //TODO when commands are released
-//        if (){
-//
-//        }
-        return "";
-    }
+//    public String buildCity(Matcher matcher) {
+//        int xOfCity = Integer.parseInt(matcher.group("x"));
+//        int yOfCity = Integer.parseInt(matcher.group("y"));
+//        //TODO when commands are released
+////        if (){
+////
+////        }
+//        return "";
+//    }
 
     public void createNewCity(Settler settler, String cityName) {
         settler.createNewCity(cityName);
     }
 
     public boolean isAdjacent(Tile tile, City city) {
-        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
-        ArrayList<Tile> tilesOfCity = city.getTiles();
-        for (Tile tile1 : tilesOfCity) {
-            if (neighbours.contains(tile1)) return true;
+//        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
+//        ArrayList<Tile> tilesOfCity = city.getTiles();
+        for (int i=0 ;i<city.getTiles().size();i++){
+            if (tile.getAdjacentTiles().contains(city.getTiles().get(i))){
+                return true;
+            }
         }
         return false;
+//        for (Tile tile1 : city.getTiles()) {
+//            if (tile.getAdjacentTiles().contains(tile1)) return true;
+//        }
+//        return false;
     }
 
     public void addTileToCity(Tile tile, City city) {

@@ -1156,7 +1156,7 @@ public class GameMenu extends Menu {
                             linesOfHexagons[i + 2][j + 2][k] += " ";
                     }
                 } else {
-                    //TODO set lines of hexagons with format
+                    //set lines of hexagons with format
                     String colorOfHexagon = "";
                     if (tile.getBaseTerrainType().equals("Desert") || tile.getBaseTerrainType().equals("Meadow")) {
                         colorOfHexagon = Colors.ANSI_YELLOW_BACKGROUND;
@@ -1210,7 +1210,7 @@ public class GameMenu extends Menu {
                         unitNames += GameDatabase.getCivilizationByTurn(tile.getSettler().getCivilizationIndex()).getNickname().substring(0, 1);
                     }
                     linesOfHexagons[i + 2][j + 2][3] = Colors.ANSI_RESET + colorOfHexagon +
-                            (unitNames + "                ").substring(0, 12);//TODO Unit to print
+                            (unitNames + "                ").substring(0, 12);
                     //showing Features
                     String allFeatures = " ";
                     for (int k = 0; k < tile.getBaseTerrain().getPossibleFeatures().size(); k++) {
