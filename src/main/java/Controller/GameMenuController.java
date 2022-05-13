@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.GameDatabase;
+import Database.GlobalVariables;
 import Model.*;
 import com.sun.jdi.ArrayReference;
 
@@ -676,6 +677,15 @@ public class GameMenuController {
             unit.getTileOfUnit().setRoadBroken(true);
             unit.getTileOfUnit().setRailroadBroken(true);
         }
+    }
+
+    public boolean isUnitTypeValid(String unitType) {
+        for (String unit : GlobalVariables.UNITS) {
+            if(unitType.equalsIgnoreCase(unit)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
