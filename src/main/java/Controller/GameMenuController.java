@@ -39,9 +39,9 @@ public class GameMenuController {
     }
 
     public boolean isPositionValid(int x, int y) {
-        for (int i = 0; i < GameDatabase.map.size(); i++) {
-            if ((GameDatabase.map.get(i).getX() == x)
-                    && (GameDatabase.map.get(i).getY() == y)) {
+        for (int i = 0; i < GameDatabase.getMap().size(); i++) {
+            if ((GameDatabase.getMap().get(i).getX() == x)
+                    && (GameDatabase.getMap().get(i).getY() == y)) {
                 return true;
             }
         }
