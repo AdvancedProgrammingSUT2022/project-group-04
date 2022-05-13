@@ -64,6 +64,10 @@ public class GameDatabase {
         return null;
     }
 
+    public static ArrayList<Tile> getMap() {
+        return GameDatabase.map;
+    }
+
 
     public static Tile getTileByXAndY(int x, int y) {
 

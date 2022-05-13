@@ -39,9 +39,9 @@ public class GameMenuController {
     }
 
     public boolean isPositionValid(int x, int y) {
-        for (int i = 0; i < GameDatabase.map.size(); i++) {
-            if ((GameDatabase.map.get(i).getX() == x)
-                    && (GameDatabase.map.get(i).getY() == y)) {
+        for (int i = 0; i < GameDatabase.getMap().size(); i++) {
+            if ((GameDatabase.getMap().get(i).getX() == x)
+                    && (GameDatabase.getMap().get(i).getY() == y)) {
                 return true;
             }
         }
@@ -192,6 +192,10 @@ public class GameMenuController {
 
     public void addScience(int turn, int science) {
         GameDatabase.players.get(turn).addScience(science);
+    }
+
+    public void addScore(int turn, int score) {
+        GameDatabase.players.get(turn).addScore(score);
     }
 
     public void sendMessage(int turn, String nickname, String text) {
@@ -602,6 +606,10 @@ public class GameMenuController {
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
+    }
+
+    public boolean isAmountValidForScore(int amount) {
+        return isAmountValid(amount);
     }
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {

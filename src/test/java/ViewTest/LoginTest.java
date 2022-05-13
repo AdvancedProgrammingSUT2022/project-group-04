@@ -27,6 +27,9 @@ public class LoginTest {
     @Mock
     Matcher matcher;
 
+    @Mock
+    Scanner scanner;
+
 
     @BeforeEach
     public void setUp() {
@@ -116,5 +119,14 @@ public class LoginTest {
         when(loginMenuController.isUserExists("")).thenReturn(true);
         when(loginMenuController.isPasswordCorrect("", "")).thenReturn(true);
         assertEquals("user logged in successfully!", loginMenu.userLogin(matcher));
+    }
+
+    @Test
+    public void run_menuExit() {
+        String command = "menu exit";
+        when(scanner.nextLine()).thenReturn(command);
+        when(loginMenuController.commandCorrector("menu exit")).thenReturn(command);
+        LoginMenu loginMenu = new LoginMenu(loginMenuController);
+        assertNull(loginMenu.run(scanner));
     }
 }
