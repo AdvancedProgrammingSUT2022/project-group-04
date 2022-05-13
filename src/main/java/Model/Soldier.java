@@ -257,6 +257,14 @@ public class Soldier extends Unit {
         }
     }
 
+    public int getSiegeReady() {
+        return siegeReady;
+    }
+
+    public void setSiegeReady(int siegeReady) {
+        this.siegeReady = siegeReady;
+    }
+
     public String getCombatType() {
         return combatType;
     }

@@ -205,9 +205,19 @@ public class GameMenu extends Menu {
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null) {
-                //TODO...
+                String result = unitSetupRange();
+                if (result.startsWith("siege")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
-                //TODO...
+                String result = unitAttack(matcher);
+                if (result.startsWith("unit")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
+                System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
                 String result = unitFoundCity(matcher);
                 if (result.startsWith("unit")) {
@@ -774,10 +784,35 @@ public class GameMenu extends Menu {
             int y = Integer.parseInt(matcher.group("y"));
             Soldier soldier = (Soldier) unitSelected;
             if (soldier.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x, y))) {
-                combatController.UnitAttackPosition(soldier, x, y);
-                return "unit attacked desired position";
+                boolean success = combatController.UnitAttackPosition(soldier, x, y);
+                if (success) {
+                    if (((Soldier) unitSelected).getCombatType().equals("siege")){
+                        ((Soldier) unitSelected).setSiegeReady(0);
+                    }
+                    return "unit attacked desired position";
+                }
+                else
+                    return "siege unit is not ready";
             } else {
                 return "selected position is in not in range of unit";
+            }
+        }
+    }
+
+    private String unitSetupRange(){
+        if (unitSelected == null) {
+            return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
+            return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)) {
+            return "this unit is not a combat unit";
+        } else {
+            boolean success = combatController.getSiegeUnitReady((Soldier) unitSelected);
+            if (success){
+                return "siege unit is setup";
+            }
+            else{
+                return "this is not a siege unit";
             }
         }
     }
