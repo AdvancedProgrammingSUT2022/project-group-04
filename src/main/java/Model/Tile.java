@@ -120,8 +120,8 @@ public class Tile {
         base[12] = 6;
         base[13] = 3;
         base[14] = 3;
-        //
         base[15] = 3;
+        //
         base[16] = 3;
         base[17] = 3;
         base[18] = 3;

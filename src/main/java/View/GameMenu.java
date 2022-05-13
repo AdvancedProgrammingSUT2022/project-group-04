@@ -245,10 +245,10 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_FEATURE)) != null) {
                 String result = unitRemoveFeature(matcher);
-//                if (result.startsWith("unit")) {
-//                    unitSelected = null;
-//                    turn = nextTurn();
-//                }
+                if (result.startsWith("worker")) {
+                    unitSelected = null;
+                    turn = nextTurn();
+                }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
                 String result = unitRepair(matcher);
