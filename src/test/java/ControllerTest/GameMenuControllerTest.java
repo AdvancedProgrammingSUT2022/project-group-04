@@ -203,79 +203,79 @@ public class GameMenuControllerTest {
         Assertions.assertFalse(gameMenuController.isUnitForThisCivilization(0,unit));
     }
 
-//    @Test
-//    public void addHPCoordinate(){
-//        int x = 10;
-//        int y = 10;
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        gameMenuController.addHP(x,y,10);
-//        verify(gameMenuController).selectCombatUnit(x,y);
-//    }
+    @Test
+    public void addHPCoordinate(){
+        int x = 10;
+        int y = 10;
+        int amount = 9;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        doReturn(unit).when(gameMenuController).selectCombatUnit(x,y);
+        gameMenuController.addHP(x,y,amount);
+        verify(unit).addHP(amount);
+    }
 
-//    @Test
-//    public void addHPCityName(){
-//        int amount = 10;
-//        String cityName = "Amol";
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
-//        gameMenuController.addHP(cityName,amount);
-//        verify(city).addHP(amount);
-//    }
+    @Test
+    public void addHPCityName(){
+        int amount = 10;
+        String cityName = "Amol";
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        gameMenuController.addHP(cityName,amount);
+        verify(city).addHP(amount);
+    }
+    
+    @Test
+    public void makeHappy(){
+        int turn = 0;
+        String cityName = "Amol";
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.makeHappy(turn);
+        verify(civilization).happy();
+    }
+    @Test
+    public void dryUp(){
+        int x = 1;
+        int y = 2;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile0);
+        gameMenuController.dryUp(x,y);
+        verify(tile0).dryUp();
+    }
 
-
-    //TODO fix below functions
-//    @Test
-//    public void makeHappy(){
-//        int turn = 0;
-//        String cityName = "Amol";
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
-//        when(players.get(turn)).thenReturn(civilization);
-//        gameMenuController.makeHappy(turn);
-//        verify(civilization).happy();
-//    }
-//    @Test
-//    public void dryUp(){
-//        int x = 1;
-//        int y = 2;
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile0);
-//        gameMenuController.dryUp(x,y);
-//        verify(tile0).dryUp();
-//    }
-
-//    @Test
-//    public void addGold(){
-//        int amount = 10;
-//        int turn = 0;
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
-//        when(players.get(turn)).thenReturn(civilization);
-//        gameMenuController.addGold(turn,amount);
-//        verify(civilization).addGold(amount);
-//    }
+    @Test
+    public void addGold(){
+        int amount = 10;
+        int turn = 0;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.addGold(turn,amount);
+        verify(civilization).addGold(amount);
+    }
 //
-//    @Test
-//    public void addScience(){
-//        int amount = 10;
-//        int turn = 0;
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
-//        when(players.get(turn)).thenReturn(civilization);
-//        gameMenuController.addScience(turn,amount);
-//        verify(civilization).addScience(amount);
-//    }
+    @Test
+    public void addScience(){
+        int amount = 10;
+        int turn = 0;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.addScience(turn,amount);
+        verify(civilization).addScience(amount);
+    }
 //
     @Test
     public void addScore(){
         int amount = 10;
         int turn = 0;
-        GameMenuController gameMenuController = mock(GameMenuController.class);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getPlayers()).thenReturn(players);
         //when(players.size()).thenReturn(1);
-        when(players.get(turn)).thenReturn(civilization);
+        when(players.get(0)).thenReturn(civilization);
         gameMenuController.addScore(turn,amount);
-        //verify(civilization).addScore(amount);
+        verify(civilization).addScore(amount);
     }
 
     //TODO sendMessage function
