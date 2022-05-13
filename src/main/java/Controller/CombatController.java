@@ -111,8 +111,14 @@ public class CombatController {
         // ToDO think there should be more to this funciton
     }
 
-    public void getSiegeUnitReady(Soldier soldier) {
-        //todo...
+    public boolean getSiegeUnitReady(Soldier soldier) {
+        if (soldier.getCombatType().equals("Siege")){
+            soldier.setSiegeReady(1);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }
