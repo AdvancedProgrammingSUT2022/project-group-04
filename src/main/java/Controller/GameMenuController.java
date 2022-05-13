@@ -72,43 +72,43 @@ public class GameMenuController {
         return !isUnitSoldier(unitSelected);
     }
 
-    public boolean isUnitWorker(Unit unitSelected) {
-        return unitSelected.getUnitType().equals("Civilian Worker");
-    }
-
-    public boolean isUnitSettler(Unit unitSelected) {
-        return unitSelected.getUnitType().equals("Civilian Settler");
-    }
+//    public boolean isUnitWorker(Unit unitSelected) {
+//        return unitSelected.getUnitType().equals("Civilian Worker");
+//    }
+//
+//    public boolean isUnitSettler(Unit unitSelected) {
+//        return unitSelected.getUnitType().equals("Civilian Settler");
+//    }
 
     public boolean isCityValid(String cityName) {
         City city = GameDatabase.getCityByName(cityName);
         return city != null;
     }
 
-    public boolean isJungleInThisTile(Tile tile) {
-        return tile.getBaseTerrain().getFeature().getType().endsWith("Jungle");
-    }
+//    public boolean isJungleInThisTile(Tile tile) {
+//        return tile.getBaseTerrain().getFeature().getType().endsWith("Jungle");
+//    }
+//
+//    public boolean isRouteInThisTile(Tile tile) {
+//        return tile.hasRoad() || tile.hasRailroad();
+//    }
 
-    public boolean isRouteInThisTile(Tile tile) {
-        return tile.hasRoad() || tile.hasRailroad();
-    }
-
-    public boolean isImprovementValidForThisTile(Tile tile, String improvementName) {
-        Improvement improvement = new Improvement(improvementName);
-        if (!GameDatabase.getCivilizationByTile(tile).isTechnologyForThisCivilization(improvement.getRequiredTechnology()))
-            ;
-        for (String terrainName : improvement.getBaseTerrainThatCanBeBuilt()) {
-            if (tile.getBaseTerrain().getType().equals(terrainName)) {
-                return true;
-            }
-        }
-        for (String featureName : improvement.getTerrainFeaturesThatCanBeBuilt()) {
-            if (tile.getBaseTerrain().getFeature().getType().equals(featureName)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean isImprovementValidForThisTile(Tile tile, String improvementName) {
+//        Improvement improvement = new Improvement(improvementName);
+//        if (!GameDatabase.getCivilizationByTile(tile).isTechnologyForThisCivilization(improvement.getRequiredTechnology()))
+//            ;
+//        for (String terrainName : improvement.getBaseTerrainThatCanBeBuilt()) {
+//            if (tile.getBaseTerrain().getType().equals(terrainName)) {
+//                return true;
+//            }
+//        }
+//        for (String featureName : improvement.getTerrainFeaturesThatCanBeBuilt()) {
+//            if (tile.getBaseTerrain().getFeature().getType().equals(featureName)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public boolean isCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -131,16 +131,13 @@ public class GameMenuController {
     }
 
     public boolean isDirectionForMapValid(String direction) {
-        if (direction.equals("UP")) {
+        if (direction.equals("UP")
+                || direction.equals("DOWN")
+                || direction.equals("RIGHT")
+                || direction.equals("LEFT")) {
             return true;
         }
-        if (direction.equals("DOWN")) {
-            return true;
-        }
-        if (direction.equals("RIGHT")) {
-            return true;
-        }
-        return direction.equals("LEFT");
+        return false;
     }
 
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
@@ -171,7 +168,7 @@ public class GameMenuController {
     }
 
     public void addHP(int x, int y, int amount) {
-        selectCombatUnit(x, y).addHP(amount);
+        this.selectCombatUnit(x, y).addHP(amount);
     }
 
     public void addHP(String cityName, int amount) {
@@ -246,10 +243,7 @@ public class GameMenuController {
 
     public boolean isCheatForTurn(String civilizationName, int turn) {
         int index = GameDatabase.getCivilizationIndex(civilizationName);
-        if (index == -1) {
-            return false;
-        }
-        if (index == turn) {
+        if (index == -1 || index == turn) {
             return false;
         }
         return true;
@@ -283,16 +277,16 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean isCityNameUnique(String cityName) {
-        for (Civilization player : GameDatabase.players) {
-            for (City city : player.getCities()) {
-                if (city.getName().equals(cityName)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//    public boolean isCityNameUnique(String cityName) {
+//        for (Civilization player : GameDatabase.players) {
+//            for (City city : player.getCities()) {
+//                if (city.getName().equals(cityName)) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
     public boolean isAmountValidForGold(int amount) {
         return isAmountValid(amount);
@@ -514,9 +508,9 @@ public class GameMenuController {
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Agriculture")
                 && !tile.getBaseTerrain().getType().equals("Ice")
-                && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
-                || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
-                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
+                && (tile.getBaseTerrain().getFeature().getType().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
+                || tile.getBaseTerrain().getFeature().getType().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
+                || tile.getBaseTerrain().getFeature().getType().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
             worker.setIndexOfProject(Worker.workToIndex.get("Farm"));
             worker.setIsAssigned(true);
             worker.setTypeOfWork("Farm");
@@ -534,9 +528,9 @@ public class GameMenuController {
         if (civilization.isTechnologyInCivilization("")
                 && !tile.getBaseTerrain().getType().equals("Ice")
                 && (tile.getBaseTerrainType().equals("Hill"))
-                && (tile.getBaseTerrain().getFeature().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
-                || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
-                || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
+                && (tile.getBaseTerrain().getFeature().getType().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
+                || tile.getBaseTerrain().getFeature().getType().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
+                || tile.getBaseTerrain().getFeature().getType().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
             worker.setIndexOfProject(Worker.workToIndex.get("Mine"));
             worker.setIsAssigned(true);
             worker.setTypeOfWork("Mine");
