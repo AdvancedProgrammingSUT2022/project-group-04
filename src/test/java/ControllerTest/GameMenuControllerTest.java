@@ -145,20 +145,126 @@ public class GameMenuControllerTest {
     }
 
     //TODO fix this and implement unit test for others like : isNonCombatUnitInThisPosition, selectNonCombatUnit, selectCombatUnit
-//    @Test
-//    public void isCombatUnitInThisPosition_True(){
-//        int x = 10;
-//        int y = 20;
-//        GameMenuController gameMenuController = new GameMenuController(gameModel) ;
-//        Tile tile1 = new Tile("","",x,y);
-//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile1);
-//        //ArrayList<Unit> units1 = new ArrayList<>();
-//        when(tile1.getUnits()).thenReturn(units);
-//        when(units.size()).thenReturn(1);
-//        when(units.get(0)).thenReturn(unit);
-//        when(unit.getUnitType()).thenReturn("Civilian");
-//        Assertions.assertTrue(gameMenuController.isCombatUnitInThisPosition(x,y));
-//    }
+    @Test
+    public void isCombatUnitInThisPosition_True(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(true).when(gameMenuController).isUnitSoldier(unit);
+        Assertions.assertTrue(gameMenuController.isCombatUnitInThisPosition(x,y));
+    }
+
+    @Test
+    public void isCombatUnitInThisPosition_False(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(false).when(gameMenuController).isUnitSoldier(unit);
+        Assertions.assertFalse(gameMenuController.isCombatUnitInThisPosition(x,y));
+    }
+
+    @Test
+    public void isNonCombatUnitInThisPosition_True(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(true).when(gameMenuController).isUnitCivilian(unit);
+        Assertions.assertTrue(gameMenuController.isNonCombatUnitInThisPosition(x,y));
+    }
+
+    @Test
+    public void isNonCombatUnitInThisPosition_False(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(false).when(gameMenuController).isUnitCivilian(unit);
+        Assertions.assertFalse(gameMenuController.isNonCombatUnitInThisPosition(x,y));
+    }
+
+    @Test
+    public void selectCombatUnit_Exists(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(true).when(gameMenuController).isUnitSoldier(unit);
+        Assertions.assertNotEquals(gameMenuController.selectCombatUnit(x,y),null);
+    }
+
+    @Test
+    public void selectCombatUnit_DoesntExist(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(false).when(gameMenuController).isUnitSoldier(unit);
+        Assertions.assertEquals(gameMenuController.selectCombatUnit(x,y),null);
+    }
+
+    @Test
+    public void selectNonCombatUnit_Exists(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(true).when(gameMenuController).isUnitCivilian(unit);
+        Assertions.assertNotEquals(gameMenuController.selectNonCombatUnit(x,y),null);
+    }
+
+    @Test
+    public void selectNonCombatUnit_DoesntExist(){
+        int x = 10;
+        int y = 20;
+        GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        //ArrayList<Unit> units1 = new ArrayList<>();
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        //when(unit.getUnitType()).thenReturn("Archer");
+        doReturn(false).when(gameMenuController).isUnitCivilian(unit);
+        Assertions.assertEquals(gameMenuController.selectNonCombatUnit(x,y),null);
+    }
+
 //
 //    @Test
 //    public void isCombatUnitInThisPosition_False(){
@@ -223,7 +329,7 @@ public class GameMenuControllerTest {
         gameMenuController.addHP(cityName,amount);
         verify(city).addHP(amount);
     }
-    
+
     @Test
     public void makeHappy(){
         int turn = 0;
