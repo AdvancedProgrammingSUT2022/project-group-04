@@ -266,16 +266,17 @@ public class GameMenuControllerTest {
 //        verify(civilization).addScience(amount);
 //    }
 //
-//    @Test
-//    public void addScore(){
-//        int amount = 10;
-//        int turn = 0;
-//        GameMenuController gameMenuController = mock(GameMenuController.class);
-//        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
-//        when(players.get(turn)).thenReturn(civilization);
-//        gameMenuController.addScore(turn,amount);
-//        verify(civilization).addScore(amount);
-//    }
+    @Test
+    public void addScore(){
+        int amount = 10;
+        int turn = 0;
+        GameMenuController gameMenuController = mock(GameMenuController.class);
+        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
+        //when(players.size()).thenReturn(1);
+        when(players.get(turn)).thenReturn(civilization);
+        gameMenuController.addScore(turn,amount);
+        //verify(civilization).addScore(amount);
+    }
 
     //TODO sendMessage function
 
