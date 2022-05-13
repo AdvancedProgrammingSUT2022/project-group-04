@@ -13,7 +13,7 @@ public class Graph {
         if (tile1.getY() % 2 == 0) {
             if (tile1.getX() == tile2.getX()
                     && (tile1.getY() + 1 == tile2.getY()
-                            || tile1.getY() - 1 == tile2.getY())) {
+                    || tile1.getY() - 1 == tile2.getY())) {
                 return true;
             }
             if (tile1.getX() - 1 == tile2.getX() && tile1.getY() == tile2.getY()) {
@@ -166,7 +166,7 @@ public class Graph {
     }
 
     public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
-        for (Tile tile: copyOfMap){
+        for (Tile tile : copyOfMap) {
             tile.neighbors.clear();
         }
         setEdges(copyOfMap);
@@ -204,7 +204,7 @@ public class Graph {
                         }
                     }
                 }
-                if (found){
+                if (found) {
                     break;
                 }
             }

@@ -25,7 +25,7 @@ public class Notification {
     public static ArrayList<Notification> get(Civilization civilization) {
         ArrayList<Notification> notificationsForCivilization = new ArrayList<Notification>();
         for (Notification notification : Notification.notifications) {
-            if(notification.destination.equals(civilization.getNickname())) {
+            if (notification.destination.equals(civilization.getNickname())) {
                 notificationsForCivilization.add(notification);
             }
         }
@@ -35,7 +35,7 @@ public class Notification {
     public static int getUnreadMessagesNumber(Civilization civilization) {
         int counter = 0;
         for (Notification notification : Notification.get(civilization)) {
-            if(notification.unread) {
+            if (notification.unread) {
                 counter++;
             }
         }
@@ -45,7 +45,7 @@ public class Notification {
     @Override
     public String toString() {
         String result = "";
-        if(this.unread) {
+        if (this.unread) {
             result += "New ";
         }
         result = "Message From " + this.source + ":\n";

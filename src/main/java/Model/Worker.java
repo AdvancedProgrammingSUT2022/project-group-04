@@ -37,7 +37,7 @@ public class Worker extends Citizen {
     }
 
     public Worker(int x, int y, int civilizationIndex) {
-        super(x, y, "worker" , 1, civilizationIndex, false);
+        super(x, y, "worker", 1, civilizationIndex, false);
         isAssigned = false;
         indexOfProject = -1;
         typeOfWork = "";
@@ -45,7 +45,7 @@ public class Worker extends Citizen {
         isMoving = false;
     }
 
-    public boolean isAssigned(){
+    public boolean isAssigned() {
         return isAssigned;
     }
 
@@ -71,15 +71,15 @@ public class Worker extends Citizen {
                 typeOfWork = "";
             }
         }
-        if (tile == desTile){
+        if (tile == desTile) {
             isMoving = false;
             isLocked = true;
         }
     }
 
-    public void lockTheWorker(Tile tile){
+    public void lockTheWorker(Tile tile) {
         isMoving = true;
-        moveUnitFromTo(this,GameDatabase.getTileByXAndY(this.x,this.y),tile);
+        moveUnitFromTo(this, GameDatabase.getTileByXAndY(this.x, this.y), tile);
         this.desTile = tile;
     }
 

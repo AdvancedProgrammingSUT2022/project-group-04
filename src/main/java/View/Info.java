@@ -53,12 +53,12 @@ public class Info {
 
     private void printStrategicResourcesOfCity(City city) {
         ArrayList<Resources> strategicResources = city.getStrategicResources();
-        if(strategicResources.size() == 0) {
+        if (strategicResources.size() == 0) {
             System.out.println("No strategic Resources");
         }
         System.out.println("Strategic Resources:");
         for (Resources strategicResource : strategicResources) {
-            if(isResourceNew(strategicResources, strategicResource)) {
+            if (isResourceNew(strategicResources, strategicResource)) {
                 System.out.println(strategicResource.getName());
             }
         }
@@ -104,7 +104,7 @@ public class Info {
 
     private boolean isResourceNew(ArrayList<Resources> resourcesList, Resources resource) {
         for (Resources resources : resourcesList) {
-            if(resources.getName().equals(resource.getName())) {
+            if (resources.getName().equals(resource.getName())) {
                 return false;
             }
         }
@@ -162,7 +162,7 @@ public class Info {
     public void infoUnits(GameMenuController gameMenuController, int turn, Scanner scanner) {
         ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
         printSoldiersInUnitPanel(soldiers);
-        if(soldiers.size() == 0) {
+        if (soldiers.size() == 0) {
             System.out.println("No Soldiers");
             return;
         }
@@ -191,7 +191,7 @@ public class Info {
 
     public void infoMilitary(GameMenuController gameMenuController, int turn) {
         ArrayList<Unit> soldiers = getSoldiers(gameMenuController, turn);
-        if(soldiers.size() == 0) {
+        if (soldiers.size() == 0) {
             System.out.println("No Soldiers");
             return;
         }

@@ -49,7 +49,7 @@ public class GameMenuController {
     }
 
     public boolean isTileOcean(Tile tile) {
-        if(tile == null) {
+        if (tile == null) {
             return false;
         }
         return tile.getBaseTerrain().getType().equals("Ocean");
@@ -57,7 +57,7 @@ public class GameMenuController {
 
     public boolean tileHasRiver(Tile tile) {
         for (boolean isRiver : tile.getIsRiver()) {
-            if(isRiver) {
+            if (isRiver) {
                 return true;
             }
         }
@@ -205,7 +205,7 @@ public class GameMenuController {
     }
 
     public boolean isDestinationOkForMove(Unit unit, int x, int y) {
-        if(!isPositionValid(x, y)) {
+        if (!isPositionValid(x, y)) {
             return false;
         }
         if (isUnitSoldier(unit)) {
@@ -371,9 +371,9 @@ public class GameMenuController {
         return citizenArrayList;
     }
 
-    public void pauseProject(Worker worker,int x,int y) {
-            Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if (worker.isAssigned() && !worker.isMoving() && worker.isLocked() && tile!=null) {
+    public void pauseProject(Worker worker, int x, int y) {
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (worker.isAssigned() && !worker.isMoving() && worker.isLocked() && tile != null) {
             worker.setIsAssigned(false);
             tile.setIsGettingWorkedOn(false);
         }
@@ -443,7 +443,7 @@ public class GameMenuController {
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -457,12 +457,12 @@ public class GameMenuController {
                 && !tile.getBaseTerrainType().equals("Ocean")
                 && !tile.getBaseTerrainType().equals("Mountain")) {
             worker.setIndexOfProject(1);
-            worker.setIsAssigned (true);
+            worker.setIsAssigned(true);
             worker.setTypeOfWork("Railroad");
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -473,7 +473,7 @@ public class GameMenuController {
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -487,7 +487,7 @@ public class GameMenuController {
                 || !civilization.isTechnologyInCivilization(improvement.getRequiredTechnology().getName())
                 || isImprovementInTile) {
             worker.setIndexOfProject(-1);
-            worker.setIsAssigned (false);
+            worker.setIsAssigned(false);
             worker.setTypeOfWork("");
             return false;
         }
@@ -500,7 +500,7 @@ public class GameMenuController {
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -514,12 +514,12 @@ public class GameMenuController {
                 || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
                 || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
             worker.setIndexOfProject(Worker.workToIndex.get("Farm"));
-            worker.setIsAssigned (true);
+            worker.setIsAssigned(true);
             worker.setTypeOfWork("Farm");
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -534,12 +534,12 @@ public class GameMenuController {
                 || tile.getBaseTerrain().getFeature().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
                 || tile.getBaseTerrain().getFeature().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
             worker.setIndexOfProject(Worker.workToIndex.get("Mine"));
-            worker.setIsAssigned (true);
+            worker.setIsAssigned(true);
             worker.setTypeOfWork("Mine");
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -553,12 +553,12 @@ public class GameMenuController {
                 && !tile.getBaseTerrainType().equals("Ocean")
                 && !tile.getBaseTerrainType().equals("Mountain")) {
             worker.setIndexOfProject(Worker.workToIndex.get("Road"));
-            worker.setIsAssigned (true);
+            worker.setIsAssigned(true);
             worker.setTypeOfWork("Road");
             return true;
         }
         worker.setIndexOfProject(-1);
-        worker.setIsAssigned (false);
+        worker.setIsAssigned(false);
         worker.setTypeOfWork("");
         return false;
     }
@@ -572,14 +572,14 @@ public class GameMenuController {
         return true;
     }
 
-    public void deleteUnit(Unit unit){
-        int amount = (int)((double)1 / 10 * unit.getCost());
+    public void deleteUnit(Unit unit) {
+        int amount = (int) ((double) 1 / 10 * unit.getCost());
         GameDatabase.getCivilizationByTile(unit.getTileOfUnit()).addGold(amount);
         unit.getTileOfUnit().removeUnit(unit);
     }
 
 
-    public boolean createUnit(String unitType, int x, int y, int civilizationIndex){
+    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
             if (unitType.equals("settler")
@@ -589,8 +589,7 @@ public class GameMenuController {
                 createCombatUnit(unitType, x, y, civilizationIndex);
                 return true;
             }
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -599,29 +598,26 @@ public class GameMenuController {
         return GameDatabase.getCivilizationByTurn(turn).getClearTiles().contains(GameDatabase.getTileByXAndY(x, y));
     }
 
-     public void createCombatUnit(String unitType, int x, int y, int civilizationIndex){
-        Soldier soldier = new Soldier(x, y, unitType ,civilizationIndex);
+    public void createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+        Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
-     }
+    }
 
-     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex){
-        if(GameDatabase.getCityByXAndY(x, y) != null){
+    public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+        if (GameDatabase.getCityByXAndY(x, y) != null) {
             if (unitType.equals("settler")) {
                 GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
                 return true;
-            }
-            else if (unitType.equals("worker")){
+            } else if (unitType.equals("worker")) {
                 GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
                 return true;
-            }
-            else
+            } else
                 return false;
-        }
-        else {
+        } else {
             return false;
         }
-     }
+    }
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
         for (City city : civilization.getCities()) {
@@ -630,7 +626,7 @@ public class GameMenuController {
         return false;
     }
 
-    public void addTileToCivilization(Tile tile,Civilization civilization) {
+    public void addTileToCivilization(Tile tile, Civilization civilization) {
         for (City city : civilization.getCities()) {
             if (city.getAdjacentTiles().contains(tile)) {
                 city.addTile(tile);
@@ -641,7 +637,7 @@ public class GameMenuController {
 
     public ArrayList<Worker> getListOfUnemployedWorker(City city) {
         ArrayList<Worker> workers = new ArrayList<>();
-        if (city.getWorker()!= null) workers.add(city.getWorker());
+        if (city.getWorker() != null) workers.add(city.getWorker());
         return workers;
     }
 
@@ -652,7 +648,7 @@ public class GameMenuController {
         return settlers;
     }
 
-    public boolean garrisonUnitToCity(Unit unit){
+    public boolean garrisonUnitToCity(Unit unit) {
 
         City city = GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY());
         if (city != null) {
@@ -660,15 +656,14 @@ public class GameMenuController {
             city.setPower(city.getPower() + 5);
             city.setGarrisoned(true);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
 
     }
 
-    public void pillageCurrentTile(Unit unit){
-        for (Improvement improvement : unit.getTileOfUnit().getImprovements()){
+    public void pillageCurrentTile(Unit unit) {
+        for (Improvement improvement : unit.getTileOfUnit().getImprovements()) {
             improvement.breakImprovement();
         }
         unit.getTileOfUnit().setRaidedModel(true);

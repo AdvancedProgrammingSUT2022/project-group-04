@@ -9,7 +9,7 @@ public class Soldier extends Unit {
     private int siegeReady = -1;
 
     public Soldier(int x, int y, String unitType, int civilizationIndex) {
-        super(x, y, unitType,10, civilizationIndex, 2);
+        super(x, y, unitType, 10, civilizationIndex, 2);
         switch (unitType) {
             case "Archer":
                 this.range = 2;
@@ -273,7 +273,7 @@ public class Soldier extends Unit {
         this.range = range;
     }
 
-    public void attackUnitMelee(Unit unit){
+    public void attackUnitMelee(Unit unit) {
         int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
@@ -283,7 +283,8 @@ public class Soldier extends Unit {
         }
         unit.setHP(unit.getHP() - amount + unit.getCombatStrength());
     }
-    public void attackUnitRanged(Unit unit){
+
+    public void attackUnitRanged(Unit unit) {
         int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
@@ -294,7 +295,7 @@ public class Soldier extends Unit {
         unit.setHP(unit.getHP() - amount + unit.getCombatStrength());
     }
 
-    public void attackCityMelee(City city){
+    public void attackCityMelee(City city) {
         int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
@@ -305,7 +306,7 @@ public class Soldier extends Unit {
         city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
     }
 
-    public void attackCityRanged(City city){
+    public void attackCityRanged(City city) {
         int amount = 0;
         for (double i = 1; i < 10; i++) {
             if (this.HP == i) {
@@ -316,13 +317,13 @@ public class Soldier extends Unit {
         city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
     }
 
-    public boolean isCombatUnit(){
+    public boolean isCombatUnit() {
         return true;
     }
 
-    public boolean isTileInRangeOfUnit(Tile tile){
-        for (int i = 1; i < 100; i++){
-            if (tile.getAdjacentTilesByLayer(i).contains(tile)){
+    public boolean isTileInRangeOfUnit(Tile tile) {
+        for (int i = 1; i < 100; i++) {
+            if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
                 return true;
             }
         }
@@ -333,7 +334,7 @@ public class Soldier extends Unit {
     public String toString() {
         String result = this.unitType;
         result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
-        result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
+        result += "Hit point = " + Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
         return result;
     }
 

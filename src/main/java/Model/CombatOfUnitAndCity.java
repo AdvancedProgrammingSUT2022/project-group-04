@@ -5,7 +5,7 @@ public class CombatOfUnitAndCity {
     private City city;
     private Tile tileSoldier;
 
-    public CombatOfUnitAndCity(Soldier soldier, City city){
+    public CombatOfUnitAndCity(Soldier soldier, City city) {
         this.soldier = soldier;
         this.city = city;
         this.tileSoldier = soldier.getTileOfUnit();

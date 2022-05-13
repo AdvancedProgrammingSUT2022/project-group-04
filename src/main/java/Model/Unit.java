@@ -129,10 +129,11 @@ public class Unit {
         return HP;
     }
 
-    public void reduceHP(int amount){
+    public void reduceHP(int amount) {
         this.HP -= amount;
     }
-    public void regainHP(int amount){
+
+    public void regainHP(int amount) {
         this.HP += amount;
     }
 
@@ -238,7 +239,7 @@ public class Unit {
     public String toString() {
         String result = this.unitType;
         result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
-        result += "Hit point = "+ Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
+        result += "Hit point = " + Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
         return result;
     }
 
@@ -272,15 +273,14 @@ public class Unit {
                 path.get(i).units.add(selectedUnit);
                 path.get(i - 1).units.remove(selectedUnit);
                 System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());
-            }
-            else {
-               return -2;
+            } else {
+                return -2;
             }
         }
         return 0;
     }
 
-    public boolean isCombatUnit(){
+    public boolean isCombatUnit() {
         return true;
     }
 
@@ -288,12 +288,12 @@ public class Unit {
         return false;
     }
 
-    public boolean isWorker(){
+    public boolean isWorker() {
         return false;
     }
 
-    public boolean isInItsCivilization(){
-        if (GameDatabase.getCivilizationByTurn(civilizationIndex) == GameDatabase.getCivilizationByTile(this.tileOfUnit)){
+    public boolean isInItsCivilization() {
+        if (GameDatabase.getCivilizationByTurn(civilizationIndex) == GameDatabase.getCivilizationByTile(this.tileOfUnit)) {
             return true;
         }
         return false;

@@ -192,11 +192,11 @@ public class Improvement {
         isBroken = false;
     }
 
-    public void breakImprovement(){
+    public void breakImprovement() {
         isBroken = true;
     }
 
-    public boolean isBroken(){
+    public boolean isBroken() {
         return isBroken;
     }
 

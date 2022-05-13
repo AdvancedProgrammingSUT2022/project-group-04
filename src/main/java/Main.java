@@ -26,14 +26,14 @@ public class Main {
         MainMenuController mainMenuController = new MainMenuController(mainMenuModel);
         MainMenu mainMenu = new MainMenu(mainMenuController);
 
-        User loggedinUser;
+        User loggedInUser;
 
         while (true) {
-            loggedinUser = loginMenu.run(scanner);
-            if (loggedinUser == null) {
+            loggedInUser = loginMenu.run(scanner);
+            if (loggedInUser == null) {
                 break;
             }
-            mainMenu.run(scanner, loggedinUser);
+            mainMenu.run(scanner, loggedInUser);
         }
 
         UserDatabase.writeInFile("UserDatabase.json");

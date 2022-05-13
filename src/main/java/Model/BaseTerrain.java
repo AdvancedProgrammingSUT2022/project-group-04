@@ -200,12 +200,12 @@ public class BaseTerrain {
         this.movementPrice = movementPrice;
     }
 
-    public boolean hasFeature(String feature){
+    public boolean hasFeature(String feature) {
         if (features.getType().equals(feature)) return true;
         return false;
     }
 
-    public void removeFeature(){
+    public void removeFeature() {
         features = null;
     }
 }
