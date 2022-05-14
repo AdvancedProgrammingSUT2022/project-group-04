@@ -400,7 +400,10 @@ public class Tile {
     }
 
     public int getRoundsTillFinishProjectByIndex(int indexOfProject) {
-        return this.roundsTillFinish[indexOfProject];
+        if (indexOfProject >= 0) {
+            return this.roundsTillFinish[indexOfProject];
+        }
+        return 0;
     }
 
     public void reduceRoundsByIndex(int indexOfProject) {
