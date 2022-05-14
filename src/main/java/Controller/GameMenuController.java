@@ -160,21 +160,17 @@ public class GameMenuController {
 
     public boolean isNonCombatUnitInThisPosition(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (isUnitCivilian(tile.getUnits().get(i))) {
-                return true;
-            }
-        }
+        if (tile.getSettler() != null || tile.getWorker() != null)
+            return true;
         return false;
     }
 
     public Unit selectNonCombatUnit(int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        for (int i = 0; i < tile.getUnits().size(); i++) {
-            if (isUnitCivilian(tile.getUnits().get(i))) {
-                return tile.getUnits().get(i);
-            }
-        }
+        if (tile.getSettler() != null)
+            return tile.getSettler();
+        if (tile.getWorker() != null)
+            return tile.getWorker();
         return null;
     }
 
