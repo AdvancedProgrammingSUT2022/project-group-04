@@ -875,7 +875,8 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
+        int index = GameDatabase.getCivilizationByTile(tile).getTurn();
+        if (index != turn) return "this tile belongs to another civilization!";
         //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
