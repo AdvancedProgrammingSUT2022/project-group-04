@@ -5,10 +5,7 @@ import Database.GameDatabase;
 import Database.GlobalVariables;
 import Database.UserDatabase;
 import Model.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -85,8 +82,10 @@ public class GameMenuControllerTest {
         //tiles = GameDatabase.map;
         database = mockStatic(GameDatabase.class);
     }
-
-
+    @AfterAll
+    public static void salam(){
+        database.close();
+    }
 
 
     @Test
@@ -895,6 +894,8 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Assertions.assertFalse(gameMenuController.isTileOcean(null));
     }
+
+
 
 //    @Test
 //    public void tileHasRiver_True(){
