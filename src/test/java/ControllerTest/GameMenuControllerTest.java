@@ -921,6 +921,48 @@ public class GameMenuControllerTest {
 
     }
 
+    @Test
+    public void removeRailroadTest(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        when(tile.hasRailroad()).thenReturn(true);
+        Worker worker = new Worker(1,1,0);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile);
+        boolean result = gameMenuController.removeRailroad(worker);
+        Assertions.assertEquals(true, result);
+
+        Tile tile2 = mock(Tile.class);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile2);
+        boolean result2 = gameMenuController.removeRailroad(worker);
+        Assertions.assertEquals(false, result2);
+        Assertions.assertEquals(-1,worker.getIndexOfProject());
+        Assertions.assertEquals(false,worker.isAssigned());
+        Assertions.assertEquals("",worker.getTypeOfWork());
+
+    }
+
+    @Test
+    public void removeRoadTest(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        when(tile.hasRoad()).thenReturn(true);
+        Worker worker = new Worker(1,1,0);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile);
+        boolean result = gameMenuController.removeRoad(worker);
+        Assertions.assertEquals(true, result);
+
+        Tile tile2 = mock(Tile.class);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile2);
+        boolean result2 = gameMenuController.removeRoad(worker);
+        Assertions.assertEquals(false, result2);
+        Assertions.assertEquals(-1,worker.getIndexOfProject());
+        Assertions.assertEquals(false,worker.isAssigned());
+        Assertions.assertEquals("",worker.getTypeOfWork());
+
+    }
+
+
+
 
 
 //    @Test

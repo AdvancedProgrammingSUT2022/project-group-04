@@ -484,7 +484,7 @@ public class GameMenuController {
         return false;
     }
 
-    private boolean removeRailroad(Worker worker) {
+    public boolean removeRailroad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRailroad()) {
             return true;
@@ -514,7 +514,7 @@ public class GameMenuController {
         return false;
     }
 
-    private boolean removeRoad(Worker worker) {
+    public boolean removeRoad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRoad()) {
             return true;
