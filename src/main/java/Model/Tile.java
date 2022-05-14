@@ -495,7 +495,7 @@ public class Tile {
 
     public void removeSettler(Settler settler){
         if (settler.equals(this.settler))
-        this.settler = null;
+            this.settler = null;
     }
 
     public void fixBrokens() {
