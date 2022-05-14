@@ -168,6 +168,8 @@ public class Graph {
     public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
         for (Tile tile : copyOfMap) {
             tile.neighbors.clear();
+            tile.setVisited(false);
+            tile.prev = null;
         }
         setEdges(copyOfMap);
 
