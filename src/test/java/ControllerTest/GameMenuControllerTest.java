@@ -895,6 +895,32 @@ public class GameMenuControllerTest {
         Assertions.assertFalse(gameMenuController.isTileOcean(null));
     }
 
+    @Test
+    public void tileHasRiverTestTrue(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        Tile tile1 = mock(Tile.class);
+        boolean test[] = {true};
+        when(tile.getIsRiver()).thenReturn(test);
+        boolean result = gameMenuController.tileHasRiver(tile);
+        Assertions.assertEquals(true, result);
+
+    }
+
+    @Test
+    public void tileHasRiverTestFalse(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        boolean test[] = new boolean[6];
+        for (int i = 0; i < 6; i++){
+            test[i] = false;
+        }
+        when(tile.getIsRiver()).thenReturn(test);
+        boolean result = gameMenuController.tileHasRiver(tile);
+        Assertions.assertEquals(false, result);
+
+    }
+
 
 
 //    @Test
