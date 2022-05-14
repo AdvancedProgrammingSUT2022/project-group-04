@@ -5,6 +5,7 @@ import Database.GameDatabase;
 import Database.GlobalVariables;
 import Database.UserDatabase;
 import Model.*;
+import View.GameMenu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -910,6 +911,203 @@ public class GameMenuControllerTest {
 //    public void tileHasRiver_False(){
 //
 //    }
+    @Test
+    public void makeRainRoad_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(true);
+        //when(tile.hasRoad()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("amiri");
+        Assertions.assertTrue(gameMenuController.makeRailRoad(worker));
+    }
+
+    @Test
+    public void makeRailRoad_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(false);
+        //when(tile.hasRoad()).thenReturn(false);
+        //when(tile.getBaseTerrainType()).thenReturn("amiri");
+        Assertions.assertFalse(gameMenuController.makeRailRoad(worker));
+    }
+
+    @Test
+    public void makeRoad_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Wheel")).thenReturn(false);
+        //when(tile.hasRoad()).thenReturn(false);
+        //when(tile.getBaseTerrainType()).thenReturn("amiri");
+        Assertions.assertFalse(gameMenuController.makeRoad(worker));
+    }
+
+    @Test
+    public void makeRoad_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Wheel")).thenReturn(true);
+        //when(tile.hasRoad()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("amiri");
+        Worker.setHashMap();
+        Assertions.assertTrue(gameMenuController.makeRoad(worker));
+    }
+
+    @Test
+    public void makeMine_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Mining")).thenReturn(true);
+        //when(tile.hasRoad()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("Hill");
+        BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("DenseJungle"));
+        when(civilization.isTechnologyInCivilization("BronzeWorking")).thenReturn(true);
+        when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
+        Worker.setHashMap();
+        Assertions.assertTrue(gameMenuController.makeMine(worker));
+    }
+
+    @Test
+    public void makeMine_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Mining")).thenReturn(true);
+        //when(tile.hasRoad()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("Hill");
+        BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("amiri"));
+        //when(civilization.isTechnologyInCivilization("BronzeWorking")).thenReturn(true);
+        when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
+        Worker.setHashMap();
+        Assertions.assertFalse(gameMenuController.makeMine(worker));
+    }
+
+    @Test
+    public void makeFarm_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Agriculture")).thenReturn(true);
+        //when(tile.hasRoad()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("Hill");
+        BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("DenseJungle"));
+        when(civilization.isTechnologyInCivilization("BronzeWorking")).thenReturn(true);
+        when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
+        Worker.setHashMap();
+        Assertions.assertTrue(gameMenuController.makeFarm(worker));
+    }
+
+    @Test
+    public void makeFarm_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.isTechnologyInCivilization("Agriculture")).thenReturn(false);
+        Worker.setHashMap();
+        Assertions.assertFalse(gameMenuController.makeFarm(worker));
+    }
+
+    @Test
+    public void makeRepair_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        when(worker.getIndexOfProject()).thenReturn(15);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        when(tile.isRaided()).thenReturn(true);
+        Worker.setHashMap();
+        Assertions.assertTrue(gameMenuController.makeRepair(worker));
+    }
+
+    @Test
+    public void makeRepair_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        when(worker.getIndexOfProject()).thenReturn(15);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        when(tile.isRaided()).thenReturn(false);
+        Worker.setHashMap();
+        Assertions.assertFalse(gameMenuController.makeRepair(worker));
+    }
+
+    @Test
+    public void makeImprovement_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        Worker.setHashMap();
+        when(worker.getTypeOfWork()).thenReturn("Quarry");
+        when(tile.isImprovementForThisTile("Quarry")).thenReturn(true);
+        when(civilization.isTechnologyInCivilization("Masonry")).thenReturn(true);
+        Assertions.assertTrue(gameMenuController.makeImprovement(worker));
+    }
+
+    @Test
+    public void makeImprovement_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        Worker.setHashMap();
+        when(worker.getTypeOfWork()).thenReturn("Quarry");
+        when(tile.isImprovementForThisTile("Quarry")).thenReturn(true);
+        when(civilization.isTechnologyInCivilization("Masonry")).thenReturn(false);
+        Assertions.assertFalse(gameMenuController.makeImprovement(worker));
+    }
 
 
 }
