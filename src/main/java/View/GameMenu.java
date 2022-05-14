@@ -1092,7 +1092,9 @@ public class GameMenu extends Menu {
             return "there is already a city with this name";
         } else if (GameDatabase.getCityByXAndY(x, y) != null) {
             return "there is already a city in this tile";
-        } else {
+        }  else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)){
+            return "this unit isn't for you!";
+        }else {
             Tile tile = GameDatabase.getTileByXAndY(x, y);
             Settler settler = tile.getSettler();
             if (settler == null) {

@@ -73,7 +73,7 @@ public class GameMenuController {
     }
 
     public boolean isUnitSoldier(Unit unitSelected) {
-        return !unitSelected.getUnitType().equals("settler")
+        return !unitSelected.getUnitType().equals("Settler")
                 && !unitSelected.getUnitType().equals("worker")
                 && !unitSelected.getUnitType().equals("Citizen");
     }
@@ -480,7 +480,7 @@ public class GameMenuController {
         }
         return false;
     }
-    
+
     public boolean removeFeature(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(),worker.getY());
         if (tile.getBaseTerrain().getFeature().equals("DenseJungle")
@@ -634,7 +634,7 @@ public class GameMenuController {
     public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
-            if (unitType.equals("settler")
+            if (unitType.equals("Settler")
                     || unitType.equals("worker")) {
                 return createNonCombatUnit(unitType, x, y, civilizationIndex);
             } else {

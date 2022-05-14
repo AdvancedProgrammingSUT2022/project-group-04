@@ -8,7 +8,7 @@ public class Settler extends Citizen {
 
 
     public Settler(int x, int y, int civilizationIndex) {
-        super(x, y, "settler", 1, civilizationIndex, false);
+        super(x, y, "Settler", 1, civilizationIndex, false);
         this.cost = 89;
         this.HP = 1;
         this.combatStrength = 0;
