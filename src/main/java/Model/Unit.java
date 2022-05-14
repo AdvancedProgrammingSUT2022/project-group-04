@@ -268,14 +268,24 @@ public class Unit {
         //Todo.. make each movement round based
         System.out.println(path.size() + "aslkdhjgwelkjahgluakehlisugryaiu");
         for (int i = 1; i < path.size(); i++) {
-            if (selectedUnit.getMovementPoint() >= path.get(i).movementPriceForTile()) {
+            //if (selectedUnit.getMovementPoint() >= path.get(i).movementPriceForTile()) {
                 selectedUnit.moveToAdjacentTile(path.get(i));
-                path.get(i).units.add(selectedUnit);
-                path.get(i - 1).units.remove(selectedUnit);
+                if (selectedUnit instanceof Soldier) {
+                    path.get(i).units.add(selectedUnit);
+                    path.get(i - 1).units.remove(selectedUnit);
+                }
+                else if(selectedUnit instanceof Settler){
+                    path.get(i).addSettler((Settler) selectedUnit);
+                    path.get(i - 1).removeSettler((Settler) selectedUnit);
+                }
+                else if (selectedUnit instanceof Worker){
+                    path.get(i).addWorker((Worker) selectedUnit);
+                    path.get(i).removeWorker((Worker) selectedUnit);
+                }
                 System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());
-            } else {
-                return -2;
-            }
+            //} else {
+            //    return -2;
+            //}
         }
         return 0;
     }

@@ -146,7 +146,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
                 String result = selectNonCombat(matcher);
                 if (result.startsWith("unit")) {
-                    unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    unitSelected = this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                 }
@@ -583,7 +583,7 @@ public class GameMenu extends Menu {
             return "position is not valid";
         }
         if (!this.gameMenuController.isNonCombatUnitInThisPosition(x, y)) {
-            return "no combat unit";
+            return "no noncombat unit";
         }
         unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
         System.out.println(unitSelected);
