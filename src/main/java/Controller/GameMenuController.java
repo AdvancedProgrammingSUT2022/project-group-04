@@ -484,7 +484,7 @@ public class GameMenuController {
         }
         return false;
     }
-
+    
     public boolean removeFeature(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(),worker.getY());
         if (tile.getBaseTerrain().getFeature().equals("DenseJungle")
@@ -497,7 +497,6 @@ public class GameMenuController {
         worker.setTypeOfWork("");
         return false;
     }
-
     public boolean removeRailroad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRailroad()) {
@@ -528,7 +527,7 @@ public class GameMenuController {
         return false;
     }
 
-    private boolean removeRoad(Worker worker) {
+    public boolean removeRoad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRoad()) {
             return true;

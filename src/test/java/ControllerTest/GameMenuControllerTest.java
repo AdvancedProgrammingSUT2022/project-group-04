@@ -5,11 +5,15 @@ import Database.GameDatabase;
 import Database.GlobalVariables;
 import Database.UserDatabase;
 import Model.*;
+
 import View.GameMenu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -86,8 +90,10 @@ public class GameMenuControllerTest {
         //tiles = GameDatabase.map;
         database = mockStatic(GameDatabase.class);
     }
-
-
+    @AfterAll
+    public static void salam(){
+        database.close();
+    }
 
 
     @Test
@@ -896,6 +902,77 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Assertions.assertFalse(gameMenuController.isTileOcean(null));
     }
+
+    @Test
+    public void tileHasRiverTestTrue(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        Tile tile1 = mock(Tile.class);
+        boolean test[] = {true};
+        when(tile.getIsRiver()).thenReturn(test);
+        boolean result = gameMenuController.tileHasRiver(tile);
+        Assertions.assertEquals(true, result);
+
+    }
+
+    @Test
+    public void tileHasRiverTestFalse(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        boolean test[] = new boolean[6];
+        for (int i = 0; i < 6; i++){
+            test[i] = false;
+        }
+        when(tile.getIsRiver()).thenReturn(test);
+        boolean result = gameMenuController.tileHasRiver(tile);
+        Assertions.assertEquals(false, result);
+
+    }
+
+
+    @Test
+    public void removeRailroadTest(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        when(tile.hasRailroad()).thenReturn(true);
+        Worker worker = new Worker(1,1,0);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile);
+        boolean result = gameMenuController.removeRailroad(worker);
+        Assertions.assertEquals(true, result);
+
+        Tile tile2 = mock(Tile.class);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile2);
+        boolean result2 = gameMenuController.removeRailroad(worker);
+        Assertions.assertEquals(false, result2);
+        Assertions.assertEquals(-1,worker.getIndexOfProject());
+        Assertions.assertEquals(false,worker.isAssigned());
+        Assertions.assertEquals("",worker.getTypeOfWork());
+
+    }
+
+    @Test
+    public void removeRoadTest(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        when(tile.hasRoad()).thenReturn(true);
+        Worker worker = new Worker(1,1,0);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile);
+        boolean result = gameMenuController.removeRoad(worker);
+        Assertions.assertEquals(true, result);
+
+        Tile tile2 = mock(Tile.class);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile2);
+        boolean result2 = gameMenuController.removeRoad(worker);
+        Assertions.assertEquals(false, result2);
+        Assertions.assertEquals(-1,worker.getIndexOfProject());
+        Assertions.assertEquals(false,worker.isAssigned());
+        Assertions.assertEquals("",worker.getTypeOfWork());
+
+    }
+
+
+
+
 
 //    @Test
 //    public void tileHasRiver_True(){

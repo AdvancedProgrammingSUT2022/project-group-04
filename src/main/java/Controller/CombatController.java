@@ -4,6 +4,7 @@ import Database.GameDatabase;
 import Model.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CombatController {
     //will add a combat model class;
@@ -92,7 +93,7 @@ public class CombatController {
     public void healUnit(Unit unit) {
         Tile currentTile = GameDatabase.getTileByXAndY(unit.getX(), unit.getY());
         Civilization currentCivilization = GameDatabase.getCivilizationByTile(currentTile);
-        if (currentCivilization.getAllUnitsOfCivilization().contains(unit)) {
+        if (currentCivilization != null && currentCivilization.getAllUnitsOfCivilization().contains(unit)) {
             if (currentTile.getCity() == null) {
                 unit.regainHP(2);
             } else {
