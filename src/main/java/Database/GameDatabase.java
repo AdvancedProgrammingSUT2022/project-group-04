@@ -331,4 +331,8 @@ public class GameDatabase {
         }
         return null;
     }
+
+    public static ArrayList<Civilization> getPlayers() {
+        return GameDatabase.players;
+    }
 }
