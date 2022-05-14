@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 
@@ -968,7 +969,48 @@ public class GameMenuControllerTest {
 
     }
 
+    @Test
+    public void pauseProjectTest(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile = mock(Tile.class);
+        Worker worker = mock(Worker.class);
+        when(worker.isAssigned()).thenReturn(true);
+        when(worker.isMoving()).thenReturn(false);
+        when(worker.isLocked()).thenReturn(true);
+        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile);
+        gameMenuController.pauseProject(worker, worker.getX(),worker.getY());
+        Assertions.assertEquals(true, worker.isAssigned());
+    }
 
+    @Test
+    public void findAvailableWorkerInCityTestNotNullُُ(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Worker worker = mock(Worker.class);
+        Tile tile1 = mock(Tile.class);
+        Tile tile2 = mock(Tile.class);
+        when(tile1.getAvailableWorker()).thenReturn(worker);
+        ArrayList<Tile> tiles = new ArrayList<>();
+        tiles.add(tile1);
+        tiles.add(tile2);
+        City city = mock(City.class);
+        when(city.getTiles()).thenReturn(tiles);
+        Worker workerResult = gameMenuController.findAvailableWorkerInCity(city);
+        Assertions.assertEquals(worker, workerResult);
+    }
+
+    @Test
+    public void findAvailableWorkerInCityTestNull(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Tile tile1 = mock(Tile.class);
+        Tile tile2 = mock(Tile.class);
+        ArrayList<Tile> tiles = new ArrayList<>();
+        tiles.add(tile1);
+        tiles.add(tile2);
+        City city = mock(City.class);
+        when(city.getTiles()).thenReturn(tiles);
+        Worker workerResult = gameMenuController.findAvailableWorkerInCity(city);
+        Assertions.assertEquals(null, workerResult);
+    }
 
 
 

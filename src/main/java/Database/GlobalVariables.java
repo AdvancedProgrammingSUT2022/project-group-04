@@ -31,4 +31,7 @@ public class GlobalVariables {
     public static final int happinessForEachCity = 1;
     public static final int happinessForColonizedCities = 1;
     public static final String SYSTEM_NAME = "SYSTEM";
+
+    public static final String USER_DATABASE_FILE_NAME = "UserDatabase.json";
+    public static final String USER_DATABASE_TEST_FILE_NAME = "UserDatabaseTest.json";
 }
