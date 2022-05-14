@@ -393,7 +393,7 @@ public class GameMenu extends Menu {
                 }
             } else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null) {
                 String result = buyTileWithCoordinate(matcher);
-                if (result.startsWith("tile")) {
+                if (result.startsWith("congrats")) {
                     turn = nextTurn();
                 }
                 System.out.println(result);

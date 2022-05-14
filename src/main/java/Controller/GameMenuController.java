@@ -689,6 +689,7 @@ public class GameMenuController {
                 break;
             }
         }
+        civilization.addTile(tile);
     }
 
     public ArrayList<Worker> getListOfUnemployedWorker(City city) {
