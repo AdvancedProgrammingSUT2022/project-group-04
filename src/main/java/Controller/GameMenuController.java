@@ -484,7 +484,7 @@ public class GameMenuController {
         }
         return false;
     }
-    
+
     public boolean removeFeature(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(),worker.getY());
         if (tile.getBaseTerrain().getFeature().equals("DenseJungle")
