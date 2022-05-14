@@ -484,9 +484,18 @@ public class Tile {
     public void addWorker(Worker worker) {
         this.worker = worker;
     }
+    public void removeWorker(Worker worker){
+        if (this.worker.equals(worker))
+            this.worker = null;
+    }
 
     public void addSettler(Settler settler) {
         this.settler = settler;
+    }
+
+    public void removeSettler(Settler settler){
+        if (settler.equals(this.settler))
+        this.settler = null;
     }
 
     public void fixBrokens() {
