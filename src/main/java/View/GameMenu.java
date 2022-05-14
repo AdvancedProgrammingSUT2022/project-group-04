@@ -55,7 +55,7 @@ public class GameMenu extends Menu {
     private static final String SEND_MESSAGE = "to (?<Nickname>\\S+) send (?<Text>.+)";
     private static final String ADD_TILE_TO_CITY = "add tile to city (?<cityName>\\S+) (?<x>\\d+) (?<y>\\d+)";
     //improvement should be PascalCase
-    private static final String UNIT_BUILD_IMPROVEMENT = "unit build (?<improvement>[a-z]+) (?<x>\\d+) (?<y>\\d+)";
+    private static final String UNIT_BUILD_IMPROVEMENT = "unit build (?<improvement>\\w+) (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_REPAIR = "unit repair (?<x>\\d+) (?<y>\\d+)";
     private static final String UNIT_REMOVE_FEATURE = "unit remove (?<feature>\\S+) (?<x>\\d+) (?<y>\\d+)";
     private static final String REMOVE_CITIZEN_FROM_WORK = "remove citizen from work (?<x>\\d+) (?<y>\\d+)";
@@ -1093,15 +1093,17 @@ public class GameMenu extends Menu {
             return "there is already a city with this name";
         } else if (GameDatabase.getCityByXAndY(x, y) != null) {
             return "there is already a city in this tile";
-        }  else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)){
-            return "this unit isn't for you!";
         }else {
             Tile tile = GameDatabase.getTileByXAndY(x, y);
             Settler settler = tile.getSettler();
             if (settler == null) {
                 return "there is no settler in this tile";
+            }
+            else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, settler)) {
+                return "this unit isn't for you!";
             } else {
                 gameMenuController.createNewCity(settler, cityName);
+
                 return "city created successfully!";
             }
         }

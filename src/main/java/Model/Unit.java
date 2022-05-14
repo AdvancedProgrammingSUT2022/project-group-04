@@ -280,7 +280,7 @@ public class Unit {
                 }
                 else if (selectedUnit instanceof Worker){
                     path.get(i).addWorker((Worker) selectedUnit);
-                    path.get(i).removeWorker((Worker) selectedUnit);
+                    path.get(i - 1).removeWorker((Worker) selectedUnit);
                 }
                 System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());
             //} else {

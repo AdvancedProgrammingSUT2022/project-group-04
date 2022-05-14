@@ -29,7 +29,7 @@ public class Settler extends Citizen {
                 false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY(), tile));
         civilization.getCityByXAndY(x, y).removeSettler(this);//kill the settler after making city
 
-        tile.removeUnit(this);
+        tile.removeSettler(this);
     }
 
 //    public void addTileToTheCity(int xOfCity, int yOfCity) {
