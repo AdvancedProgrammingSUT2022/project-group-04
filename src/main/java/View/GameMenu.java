@@ -393,7 +393,7 @@ public class GameMenu extends Menu {
                 }
             } else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null) {
                 String result = buyTileWithCoordinate(matcher);
-                if (result.startsWith("tile")) {
+                if (result.startsWith("congrats")) {
                     turn = nextTurn();
                 }
                 System.out.println(result);
@@ -875,8 +875,9 @@ public class GameMenu extends Menu {
             return "invalid improvement";
         }
         if (tile == null) return "invalid tile";
-        int index = GameDatabase.getCivilizationByTile(tile).getTurn();
-        if (index != turn) return "this tile belongs to another civilization!";
+
+        if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
+            return "this tile belongs to another civilization!";
         //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
