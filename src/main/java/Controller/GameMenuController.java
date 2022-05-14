@@ -464,6 +464,7 @@ public class GameMenuController {
                     case 10:
                     case 11:
                     case 12:
+                        isPossible = removeFeature(worker);
                         break;
                     case 13:
                         isPossible = removeRoad(worker);
@@ -483,7 +484,19 @@ public class GameMenuController {
         }
         return false;
     }
-
+    
+    public boolean removeFeature(Worker worker) {
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(),worker.getY());
+        if (tile.getBaseTerrain().getFeature().equals("DenseJungle")
+                || tile.getBaseTerrain().getFeature().equals("Prairie")
+                || tile.getBaseTerrain().getFeature().equals("Jungle")){
+            return true;
+        }
+        worker.setIndexOfProject(-1);
+        worker.setIsAssigned(false);
+        worker.setTypeOfWork("");
+        return false;
+    }
     public boolean removeRailroad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRailroad()) {
@@ -495,7 +508,7 @@ public class GameMenuController {
         return false;
     }
 
-    private boolean makeRailRoad(Worker worker) {
+    public boolean makeRailRoad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("SteamPower")
@@ -525,14 +538,14 @@ public class GameMenuController {
         return false;
     }
 
-    private boolean makeImprovement(Worker worker) {
+    public boolean makeImprovement(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         Improvement improvement = new Improvement(worker.getTypeOfWork());
         boolean isImprovementInTile = tile.isImprovementForThisTile(worker.getTypeOfWork());
         if (civilization == null
                 || !civilization.isTechnologyInCivilization(improvement.getRequiredTechnology().getName())
-                || isImprovementInTile) {
+                || !isImprovementInTile) {
             worker.setIndexOfProject(-1);
             worker.setIsAssigned(false);
             worker.setTypeOfWork("");
@@ -541,7 +554,7 @@ public class GameMenuController {
         return true;
     }
 
-    private boolean makeRepair(Worker worker) {
+    public boolean makeRepair(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (worker.getIndexOfProject() == 15 && tile.isRaided()) {
             return true;
@@ -556,7 +569,7 @@ public class GameMenuController {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Agriculture")
-                && !tile.getBaseTerrain().getType().equals("Ice")
+                && !tile.getBaseTerrainType().equals("Ice")
                 && (tile.getBaseTerrain().getFeature().getType().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
                 || tile.getBaseTerrain().getFeature().getType().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
                 || tile.getBaseTerrain().getFeature().getType().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
@@ -574,8 +587,8 @@ public class GameMenuController {
     public boolean makeMine(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
-        if (civilization.isTechnologyInCivilization("")
-                && !tile.getBaseTerrain().getType().equals("Ice")
+        if (civilization.isTechnologyInCivilization("Mining")
+                && !tile.getBaseTerrainType().equals("Ice")
                 && (tile.getBaseTerrainType().equals("Hill"))
                 && (tile.getBaseTerrain().getFeature().getType().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
                 || tile.getBaseTerrain().getFeature().getType().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")

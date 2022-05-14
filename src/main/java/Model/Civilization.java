@@ -335,10 +335,15 @@ public class Civilization {
     }
 
     public boolean isTechnologyInCivilization(String technology) {
-        for (Technology technology1 : technologies) {
-            if (technology1.getName().equals(technology))
+        for (int i=0;i<technologies.size();i++){
+            if (technologies.get(i).getName().equals(technology)){
                 return true;
+            }
         }
+//        for (Technology technology1 : technologies) {
+//            if (technology1.getName().equals(technology))
+//                return true;
+//        }
         return false;
     }
 
