@@ -3,6 +3,7 @@ package ControllerTest;
 import Controller.UserController;
 import Database.UserDatabase;
 import Model.User;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,10 @@ public class UserControllerTest {
         database = mockStatic(UserDatabase.class);
     }
 
+    @AfterAll
+    public static void salam(){
+        database.close();
+    }
     /**
      * Test of isPasswordCorrect method
      */

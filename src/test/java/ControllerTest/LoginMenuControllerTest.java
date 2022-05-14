@@ -5,6 +5,7 @@ import Controller.UserController;
 import Database.UserDatabase;
 import Model.LoginMenuModel;
 import Model.User;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +32,10 @@ public class LoginMenuControllerTest {
         database = mockStatic(UserDatabase.class);
     }
 
-
+    @AfterAll
+    public static void salam(){
+        database.close();
+    }
     /**
      * Test of isUsernameUnique method
      */
