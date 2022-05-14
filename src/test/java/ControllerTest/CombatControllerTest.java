@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 
@@ -102,9 +103,42 @@ public class CombatControllerTest {
         Tile tile = mock(Tile.class);
         City city = new City("blah", 10, 1,1,1,1,1,1,"tehran", true, "salap", "ocean", 11, 1, null);
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
-        when(civilization.getAllUnitsOfCivilization()).thenReturn(null);
         combatController.healUnit(unit);
         int result = unit.getHP();
         Assertions.assertEquals(11, result);
     }
+
+    @Test
+    public void fortifyUnitTest(){
+        Soldier unit = new Soldier(1,1,"Panzer", 0);
+        combatController.fortifyUnit(unit);
+        int result = unit.getCombatStrength();
+        Assertions.assertEquals(63, result);
+    }
+
+    @Test
+    public void killUnitTest(){
+        Unit unit = new Unit(1,1,"blah", 10, 0, 0);
+        Tile tile = new Tile("Clear", "Plain", 1,1);
+        unit.setTileOfUnit(tile);
+        tile.addUnit(unit);
+        combatController.killUnit(unit);
+        ArrayList<Unit> result = tile.getUnits();
+        ArrayList<Unit> expected = new ArrayList<>();
+        Assertions.assertEquals(expected, result);
+
+    }
+
+    @Test
+    public void getSiegeUnitReadyTest(){
+        Soldier unit = new Soldier(1,1,"Trebuchet", 0);
+        combatController.getSiegeUnitReady(unit);
+        int result = unit.getSiegeReady();
+        Assertions.assertEquals(1, result);
+        Soldier unit1 = new Soldier(1,1,"Panzer", 0);
+        boolean result1 = combatController.getSiegeUnitReady(unit1);
+        Assertions.assertEquals(false, result1);
+    }
+
+
 }
