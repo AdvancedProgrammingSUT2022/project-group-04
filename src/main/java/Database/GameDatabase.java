@@ -315,7 +315,7 @@ public class GameDatabase {
         for (Tile tile : map) {
             ArrayList<Unit> soldiers = tile.getUnits();
             for (Unit soldier : soldiers) {
-                if (soldier.getUnitType().equals("Worker")
+                if (soldier.getUnitType().equals("worker")
                         && worker == soldier) {
                     return tile;
                 }
