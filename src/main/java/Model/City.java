@@ -63,6 +63,20 @@ public class City extends Tile {
         this.attackingUnits = new ArrayList<>();
         //this.tiles = addFirstTiles();
         this.tiles = new ArrayList<Tile>();
+        capitalCalculator();
+    }
+
+    private void capitalCalculator() {
+        if(GameDatabase.getCivilizationByNickname(this.civilizationName).getCities().size() == 0) {
+            this.isCapital = true;
+            return;
+        }
+        for (City city : GameDatabase.getCivilizationByNickname(this.civilizationName).getCities()) {
+            if(city.isCapital) {
+                return;
+            }
+        }
+        this.isCapital = true;
     }
 
     // This constructor is just for Unit Test
