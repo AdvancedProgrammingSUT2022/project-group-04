@@ -883,6 +883,7 @@ public class GameMenu extends Menu {
         if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
             return "this tile belongs to another civilization!";
         //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
+        if (gameMenuController.)
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
