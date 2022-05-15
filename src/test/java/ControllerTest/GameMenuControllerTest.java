@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertFalse;
@@ -179,12 +180,6 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
-        //when(unit.getUnitType()).thenReturn("Archer");
-        doReturn(false).when(gameMenuController).isUnitSoldier(unit);
         Assertions.assertFalse(gameMenuController.isCombatUnitInThisPosition(x,y));
     }
 
@@ -195,11 +190,9 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
-        //when(unit.getUnitType()).thenReturn("Archer");
-        doReturn(true).when(gameMenuController).isUnitCivilian(unit);
+        Settler settler = mock(Settler.class);
+        Worker worker = mock(Worker.class);
+        when(tile.getSettler()).thenReturn(settler);
         Assertions.assertTrue(gameMenuController.isNonCombatUnitInThisPosition(x,y));
     }
 
@@ -210,11 +203,6 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
-        //when(unit.getUnitType()).thenReturn("Archer");
-        doReturn(false).when(gameMenuController).isUnitCivilian(unit);
         Assertions.assertFalse(gameMenuController.isNonCombatUnitInThisPosition(x,y));
     }
 
@@ -255,11 +243,11 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
+        Settler settler = mock(Settler.class);
+        //Worker worker1 = mock(Worker.class);
+        when(tile.getSettler()).thenReturn(settler);
+        //when(tile.getWorker()).thenReturn(worker1);
         //when(unit.getUnitType()).thenReturn("Archer");
-        doReturn(true).when(gameMenuController).isUnitCivilian(unit);
         Assertions.assertNotEquals(gameMenuController.selectNonCombatUnit(x,y),null);
     }
 
@@ -269,12 +257,9 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
-        when(tile.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
+
         //when(unit.getUnitType()).thenReturn("Archer");
-        doReturn(false).when(gameMenuController).isUnitCivilian(unit);
+        //doReturn(false).when(gameMenuController).isUnitCivilian(unit);
         Assertions.assertEquals(gameMenuController.selectNonCombatUnit(x,y),null);
     }
 

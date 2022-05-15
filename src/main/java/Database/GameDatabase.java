@@ -339,4 +339,11 @@ public class GameDatabase {
     public static ArrayList<Civilization> getPlayers() {
         return GameDatabase.players;
     }
+
+    public static boolean isTileInCivilization(Tile tile, Civilization civilization){
+        if (civilization.isTileInCivilization(tile.getX(), tile.getY())){
+            return true;
+        }
+        return false;
+    }
 }

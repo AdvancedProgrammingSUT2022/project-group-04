@@ -34,6 +34,10 @@ public class User {
         return this.score;
     }
 
+    public void addScore(int amount) {
+        this.score += amount;
+    }
+
     public void changeUsername(String username) {
         this.username = username;
     }
