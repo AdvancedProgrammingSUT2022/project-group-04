@@ -55,6 +55,7 @@ public class Info {
         ArrayList<Resources> strategicResources = city.getStrategicResources();
         if (strategicResources.size() == 0) {
             System.out.println("No strategic Resources");
+            return;
         }
         System.out.println("Strategic Resources:");
         for (Resources strategicResource : strategicResources) {

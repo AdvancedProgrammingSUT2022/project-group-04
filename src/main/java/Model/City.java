@@ -356,9 +356,9 @@ public class City extends Tile {
     }
 
     public ArrayList<Tile> getTiles() {
-        ArrayList<Tile> tileArrayList = new ArrayList<>();
-        Collections.copy(tileArrayList, tiles);
-        return tileArrayList;
+//        ArrayList<Tile> tileArrayList = new ArrayList<>();
+//        Collections.copy(tileArrayList, tiles);
+        return tiles;
     }
 
     public Tile getCapital() {
