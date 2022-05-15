@@ -25,9 +25,7 @@ public class Unit {
     protected int civilizationIndex;
     protected int maintenance;
 
-<<<<<<< HEAD
     public ArrayList<Tile> route = null;
-=======
     public Technology getTechnologyRequired() {
         return technologyRequired;
     }
@@ -35,7 +33,6 @@ public class Unit {
     public StrategicsResources getResourcesRequired() {
         return resourcesRequired;
     }
->>>>>>> 4b9f50bd7f2402d7dad120a0e6b086b624702bd7
 
     public int getX() {
         return x;
