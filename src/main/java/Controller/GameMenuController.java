@@ -6,6 +6,7 @@ import Model.*;
 import com.sun.jdi.ArrayReference;
 import org.mockito.internal.stubbing.defaultanswers.GloballyConfiguredAnswer;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -18,6 +19,16 @@ public class GameMenuController {
     public int x;
     public int y;
     public int c;
+
+    public ArrayList<Unit> movingUnits = new ArrayList<>();
+
+    public ArrayList<Unit> getMovingUnits() {
+        return movingUnits;
+    }
+
+    public void setMovingUnits(ArrayList<Unit> movingUnits) {
+        this.movingUnits = movingUnits;
+    }
 
     public GameMenuController(GameModel gameModel) {
         this.gameModel = gameModel;
@@ -734,6 +745,35 @@ public class GameMenuController {
             if(unitType.equalsIgnoreCase(unit)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean moveUnitAlongPath(Unit selectedUnit){
+        int index = 0;
+        for (int i = 0; i < selectedUnit.route.size(); i++){
+            if (selectedUnit.getTileOfUnit().equals(selectedUnit.route.get(i))){
+                index = i;
+                selectedUnit.moveToAdjacentTile(selectedUnit.route.get(i + 1));
+                if (selectedUnit instanceof Worker) {
+                    selectedUnit.route.get(i + 1).addWorker((Worker) selectedUnit);
+                    selectedUnit.route.get(i).removeWorker((Worker) selectedUnit);
+                } else if (selectedUnit instanceof Settler){
+                    System.out.println("this is working");
+                    selectedUnit.route.get(i + 1).addSettler((Settler) selectedUnit);
+                    selectedUnit.route.get(i).removeSettler((Settler) selectedUnit);
+                    selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                    System.out.println(i);
+                } else {
+                    selectedUnit.route.get(i + 1).addUnit(selectedUnit);
+                }
+                break;
+            }
+
+        }
+        if (index + 1 == selectedUnit.route.size()){
+            this.getMovingUnits().remove(selectedUnit);
+            return true;
         }
         return false;
     }
