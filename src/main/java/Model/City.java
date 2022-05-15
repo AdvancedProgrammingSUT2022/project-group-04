@@ -243,7 +243,9 @@ public class City extends Tile {
             //adding feature bonus
             addingFood += tile.baseTerrain.getFoodNum();
             //adding resources bonus
-            addingFood += tile.baseTerrain.getResources().foodNum;
+            if(tile.baseTerrain.getResources() != null ) {
+                addingFood += tile.baseTerrain.getResources().foodNum;
+            }
         }
         //adding improvement bonus
         for (Improvement improvement : this.improvements) {
