@@ -73,7 +73,7 @@ public class GameMenu extends Menu {
     private static final String CHEAT_TURN_BY_NUMBER = "turn increase (?<amount>-?\\d+)";
     private static final String CHEAT_GOLD = "gold increase (?<amount>-?\\d+)";
     private static final String CHEAT_MAKE_HAPPY = "make happy";
-    private static final String CHEAT_ADD_SCIENCE = "add science (?<amount>-?\\d+)";
+    private static final String CHEAT_ADD_SCIENCE = "add science (?<science>-?\\d+)";
     private static final String CHEAT_WIN = "win";
     private static final String CHEAT_ADD_CITY_HIT_POINT = "add hit point (?<amount>-?\\d+) city (?<cityName>\\S+)";
     private static final String CHEAT_ADD_UNIT_HIT_POINT = "add hit point (?<amount>-?\\d+) position (?<x>\\d+) (?<y>\\d+)";
@@ -371,10 +371,15 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, INFO_DEMOGRAPHY)) != null) {
                 System.out.println(info.infoDemography(turn));
             } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
-                info.infoResearch(turn, scanner);
+                boolean shallNextTurn = info.infoResearch(turn, scanner);
+                if(shallNextTurn) {
+                    turn = nextTurn();
+                }
             } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null) {
                 String result = buildCity(matcher);
                 if (result.startsWith("city")) {
+                    x = Integer.parseInt(matcher.group("x"));
+                    y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
                     nextTurnIsCalled = true;
                 }
@@ -453,6 +458,7 @@ public class GameMenu extends Menu {
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
         if (tile == null) return "invalid tile";
         if (gameMenuController.isTileInCivilization(tile, turn)) return "you already have this tile!";
+        if (gameMenuController.isTileInAnyCivilization(tile)) return "somebody else has bought this tile";
         if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization))
             return "this tile ain't adjacent to your tiles bro";
         if (civilization.getGold() < priceOfBuyingTile) return "bro you dont have enough gold";
@@ -923,6 +929,7 @@ public class GameMenu extends Menu {
         if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
             return "this tile belongs to another civilization!";
         //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) return "this isn't in your civilization";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
@@ -1219,9 +1226,9 @@ public class GameMenu extends Menu {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (!gameMenuController.isAdjacent(tile, city)) {
             return "chosen tile isn't adjacent to city";
-        } else if (!gameMenuController.isOperable(tile, city)) {
-            return "there is no settler in adjacent tiles in city";
-        } else {
+        } else if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) {
+            return "you haven't bought this tile bro";
+        }else {
             gameMenuController.addTileToCity(tile, city);
             return "tile added to the city successfully!";
         }

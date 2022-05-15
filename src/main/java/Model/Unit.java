@@ -13,7 +13,7 @@ public class Unit {
     protected int combatStrength;
     protected int cost;
     protected Technology technologyRequired;
-    protected Resources resourcesRequired;
+    protected StrategicsResources resourcesRequired;
     protected int movementPoint;
     protected String unitType;
     protected boolean isSleeping;
@@ -25,7 +25,17 @@ public class Unit {
     protected int civilizationIndex;
     protected int maintenance;
 
+<<<<<<< HEAD
     public ArrayList<Tile> route = null;
+=======
+    public Technology getTechnologyRequired() {
+        return technologyRequired;
+    }
+
+    public StrategicsResources getResourcesRequired() {
+        return resourcesRequired;
+    }
+>>>>>>> 4b9f50bd7f2402d7dad120a0e6b086b624702bd7
 
     public int getX() {
         return x;
@@ -248,7 +258,7 @@ public class Unit {
     @Override
     public String toString() {
         String result = this.unitType;
-        result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
+        result += "\nX = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
         result += "Hit point = " + Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
         return result;
     }

@@ -63,6 +63,31 @@ public class City extends Tile {
         this.attackingUnits = new ArrayList<>();
         //this.tiles = addFirstTiles();
         this.tiles = new ArrayList<Tile>();
+        capitalCalculator();
+    }
+
+    private void capitalCalculator() {
+        if(GameDatabase.getCivilizationByNickname(this.civilizationName).getCities().size() == 0) {
+            this.isCapital = true;
+            return;
+        }
+        for (City city : GameDatabase.getCivilizationByNickname(this.civilizationName).getCities()) {
+            if(city.isCapital) {
+                return;
+            }
+        }
+        this.isCapital = true;
+    }
+
+    // This constructor is just for Unit Test
+    public City(String cityName) {
+        super("clear", "Hill", 0, 0);
+        this.name = cityName;
+        this.tiles = new ArrayList<>();
+        this.citizens = new ArrayList<>();
+        this.buildings = new ArrayList<>();
+        this.improvements = new ArrayList<>();
+        this.civilizationName = "n1";
     }
 
     public String getName() {
@@ -230,6 +255,7 @@ public class City extends Tile {
         int addingFood = 0;
         this.production += this.productionGenerating;
         addingFood += this.foodGeneratingRate;
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addScience(this.scienceGenerating);
         //adding building bonus
         for (Building building : this.buildings) {
             if (!building.wasBuilt()) {
@@ -242,7 +268,9 @@ public class City extends Tile {
             //adding feature bonus
             addingFood += tile.baseTerrain.getFoodNum();
             //adding resources bonus
-            addingFood += tile.baseTerrain.getResources().foodNum;
+            if(tile.baseTerrain.getResources() != null ) {
+                addingFood += tile.baseTerrain.getResources().foodNum;
+            }
         }
         //adding improvement bonus
         for (Improvement improvement : this.improvements) {
@@ -355,9 +383,9 @@ public class City extends Tile {
     }
 
     public ArrayList<Tile> getTiles() {
-        ArrayList<Tile> tileArrayList = new ArrayList<>();
-        Collections.copy(tileArrayList, tiles);
-        return tileArrayList;
+//        ArrayList<Tile> tileArrayList = new ArrayList<>();
+//        Collections.copy(tileArrayList, tiles);
+        return tiles;
     }
 
     public Tile getCapital() {
