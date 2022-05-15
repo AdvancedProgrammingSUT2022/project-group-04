@@ -230,6 +230,7 @@ public class City extends Tile {
         int addingFood = 0;
         this.production += this.productionGenerating;
         addingFood += this.foodGeneratingRate;
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addScience(this.scienceGenerating);
         //adding building bonus
         for (Building building : this.buildings) {
             if (!building.wasBuilt()) {

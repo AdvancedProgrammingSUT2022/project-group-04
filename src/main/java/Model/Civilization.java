@@ -70,11 +70,6 @@ public class Civilization {
     }
 
     public void addTechnology(Technology newTechnology) {
-        if (science - newTechnology.getCost() < 100) {
-            newTechnology.setTurnsNeedToResearch(1);
-        } else {
-            newTechnology.setTurnsNeedToResearch(10 - (science - newTechnology.getCost()) / 10);
-        }
         this.technologies.add(newTechnology);
         this.science = 0;
     }
@@ -335,8 +330,8 @@ public class Civilization {
     }
 
     public boolean isTechnologyInCivilization(String technology) {
-        for (int i=0;i<technologies.size();i++){
-            if (technologies.get(i).getName().equals(technology)){
+        for (int i = 0; i < technologies.size(); i++) {
+            if (technologies.get(i).getName().equals(technology)) {
                 return true;
             }
         }

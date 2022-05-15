@@ -30,7 +30,7 @@ public class Technology {
                 this.cost = 35;
                 this.prerequisiteTechnologies.add(new Technology("Agriculture"));
                 break;
-            case " BronzeWorking":
+            case "BronzeWorking":
                 this.cost = 55;
                 this.prerequisiteTechnologies.add(new Technology("Mining"));
                 break;
@@ -220,7 +220,7 @@ public class Technology {
                 this.prerequisiteTechnologies.add(new Technology("ScientificTheory"));
                 this.prerequisiteTechnologies.add(new Technology("MilitaryScience"));
                 break;
-            case " Telegraph":
+            case "Telegraph":
                 this.cost = 2200;
                 this.prerequisiteTechnologies.add(new Technology("Electricity"));
                 break;
@@ -239,6 +239,14 @@ public class Technology {
 
     public ArrayList<Technology> getPrerequisiteTechnologies() {
         return prerequisiteTechnologies;
+    }
+
+    public void calculateTurnsNeed(Civilization civilization) {
+        if (civilization.getScience() - this.cost > 100) {
+            this.turnsNeedToResearch = 1;
+        } else {
+            this.turnsNeedToResearch = 10 - (civilization.getScience() - this.cost) / 10;
+        }
     }
 
     public boolean isInPrerequisiteTechnologies(Technology technology) {
@@ -263,7 +271,7 @@ public class Technology {
     }
 
     public boolean wasReached() {
-        return this.turnsNeedToResearch == 0;
+        return this.turnsNeedToResearch < 0;
     }
 
     private String leadingTechnologies() {
@@ -283,7 +291,7 @@ public class Technology {
         String leadingBuildings = "Leading buildings: \n";
         for (String building : GlobalVariables.BUILDINGS) {
             Building building1 = new Building(building);
-            if(building1.getTechnologyRequired() == null) {
+            if (building1.getTechnologyRequired() == null) {
                 continue;
             }
             if (building1.getTechnologyRequired().getName().equals(this.name)) {
@@ -324,7 +332,8 @@ public class Technology {
     public String toString() {
         String result = this.name + "\n";
         if (!wasReached() && this.turnsNeedToResearch != 0) {
-            result += "\t turns need: " + Integer.toString(this.turnsNeedToResearch);
+            result += "\t turns need: " + Integer.toString(this.turnsNeedToResearch) + "\n";
+            result += "\t cost: " + Integer.toString(this.cost);
             if (isStopped) {
                 result += "\t Stopped\n";
             }

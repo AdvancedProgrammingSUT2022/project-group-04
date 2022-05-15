@@ -13,7 +13,7 @@ public class Unit {
     protected int combatStrength;
     protected int cost;
     protected Technology technologyRequired;
-    protected Resources resourcesRequired;
+    protected StrategicsResources resourcesRequired;
     protected int movementPoint;
     protected String unitType;
     protected boolean isSleeping;
@@ -24,6 +24,14 @@ public class Unit {
     protected Tile tileOfUnit;
     protected int civilizationIndex;
     protected int maintenance;
+
+    public Technology getTechnologyRequired() {
+        return technologyRequired;
+    }
+
+    public StrategicsResources getResourcesRequired() {
+        return resourcesRequired;
+    }
 
     public int getX() {
         return x;
