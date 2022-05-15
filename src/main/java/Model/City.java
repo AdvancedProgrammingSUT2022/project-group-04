@@ -65,6 +65,17 @@ public class City extends Tile {
         this.tiles = new ArrayList<Tile>();
     }
 
+    // This constructor is just for Unit Test
+    public City(String cityName) {
+        super("clear", "Hill", 0, 0);
+        this.name = cityName;
+        this.tiles = new ArrayList<>();
+        this.citizens = new ArrayList<>();
+        this.buildings = new ArrayList<>();
+        this.improvements = new ArrayList<>();
+        this.civilizationName = "n1";
+    }
+
     public String getName() {
         return name;
     }
