@@ -343,7 +343,10 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, INFO_DEMOGRAPHY)) != null) {
                 System.out.println(info.infoDemography(turn));
             } else if ((matcher = getCommandMatcher(command, INFO_RESEARCH)) != null) {
-                info.infoResearch(turn, scanner);
+                boolean shallNextTurn = info.infoResearch(turn, scanner);
+                if(shallNextTurn) {
+                    turn = nextTurn();
+                }
             } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null) {
                 String result = buildCity(matcher);
                 if (result.startsWith("city")) {
