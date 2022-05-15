@@ -235,10 +235,15 @@ public class GameMenuController {
 //                }
 //            }
         } else {
-            for (int i = 0; i < GameDatabase.getTileByXAndY(x, y).getUnits().size(); i++) {
-                if (isUnitCivilian(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))) {
-                    return false;
-                }
+//            for (int i = 0; i < GameDatabase.getTileByXAndY(x, y).getUnits().size(); i++) {
+//                if (isUnitCivilian(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))
+//                        && !GameDatabase.getTileByXAndY(x, y).getUnits().get(i).getUnitType().equals("")) {
+//                    return false;
+//                }
+//            }
+            if (GameDatabase.getTileByXAndY(x, y).getSettler() != null
+                    || GameDatabase.getTileByXAndY(x, y).getWorker() != null){
+                return false;
             }
 //            for (Unit unit1 : GameDatabase.getTileByXAndY(x, y).getUnits()) {
 //                if (isUnitCivilian(unit1)) {
