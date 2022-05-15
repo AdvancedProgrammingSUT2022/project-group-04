@@ -678,14 +678,19 @@ public class GameMenuController {
     }
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
-        for (City city : civilization.getCities()) {
-            ArrayList<Tile> tileArrayList = city.getTiles();
-            for (Tile tile1 : tileArrayList) {
-                if (tile1.getAdjacentTiles().contains(tile)){
-                    return true;
-                }
+        for (Tile civilizationTile : civilization.getTiles()) {
+            if (civilizationTile.getAdjacentTiles().contains(tile)){
+                return true;
             }
         }
+//        for (City city : civilization.getCities()) {
+//            ArrayList<Tile> tileArrayList = city.getTiles();
+//            for (Tile tile1 : tileArrayList) {
+//                if (tile1.getAdjacentTiles().contains(tile)){
+//                    return true;
+//                }
+//            }
+//        }
         return false;
     }
 
