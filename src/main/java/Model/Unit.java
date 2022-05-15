@@ -25,6 +25,7 @@ public class Unit {
     protected int civilizationIndex;
     protected int maintenance;
 
+    public ArrayList<Tile> route = null;
     public Technology getTechnologyRequired() {
         return technologyRequired;
     }
@@ -165,6 +166,14 @@ public class Unit {
         return civilizationIndex;
     }
 
+    public ArrayList<Tile> getRoute() {
+        return route;
+    }
+
+    public void setRoute(ArrayList<Tile> route) {
+        this.route = route;
+    }
+
     public Unit(int x, int y, String unitType, int HP, int civilizationIndex, int maintenance) {
         this.x = x;
         this.y = y;
@@ -252,8 +261,14 @@ public class Unit {
     }
 
     public int moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
-        if (!destTile.canBePassed())
+        if (!destTile.canBePassed()) {
             return -1;
+        }
+        if (selectedUnit instanceof Settler || selectedUnit instanceof Worker){
+            if (destTile.getSettler() != null || destTile.getWorker() != null){
+                return -1;
+            }
+        }
         Graph graph = new Graph();
         ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
         Tile currentInCopy = null;
@@ -273,10 +288,11 @@ public class Unit {
                 }
             }
         }
-        //Todo.. make each movement round based
+        selectedUnit.route = path;
+
         System.out.println(path.size() + "aslkdhjgwelkjahgluakehlisugryaiu");
-        for (int i = 1; i < path.size(); i++) {
-            //if (selectedUnit.getMovementPoint() >= path.get(i).movementPriceForTile()) {
+        /*for (int i = 1; i < path.size(); i++) {
+            if (selectedUnit.getSpeed() >= path.get(i).movementPriceForTile()) {
                 selectedUnit.moveToAdjacentTile(path.get(i));
                 if (selectedUnit instanceof Soldier) {
                     path.get(i).units.add(selectedUnit);
@@ -291,10 +307,10 @@ public class Unit {
                     path.get(i - 1).removeWorker((Worker) selectedUnit);
                 }
                 System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());
-            //} else {
-            //    return -2;
-            //}
-        }
+            } else {
+                return -2;
+            }
+        }*/
         return 0;
     }
 

@@ -6,9 +6,12 @@ import Database.GameDatabase;
 import Database.GlobalVariables;
 import Model.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.lang.Object;
 
 public class GameMenu extends Menu {
 
@@ -104,7 +107,9 @@ public class GameMenu extends Menu {
         System.out.println(GameDatabase.players.get(0).getNickname());
         String command;
         Info info = Info.getInstance();
+        boolean nextTurnIsCalled = false;
         while (true) {
+            nextTurnIsCalled = false;
             numberOfPlayers = GameDatabase.players.size();
             Matcher matcher;
             command = scanner.nextLine();
@@ -147,6 +152,8 @@ public class GameMenu extends Menu {
                 String result = selectNonCombat(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    unitSelected.setRoute(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getRoute());
+                    gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                 }
@@ -165,8 +172,10 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, UNIT_MOVE_TO)) != null) {
                 String result = unitMoveTo(matcher);
                 if (result.startsWith("unit")) {
+                    //gameMenuController.getMovingUnits().get(0).setRoute(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getRoute());
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SLEEP)) != null) {
@@ -174,6 +183,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_ALERT)) != null) {
@@ -181,6 +191,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY)) != null) {
@@ -188,6 +199,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FORTIFY_HEAL)) != null) {
@@ -195,6 +207,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_GARRISON)) != null) {
@@ -202,6 +215,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_SETUP_RANGE)) != null) {
@@ -209,6 +223,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("siege")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_ATTACK_POSITION)) != null) {
@@ -216,6 +231,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
@@ -223,6 +239,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null) {
@@ -230,6 +247,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_WAKE)) != null) {
@@ -237,6 +255,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_DELETE)) != null) {
@@ -244,6 +263,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_BUILD_IMPROVEMENT)) != null) {
@@ -251,6 +271,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("worker")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REMOVE_FEATURE)) != null) {
@@ -258,6 +279,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("worker")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_REPAIR)) != null) {
@@ -265,6 +287,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("worker")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CREATE_UNIT)) != null) {
@@ -272,6 +295,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_PILLAGE)) != null) {
@@ -279,6 +303,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, REMOVE_CITIZEN_FROM_WORK)) != null) {
@@ -286,6 +311,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("project")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, LOCK_CITIZEN_TO_TILE)) != null) {
@@ -293,6 +319,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("project")) {
                     unitSelected = null;
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, MAP_MOVE)) != null) {
@@ -337,6 +364,7 @@ public class GameMenu extends Menu {
                 String result = validBuildings(scanner);
                 if (result == null) {
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 } else {
                     System.out.println(result);
                 }
@@ -353,12 +381,14 @@ public class GameMenu extends Menu {
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, ADD_TILE_TO_CITY)) != null) {
                 String result = getAddTileToCity(matcher);
                 if (result.startsWith("tile")) {
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SEND_MESSAGE)) != null) {
@@ -395,15 +425,28 @@ public class GameMenu extends Menu {
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
             } else if ((matcher = getCommandMatcher(command, BUYING_TILE)) != null) {
                 String result = buyTileWithCoordinate(matcher);
                 if (result.startsWith("congrats")) {
                     turn = nextTurn();
+                    nextTurnIsCalled = true;
                 }
                 System.out.println(result);
             } else {
                 System.out.println("invalid command");
+            }
+            if (nextTurnIsCalled){
+                if (gameMenuController.getMovingUnits().get(0) != null) {
+                    System.out.println(gameMenuController.getMovingUnits().get(0) + " kose ammeeee");
+                    boolean b = gameMenuController.moveUnitAlongPath(gameMenuController.getMovingUnits().get(0));
+                    if (b){
+                        System.out.println("salap");
+                        //gameMenuController.getMovingUnits().get(0).setRoute(null);
+                    }
+                }
+
             }
         }
     }
@@ -592,6 +635,7 @@ public class GameMenu extends Menu {
             return "no noncombat unit";
         }
         unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
+        gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(x, y));
         System.out.println(unitSelected);
         return "unit selected";
     }

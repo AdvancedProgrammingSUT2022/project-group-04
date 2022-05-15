@@ -1,0 +1,25 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="GameMenuControllerTest.checkTileHasRiver" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="CivilizationV-group04" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="ControllerTest.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="Controller.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="ControllerTest" />
+    <option name="MAIN_CLASS_NAME" value="ControllerTest.GameMenuControllerTest" />
+    <option name="METHOD_NAME" value="checkTileHasRiver" />
+    <option name="TEST_OBJECT" value="method" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="wholeProject" />
+    </option>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
