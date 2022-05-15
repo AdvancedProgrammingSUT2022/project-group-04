@@ -59,8 +59,8 @@ public class GameMenuController {
 
     public boolean tileHasRiver(Tile tile) {
         boolean[] rivers = tile.getIsRiver();
-        for (int i=0 ; i<6 ;i++){
-            if (rivers[i]){
+        for (int i = 0; i < 6; i++) {
+            if (rivers[i]) {
                 return true;
             }
         }
@@ -224,8 +224,8 @@ public class GameMenuController {
             return false;
         }
         if (isUnitSoldier(unit)) {
-            for (int i=0;i<GameDatabase.getTileByXAndY(x, y).getUnits().size();i++){
-                if (isUnitSoldier(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))){
+            for (int i = 0; i < GameDatabase.getTileByXAndY(x, y).getUnits().size(); i++) {
+                if (isUnitSoldier(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))) {
                     return false;
                 }
             }
@@ -235,8 +235,8 @@ public class GameMenuController {
 //                }
 //            }
         } else {
-            for (int i=0;i<GameDatabase.getTileByXAndY(x, y).getUnits().size();i++){
-                if (isUnitCivilian(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))){
+            for (int i = 0; i < GameDatabase.getTileByXAndY(x, y).getUnits().size(); i++) {
+                if (isUnitCivilian(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))) {
                     return false;
                 }
             }
@@ -293,8 +293,8 @@ public class GameMenuController {
     }
 
     public boolean isCityForThisCivilization(int turn, City citySelected) {
-        for (int i=0;i<GameDatabase.getPlayers().get(turn).getCities().size();i++){
-            if (GameDatabase.getPlayers().get(turn).getCities().get(i).getName().equals(citySelected.getName())){
+        for (int i = 0; i < GameDatabase.getPlayers().get(turn).getCities().size(); i++) {
+            if (GameDatabase.getPlayers().get(turn).getCities().get(i).getName().equals(citySelected.getName())) {
                 return true;
             }
         }
@@ -339,8 +339,8 @@ public class GameMenuController {
     public boolean isAdjacent(Tile tile, City city) {
 //        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
 //        ArrayList<Tile> tilesOfCity = city.getTiles();
-        for (int i=0 ;i<city.getTiles().size();i++){
-            if (tile.getAdjacentTiles().contains(city.getTiles().get(i))){
+        for (int i = 0; i < city.getTiles().size(); i++) {
+            if (tile.getAdjacentTiles().contains(city.getTiles().get(i))) {
                 return true;
             }
         }
@@ -354,15 +354,15 @@ public class GameMenuController {
     public void addTileToCity(Tile tile, City city) {
         city.addTile(tile);
         Civilization civilization = GameDatabase.getCivilizationForCity(city.getName());
-        addTileToCivilization(tile,civilization);
+        addTileToCivilization(tile, civilization);
     }
 
     public boolean isOperable(Tile tile, City city) {
 //        ArrayList<Tile> neighbours = tile.getAdjacentTiles();
 //        ArrayList<Tile> tilesOfCity = city.getTiles();
-        for (int i=0 ;i<city.getTiles().size();i++){
+        for (int i = 0; i < city.getTiles().size(); i++) {
             if (tile.getAdjacentTiles().contains(city.getTiles().get(i))
-                    && city.getTiles().get(i).getSettler() != null){
+                    && city.getTiles().get(i).getSettler() != null) {
                 return true;
             }
         }
@@ -484,10 +484,11 @@ public class GameMenuController {
     }
 
     public boolean removeFeature(Worker worker) {
-        Tile tile = GameDatabase.getTileByXAndY(worker.getX(),worker.getY());
-        if (tile.getBaseTerrain().getFeature().equals("DenseJungle")
+        Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
+        if (tile.getBaseTerrain().getFeature() != null
+                && (tile.getBaseTerrain().getFeature().equals("DenseJungle")
                 || tile.getBaseTerrain().getFeature().equals("Prairie")
-                || tile.getBaseTerrain().getFeature().equals("Jungle")){
+                || tile.getBaseTerrain().getFeature().equals("Jungle"))) {
             return true;
         }
         worker.setIndexOfProject(-1);
@@ -495,6 +496,7 @@ public class GameMenuController {
         worker.setTypeOfWork("");
         return false;
     }
+
     public boolean removeRailroad(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRailroad()) {
@@ -568,6 +570,7 @@ public class GameMenuController {
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Agriculture")
                 && !tile.getBaseTerrainType().equals("Ice")
+                && tile.getBaseTerrain().getFeature() != null
                 && (tile.getBaseTerrain().getFeature().getType().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
                 || tile.getBaseTerrain().getFeature().getType().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
                 || tile.getBaseTerrain().getFeature().getType().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
@@ -588,6 +591,7 @@ public class GameMenuController {
         if (civilization.isTechnologyInCivilization("Mining")
                 && !tile.getBaseTerrainType().equals("Ice")
                 && (tile.getBaseTerrainType().equals("Hill"))
+                && tile.getBaseTerrain().getFeature() != null
                 && (tile.getBaseTerrain().getFeature().getType().equals("Jungle") && civilization.isTechnologyInCivilization("Mining")
                 || tile.getBaseTerrain().getFeature().getType().equals("DenseJungle") && civilization.isTechnologyInCivilization("BronzeWorking")
                 || tile.getBaseTerrain().getFeature().getType().equals("Prairie") && civilization.isTechnologyInCivilization("Masonry"))) {
@@ -681,7 +685,7 @@ public class GameMenuController {
         for (City city : civilization.getCities()) {
             ArrayList<Tile> tileArrayList = city.getTiles();
             for (Tile tile1 : tileArrayList) {
-                if (tile1.getAdjacentTiles().contains(tile)){
+                if (tile1.getAdjacentTiles().contains(tile)) {
                     return true;
                 }
             }
@@ -738,7 +742,7 @@ public class GameMenuController {
 
     public boolean isUnitTypeValid(String unitType) {
         for (String unit : GlobalVariables.UNITS) {
-            if(unitType.equalsIgnoreCase(unit)) {
+            if (unitType.equalsIgnoreCase(unit)) {
                 return true;
             }
         }
@@ -746,8 +750,8 @@ public class GameMenuController {
     }
 
     public boolean isTileInAnyCivilization(Tile tile) {
-        for (int i=0 ;i<GameDatabase.players.size();i++){
-            if (isTileInCivilization(tile,i)){
+        for (int i = 0; i < GameDatabase.players.size(); i++) {
+            if (isTileInCivilization(tile, i)) {
                 return true;
             }
         }
