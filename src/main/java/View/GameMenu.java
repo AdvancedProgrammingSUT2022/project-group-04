@@ -410,6 +410,7 @@ public class GameMenu extends Menu {
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
         if (tile == null) return "invalid tile";
         if (gameMenuController.isTileInCivilization(tile, turn)) return "you already have this tile!";
+        if (gameMenuController.isTileInAnyCivilization(tile)) return "somebody else has bought this tile";
         if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization))
             return "this tile ain't adjacent to your tiles bro";
         if (civilization.getGold() < priceOfBuyingTile) return "bro you dont have enough gold";
@@ -1175,9 +1176,9 @@ public class GameMenu extends Menu {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (!gameMenuController.isAdjacent(tile, city)) {
             return "chosen tile isn't adjacent to city";
-        } else if (!gameMenuController.isOperable(tile, city)) {
-            return "there is no settler in adjacent tiles in city";
-        } else {
+        } else if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) {
+            return "you haven't bought this tile bro";
+        }else {
             gameMenuController.addTileToCity(tile, city);
             return "tile added to the city successfully!";
         }

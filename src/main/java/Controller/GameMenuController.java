@@ -353,6 +353,8 @@ public class GameMenuController {
 
     public void addTileToCity(Tile tile, City city) {
         city.addTile(tile);
+        Civilization civilization = GameDatabase.getCivilizationForCity(city.getName());
+        addTileToCivilization(tile,civilization);
     }
 
     public boolean isOperable(Tile tile, City city) {
@@ -677,7 +679,12 @@ public class GameMenuController {
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
         for (City city : civilization.getCities()) {
-            if (city.getAdjacentTiles().contains(tile)) return true;
+            ArrayList<Tile> tileArrayList = city.getTiles();
+            for (Tile tile1 : tileArrayList) {
+                if (tile1.getAdjacentTiles().contains(tile)){
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -738,4 +745,12 @@ public class GameMenuController {
         return false;
     }
 
+    public boolean isTileInAnyCivilization(Tile tile) {
+        for (int i=0 ;i<GameDatabase.players.size();i++){
+            if (isTileInCivilization(tile,i)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
