@@ -244,9 +244,10 @@ public class Info {
     }
 
     private void printValidTechnologiesForResearch(ArrayList<Technology> validTechnologies, int turn) {
-        System.out.println("valid technologies");
+        System.out.println("valid technologies: ");
         for (String technologyName : GlobalVariables.TECHNOLOGIES) {
             Technology technology = new Technology(technologyName);
+            technology.calculateTurnsNeed(GameDatabase.players.get(turn));
             if (technology.isTechnologyValidForCivilization(GameDatabase.players.get(turn))) {
                 if (!GameDatabase.players.get(turn).isTechnologyForThisCivilization(technology)) {
                     System.out.println(technology);
@@ -267,14 +268,15 @@ public class Info {
 
     public void infoResearch(int turn, Scanner scanner) {
         printResources(turn);
-        System.out.println("Technologies");
+        System.out.println("You have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " Science");
+        System.out.println("Technologies:");
         if (GameDatabase.players.get(turn).getCities().size() == 0) {
             System.out.println("For research on new technologies, Create a city first!");
             return;
         }
         ArrayList<Technology> technologiesUnderResearch = new ArrayList<Technology>();
-        stopTechnologiesResearchMenu(technologiesUnderResearch, turn, scanner);
         printTechnologiesUnderResearch(technologiesUnderResearch, turn);
+        stopTechnologiesResearchMenu(technologiesUnderResearch, turn, scanner);
         printTechnologiesYouHave(turn);
         if (!isNewResearchValid(technologiesUnderResearch, turn)) {
             System.out.println("you can't have a new research because you are busy with another technology.");
@@ -289,6 +291,7 @@ public class Info {
         String input;
         int index;
         System.out.println("Select a technology to research");
+        System.out.println("enter EXIT to exit");
         while (true) {
             input = scanner.nextLine();
             if (input.equals("EXIT")) {
@@ -302,16 +305,28 @@ public class Info {
                     System.out.println("invalid number");
                 } else {
                     GameDatabase.players.get(turn).addTechnology(validTechnologies.get(index - 1));
+                    printCivilizationTechnologies(turn);
+                    System.out.println("End of info research");
+                    return;
                 }
             }
 
         }
     }
 
+    private void printCivilizationTechnologies(int turn) {
+        for (Technology technology : GameDatabase.players.get(turn).getTechnologies()) {
+            System.out.println(technology);
+        }
+    }
+
     private void stopTechnologiesResearchMenu(ArrayList<Technology> technologiesUnderResearch, int turn, Scanner scanner) {
+        if (technologiesUnderResearch.size() == 0) {
+            return;
+        }
         String input;
         int index;
-        System.out.println("stop or start searching for a technology");
+        System.out.println("stop or start searching for a technology:");
         while (true) {
             input = scanner.nextLine();
             if (input.equals("EXIT")) {
