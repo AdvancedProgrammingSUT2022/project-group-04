@@ -45,12 +45,16 @@ public class Notification {
     @Override
     public String toString() {
         String result = "";
-        if (this.unread) {
+        if (!wasRead()) {
             result += "New ";
         }
-        result = "Message From " + this.source + ":\n";
+        result += "Message From " + this.source + ":\n";
         result += "\t " + text;
         return result;
+    }
+
+    public boolean wasRead() {
+        return !this.unread;
     }
 
     public void read() {
