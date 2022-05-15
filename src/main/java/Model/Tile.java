@@ -265,7 +265,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        String result = "type = " + this.type + "\n";
+        String result = "type = " + this.baseTerrain.getType() + "\n";
         result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y);
         return result;
     }
