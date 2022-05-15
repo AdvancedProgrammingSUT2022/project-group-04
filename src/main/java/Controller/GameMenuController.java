@@ -354,7 +354,7 @@ public class GameMenuController {
     public void addTileToCity(Tile tile, City city) {
         city.addTile(tile);
         Civilization civilization = GameDatabase.getCivilizationForCity(city.getName());
-        civilization.addTile(tile);
+        addTileToCivilization(tile,civilization);
     }
 
     public boolean isOperable(Tile tile, City city) {
@@ -690,20 +690,9 @@ public class GameMenuController {
         return false;
     }
 
-//    public void addTileToCivilization(Tile tile, Civilization civilization) {
-////        for (int i=0;i<civilization.getCities().size();i++){
-////            if (civilization.getCities().get(i).getAdjacentTiles().contains(tile)){
-////                civilization.getCities().get(i).addTile(tile);
-////                break;
-////            }
-////        }
-////        for (City city : civilization.getCities()) {
-////            if (city.getAdjacentTiles().contains(tile)) {
-////                city.addTile(tile);
-////                break;
-////            }
-////        }
-//    }
+    public void addTileToCivilization(Tile tile, Civilization civilization) {
+        civilization.addTile(tile);
+    }
 
     public ArrayList<Worker> getListOfUnemployedWorker(City city) {
         ArrayList<Worker> workers = new ArrayList<>();
