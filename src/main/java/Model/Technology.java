@@ -263,7 +263,7 @@ public class Technology {
             return false;
         }
         for (Technology prerequisiteTechnology : this.prerequisiteTechnologies) {
-            if (!civilization.isTechnologyForThisCivilization(prerequisiteTechnology)) {
+            if (!civilization.isTechnologyForThisCivilization(prerequisiteTechnology) || prerequisiteTechnology.isStopped()) {
                 return false;
             }
         }
