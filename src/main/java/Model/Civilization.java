@@ -214,8 +214,10 @@ public class Civilization {
             if (!tile.getUnits().isEmpty()) {
                 boolean thereIsUnitOBuildingNearby = false;
                 for (Tile adj : tilesOnBorder()) {
-                    if (!adj.getUnits().isEmpty() || !adj.getBuildings().isEmpty()) {
-                        thereIsUnitOBuildingNearby = true;
+                    if (adj.getBuildings() != null) {
+                        if (!adj.getUnits().isEmpty() || !adj.getBuildings().isEmpty()) {
+                            thereIsUnitOBuildingNearby = true;
+                        }
                     }
                 }
                 if (thereIsUnitOBuildingNearby) {
