@@ -229,11 +229,6 @@ public class GameMenuController {
                     return false;
                 }
             }
-//            for (Unit unit1 : GameDatabase) {
-//                if (isUnitSoldier(unit1)) {
-//                    return false;
-//                }
-//            }
         } else {
 //            for (int i = 0; i < GameDatabase.getTileByXAndY(x, y).getUnits().size(); i++) {
 //                if (isUnitCivilian(GameDatabase.getTileByXAndY(x, y).getUnits().get(i))
