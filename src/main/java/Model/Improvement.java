@@ -124,39 +124,39 @@ public class Improvement {
     }
 
     public void setTurnsNeed(Tile tile) {
+        if(tile.getBaseTerrain().getFeature() == null) {
+            this.turnsNeed = 6;
+            return;
+        }
         switch (this.name) {
             case "Farm":
-                switch (tile.getBaseTerrain().getFeature().getType()) {
-                    case "Jungle":
-                        this.turnsNeed = 10;
-                        break;
-                    case "DenseJungle":
-                        this.turnsNeed = 13;
-                        break;
-                    case "Swamp":
-                        this.turnsNeed = 12;
-                        break;
-                    default:
-                        this.turnsNeed = 6;
-                        break;
-                }
             case "Mine":
-                switch (tile.getBaseTerrain().getFeature().getType()) {
-                    case "Jungle":
-                        this.turnsNeed = 10;
-                        break;
-                    case "DenseJungle":
-                        this.turnsNeed = 13;
-                        break;
-                    case "Swamp":
-                        this.turnsNeed = 12;
-                        break;
-                    default:
-                        this.turnsNeed = 6;
-                        break;
-                }
+                setSpecialTurnsNeed(tile);
+                break;
             default:
                 this.turnsNeed = 6;
+                break;
+        }
+    }
+
+    public int getTurnsNeed() {
+        return this.turnsNeed;
+    }
+
+    private void setSpecialTurnsNeed(Tile tile) {
+        switch (tile.getBaseTerrain().getFeature().getType()) {
+            case "Jungle":
+                this.turnsNeed = 10;
+                break;
+            case "DenseJungle":
+                this.turnsNeed = 13;
+                break;
+            case "Swamp":
+                this.turnsNeed = 12;
+                break;
+            default:
+                this.turnsNeed = 6;
+                break;
         }
     }
 

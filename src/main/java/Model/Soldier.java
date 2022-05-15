@@ -257,6 +257,10 @@ public class Soldier extends Unit {
         }
     }
 
+    public Technology getTechnologiesNeed() {
+        return this.requiredTechnology;
+    }
+
     public int getSiegeReady() {
         return siegeReady;
     }
@@ -342,7 +346,7 @@ public class Soldier extends Unit {
 
     @Override
     public String toString() {
-        String result = this.unitType;
+        String result = this.unitType + "\n";
         result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y) + "\n";
         result += "Hit point = " + Integer.toString(this.HP) + "\n" + "Power = " + Integer.toString(this.combatStrength);
         return result;
