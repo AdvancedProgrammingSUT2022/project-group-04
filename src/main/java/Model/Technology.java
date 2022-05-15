@@ -283,6 +283,9 @@ public class Technology {
         String leadingBuildings = "Leading buildings: \n";
         for (String building : GlobalVariables.BUILDINGS) {
             Building building1 = new Building(building);
+            if(building1.getTechnologyRequired() == null) {
+                continue;
+            }
             if (building1.getTechnologyRequired().getName().equals(this.name)) {
                 leadingBuildings += "\t " + building + "\n";
             }
