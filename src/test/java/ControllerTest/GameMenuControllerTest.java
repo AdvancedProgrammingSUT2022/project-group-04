@@ -770,6 +770,15 @@ public class GameMenuControllerTest {
     public void addTileToCivilization() {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         gameMenuController.addTileToCivilization(tile, civilization);
+        when(civilization.getCities()).thenReturn(cities);
+        when(cities.size()).thenReturn(1);
+        when(cities.get(0)).thenReturn(city);
+        when(city.getAdjacentTiles()).thenReturn(tiles);
+        when(tiles.contains(tile)).thenReturn(true);
+        //Assertions.assertFalse(gameMenuController.addTileToCivilization(tile,civilization));
+        gameMenuController.addTileToCivilization(tile,civilization);
+        verify(city).addTile(tile);
+//        verify(civilization).addTile(tile);
     }
 
     @Test
@@ -1223,6 +1232,11 @@ public class GameMenuControllerTest {
 //        gameMenuController.createCombatUnit(unitType,x,y,civilizationIndex);
 //        verify(tile).addUnit(soldier);
 //        verify(soldier).setTileOfUnit(tile);
+//
+//    }
+
+//    @Test
+//    public void addTileToCivilization(){
 //
 //    }
 }

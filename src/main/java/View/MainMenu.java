@@ -96,7 +96,7 @@ public class MainMenu extends Menu {
      *
      * @param matcher
      */
-    private String playGame(Matcher matcher) {
+    public String playGame(Matcher matcher) {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
         if (splitCommand.length == 1) {
@@ -120,7 +120,7 @@ public class MainMenu extends Menu {
      * @param scanner
      * @param matcher
      */
-    private void enterGameMenu(Scanner scanner, Matcher matcher) {
+    public void enterGameMenu(Scanner scanner, Matcher matcher) {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
         if (splitCommand.length == 1) {

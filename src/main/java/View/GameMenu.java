@@ -350,6 +350,8 @@ public class GameMenu extends Menu {
             } else if ((matcher = getCommandMatcher(command, BUILD_CITY)) != null) {
                 String result = buildCity(matcher);
                 if (result.startsWith("city")) {
+                    x = Integer.parseInt(matcher.group("x"));
+                    y = Integer.parseInt(matcher.group("y"));
                     turn = nextTurn();
                 }
                 System.out.println(result);
@@ -883,6 +885,7 @@ public class GameMenu extends Menu {
         if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
             return "this tile belongs to another civilization!";
         //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
+        if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) return "this isn't in your civilization";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";

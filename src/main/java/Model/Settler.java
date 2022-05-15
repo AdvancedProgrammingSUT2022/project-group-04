@@ -24,9 +24,9 @@ public class Settler extends Citizen {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTurn(this.getCivilizationIndex());
         //TODO edit if there is more than one turn for creating city
-        City city = new City(name, 0, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 5,
+        City city = new City(name, 10, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 5,
                 tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTurn(this.getCivilizationIndex()).getNickname(),
-                false, "", tile.getBaseTerrainType(), tile.getX(), tile.getY(), tile);
+                false, tile.type, tile.getBaseTerrainType(), tile.getX(), tile.getY(), tile);
         civilization.addCity(city);
         civilization.getCityByXAndY(x, y).removeSettler(this);//kill the settler after making city
         civilization.addTile(tile);

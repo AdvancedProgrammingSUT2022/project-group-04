@@ -1,12 +1,16 @@
 package ViewTest;
 
 import Controller.MainMenuController;
+import Controller.ProfileMenuController;
+import Database.UserDatabase;
+import Model.User;
 import View.MainMenu;
 import View.ProfileMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.annotations.Ignore;
 
@@ -14,13 +18,15 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.fail;
 
 @ExtendWith(MockitoExtension.class)
 public class MainMenuTest {
+
+    static MockedStatic<UserDatabase> database;
+
 
     @Mock
     MainMenuController mainMenuController;
@@ -29,7 +35,13 @@ public class MainMenuTest {
     Matcher matcher;
 
     @Mock
-    ProfileMenu profileMenu;
+    Scanner scanner;
+
+    @Mock
+    User loggedInUser;
+
+    @Mock
+    User user;
 
     @BeforeEach
     public void setUp() {
@@ -87,6 +99,61 @@ public class MainMenuTest {
         MainMenu mainMenu = new MainMenu(mainMenuController);
         assertEquals("use user logout command", mainMenu.menuExit(matcher));
     }
+
+    /**
+     * Test of enterProfileMenu function
+     */
+    @Test
+    public void enterProfileMenu() {
+        when(scanner.nextLine()).thenReturn("menu exit");
+        MainMenu mainMenu = new MainMenu(mainMenuController);
+        mainMenu.enterProfileMenu(scanner, loggedInUser);
+    }
+
+    /**
+     * Test of playGame function
+     */
+    @Test
+    public void playGame_notUsersExists() {
+        MainMenu mainMenu = new MainMenu(mainMenuController);
+        when(matcher.group("command")).thenReturn(" -p1 sepehr -p2 alirezaRM");
+        when(mainMenuController.isUserExists("sepehr")).thenReturn(false);
+        assertEquals("at least one username dose not exists.", mainMenu.playGame(matcher));
+    }
+
+    @Test
+    public void playGame_playWithYourself() {
+        MainMenu mainMenu = new MainMenu(mainMenuController);
+        when(matcher.group("command")).thenReturn(" -p1 sepehr");
+        when(mainMenuController.isUserExists("sepehr")).thenReturn(true);
+        assertEquals("you can't play with yourself!", mainMenu.playGame(matcher));
+    }
+
+    @Test
+    public void playGame_enterGameMenu() {
+        MainMenu mainMenu = new MainMenu(mainMenuController);
+        when(matcher.group("command")).thenReturn(" -p1 sepehr -p2 alirezaRM");
+        when(mainMenuController.isUserExists("sepehr")).thenReturn(true);
+        when(mainMenuController.isUserExists("alirezaRM")).thenReturn(true);
+        assertEquals("game started. good luck!", mainMenu.playGame(matcher));
+    }
+
+    /**
+     * Test of enterGameMenu function
+     */
+    @Test
+    public void enterGameMenu() {
+        database = mockStatic(UserDatabase.class);
+        MainMenu mainMenu = new MainMenu(mainMenuController);
+        when(matcher.group("command")).thenReturn(" -p1 sepehr -p2 alirezaRM");
+        when(scanner.nextLine()).thenReturn("win");
+        database.when(() -> UserDatabase.getUserByUsername("sepehr")).thenReturn(user);
+        database.when(() -> UserDatabase.getUserByUsername("alirezaRM")).thenReturn(user);
+        when(user.getNickname()).thenReturn("n");
+        mainMenu.enterGameMenu(scanner, matcher);
+    }
+
+
 
 
 }
