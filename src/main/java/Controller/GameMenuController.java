@@ -22,9 +22,6 @@ public class GameMenuController {
         return movingUnits;
     }
 
-    public void setMovingUnits(ArrayList<Unit> movingUnits) {
-        this.movingUnits = movingUnits;
-    }
 
     public GameMenuController(GameModel gameModel) {
         this.gameModel = gameModel;
@@ -207,9 +204,7 @@ public class GameMenuController {
                 }
             }
         } else if (GameDatabase.getTileByXAndY(x, y).getSettler() != null
-                || GameDatabase.getTileByXAndY(x, y).getWorker() != null) {
-            return false;
-        }
+                || GameDatabase.getTileByXAndY(x, y).getWorker() != null) return false;
         return true;
     }
 
@@ -330,13 +325,13 @@ public class GameMenuController {
         return null;
     }
 
-    public ArrayList<Citizen> getListOfUnemployedCitizens(City city) {
-        ArrayList<Citizen> citizenArrayList = new ArrayList<>();
-        for (Citizen citizen : city.getCitizens()) {
-            citizenArrayList.add(citizen);
-        }
-        return citizenArrayList;
-    }
+//    public ArrayList<Citizen> getListOfUnemployedCitizens(City city) {
+//        ArrayList<Citizen> citizenArrayList = new ArrayList<>();
+//        for (Citizen citizen : city.getCitizens()) {
+//            citizenArrayList.add(citizen);
+//        }
+//        return citizenArrayList;
+//    }
 
     public void pauseProject(Worker worker, int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -418,9 +413,9 @@ public class GameMenuController {
     public boolean removeFeature(Worker worker) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.getBaseTerrain().getFeature() != null
-                && (tile.getBaseTerrain().getFeature().equals("DenseJungle")
-                || tile.getBaseTerrain().getFeature().equals("Prairie")
-                || tile.getBaseTerrain().getFeature().equals("Jungle"))) {
+                && (tile.getBaseTerrain().getFeature().getType().equals("DenseJungle")
+                || tile.getBaseTerrain().getFeature().getType().equals("Prairie")
+                || tile.getBaseTerrain().getFeature().getType().equals("Jungle"))) {
             return true;
         }
         worker.setIndexOfProject(-1);
@@ -573,14 +568,10 @@ public class GameMenuController {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
             if (unitType.equals("Settler")
-                    || unitType.equals("worker")) {
-                return createNonCombatUnit(unitType, x, y, civilizationIndex);
-            } else {
-                return createCombatUnit(unitType, x, y, civilizationIndex);
-            }
-        } else {
-            return false;
+                    || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
+            else return createCombatUnit(unitType, x, y, civilizationIndex);
         }
+        return false;
     }
 
     public boolean isTileValidForCreatingUnit(int x, int y, int turn) {
@@ -590,13 +581,10 @@ public class GameMenuController {
     public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         ArrayList<Unit> soldiers = new ArrayList<>();
-        for (Unit unit : tile.getUnits()){
-            if (unit instanceof Soldier)
-                soldiers.add(unit);
+        for (int i=0;i<tile.getUnits().size();i++){
+            if (tile.getUnits().get(i) instanceof Soldier) soldiers.add(tile.getUnits().get(i));
         }
-        if ( soldiers.size() != 0){
-            return false;
-        }
+        if (soldiers.size() != 0) return false;
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
@@ -609,17 +597,12 @@ public class GameMenuController {
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         if (GameDatabase.getCityByXAndY(x, y) != null) {
-            if (unitType.equals("Settler")) {
-                GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
-                return true;
-            } else if (unitType.equals("worker")) {
-                GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
-                return true;
-            } else
-                return false;
-        } else {
-            return false;
+            if (unitType.equals("Settler")) GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
+            else if (unitType.equals("worker")) GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
+            else return false;
+            return true;
         }
+        return false;
     }
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
