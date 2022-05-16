@@ -148,6 +148,7 @@ public class GameMenu extends Menu {
                     gameMenuController.getMovingUnits().add(this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
+                    System.out.println(unitSelected);
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
@@ -158,6 +159,7 @@ public class GameMenu extends Menu {
                     //gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
+                    System.out.println(unitSelected);
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
@@ -458,8 +460,7 @@ public class GameMenu extends Menu {
         if (tile == null) return "invalid tile";
         if (gameMenuController.isTileInCivilization(tile, turn)) return "you already have this tile!";
         if (gameMenuController.isTileInAnyCivilization(tile)) return "somebody else has bought this tile";
-        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization))
-            return "this tile ain't adjacent to your tiles bro";
+        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization)) return "this tile ain't adjacent to your tiles bro";
         if (civilization.getGold() < priceOfBuyingTile) return "bro you dont have enough gold";
         gameMenuController.addTileToCivilization(tile, civilization);
         return "congrats bro you bought it";
@@ -486,16 +487,10 @@ public class GameMenu extends Menu {
 
     public String changeCapital(Matcher matcher) {
         String cityName = matcher.group("cityName");
-        if (!this.gameMenuController.isCityValid(cityName)) {
-            return "invalid city";
-        }
-        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
-            return "selected city is not for your civilization";
-        }
-        if (this.gameMenuController.isCityCapital(cityName)) {
-            return "selected city is already capital of your civilization";
-        }
-        GameDatabase.players.get(turn).changeCapital(cityName);
+        if (!this.gameMenuController.isCityValid(cityName)) return "invalid city";
+        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) return "selected city is not for your civilization";
+        if (this.gameMenuController.isCityCapital(cityName)) return "selected city is already capital of your civilization";
+        GameDatabase.getPlayers().get(turn).changeCapital(cityName);
         return "capital changed successfully";
     }
 
@@ -542,7 +537,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String unitStopWork(Matcher matcher) {
+    public String unitStopWork(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -571,7 +566,7 @@ public class GameMenu extends Menu {
         return "you must finish the game to exit";
     }
 
-    private String mapShowPosition(Matcher matcher) {
+    public String mapShowPosition(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -580,7 +575,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String mapShowCity(Matcher matcher) {
+    public String mapShowCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "selected city is not valid";
@@ -588,7 +583,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String selectCombat(Matcher matcher) {
+    public String selectCombat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -598,7 +593,6 @@ public class GameMenu extends Menu {
             return "no combat unit";
         }
         unitSelected = this.gameMenuController.selectCombatUnit(x, y);
-        System.out.println(unitSelected);
         return "unit selected";
     }
 
@@ -636,7 +630,6 @@ public class GameMenu extends Menu {
         }
         unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
         gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(x, y));
-        System.out.println(unitSelected);
         return "unit selected";
     }
 
@@ -927,7 +920,7 @@ public class GameMenu extends Menu {
         return "worker successfully assigned";
     }
 
-    private String mapMove(Matcher matcher) {
+    public String mapMove(Matcher matcher) {
         String direction = matcher.group("direction");
         int groupCount = matcher.groupCount();
         int c = this.gameMenuController.c;
@@ -937,8 +930,8 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isDirectionForMapValid(direction)) {
             return "invalid direction";
         }
-        int x = this.gameMenuController.x + this.gameMenuController.directionX.get(direction) * c;
-        int y = this.gameMenuController.y + this.gameMenuController.directionY.get(direction) * c;
+        int x = this.gameMenuController.getX() + this.gameMenuController.getDirectionX().get(direction) * c;
+        int y = this.gameMenuController.getY() + this.gameMenuController.getDirectionY().get(direction) * c;
         if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }
