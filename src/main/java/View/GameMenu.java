@@ -18,7 +18,7 @@ public class GameMenu extends Menu {
     private GameMenuController gameMenuController;
     private CombatController combatController;
     public int numberOfPlayers;
-    int turn;
+    public int turn;
     public Unit unitSelected;
     City citySelected;
     int x;
@@ -859,7 +859,7 @@ public class GameMenu extends Menu {
         return "now your happiness is 0";
     }
 
-    private String unitBuild(Matcher matcher) {
+    public String unitBuild(Matcher matcher) {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -870,13 +870,10 @@ public class GameMenu extends Menu {
         if (tile.isRaided()) return "this tile is raided";
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
-                && !gameMenuController.isImprovementValid(improvementName)) {
-            return "invalid improvement";
-        }
-        if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
-            return "this tile belongs to another civilization!";
+                && !gameMenuController.isImprovementValid(improvementName)) return "invalid improvement";
+        if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers))) return "this tile belongs to another civilization!";
         if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) return "this isn't in your civilization";
-        if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
+        if (tile.getIsGettingWorkedOn() || city.getIsGettingWorkedOn()) return "city has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
         if (gameMenuController.assignNewProject(worker, improvementName)) return "worker successfully assigned";
@@ -884,7 +881,7 @@ public class GameMenu extends Menu {
                 "you don't have the pre-requisite technology";
     }
 
-    private String unitRemoveFeature(Matcher matcher) {
+    public String unitRemoveFeature(Matcher matcher) {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -896,19 +893,18 @@ public class GameMenu extends Menu {
                 && !improvementName.equals("Railroad")
                 && !improvementName.equals("Jungle")
                 && !improvementName.equals("DenseJungle")
-                && !improvementName.equals("Prairie")) {
-            return "invalid improvement";
-        }
+                && !improvementName.equals("Prairie")) return "invalid improvement";
+
         if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (city.getIsGettingWorkedOn()) return "city has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (gameMenuController.assignNewProject(worker, "remove" + improvementName))
-            return "worker successfully assigned";
+        if (tile.isRaided()) return "this tile is raided";
+        if (gameMenuController.assignNewProject(worker, "remove" + improvementName)) return "worker successfully assigned";
         return "you can't do that because this feature is not in this tile";
     }
 
-    private String unitRepair(Matcher matcher) {
+    public String unitRepair(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -920,7 +916,7 @@ public class GameMenu extends Menu {
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
         if (!tile.isRaided()) return "this tile is not raided";
-        gameMenuController.assignNewProject(worker, "repair Tile");
+        gameMenuController.assignNewProject(worker, "repair");
         return "worker successfully assigned";
     }
 
@@ -944,18 +940,12 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String dryUp(Matcher matcher) {
+    public String dryUp(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if (!this.gameMenuController.isPositionValid(x, y)) {
-            return "invalid position";
-        }
-        if (this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) {
-            return "you can not dry up an ocean";
-        }
-        if (!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) {
-            return "no river in this tile";
-        }
+        if (!this.gameMenuController.isPositionValid(x, y)) return "invalid position";
+        if (this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) return "you can not dry up an ocean";
+        if (!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) return "no river in this tile";
         this.gameMenuController.dryUp(x, y);
         return null;
     }
