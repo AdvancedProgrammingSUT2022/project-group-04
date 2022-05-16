@@ -699,7 +699,6 @@ public class GameMenu extends Menu {
                 return "not enough movementpoints";
             }
         }
-
     }
 
     private String createUnit(Matcher matcher) {
