@@ -125,4 +125,28 @@ public class CombatController {
         }
     }
 
+    public void destroyCity(City city){
+        if (city.getCitizens() != null)
+            city.getCitizens().clear();
+        if (city.getSettler() != null)
+            city.removeSettler(city.getSettler());
+        if (city.getWorker() != null)
+            city.removeWorker(city.getWorker());
+        if (city.getBuildings() != null)
+            city.getBuildings().clear();
+        for (Tile tile: city.getTiles()){
+            if (tile.hasRoad())
+                tile.setRoadBroken(true);
+            if (tile.hasRailroad())
+                tile.setRailroadBroken(true);
+            if (tile.getImprovements() != null)
+                tile.getImprovements().clear();
+        }
+    }
+
+    public void zamimeCity(Civilization civilization, City city){
+        civilization.addCity(city);
+        //Todo niaz be sepehr hast
+    }
+
 }
