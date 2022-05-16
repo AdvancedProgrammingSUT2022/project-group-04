@@ -330,14 +330,6 @@ public class GameMenuController {
         return null;
     }
 
-    public ArrayList<Citizen> getListOfUnemployedCitizens(City city) {
-        ArrayList<Citizen> citizenArrayList = new ArrayList<>();
-        for (Citizen citizen : city.getCitizens()) {
-            citizenArrayList.add(citizen);
-        }
-        return citizenArrayList;
-    }
-
     public void pauseProject(Worker worker, int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x,y);
@@ -623,8 +615,8 @@ public class GameMenuController {
     }
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
-        for (Tile civilizationTile : civilization.getTiles()) {
-            if (civilizationTile.getAdjacentTiles().contains(tile)) {
+        for (int i = 0; i < civilization.getTiles().size(); i++) {
+            if (civilization.getTiles().get(i).getAdjacentTiles().contains(tile)) {
                 return true;
             }
         }
@@ -717,7 +709,7 @@ public class GameMenuController {
 
 
     public boolean isTileInAnyCivilization(Tile tile) {
-        for (int i = 0; i < GameDatabase.players.size(); i++) {
+        for (int i = 0; i < GameDatabase.getPlayers().size(); i++) {
             if (isTileInCivilization(tile, i)) {
                 return true;
             }
