@@ -91,14 +91,6 @@ public class CombatControllerTest {
         Unit unit2 = mock(Unit.class);
         Tile tile = mock(Tile.class);
         Tile soldierTile = mock(Tile.class);
-        //when(soldier1.isCombatUnit()).thenReturn(true);
-        //when(soldier1.getRange()).thenReturn(2);
-        //when(unit2.isCombatUnit()).thenReturn(false);
-       // when(tile.getX()).thenReturn(5);
-       // when(tile.getY()).thenReturn(5);
-       // when(soldier1.getTileOfUnit()).thenReturn(soldierTile);
-       // when(soldierTile.getX()).thenReturn(5);
-       // when(soldierTile.getY()).thenReturn(6);
         ArrayList<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++){
             Unit unitInPosition = new Unit(1,1,"Panzer",10, 0, 0);
