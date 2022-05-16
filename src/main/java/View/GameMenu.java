@@ -18,7 +18,7 @@ public class GameMenu extends Menu {
     private GameMenuController gameMenuController;
     private CombatController combatController;
     public int numberOfPlayers;
-    int turn;
+    public int turn;
     public Unit unitSelected;
     City citySelected;
     int x;
@@ -558,11 +558,11 @@ public class GameMenu extends Menu {
         return "Game Menu";
     }
 
-    private String menuEnter(Matcher matcher) {
+    public String menuEnter(Matcher matcher) {
         return "menu navigation is not possible";
     }
 
-    private String menuExit(Matcher matcher) {
+    public String menuExit(Matcher matcher) {
         return "you must finish the game to exit";
     }
 
@@ -596,7 +596,7 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    private String addHitPointUnit(Matcher matcher) {
+    public String addHitPointUnit(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -633,7 +633,11 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    private String changeTurn(Matcher matcher) {
+    public int getTurn() {
+        return this.turn;
+    }
+
+    public String changeTurn(Matcher matcher) {
         String civilizationName = matcher.group("civilizationName");
         if (!this.gameMenuController.isCivilizationValid(civilizationName)) {
             return "there is no player with nickname " + civilizationName;
@@ -644,30 +648,19 @@ public class GameMenu extends Menu {
         return "now it's your turn!";
     }
 
-    private String changeTurnByNumber(Matcher matcher) {
+    public String changeTurnByNumber(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
-        if (!this.gameMenuController.isAmountValidForTurn(amount)) {
-            return "invalid turn";
-        }
-        for (int i = 0; i < amount; i++) {
-            turn = nextTurn();
-        }
-        return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
-
+        if (!this.gameMenuController.isAmountValidForTurn(amount)) return "invalid turn";
+        for (int i = 0; i < amount; i++) turn = nextTurn();
+        return "now it's " + GameDatabase.getPlayers().get(turn).getNickname() + " turn!";
     }
 
-    private String addProduction(Matcher matcher) {
+    public String addProduction(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
         String cityName = matcher.group("cityName");
-        if (!this.gameMenuController.isCityValid(cityName)) {
-            return "invalid city";
-        }
-        if (!this.gameMenuController.isAmountValidForProduction(amount)) {
-            return "invalid amount";
-        }
-        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
-            return "this city is not for your civilization";
-        }
+        if (!this.gameMenuController.isCityValid(cityName)) return "invalid city";
+        if (!this.gameMenuController.isAmountValidForProduction(amount)) return "invalid amount";
+        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) return "this city is not for your civilization";
         this.gameMenuController.addProduction(cityName, amount);
         return Integer.toString(amount) + " production added to " + cityName;
     }
@@ -847,15 +840,15 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String makeHappy() {
-        if (GameDatabase.players.get(turn).isHappy()) {
+    public String makeHappy() {
+        if (GameDatabase.getPlayers().get(turn).isHappy()) {
             return "you are happy now";
         }
         this.gameMenuController.makeHappy(turn);
         return "now your happiness is 0";
     }
 
-    private String unitBuild(Matcher matcher) {
+    public String unitBuild(Matcher matcher) {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -866,13 +859,10 @@ public class GameMenu extends Menu {
         if (tile.isRaided()) return "this tile is raided";
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
-                && !gameMenuController.isImprovementValid(improvementName)) {
-            return "invalid improvement";
-        }
-        if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
-            return "this tile belongs to another civilization!";
+                && !gameMenuController.isImprovementValid(improvementName)) return "invalid improvement";
+        if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers))) return "this tile belongs to another civilization!";
         if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) return "this isn't in your civilization";
-        if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
+        if (tile.getIsGettingWorkedOn() || city.getIsGettingWorkedOn()) return "city has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
         if (gameMenuController.assignNewProject(worker, improvementName)) return "worker successfully assigned";
@@ -880,7 +870,7 @@ public class GameMenu extends Menu {
                 "you don't have the pre-requisite technology";
     }
 
-    private String unitRemoveFeature(Matcher matcher) {
+    public String unitRemoveFeature(Matcher matcher) {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -892,19 +882,18 @@ public class GameMenu extends Menu {
                 && !improvementName.equals("Railroad")
                 && !improvementName.equals("Jungle")
                 && !improvementName.equals("DenseJungle")
-                && !improvementName.equals("Prairie")) {
-            return "invalid improvement";
-        }
+                && !improvementName.equals("Prairie")) return "invalid improvement";
+
         if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
         if (city.getIsGettingWorkedOn()) return "city has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
-        if (gameMenuController.assignNewProject(worker, "remove" + improvementName))
-            return "worker successfully assigned";
+        if (tile.isRaided()) return "this tile is raided";
+        if (gameMenuController.assignNewProject(worker, "remove" + improvementName)) return "worker successfully assigned";
         return "you can't do that because this feature is not in this tile";
     }
 
-    private String unitRepair(Matcher matcher) {
+    public String unitRepair(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -916,7 +905,7 @@ public class GameMenu extends Menu {
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
         if (!tile.isRaided()) return "this tile is not raided";
-        gameMenuController.assignNewProject(worker, "repair Tile");
+        gameMenuController.assignNewProject(worker, "repair");
         return "worker successfully assigned";
     }
 
@@ -940,23 +929,17 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String dryUp(Matcher matcher) {
+    public String dryUp(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if (!this.gameMenuController.isPositionValid(x, y)) {
-            return "invalid position";
-        }
-        if (this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) {
-            return "you can not dry up an ocean";
-        }
-        if (!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) {
-            return "no river in this tile";
-        }
+        if (!this.gameMenuController.isPositionValid(x, y)) return "invalid position";
+        if (this.gameMenuController.isTileOcean(GameDatabase.getTileByXAndY(x, y))) return "you can not dry up an ocean";
+        if (!this.gameMenuController.tileHasRiver(GameDatabase.getTileByXAndY(x, y))) return "no river in this tile";
         this.gameMenuController.dryUp(x, y);
         return null;
     }
 
-    private String addHitPointCity(Matcher matcher) {
+    public String addHitPointCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForHP(amount)) {
@@ -975,7 +958,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " hit point added to city " + cityName;
     }
 
-    private String citySelectByName(Matcher matcher) {
+    public String citySelectByName(Matcher matcher) {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
@@ -983,7 +966,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String citySelectByPosition(Matcher matcher) {
+    public String citySelectByPosition(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -995,31 +978,29 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String cheatGold(Matcher matcher) {
+    public String cheatGold(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForGold(amount)) {
             return "invalid amount";
         }
         this.gameMenuController.addGold(turn, amount);
-        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
+        return "Now you have " + Integer.toString(GameDatabase.getPlayers().get(turn).getGold()) + " golds.";
     }
 
-    private String addScience(Matcher matcher) {
+    public String addScience(Matcher matcher) {
         int science = Integer.parseInt(matcher.group("science"));
         if (!this.gameMenuController.isAmountValidForScience(science)) {
             return "invalid amount";
         }
         this.gameMenuController.addScience(turn, science);
-        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " science.";
+        return "Now you have " + Integer.toString(GameDatabase.getPlayers().get(turn).getScience()) + " science.";
     }
 
-    private String addScore(Matcher matcher) {
+    public String addScore(Matcher matcher) {
         int score = Integer.parseInt(matcher.group("score"));
-        if (!this.gameMenuController.isAmountValidForScore(score)) {
-            return "invalid amount";
-        }
+        if (!this.gameMenuController.isAmountValidForScore(score)) return "invalid amount";
         this.gameMenuController.addScore(turn, score);
-        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScore()) + " score.";
+        return "Now you have " + Integer.toString(GameDatabase.getPlayers().get(turn).getScore()) + " score.";
     }
 
 
@@ -1082,40 +1063,30 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String buildCity(Matcher matcher) {
+    public String buildCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         City city = GameDatabase.getCityByName(cityName);
-        if (city != null) {
-            return "there is already a city with this name";
-        } else if (GameDatabase.getCityByXAndY(x, y) != null) {
-            return "there is already a city in this tile";
-        }else {
+        if (city != null) return "there is already a city with this name";
+        else if (GameDatabase.getCityByXAndY(x, y) != null) return "there is already a city in this tile";
+        else {
             Tile tile = GameDatabase.getTileByXAndY(x, y);
             Settler settler = tile.getSettler();
-            if (settler == null) {
-                return "there is no settler in this tile";
-            }
-            else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, settler)) {
-                return "this unit isn't for you!";
-            } else {
+            if (settler == null) return "there is no settler in this tile";
+            else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, settler)) return "this unit isn't for you!";
+            else {
                 gameMenuController.createNewCity(settler, cityName);
-
                 return "city created successfully!";
             }
         }
     }
 
-    private String sendMessage(Matcher matcher) {
+    public String sendMessage(Matcher matcher) {
         String nickname = matcher.group("Nickname");
         String text = matcher.group("Text");
-        if (!this.gameMenuController.isCivilizationValid(nickname)) {
-            return "there is no civilization with this nickname";
-        }
-        if (GameDatabase.players.get(turn).getNickname().equals(nickname)) {
-            return "you can't send a message for yourself!";
-        }
+        if (!this.gameMenuController.isCivilizationValid(nickname)) return "there is no civilization with this nickname";
+        if (GameDatabase.getPlayers().get(turn).getNickname().equals(nickname)) return "you can't send a message for yourself!";
         this.gameMenuController.sendMessage(turn, nickname, text);
         return "Message sent.";
     }
@@ -1157,23 +1128,18 @@ public class GameMenu extends Menu {
         System.out.println(GameDatabase.players.get(0).getNickname());
     }
 
-    private String getAddTileToCity(Matcher matcher) {
+    public String getAddTileToCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         City city = GameDatabase.getCityByName(cityName);
-        if (city == null) {
-            return "there is no city with this name";
-        }
-        if (GameDatabase.getCityByXAndY(x, y) != null) {
-            return "there is already a city in this tile";
-        }
+        if (city == null) return "there is no city with this name";
+        if (GameDatabase.getCityByXAndY(x, y) != null) return "there is already a city in this tile";
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if (!gameMenuController.isAdjacent(tile, city)) {
-            return "chosen tile isn't adjacent to city";
-        } else if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) {
-            return "you haven't bought this tile bro";
-        }else {
+        if (tile == null) return "invalid tile";
+        if (!gameMenuController.isAdjacent(tile, city)) return "chosen tile isn't adjacent to city";
+        else if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) return "you haven't bought this tile bro";
+        else {
             gameMenuController.addTileToCity(tile, city);
             return "tile added to the city successfully!";
         }
