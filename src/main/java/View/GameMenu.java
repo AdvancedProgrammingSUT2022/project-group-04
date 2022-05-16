@@ -977,7 +977,7 @@ public class GameMenu extends Menu {
         return "worker successfully assigned";
     }
 
-    private String mapMove(Matcher matcher) {
+    public String mapMove(Matcher matcher) {
         String direction = matcher.group("direction");
         int groupCount = matcher.groupCount();
         int c = this.gameMenuController.c;
@@ -987,8 +987,8 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isDirectionForMapValid(direction)) {
             return "invalid direction";
         }
-        int x = this.gameMenuController.x + this.gameMenuController.directionX.get(direction) * c;
-        int y = this.gameMenuController.y + this.gameMenuController.directionY.get(direction) * c;
+        int x = this.gameMenuController.getX() + this.gameMenuController.getDirectionX().get(direction) * c;
+        int y = this.gameMenuController.getY() + this.gameMenuController.getDirectionY().get(direction) * c;
         if (!this.gameMenuController.isPositionValid(x, y)) {
             return "position is not valid";
         }

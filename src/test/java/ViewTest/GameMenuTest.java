@@ -18,6 +18,7 @@ import org.testng.asserts.Assertion;
 
 import java.util.ArrayList;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 
 import static org.mockito.Mockito.*;
@@ -196,6 +197,68 @@ public class GameMenuTest {
         when(gameMenuController.isNonCombatUnitInThisPosition(1, 1)).thenReturn(true);
         when(gameMenuController.selectNonCombatUnit(1, 1)).thenReturn(unit);
         assertEquals(gameMenu.selectNonCombat(matcher), "unit selected");
+    }
+
+    @Test
+    public void mapMove_invalidDirection() {
+        when(matcher.group("direction")).thenReturn("UP");
+        when(matcher.group("c")).thenReturn("1");
+        when(gameMenuController.isDirectionForMapValid("UP")).thenReturn(false);
+        assertEquals(gameMenu.mapMove(matcher), "invalid direction");
+    }
+
+    @Test
+    public void mapMove_invalidPosition() {
+        when(matcher.group("direction")).thenReturn("UP");
+        when(matcher.group("c")).thenReturn("1");
+        when(gameMenuController.isDirectionForMapValid("UP")).thenReturn(true);
+        when(gameMenuController.getX()).thenReturn(1);
+        when(gameMenuController.getY()).thenReturn(1);
+        HashMap<String, Integer> directionX = new HashMap<String, Integer>();
+        {
+            directionX.put("UP", -1);
+            directionX.put("DOWN", 1);
+            directionX.put("RIGHT", 0);
+            directionX.put("LEFT", 0);
+        }
+        HashMap<String, Integer> directionY = new HashMap<String, Integer>();
+        {
+            directionY.put("UP", 0);
+            directionY.put("DOWN", 0);
+            directionY.put("RIGHT", 1);
+            directionY.put("LEFT", -1);
+        }
+        when(gameMenuController.getDirectionX()).thenReturn(directionX);
+        when(gameMenuController.getDirectionY()).thenReturn(directionY);
+        when(gameMenuController.isPositionValid(0, 1)).thenReturn(false);
+        assertEquals(gameMenu.mapMove(matcher), "position is not valid");
+    }
+
+    @Test
+    public void mapMove() {
+        when(matcher.group("direction")).thenReturn("UP");
+        when(matcher.group("c")).thenReturn("1");
+        when(gameMenuController.isDirectionForMapValid("UP")).thenReturn(true);
+        when(gameMenuController.getX()).thenReturn(1);
+        when(gameMenuController.getY()).thenReturn(1);
+        HashMap<String, Integer> directionX = new HashMap<String, Integer>();
+        {
+            directionX.put("UP", -1);
+            directionX.put("DOWN", 1);
+            directionX.put("RIGHT", 0);
+            directionX.put("LEFT", 0);
+        }
+        HashMap<String, Integer> directionY = new HashMap<String, Integer>();
+        {
+            directionY.put("UP", 0);
+            directionY.put("DOWN", 0);
+            directionY.put("RIGHT", 1);
+            directionY.put("LEFT", -1);
+        }
+        when(gameMenuController.getDirectionX()).thenReturn(directionX);
+        when(gameMenuController.getDirectionY()).thenReturn(directionY);
+        when(gameMenuController.isPositionValid(0, 1)).thenReturn(true);
+        assertNull(gameMenu.mapMove(matcher));
     }
 
     @AfterEach
