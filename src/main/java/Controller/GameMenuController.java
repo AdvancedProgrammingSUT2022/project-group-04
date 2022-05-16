@@ -325,17 +325,6 @@ public class GameMenuController {
         return null;
     }
 
-<<<<<<< HEAD
-//    public ArrayList<Citizen> getListOfUnemployedCitizens(City city) {
-//        ArrayList<Citizen> citizenArrayList = new ArrayList<>();
-//        for (Citizen citizen : city.getCitizens()) {
-//            citizenArrayList.add(citizen);
-//        }
-//        return citizenArrayList;
-//    }
-
-=======
->>>>>>> ceb32394042e8005bbd7795cd645aa3fa2ab7e3d
     public void pauseProject(Worker worker, int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x,y);
