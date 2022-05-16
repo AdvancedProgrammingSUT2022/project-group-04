@@ -67,9 +67,8 @@ public class CombatController {
 
     }
 
-    public void DefendCity(City city, Soldier soldier){
-
-
+    public void DefendCity(City city){
+        city.setPower(city.getPower() * 3);
     }
 
     public void addXP(ArrayList<Unit> unitsInWar, int XP) {
