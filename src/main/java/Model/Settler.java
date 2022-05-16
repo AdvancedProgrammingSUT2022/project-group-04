@@ -14,6 +14,8 @@ public class Settler extends Citizen {
         this.combatStrength = 0;
         this.rangedCombatStrength = 0;
         this.isHostage = false;
+        this.speed = 2;
+        this.originialspeed = 2;
     }
 
     public void nextTurn() {
