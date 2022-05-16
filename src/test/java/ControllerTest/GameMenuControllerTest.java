@@ -421,9 +421,9 @@ public class GameMenuControllerTest {
         Mockito.doReturn(true).when(gameMenuController).isPositionValid(x,y);
         Mockito.doReturn(false).when(gameMenuController).isUnitSoldier(unit);
         when(GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        when(tile.getUnits()).thenReturn(units);
-        when(units.size()).thenReturn(1);
-        when(units.get(0)).thenReturn(unit);
+        //when(tile.getUnits()).thenReturn(units);
+        //when(units.size()).thenReturn(1);
+        //when(units.get(0)).thenReturn(unit);
         //Mockito.doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         boolean result = gameMenuController.isDestinationOkForMove(unit,x,y);
         Assertions.assertTrue(result);
@@ -743,16 +743,8 @@ public class GameMenuControllerTest {
     @Test
     public void addTileToCivilization() {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        gameMenuController.addTileToCivilization(tile, civilization);
-        when(civilization.getCities()).thenReturn(cities);
-        when(cities.size()).thenReturn(1);
-        when(cities.get(0)).thenReturn(city);
-        when(city.getAdjacentTiles()).thenReturn(tiles);
-        when(tiles.contains(tile)).thenReturn(true);
-        //Assertions.assertFalse(gameMenuController.addTileToCivilization(tile,civilization));
         gameMenuController.addTileToCivilization(tile,civilization);
-        verify(city).addTile(tile);
-//        verify(civilization).addTile(tile);
+        verify(civilization).addTile(tile);
     }
 
     @Test
@@ -940,14 +932,13 @@ public class GameMenuControllerTest {
     @Test
     public void pauseProjectTest(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        Tile tile = mock(Tile.class);
-        Worker worker = mock(Worker.class);
         when(worker.isAssigned()).thenReturn(true);
         when(worker.isMoving()).thenReturn(false);
         when(worker.isLocked()).thenReturn(true);
-        database.when(()->GameDatabase.getTileByXAndY(worker.getX(), worker.getY())).thenReturn(tile);
-        gameMenuController.pauseProject(worker, worker.getX(),worker.getY());
-        Assertions.assertEquals(true, worker.isAssigned());
+        database.when(()->GameDatabase.getTileByXAndY(10,10)).thenReturn(tile);
+        database.when(()->GameDatabase.getCityByXAndY(10,10)).thenReturn(city);
+        when(city.getIsGettingWorkedOn()).thenReturn(true);
+        gameMenuController.pauseProject(worker, 10,10);
     }
 
     @Test
