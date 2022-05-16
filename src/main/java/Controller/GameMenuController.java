@@ -698,7 +698,6 @@ public class GameMenuController {
                         selectedUnit.route.get(i).removeSettler((Settler) selectedUnit);
                         selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
                     } else {
-                        System.out.println("this is working");
                         selectedUnit.route.get(i + 1).getUnits().add(selectedUnit);
                         selectedUnit.route.get(i).getUnits().remove(selectedUnit);
                         selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
@@ -709,11 +708,8 @@ public class GameMenuController {
 
         }
         if (index + 1 == selectedUnit.route.size() - 1){
-            System.out.println(selectedUnit.getUnitType() + "--------");
             selectedUnit.setSpeed(selectedUnit.getOriginialspeed());
-            System.out.println(movingUnits.size());
             this.movingUnits.remove(selectedUnit);
-            System.out.println("unit removed from moving units");
             return true;
         }
         return false;

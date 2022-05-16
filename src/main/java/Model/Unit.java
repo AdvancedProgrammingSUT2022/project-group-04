@@ -299,7 +299,6 @@ public class Unit {
         }
         selectedUnit.route = path;
 
-        System.out.println(path.size() + "aslkdhjgwelkjahgluakehlisugryaiu");
         int movementPriceForPath = 0;
         outer: for (int i = 1; i < path.size(); i++) {
             if (path.get(i).hasRoad() || path.get(i).hasRailroad()){
@@ -323,7 +322,6 @@ public class Unit {
             }
         }
         if (selectedUnit.getSpeed() < movementPriceForPath){
-            System.out.println(movementPriceForPath + "------" + selectedUnit.getSpeed());
             selectedUnit.route = null;
             return -2;
         }
