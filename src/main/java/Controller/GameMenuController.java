@@ -576,8 +576,7 @@ public class GameMenuController {
                     || unitType.equals("worker")) {
                 return createNonCombatUnit(unitType, x, y, civilizationIndex);
             } else {
-                createCombatUnit(unitType, x, y, civilizationIndex);
-                return true;
+                return createCombatUnit(unitType, x, y, civilizationIndex);
             }
         } else {
             return false;
@@ -588,10 +587,20 @@ public class GameMenuController {
         return GameDatabase.getCivilizationByTurn(turn).getClearTiles().contains(GameDatabase.getTileByXAndY(x, y));
     }
 
-    public void createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+    public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        ArrayList<Unit> soldiers = new ArrayList<>();
+        for (Unit unit : tile.getUnits()){
+            if (unit instanceof Soldier)
+                soldiers.add(unit);
+        }
+        if ( soldiers.size() != 0){
+            return false;
+        }
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
+        return true;
     }
 
     public boolean isAmountValidForScore(int amount) {
@@ -689,7 +698,6 @@ public class GameMenuController {
                         selectedUnit.route.get(i).removeSettler((Settler) selectedUnit);
                         selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
                     } else {
-                        System.out.println("this is working");
                         selectedUnit.route.get(i + 1).getUnits().add(selectedUnit);
                         selectedUnit.route.get(i).getUnits().remove(selectedUnit);
                         selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
@@ -699,11 +707,9 @@ public class GameMenuController {
             }
 
         }
-        if (index + 1 == selectedUnit.route.size()){
-            System.out.println(selectedUnit.getUnitType() + "--------");
+        if (index + 1 == selectedUnit.route.size() - 1){
             selectedUnit.setSpeed(selectedUnit.getOriginialspeed());
             this.movingUnits.remove(selectedUnit);
-            System.out.println("unit removed from moving units");
             return true;
         }
         return false;

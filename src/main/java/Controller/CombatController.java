@@ -31,7 +31,6 @@ public class CombatController {
 
     public boolean UnitAttackPosition(Unit unit1, int x, int y) {
         City cityOfPosition = GameDatabase.getCityByXAndY(x, y);
-        ArrayList<Unit> unitsInPosition = GameDatabase.getTileByXAndY(x, y).getUnits();
         if (unit1 instanceof Soldier) {
             Soldier soldier1 = (Soldier) unit1;
             if (!soldier1.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x,y))){
@@ -40,26 +39,24 @@ public class CombatController {
             boolean won = true;
             if (soldier1.getRange() == 0) {
                 //melee attack
-                for (Unit unit : unitsInPosition) {
-                    ((Soldier) unit1).attackUnitMelee(unit);
-                }
                 ((Soldier) unit1).attackCityMelee(cityOfPosition);
+                cityOfPosition.attackUnit(unit1);
             } else {
                 //longRange attack
-                for (Unit unit : unitsInPosition) {
-                    ((Soldier) unit1).attackUnitRanged(unit);
-                }
                 ((Soldier) unit1).attackCityRanged(cityOfPosition);
+
+                cityOfPosition.attackUnit(unit1);
             }
-            for (Unit unit : unitsInPosition) {
-                if (unit.getHP() > 0) won = false;
-                else killUnit(unit);
+            if (cityOfPosition.getHP() > 0) {
+                won = false;
+            } else {
+                dastneshandeCity(GameDatabase.getCivilizationByTurn(unit1.getCivilizationIndex()), cityOfPosition);
             }
-            if (cityOfPosition.getHP() > 0) won = false;
-             else {
-                //Todo ...
+            if (won) {
+                //checkTerrainBonus();
+                unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
             }
-            if (won) unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
+
             return true;
         } else {
             return false;
@@ -67,6 +64,11 @@ public class CombatController {
     }
 
     public void checkTerrainBonus(Tile tile1, Tile tile2) {
+
+    }
+
+    public void DefendCity(City city, Soldier soldier){
+
 
     }
 

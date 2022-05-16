@@ -40,7 +40,7 @@ public class City extends Tile {
         super(type, baseTerrainType, x, y);
         this.name = name;
         this.power = power;
-        this.longRangePower = 0;
+        this.longRangePower = 5;
         this.range = 0;
         this.foodGeneratingRate = foodGeneratingRate;
         this.goldGeneratingRate = goldGeneratingRate;
@@ -436,5 +436,23 @@ public class City extends Tile {
 
     public ArrayList<Citizen> getCitizens() {
         return citizens;
+    }
+
+    public void attackUnit(Unit unit){
+        if (isTileInRangeOfUnit(unit.getTileOfUnit())){
+            unit.setHP(unit.getHP() - this.longRangePower);
+        }
+    }
+
+
+    public boolean isTileInRangeOfUnit(Tile tile) {
+        for (int i = 1; i < 100; i++) {
+            if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
+                if (i <= 2){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
