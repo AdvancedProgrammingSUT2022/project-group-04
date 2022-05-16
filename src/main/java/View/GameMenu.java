@@ -648,12 +648,11 @@ public class GameMenu extends Menu {
         return "now it's your turn!";
     }
 
-    private String changeTurnByNumber(Matcher matcher) {
+    public String changeTurnByNumber(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
-        if (!this.gameMenuController.isAmountValidForTurn(amount)) {return "invalid turn";}
-        for (int i = 0; i < amount; i++) {turn = nextTurn();}
-        return "now it's " + GameDatabase.players.get(turn).getNickname() + " turn!";
-
+        if (!this.gameMenuController.isAmountValidForTurn(amount)) return "invalid turn";
+        for (int i = 0; i < amount; i++) turn = nextTurn();
+        return "now it's " + GameDatabase.getPlayers().get(turn).getNickname() + " turn!";
     }
 
     public String addProduction(Matcher matcher) {
@@ -1083,15 +1082,11 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String sendMessage(Matcher matcher) {
+    public String sendMessage(Matcher matcher) {
         String nickname = matcher.group("Nickname");
         String text = matcher.group("Text");
-        if (!this.gameMenuController.isCivilizationValid(nickname)) {
-            return "there is no civilization with this nickname";
-        }
-        if (GameDatabase.players.get(turn).getNickname().equals(nickname)) {
-            return "you can't send a message for yourself!";
-        }
+        if (!this.gameMenuController.isCivilizationValid(nickname)) return "there is no civilization with this nickname";
+        if (GameDatabase.getPlayers().get(turn).getNickname().equals(nickname)) return "you can't send a message for yourself!";
         this.gameMenuController.sendMessage(turn, nickname, text);
         return "Message sent.";
     }

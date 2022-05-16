@@ -846,6 +846,30 @@ public class GameMenuTest {
         Assertions.assertEquals("city created successfully!",gameMenu.buildCity(matcher));
     }
 
+    @Test
+    public void changeTurnByNumber(){
+        int amount = 0;
+        when(matcher.group("amount")).thenReturn(Integer.toString(amount));
+        when(gameMenuController.isAmountValidForTurn(amount)).thenReturn(true);
+        gameDatabase.when(()->GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.turn)).thenReturn(civilization);
+        when(civilization.getNickname()).thenReturn("nesfejahan");
+        Assertions.assertEquals("now it's " + "nesfejahan" + " turn!",gameMenu.changeTurnByNumber(matcher));
+    }
+
+    @Test
+    public void sendMessage(){
+        String nickname = "Amiri";
+        String text = "I love nojoom";
+        when(matcher.group("Text")).thenReturn(text);
+        when(matcher.group("Nickname")).thenReturn(nickname);
+        when(gameMenuController.isCivilizationValid(nickname)).thenReturn(true);
+        gameDatabase.when(()->GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.turn)).thenReturn(civilization);
+        when(civilization.getNickname()).thenReturn("sepehr");
+        Assertions.assertEquals("Message sent.",gameMenu.sendMessage(matcher));
+    }
+
     @AfterEach
     public void after() {
         gameDatabase.close();
