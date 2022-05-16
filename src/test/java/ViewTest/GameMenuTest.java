@@ -17,6 +17,7 @@ import org.testng.asserts.Assertion;
 
 
 import javax.annotation.meta.When;
+import java.util.Scanner;
 import java.util.Set;
 
 import static org.mockito.Mockito.*;
@@ -68,12 +69,26 @@ public class GameMenuTest {
     @Mock
     Unit unit;
 
+    @Mock
+    Scanner scanner;
+
+
     @BeforeEach
     public void setUp(){
         gameDatabase = mockStatic(GameDatabase.class);
         gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.numberOfPlayers = 4;
         gameMenu.turn = 0;
+    }
+
+    @Test
+    public void runTest() {
+        gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(0)).thenReturn(civilization);
+        when(civilizations.get(gameMenu.getTurn())).thenReturn(civilization);
+        when(civilization.getNickname()).thenReturn("n1");
+        when(scanner.nextLine()).thenReturn("win");
+        gameMenu.run(scanner);
     }
 
     @Test

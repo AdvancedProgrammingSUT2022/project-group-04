@@ -97,7 +97,6 @@ public class GameMenuControllerTest {
         database.close();
     }
 
-
     @Test
     public void isPositionValid_Found() {
         int index = 0;
@@ -1183,6 +1182,39 @@ public class GameMenuControllerTest {
         when(tile.isImprovementForThisTile("Quarry")).thenReturn(true);
         when(civilization.isTechnologyInCivilization("Masonry")).thenReturn(false);
         Assertions.assertFalse(gameMenuController.makeImprovement(worker));
+    }
+
+    @Test
+    public void moveUnitAlongPath_worker() {
+        when(worker.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(worker.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(worker);
+    }
+
+    @Test
+    public void moveUnitAlongPath_settler() {
+        when(settler.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(settler.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(settler);
+    }
+
+    @Test
+    public void moveUnitAlongPath_soldier() {
+        when(soldier.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(soldier.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(soldier);
     }
 
 //    @Test
