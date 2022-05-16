@@ -184,7 +184,6 @@ public class CombatControllerTest {
         ArrayList<Unit> result = tile.getUnits();
         ArrayList<Unit> expected = new ArrayList<>();
         Assertions.assertEquals(expected, result);
-
     }
 
     @Test
@@ -215,12 +214,7 @@ public class CombatControllerTest {
         verify(tile).setRoadBroken(true);
         verify(tile).setRailroadBroken(true);
     }
-
-//    @Test
-//    public void dastneshandeCity(){
-//        combatController.dastneshandeCity(civilization,city);
-//        verify()
-//    }
+    
     @AfterEach
     public void after() {
         database1.close();
