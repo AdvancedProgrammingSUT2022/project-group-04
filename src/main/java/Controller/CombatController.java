@@ -52,20 +52,14 @@ public class CombatController {
                 ((Soldier) unit1).attackCityRanged(cityOfPosition);
             }
             for (Unit unit : unitsInPosition) {
-                if (unit.getHP() > 0) {
-                    won = false;
-                } else {
-                    killUnit(unit);
-                }
+                if (unit.getHP() > 0) won = false;
+                else killUnit(unit);
             }
-            if (cityOfPosition.getHP() > 0) {
-                won = false;
-            } else {
+            if (cityOfPosition.getHP() > 0) won = false;
+             else {
                 //Todo ...
             }
-            if (won) {
-                unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
-            }
+            if (won) unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
             return true;
         } else {
             return false;
@@ -86,15 +80,11 @@ public class CombatController {
         Tile currentTile = GameDatabase.getTileByXAndY(unit.getX(), unit.getY());
         Civilization currentCivilization = GameDatabase.getCivilizationByTile(currentTile);
         if (currentCivilization != null && currentCivilization.getAllUnitsOfCivilization().contains(unit)) {
-            if (currentTile.getCity() == null) {
-                unit.regainHP(2);
-            } else {
-                unit.regainHP(3);
-            }
+            if (currentTile.getCity() == null) unit.regainHP(2);
+            else unit.regainHP(3);
         } else {
             unit.regainHP(1);
         }
-
     }
 
     public void fortifyUnit(Unit unit) {
@@ -118,21 +108,14 @@ public class CombatController {
     }
 
     public void destroyCity(City city){
-        if (city.getCitizens() != null)
-            city.getCitizens().clear();
-        if (city.getSettler() != null)
-            city.removeSettler(city.getSettler());
-        if (city.getWorker() != null)
-            city.removeWorker(city.getWorker());
-        if (city.getBuildings() != null)
-            city.getBuildings().clear();
-        for (Tile tile: city.getTiles()){
-            if (tile.hasRoad())
-                tile.setRoadBroken(true);
-            if (tile.hasRailroad())
-                tile.setRailroadBroken(true);
-            if (tile.getImprovements() != null)
-                tile.getImprovements().clear();
+        if (city.getCitizens() != null) city.getCitizens().clear();
+        if (city.getSettler() != null) city.removeSettler(city.getSettler());
+        if (city.getWorker() != null) city.removeWorker(city.getWorker());
+        if (city.getBuildings() != null) city.getBuildings().clear();
+        for (int i = 0;i<city.getTiles().size();i++){
+            if (city.getTiles().get(i).hasRoad()) city.getTiles().get(i).setRoadBroken(true);
+            if (city.getTiles().get(i).hasRailroad()) city.getTiles().get(i).setRailroadBroken(true);
+            if (city.getTiles().get(i).getImprovements() != null) city.getTiles().get(i).getImprovements().clear();
         }
     }
 

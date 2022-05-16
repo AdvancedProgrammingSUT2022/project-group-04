@@ -504,7 +504,7 @@ public class GameMenu extends Menu {
         return "worker started locking process successfully!";
     }
 
-    private String unemployedSection(Matcher matcher, boolean isCoordinate) {
+    public String unemployedSection(Matcher matcher, boolean isCoordinate) {
         City city;
         if (isCoordinate) {
             int x = Integer.parseInt(matcher.group("x"));
@@ -521,16 +521,16 @@ public class GameMenu extends Menu {
         return "";
     }
 
-    private void printUnemployedSection(ArrayList<Worker> workers, ArrayList<Settler> settlers) {
-        int i = 0;
-        for (Worker worker : workers) {
-            System.out.println(i + "th unemployed worker: x = " + worker.getX() + ", y = " + worker.getY());
-        }
-        i = 0;
-        for (Settler settler : settlers) {
-            System.out.println(i + "th unemployed worker: x = " + settler.getX() + ", y = " + settler.getY());
-        }
-    }
+//    private void printUnemployedSection(ArrayList<Worker> workers, ArrayList<Settler> settlers) {
+//        int i = 0;
+//        for (Worker worker : workers) {
+//            System.out.println(i + "th unemployed worker: x = " + worker.getX() + ", y = " + worker.getY());
+//        }
+//        i = 0;
+//        for (Settler settler : settlers) {
+//            System.out.println(i + "th unemployed worker: x = " + settler.getX() + ", y = " + settler.getY());
+//        }
+//    }
 
     public String unitStopWork(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
