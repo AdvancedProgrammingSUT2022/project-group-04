@@ -558,11 +558,11 @@ public class GameMenu extends Menu {
         return "Game Menu";
     }
 
-    private String menuEnter(Matcher matcher) {
+    public String menuEnter(Matcher matcher) {
         return "menu navigation is not possible";
     }
 
-    private String menuExit(Matcher matcher) {
+    public String menuExit(Matcher matcher) {
         return "you must finish the game to exit";
     }
 
@@ -633,7 +633,11 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    private String changeTurn(Matcher matcher) {
+    public int getTurn() {
+        return this.turn;
+    }
+
+    public String changeTurn(Matcher matcher) {
         String civilizationName = matcher.group("civilizationName");
         if (!this.gameMenuController.isCivilizationValid(civilizationName)) {
             return "there is no player with nickname " + civilizationName;
@@ -847,8 +851,8 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String makeHappy() {
-        if (GameDatabase.players.get(turn).isHappy()) {
+    public String makeHappy() {
+        if (GameDatabase.getPlayers().get(turn).isHappy()) {
             return "you are happy now";
         }
         this.gameMenuController.makeHappy(turn);

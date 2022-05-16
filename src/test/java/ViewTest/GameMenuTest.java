@@ -90,10 +90,6 @@ public class GameMenuTest {
         //GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
         Assertions.assertEquals("congrats bro you bought it",gameMenu.buyTileWithCoordinate(matcher));
     }
-    @AfterEach
-    public void salam(){
-        gameDatabase.close();
-    }
 
     @Test
     public void changeCapital(){
@@ -267,11 +263,6 @@ public class GameMenuTest {
         when(gameMenuController.getDirectionY()).thenReturn(directionY);
         when(gameMenuController.isPositionValid(0, 1)).thenReturn(true);
         assertNull(gameMenu.mapMove(matcher));
-    }
-
-    @AfterEach
-    public void after() {
-        gameDatabase.close();
     }
 
 
@@ -473,10 +464,65 @@ public class GameMenuTest {
         Assertions.assertEquals("unit deleted", result);
     }
 
+    @Test
+    public void menuShowTest() {
+        assertEquals(gameMenu.menuShow(), "Game Menu");
+    }
 
+    @Test
+    public void menuEnter() {
+        assertEquals(gameMenu.menuEnter(matcher), "menu navigation is not possible");
+    }
 
+    @Test
+    public void menuExit() {
+        assertEquals(gameMenu.menuExit(matcher), "you must finish the game to exit");
+    }
 
+    @Test
+    public void changeTurn_invalidCivilization() {
+        when(matcher.group("civilizationName")).thenReturn("n1");
+        when(gameMenuController.isCivilizationValid("n1")).thenReturn(false);
+        assertEquals(gameMenu.changeTurn(matcher), "there is no player with nickname n1");
+    }
 
+    @Test
+    public void changeTurn_notCheat() {
+        when(matcher.group("civilizationName")).thenReturn("n1");
+        when(gameMenuController.isCivilizationValid("n1")).thenReturn(true);
+        when(gameMenuController.isCheatForTurn("n1", gameMenu.getTurn())).thenReturn(false);
+        assertEquals(gameMenu.changeTurn(matcher), "there is already your turn!");
+    }
+
+    @Test
+    public void changeTurn() {
+        when(matcher.group("civilizationName")).thenReturn("n1");
+        when(gameMenuController.isCivilizationValid("n1")).thenReturn(true);
+        when(gameMenuController.isCheatForTurn("n1", gameMenu.getTurn())).thenReturn(true);
+        assertEquals(gameMenu.changeTurn(matcher), "now it's your turn!");
+    }
+
+    @Test
+    public void makeHappy_happy() {
+        gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.getTurn())).thenReturn(civilization);
+        when(civilization.isHappy()).thenReturn(true);
+        assertEquals(gameMenu.makeHappy(), "you are happy now");
+    }
+
+    @Test
+    public void makeHappy() {
+        gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.getTurn())).thenReturn(civilization);
+        when(civilization.isHappy()).thenReturn(false);
+        assertEquals(gameMenu.makeHappy(), "now your happiness is 0");
+        verify(gameMenuController).makeHappy(gameMenu.getTurn());
+    }
+
+    @AfterEach
+    public void after() {
+        gameDatabase.close();
+    }
 
 
 }
