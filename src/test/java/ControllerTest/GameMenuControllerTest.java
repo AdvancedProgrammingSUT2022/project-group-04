@@ -35,6 +35,7 @@ public class GameMenuControllerTest {
 
 
     static MockedStatic<GameDatabase> database;
+    static MockedStatic<Notification> notification;
     static MockedStatic<Worker> workerstatic;
 
     @Mock
@@ -97,10 +98,12 @@ public class GameMenuControllerTest {
     @BeforeAll
     public static void setUp() {
         database = mockStatic(GameDatabase.class);
+        notification = mockStatic(Notification.class);
     }
     @AfterAll
     public static void salam(){
         database.close();
+        notification.close();
     }
 
     @Test
@@ -123,6 +126,15 @@ public class GameMenuControllerTest {
         when(tiles.get(0)).thenReturn(tile0);
         when(tile0.getX()).thenReturn(5);
         Assertions.assertFalse(gameMenuController.isPositionValid(2, 1));
+    }
+
+    @Test
+    public void sendMessage() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(0)).thenReturn(civilization);
+        when(civilization.getNickname()).thenReturn("n1");
+        gameMenuController.sendMessage(0, "n1", "hi");
     }
 
     @Test
