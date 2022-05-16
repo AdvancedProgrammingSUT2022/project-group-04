@@ -56,6 +56,10 @@ public class Worker extends Citizen {
         return true;
     }
 
+    public static HashMap<String, Integer> getWorkToIndex() {
+        return workToIndex;
+    }
+
     @Override
     public boolean isSettler() {
         return false;

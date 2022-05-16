@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 import static org.mockito.Mockito.*;
@@ -34,6 +35,7 @@ public class GameMenuControllerTest {
 
 
     static MockedStatic<GameDatabase> database;
+    static MockedStatic<Worker> workerstatic;
 
     @Mock
     GameModel gameModel;
@@ -1217,6 +1219,108 @@ public class GameMenuControllerTest {
         when(tile.isImprovementForThisTile("Quarry")).thenReturn(true);
         when(civilization.isTechnologyInCivilization("Masonry")).thenReturn(false);
         Assertions.assertFalse(gameMenuController.makeImprovement(worker));
+    }
+
+
+
+    @Test
+    public void assignNewProjectTest(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Worker worker = mock(Worker.class);
+        when(worker.getX()).thenReturn(1);
+        when(worker.getY()).thenReturn(1);
+        Tile tile = mock(Tile.class);
+        City city = mock(City.class);
+        String type = "kire babat";
+        database.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+        database.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        when(tile.getIsGettingWorkedOn()).thenReturn(false);
+        when(worker.getTypeOfWork()).thenReturn("kire babat");
+        boolean result = gameMenuController.assignNewProject(worker, type);
+        Assertions.assertEquals(true, result);
+    }
+
+    @Test
+    public void assignNewProjectTest1(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Worker worker = mock(Worker.class);
+        workerstatic = mockStatic(Worker.class);
+        when(worker.getX()).thenReturn(1);
+        when(worker.getY()).thenReturn(1);
+        Tile tile = mock(Tile.class);
+        City city = mock(City.class);
+        String type = "kire babat";
+        when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(true);
+        when(worker.getIndexOfProject()).thenReturn(1);
+        HashMap<String, Integer> laanati = mock(HashMap.class);
+        workerstatic.when(()->Worker.getWorkToIndex()).thenReturn(laanati);
+        when(laanati.get(type)).thenReturn(1);
+        when(tile.getRoundsTillFinishProjectByIndex(1)).thenReturn(1);
+        database.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+        database.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(tile.getIsGettingWorkedOn()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("kos");
+        when(worker.getTypeOfWork()).thenReturn("kire babat!");
+        boolean result = gameMenuController.assignNewProject(worker, type);
+        Assertions.assertEquals(true, result);
+    }
+
+    @Test
+    public void assignNewProjectTest2(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Worker worker = mock(Worker.class);
+        workerstatic = mockStatic(Worker.class);
+        when(worker.getX()).thenReturn(1);
+        when(worker.getY()).thenReturn(1);
+        Tile tile = mock(Tile.class);
+        City city = mock(City.class);
+        String type = "kire babat";
+        when(civilization.isTechnologyInCivilization("Agriculture")).thenReturn(true);
+        when(worker.getIndexOfProject()).thenReturn(2);
+        HashMap<String, Integer> laanati = mock(HashMap.class);
+        workerstatic.when(()->Worker.getWorkToIndex()).thenReturn(laanati);
+        when(laanati.get(type)).thenReturn(1);
+        when(tile.getRoundsTillFinishProjectByIndex(2)).thenReturn(1);
+        database.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+        database.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(tile.getIsGettingWorkedOn()).thenReturn(false);
+        BaseTerrain baseTerrain = mock(BaseTerrain.class);
+        TerrainFeatures terrainFeatures = mock(TerrainFeatures.class);
+        when(tile.getBaseTerrainType()).thenReturn("pedarat");
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        when(baseTerrain.getFeature()).thenReturn(terrainFeatures);
+        when(terrainFeatures.getType()).thenReturn("kose babattttt");
+        when(worker.getTypeOfWork()).thenReturn("kire babat!");
+        boolean result = gameMenuController.assignNewProject(worker, type);
+        Assertions.assertEquals(false, result);
+    }
+
+    @Test
+    public void assignNewProjectTest3(){
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Worker worker = mock(Worker.class);
+        workerstatic = mockStatic(Worker.class);
+        when(worker.getX()).thenReturn(1);
+        when(worker.getY()).thenReturn(1);
+        Tile tile = mock(Tile.class);
+        City city = mock(City.class);
+        String type = "kire babat";
+        when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(true);
+        when(worker.getIndexOfProject()).thenReturn(2);
+        HashMap<String, Integer> laanati = mock(HashMap.class);
+        workerstatic.when(()->Worker.getWorkToIndex()).thenReturn(laanati);
+        when(laanati.get(type)).thenReturn(1);
+        when(tile.getRoundsTillFinishProjectByIndex(2)).thenReturn(1);
+        database.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+        database.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(tile.getIsGettingWorkedOn()).thenReturn(false);
+        when(tile.getBaseTerrainType()).thenReturn("kos");
+        when(worker.getTypeOfWork()).thenReturn("kire babat!");
+        boolean result = gameMenuController.assignNewProject(worker, type);
+        Assertions.assertEquals(true, result);
     }
 
     @Test
