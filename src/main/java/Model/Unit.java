@@ -291,9 +291,9 @@ public class Unit {
         selectedUnit.route = path;
 
         System.out.println(path.size() + "aslkdhjgwelkjahgluakehlisugryaiu");
-        /*for (int i = 1; i < path.size(); i++) {
-            if (selectedUnit.getSpeed() >= path.get(i).movementPriceForTile()) {
-                selectedUnit.moveToAdjacentTile(path.get(i));
+        for (int i = 1; i < path.size(); i++) {
+            //if (selectedUnit.getSpeed() >= path.get(i).movementPriceForTile()) {
+                /*selectedUnit.moveToAdjacentTile(path.get(i));
                 if (selectedUnit instanceof Soldier) {
                     path.get(i).units.add(selectedUnit);
                     path.get(i - 1).units.remove(selectedUnit);
@@ -306,11 +306,12 @@ public class Unit {
                     path.get(i).addWorker((Worker) selectedUnit);
                     path.get(i - 1).removeWorker((Worker) selectedUnit);
                 }
-                System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());
-            } else {
-                return -2;
-            }
-        }*/
+                System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());*/
+            //} else {
+            //    selectedUnit.route = null;
+            //    return -2;
+            //}
+        }
         return 0;
     }
 

@@ -757,25 +757,33 @@ public class GameMenuController {
         for (int i = 0; i < selectedUnit.route.size(); i++){
             if (selectedUnit.getTileOfUnit().equals(selectedUnit.route.get(i))){
                 index = i;
-                selectedUnit.moveToAdjacentTile(selectedUnit.route.get(i + 1));
-                if (selectedUnit instanceof Worker) {
-                    selectedUnit.route.get(i + 1).addWorker((Worker) selectedUnit);
-                    selectedUnit.route.get(i).removeWorker((Worker) selectedUnit);
-                } else if (selectedUnit instanceof Settler){
-                    System.out.println("this is working");
-                    selectedUnit.route.get(i + 1).addSettler((Settler) selectedUnit);
-                    selectedUnit.route.get(i).removeSettler((Settler) selectedUnit);
-                    selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
-                    System.out.println(i);
-                } else {
-                    selectedUnit.route.get(i + 1).addUnit(selectedUnit);
+                if (i + 1 != selectedUnit.route.size()) {
+                    selectedUnit.moveToAdjacentTile(selectedUnit.route.get(i + 1));
+                    if (selectedUnit instanceof Worker) {
+                        selectedUnit.route.get(i + 1).addWorker((Worker) selectedUnit);
+                        selectedUnit.route.get(i).removeWorker((Worker) selectedUnit);
+                        selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                    } else if (selectedUnit instanceof Settler) {
+                        selectedUnit.route.get(i + 1).addSettler((Settler) selectedUnit);
+                        selectedUnit.route.get(i).removeSettler((Settler) selectedUnit);
+                        selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                    } else {
+                        System.out.println("this is working");
+                        selectedUnit.route.get(i + 1).getUnits().add(selectedUnit);
+                        selectedUnit.route.get(i).getUnits().remove(selectedUnit);
+                        selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                    }
+                    break;
                 }
-                break;
             }
 
         }
         if (index + 1 == selectedUnit.route.size()){
-            this.getMovingUnits().remove(selectedUnit);
+            System.out.println(selectedUnit.getUnitType() + "--------");
+            if (selectedUnit instanceof Soldier) {
+                this.getMovingUnits().remove(selectedUnit);
+                System.out.println("unit removed from moving units");
+            }
             return true;
         }
         return false;
