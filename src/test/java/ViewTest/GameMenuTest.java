@@ -6,11 +6,8 @@ import Database.GameDatabase;
 import Model.City;
 import Model.Civilization;
 import Model.Tile;
-<<<<<<< HEAD
 import Model.Worker;
-=======
 import Model.Unit;
->>>>>>> 1190b8418696ff490006d97027e646235dc0c1a9
 import View.GameMenu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,11 +19,8 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.asserts.Assertion;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
 import java.rmi.server.UnicastRemoteObject;
->>>>>>> 1190b8418696ff490006d97027e646235dc0c1a9
 import java.util.regex.Matcher;
 
 import static org.mockito.Mockito.*;
