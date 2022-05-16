@@ -53,7 +53,7 @@ public class CombatController {
                 dastneshandeCity(GameDatabase.getCivilizationByTurn(unit1.getCivilizationIndex()), cityOfPosition);
             }
             if (won) {
-                checkTerrainBonus(unit1, x, y);
+                //checkTerrainBonus(unit1, x, y);
                 unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
             }
 
