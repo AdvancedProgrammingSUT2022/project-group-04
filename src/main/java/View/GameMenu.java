@@ -144,6 +144,8 @@ public class GameMenu extends Menu {
                 String result = selectCombat(matcher);
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                    unitSelected.setRoute(this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getRoute());
+                    gameMenuController.getMovingUnits().add(this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                 }
@@ -153,7 +155,7 @@ public class GameMenu extends Menu {
                 if (result.startsWith("unit")) {
                     unitSelected = this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                     unitSelected.setRoute(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getRoute());
-                    gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+                    //gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
                 }
@@ -438,12 +440,17 @@ public class GameMenu extends Menu {
                 System.out.println("invalid command");
             }
             if (nextTurnIsCalled){
-                if (gameMenuController.getMovingUnits().get(0) != null) {
+                if (gameMenuController.getMovingUnits().size() != 0) {
                     System.out.println(gameMenuController.getMovingUnits().get(0) + " kose ammeeee");
                     boolean b = gameMenuController.moveUnitAlongPath(gameMenuController.getMovingUnits().get(0));
                     if (b){
                         System.out.println("salap");
-                        //gameMenuController.getMovingUnits().get(0).setRoute(null);
+                        //if (gameMenuController.getMovingUnits().get(0) instanceof Settler || gameMenuController.getMovingUnits().get(0) instanceof Worker) {
+                        //    gameMenuController.getMovingUnits().remove(gameMenuController.getMovingUnits().get(0));
+                        //}
+                        //System.out.println(gameMenuController.getMovingUnits().get(0).getUnitType() + "++++++");
+                        System.out.println(gameMenuController.getMovingUnits().size());
+
                     }
                 }
 
