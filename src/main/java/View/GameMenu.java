@@ -17,9 +17,9 @@ public class GameMenu extends Menu {
 
     private GameMenuController gameMenuController;
     private CombatController combatController;
-    int numberOfPlayers;
+    public int numberOfPlayers;
     int turn;
-    Unit unitSelected;
+    public Unit unitSelected;
     City citySelected;
     int x;
     int y;
@@ -238,14 +238,6 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, UNIT_FOUND_CITY)) != null) {
                 String result = unitFoundCity(matcher);
-                if (result.startsWith("unit")) {
-                    unitSelected = null;
-                    turn = nextTurn();
-                    nextTurnIsCalled = true;
-                }
-                System.out.println(result);
-            } else if ((matcher = getCommandMatcher(command, UNIT_CANCEL_MISSION)) != null) {
-                String result = unitCancelMission();
                 if (result.startsWith("unit")) {
                     unitSelected = null;
                     turn = nextTurn();
@@ -633,7 +625,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " hit point added to unit in position " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
-    private String selectNonCombat(Matcher matcher) {
+    public String selectNonCombat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -735,111 +727,77 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String unitSleep() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
+    public String unitSleep() {
+        if (unitSelected == null) { return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else {
             unitSelected.setSleeping(true);
         }
         return "unit slept";
     }
 
-    private String unitAlert() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!unitSelected.isCombatUnit()) {
-            return "this is not a combat unit";
-        } else {
-            unitSelected.setReady(true);
+    public String unitAlert() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";
+        } else {unitSelected.setReady(true);
         }
         return "unit is ready";
     }
 
-    private String unitFortify() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!unitSelected.isCombatUnit()) {
-            return "this is not a combat unit";
-        } else {
-            combatController.fortifyUnit(unitSelected);
+    public String unitFortify() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";
+        } else {combatController.fortifyUnit(unitSelected);
         }
         return "unit fortified";
     }
 
-    private String unitHeal() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!unitSelected.isCombatUnit()) {
-            return "this is not a combat unit";
-        } else {
-            combatController.healUnit(unitSelected);
+    public String unitHeal() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";
+        } else {combatController.healUnit(unitSelected);
         }
         return "unit fortifyHealed";
     }
 
-    private String unitFoundCity(Matcher matcher) {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (unitSelected.isCombatUnit()) {
-            return "this is not a settler unit";
+    public String unitFoundCity(Matcher matcher) {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (unitSelected.isCombatUnit()) {return "this is not a settler unit";
         } else {
-            if (unitSelected instanceof Settler) {
-                Settler settler = (Settler) unitSelected;
-                String cityName = matcher.group("name");
-                settler.createNewCity(cityName);
-            }
+            if (unitSelected instanceof Settler) {Settler settler = (Settler) unitSelected; String cityName = matcher.group("name"); settler.createNewCity(cityName);}
+            else return "this is a worker";
         }
         return "unit found city";
 
     }
 
-    private String unitPillageCurrentTile() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!unitSelected.isCombatUnit()) {
-            return "this is not a combat unit";
-        } else if (unitSelected.isInItsCivilization()) {
-            return "this is your civilization";
+    public String unitPillageCurrentTile() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";
+        } else if (unitSelected.isInItsCivilization()) {return "this is your civilization";
         } else {
             gameMenuController.pillageCurrentTile(unitSelected);
             return "unit pillaged tile";
         }
     }
 
-    private String unitCancelMission() {
-        return null;
-    }
-
-    private String unitWake() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else {
-            unitSelected.setSleeping(false);
+    public String unitWake() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else {unitSelected.setSleeping(false);
         }
         return "unit awakened";
     }
 
-    private String unitAttack(Matcher matcher) {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!(unitSelected instanceof Soldier)) {
-            return "this unit is not a combat unit";
+    public String unitAttack(Matcher matcher) {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)) {return "this unit is not a combat unit";
         } else {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
@@ -860,31 +818,22 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String unitSetupRange(){
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!(unitSelected instanceof Soldier)) {
-            return "this unit is not a combat unit";
+    public String unitSetupRange(){
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)) {return "this unit is not a combat unit";
         } else {
             boolean success = combatController.getSiegeUnitReady((Soldier) unitSelected);
-            if (success){
-                return "siege unit is setup";
-            }
-            else{
-                return "this is not a siege unit";
-            }
+            if (success)return "siege unit is setup";
+            else return "this is not a siege unit";
+
         }
     }
 
-    private String unitGarrison() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
-        } else if (!(unitSelected instanceof Soldier)) {
-            return "this unit is not a combat unit";
+    public String unitGarrison() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
+        } else if (!(unitSelected instanceof Soldier)) {return "this unit is not a combat unit";
         } else {
             boolean success = gameMenuController.garrisonUnitToCity(unitSelected);
             if (success) {
@@ -895,16 +844,10 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String unitSetupRanged() {
-        //TODO...
-        return null;
-    }
 
-    private String unitDelete() {
-        if (unitSelected == null) {
-            return "you must select a unit first";
-        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {
-            return "this unit is not for you";
+    public String unitDelete() {
+        if (unitSelected == null) {return "you must select a unit first";
+        } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else {
             gameMenuController.deleteUnit(unitSelected);
             return "unit deleted";
