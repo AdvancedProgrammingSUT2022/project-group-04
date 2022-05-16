@@ -148,6 +148,7 @@ public class GameMenu extends Menu {
                     gameMenuController.getMovingUnits().add(this.gameMenuController.selectCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
+                    System.out.println(unitSelected);
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, SELECT_NONCOMBAT)) != null) {
@@ -158,6 +159,7 @@ public class GameMenu extends Menu {
                     //gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
                     x = Integer.parseInt(matcher.group("x"));
                     y = Integer.parseInt(matcher.group("y"));
+                    System.out.println(unitSelected);
                 }
                 System.out.println(result);
             } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
@@ -581,7 +583,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String mapShowCity(Matcher matcher) {
+    public String mapShowCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "selected city is not valid";
@@ -589,7 +591,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String selectCombat(Matcher matcher) {
+    public String selectCombat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -599,7 +601,6 @@ public class GameMenu extends Menu {
             return "no combat unit";
         }
         unitSelected = this.gameMenuController.selectCombatUnit(x, y);
-        System.out.println(unitSelected);
         return "unit selected";
     }
 
@@ -626,7 +627,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " hit point added to unit in position " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
-    private String selectNonCombat(Matcher matcher) {
+    public String selectNonCombat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -637,7 +638,6 @@ public class GameMenu extends Menu {
         }
         unitSelected = this.gameMenuController.selectNonCombatUnit(x, y);
         gameMenuController.getMovingUnits().add(this.gameMenuController.selectNonCombatUnit(x, y));
-        System.out.println(unitSelected);
         return "unit selected";
     }
 

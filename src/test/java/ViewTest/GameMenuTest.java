@@ -6,7 +6,11 @@ import Database.GameDatabase;
 import Model.City;
 import Model.Civilization;
 import Model.Tile;
+<<<<<<< HEAD
 import Model.Worker;
+=======
+import Model.Unit;
+>>>>>>> 1190b8418696ff490006d97027e646235dc0c1a9
 import View.GameMenu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +22,11 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.asserts.Assertion;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.rmi.server.UnicastRemoteObject;
+>>>>>>> 1190b8418696ff490006d97027e646235dc0c1a9
 import java.util.regex.Matcher;
 
 import static org.mockito.Mockito.*;
@@ -31,6 +39,7 @@ public class GameMenuTest {
 
 
     static MockedStatic<GameDatabase> gameDatabase;
+    GameMenu gameMenu;
 
     @Mock
     ArrayList<Civilization> civilizations;
@@ -56,7 +65,8 @@ public class GameMenuTest {
     @Mock
     Worker worker;
 
-    GameMenu gameMenu;
+    @Mock
+    Unit unit;
 
     @BeforeEach
     public void setUp(){
@@ -134,5 +144,76 @@ public class GameMenuTest {
     @Test
     public void mapShowCity_invalid() {
         when(matcher.group("cityName")).thenReturn("tehran");
+        when(gameMenuController.isCityValid("tehran")).thenReturn(false);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.mapShowCity(matcher), "selected city is not valid");
+    }
+
+    @Test
+    public void mapShowCity_valid() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(gameMenuController.isCityValid("tehran")).thenReturn(true);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertNull(gameMenu.mapShowCity(matcher));
+    }
+
+    @Test
+    public void selectCombat_invalidPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.selectCombat(matcher), "position is not valid");
+    }
+
+    @Test
+    public void selectCombat_nonCombat() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isCombatUnitInThisPosition(1, 1)).thenReturn(false);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.selectCombat(matcher), "no combat unit");
+    }
+
+    @Test
+    public void selectCombat() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isCombatUnitInThisPosition(1, 1)).thenReturn(true);
+        when(gameMenuController.selectCombatUnit(1, 1)).thenReturn(unit);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.selectCombat(matcher), "unit selected");
+    }
+
+    @Test
+    public void selectNonCombat_invalidPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.selectNonCombat(matcher), "position is not valid");
+    }
+
+    @Test
+    public void selectNonCombat_Combat() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isNonCombatUnitInThisPosition(1, 1)).thenReturn(false);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.selectNonCombat(matcher), "no noncombat unit");
+    }
+
+    @Test
+    public void selectNonCombat() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isNonCombatUnitInThisPosition(1, 1)).thenReturn(true);
+        when(gameMenuController.selectNonCombatUnit(1, 1)).thenReturn(unit);
+        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        assertEquals(gameMenu.selectNonCombat(matcher), "unit selected");
     }
 }
