@@ -135,15 +135,6 @@ public class GameDatabase {
         baseTerrains.put(5, "Plain");
         baseTerrains.put(6, "Snow");
         baseTerrains.put(7, "Tundra");
-        //initialize players
-//        System.out.println(players.size()); TODO remove when completely fixed
-//        String[] usernames = {"A","B","C","D","E","F","H"};
-//        String[] nicknames = {"A","B","C","D","E","F","H"};
-//        for (int i=0;i<numberOfPlayers;i++){
-//            Civilization civilization = new Civilization(usernames[i],nicknames[i]);
-//            players.add(civilization);
-//        }
-        //
         for (int i = 0; i < possibilities.length; i++) {
             sumOfPossibilities += possibilities[i];
         }
@@ -160,7 +151,7 @@ public class GameDatabase {
                         break;
                     }
                 }
-                Tile tile = new Tile("fogOfWar", baseTerrains.get(flag), i, j); // TODO.. how to set tiles
+                Tile tile = new Tile("fogOfWar", baseTerrains.get(flag), i, j);
                 map.add(tile);
             }
         }
@@ -199,7 +190,7 @@ public class GameDatabase {
             ArrayList<TerrainFeatures> terrainFeatures = baseTerrain.getPossibleFeatures();
             for (int j = 0; j < terrainFeatures.size(); j++) {
                 int randomGenerate = random.nextInt(terrainFeatures.size() * 2);
-                if (randomGenerate < 3) {//TODO change the possibility
+                if (randomGenerate < 3) {//the possibility can be changed
                     String type = terrainFeatures.get(j).getType();
                     TerrainFeatures terrainFeatures1 = randomInitializeFeature(type);
                     map.get(i).getBaseTerrain().setFeature(terrainFeatures1);
@@ -213,7 +204,7 @@ public class GameDatabase {
             ArrayList<Resources> resources = baseTerrain.getPossibleResources();
             for (int j = 0; j < resources.size(); j++) {
                 int randomGenerate = random.nextInt(resources.size() * 2);
-                if (randomGenerate < 3) {//TODO change the possibility
+                if (randomGenerate < 3) {//the possibility can be changed
                     String name = resources.get(j).getName();
                     Resources resource = new Resources(name);
                     map.get(i).getBaseTerrain().addResource(resource);
@@ -272,7 +263,7 @@ public class GameDatabase {
         ArrayList<Resources> resources = terrainFeature.getPossibleResources();
         for (int j = 0; j < resources.size(); j++) {
             int randomGenerate = random.nextInt(resources.size() * 2);
-            if (randomGenerate < 3) {//TODO change the possibility
+            if (randomGenerate < 3) {//the possibility can be changed
                 String name = resources.get(j).getName();
                 Resources resource = new Resources(name);
                 terrainFeature.addResource(resource);
