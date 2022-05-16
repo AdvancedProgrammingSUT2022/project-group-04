@@ -127,7 +127,7 @@ public class CombatController {
     }
 
     public void dastneshandeCity(Civilization civilization, City city){
-        dastneshandeCity(civilization, city);
+        civilization.getDastneshandeCities().add(city);
     }
 
 }
