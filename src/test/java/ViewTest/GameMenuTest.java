@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.asserts.Assertion;
 
@@ -29,7 +30,6 @@ import static org.testng.Assert.assertNull;
 
 @ExtendWith(MockitoExtension.class)
 public class GameMenuTest {
-
 
 
     static MockedStatic<GameDatabase> gameDatabase;
@@ -63,66 +63,134 @@ public class GameMenuTest {
     Unit unit;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         gameDatabase = mockStatic(GameDatabase.class);
         gameMenu = new GameMenu(gameMenuController, combatController);
+        gameMenu.numberOfPlayers = 4;
+        gameMenu.turn = 0;
     }
 
     @Test
-    public void buyTileWithCoordinate(){
+    public void buyTileWithCoordinate() {
         int turn = 0;
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
-        //when(matcher.group("cityName")).thenReturn("tehran");
-        //when(Integer.parseInt("1")).thenReturn(1);
-        gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
-        gameDatabase.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
-        gameDatabase.when(()->GameDatabase.getCityByName("tehran")).thenReturn(city);
-        gameDatabase.when(()->GameDatabase.getCivilizationByTurn(turn)).thenReturn(civilization);
-        ////////
-        when(gameMenuController.isTileInCivilization(tile,turn)).thenReturn(false);
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCityByName("tehran")).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCivilizationByTurn(turn)).thenReturn(civilization);
+        when(gameMenuController.isTileInCivilization(tile, turn)).thenReturn(false);
         when(gameMenuController.isTileInAnyCivilization(tile)).thenReturn(false);
         when(gameMenuController.isTileAdjacentToCivilization(tile, civilization)).thenReturn(true);
         when(civilization.getGold()).thenReturn(100);
-
-        //GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
-        Assertions.assertEquals("congrats bro you bought it",gameMenu.buyTileWithCoordinate(matcher));
+        Assertions.assertEquals("congrats bro you bought it", gameMenu.buyTileWithCoordinate(matcher));
     }
 
     @Test
-    public void changeCapital(){
+    public void changeCapital() {
         int turn = 0;
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(true);
-        gameDatabase.when(()->GameDatabase.getCityByName("tehran")).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCityByName("tehran")).thenReturn(city);
         when(gameMenuController.isCityForThisCivilization(turn, city)).thenReturn(true);
         when(gameMenuController.isCityCapital("tehran")).thenReturn(false);
-        //GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
-        gameDatabase.when(()->GameDatabase.getPlayers()).thenReturn(civilizations);
+        gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
         when(civilizations.get(turn)).thenReturn(civilization);
-        Assertions.assertEquals("capital changed successfully",gameMenu.changeCapital(matcher));
+        Assertions.assertEquals("capital changed successfully", gameMenu.changeCapital(matcher));
     }
 
     @Test
-    public void unitStopWork(){
+    public void unitStopWork() {
         int turn = 0;
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
-        gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
-        gameDatabase.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(city);
         when(tile.isRaided()).thenReturn(false);
         when(gameMenuController.isTileInCivilization(tile, turn)).thenReturn(true);
         when(tile.getActiveWorker()).thenReturn(worker);
         when(tile.getIsGettingWorkedOn()).thenReturn(true);
         when(city.getIsGettingWorkedOn()).thenReturn(true);
-        Assertions.assertEquals("project stopped successfully",gameMenu.unitStopWork(matcher));
+        Assertions.assertEquals("project stopped successfully", gameMenu.unitStopWork(matcher));
     }
+
+    @Test
+    public void unitBuild() {
+        int turn = 0;
+        when(matcher.group("improvement")).thenReturn("Quarry");
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCivilizationByTurn(turn)).thenReturn(civilization);
+        gameDatabase.when(() -> GameDatabase.isTileInCivilization(tile, civilization)).thenReturn(true);
+        when(tile.isRaided()).thenReturn(false);
+        when(gameMenuController.isTileInCivilization(tile, turn)).thenReturn(true);
+        when(gameMenuController.isImprovementValid("Quarry")).thenReturn(true);
+        when(tile.getAvailableWorker()).thenReturn(worker);
+        when(tile.getIsGettingWorkedOn()).thenReturn(false);
+        when(city.getIsGettingWorkedOn()).thenReturn(false);
+        when(gameMenuController.assignNewProject(worker, "Quarry")).thenReturn(false);
+        //GameMenu gameMenu1 = Mockito.spy(new GameMenu(gameMenuController,combatController));
+        Assertions.assertEquals("you can't do that because either this improvement/(rail)road is already in this tile or " +
+                "you don't have the pre-requisite technology", gameMenu.unitBuild(matcher));
+    }
+
+    @Test
+    public void unitRemoveFeature() {
+        int turn = 0;
+        when(matcher.group("improvement")).thenReturn("Prairie");
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCivilizationByTurn(turn)).thenReturn(civilization);
+        gameDatabase.when(() -> GameDatabase.isTileInCivilization(tile, civilization)).thenReturn(true);
+        //when(tile.isRaided()).thenReturn(false);
+        when(gameMenuController.isTileInCivilization(tile, turn)).thenReturn(true);
+        //when(gameMenuController.isImprovementValid("Prairie")).thenReturn(true);
+        when(tile.getAvailableWorker()).thenReturn(worker);
+        //when(tile.getIsGettingWorkedOn()).thenReturn(false);
+        when(city.getIsGettingWorkedOn()).thenReturn(false);
+        when(tile.isRaided()).thenReturn(false);
+        when(gameMenuController.assignNewProject(worker, "remove" + "Prairie")).thenReturn(false);
+        Assertions.assertEquals("you can't do that because this feature is not in this tile", gameMenu.unitRemoveFeature(matcher));
+    }
+
+    @Test
+    public void unitRepair() {
+        int turn = 0;
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCivilizationByTurn(turn)).thenReturn(civilization);
+        gameDatabase.when(() -> GameDatabase.isTileInCivilization(tile, civilization)).thenReturn(true);
+        when(gameMenuController.isTileInCivilization(tile, turn)).thenReturn(true);
+        when(tile.getAvailableWorker()).thenReturn(worker);
+        when(city.getIsGettingWorkedOn()).thenReturn(false);
+        when(tile.isRaided()).thenReturn(true);
+        when(gameMenuController.assignNewProject(worker, "repair")).thenReturn(false);
+        Assertions.assertEquals("worker successfully assigned", gameMenu.unitRepair(matcher));
+    }
+
+    @Test
+    public void dryUp(){
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        when(gameMenuController.isPositionValid(1,1)).thenReturn(true);
+        when(gameMenuController.isTileOcean(tile)).thenReturn(false);
+        when(gameMenuController.tileHasRiver(tile)).thenReturn(true);
+        Assertions.assertEquals(null,gameMenu.dryUp(matcher));
+
+    }
+
     @Test
     public void mapShowPosition_invalid() {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
-        //GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         assertEquals(gameMenu.mapShowPosition(matcher), "position is not valid");
     }
 
@@ -131,7 +199,6 @@ public class GameMenuTest {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
-        //GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         assertNull(gameMenu.mapShowPosition(matcher));
     }
 
@@ -139,7 +206,6 @@ public class GameMenuTest {
     public void mapShowCity_invalid() {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(false);
-        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         assertEquals(gameMenu.mapShowCity(matcher), "selected city is not valid");
     }
 
@@ -147,7 +213,6 @@ public class GameMenuTest {
     public void mapShowCity_valid() {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(true);
-        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         assertNull(gameMenu.mapShowCity(matcher));
     }
 
