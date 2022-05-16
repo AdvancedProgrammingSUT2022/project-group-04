@@ -29,8 +29,6 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
-//@PrepareForTest({InternalUtils.class})
-//@RunWith(PowerMockRunner.class)//TODO add them motherfuckers to the pom for sendMessage func
 public class GameMenuControllerTest {
 
 
@@ -92,7 +90,6 @@ public class GameMenuControllerTest {
 
     @BeforeAll
     public static void setUp() {
-        //tiles = GameDatabase.map;
         database = mockStatic(GameDatabase.class);
     }
     @AfterAll
@@ -123,27 +120,6 @@ public class GameMenuControllerTest {
         Assertions.assertFalse(gameMenuController.isPositionValid(2, 1));
     }
 
-//    @Test
-//    public void tileHasRiver_True(){
-//        GameMenuController gameMenuController = new GameMenuController(gameModel);
-//        boolean river0 = mock(Boolean.class);
-//        boolean river1 = mock(Boolean.class);
-//        boolean river2 = mock(Boolean.class);
-//        boolean river3 = mock(Boolean.class);
-//        boolean river4 = mock(Boolean.class);
-//        boolean river5 = mock(Boolean.class);
-//        ArrayList<Boolean> rivers = mock(ArrayList.class);
-//        when(rivers.get(1)).thenReturn(river1);
-//        when(river0).thenReturn(true);
-//        when(river1).thenReturn(true);
-//        when(river2).thenReturn(true);
-//        when(river3).thenReturn(true);
-//        when(river4).thenReturn(true);
-//        when(river5).thenReturn(true);
-//        when(tile0.getIsRiver()).thenReturn(rivers);
-//        Assertions.assertTrue(gameMenuController.tileHasRiver(tile0));
-//    }
-
     @Test
     public void isUnitCivilian(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -158,18 +134,15 @@ public class GameMenuControllerTest {
         Assertions.assertTrue(gameMenuController.isUnitSoldier(unit));
     }
 
-    //TODO fix this and implement unit test for others like : isNonCombatUnitInThisPosition, selectNonCombatUnit, selectCombatUnit
     @Test
     public void isCombatUnitInThisPosition_True(){
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
         when(tile.getUnits()).thenReturn(units);
         when(units.size()).thenReturn(1);
         when(units.get(0)).thenReturn(unit);
-        //when(unit.getUnitType()).thenReturn("Archer");
         doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         Assertions.assertTrue(gameMenuController.isCombatUnitInThisPosition(x,y));
     }
@@ -189,7 +162,6 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
         Settler settler = mock(Settler.class);
         Worker worker = mock(Worker.class);
         when(tile.getSettler()).thenReturn(settler);
@@ -442,7 +414,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isDestinationOKForMove_False3(){
+    public void isDestinationOKForMove_True2(){
         int x = 19;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -454,7 +426,7 @@ public class GameMenuControllerTest {
         when(units.get(0)).thenReturn(unit);
         //Mockito.doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         boolean result = gameMenuController.isDestinationOkForMove(unit,x,y);
-        Assertions.assertFalse(result);
+        Assertions.assertTrue(result);
     }
 
     @Test
@@ -604,6 +576,8 @@ public class GameMenuControllerTest {
     @Test
     public void addTileToCity(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(city.getName()).thenReturn("alireza");
+        database.when(()->GameDatabase.getCivilizationForCity("alireza")).thenReturn(civilization);
         gameMenuController.addTileToCity(tile0,city);
         verify(city).addTile(tile0);
     }

@@ -84,7 +84,6 @@ public class CombatControllerTest {
     GameDatabase gameDatabase;
     @Test
     public void unitAttackPositionTest(){
-        //database1 = mockStatic(GameDatabase.class);
         City city = mock(City.class);
         Soldier soldier1 = mock(Soldier.class);
         Soldier soldier2 = mock(Soldier.class);
@@ -139,7 +138,6 @@ public class CombatControllerTest {
     public void healUnitTest_1(){
         Civilization civilization = mock(Civilization.class);
         Tile tile = mock(Tile.class);
-        //City city = new City("blah", 10, 1,1,1,1,1,1,"tehran", true, "salap", "ocean", 11, 1, null);
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
         database1.when(()->GameDatabase.getTileByXAndY(unit.getX(), unit.getY())).thenReturn(tile);
         database1.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
@@ -155,7 +153,6 @@ public class CombatControllerTest {
     public void healUnitTest_2(){
         Civilization civilization = mock(Civilization.class);
         Tile tile = mock(Tile.class);
-        //City city = new City("blah", 10, 1,1,1,1,1,1,"tehran", true, "salap", "ocean", 11, 1, tile);
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
         database1.when(()->GameDatabase.getTileByXAndY(unit.getX(), unit.getY())).thenReturn(tile);
         database1.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
@@ -184,7 +181,6 @@ public class CombatControllerTest {
         ArrayList<Unit> result = tile.getUnits();
         ArrayList<Unit> expected = new ArrayList<>();
         Assertions.assertEquals(expected, result);
-
     }
 
     @Test
@@ -216,11 +212,6 @@ public class CombatControllerTest {
         verify(tile).setRailroadBroken(true);
     }
 
-//    @Test
-//    public void dastneshandeCity(){
-//        combatController.dastneshandeCity(civilization,city);
-//        verify()
-//    }
     @AfterEach
     public void after() {
         database1.close();
