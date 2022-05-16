@@ -91,20 +91,12 @@ public class CombatControllerTest {
         Unit unit2 = mock(Unit.class);
         Tile tile = mock(Tile.class);
         Tile soldierTile = mock(Tile.class);
-        //when(soldier1.isCombatUnit()).thenReturn(true);
-        //when(soldier1.getRange()).thenReturn(2);
-        //when(unit2.isCombatUnit()).thenReturn(false);
-       // when(tile.getX()).thenReturn(5);
-       // when(tile.getY()).thenReturn(5);
-       // when(soldier1.getTileOfUnit()).thenReturn(soldierTile);
-       // when(soldierTile.getX()).thenReturn(5);
-       // when(soldierTile.getY()).thenReturn(6);
         ArrayList<Unit> units = new ArrayList<>();
         for (int i = 0; i < 10; i++){
             Unit unitInPosition = new Unit(1,1,"Panzer",10, 0, 0);
             units.add(unitInPosition);
         }
-        when(tile.getUnits()).thenReturn(units);
+        database1.when(()->GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
         database1.when(()-> getTileByXAndY(5, 5)).thenReturn(tile);
         database1.when(()->getCityByXAndY(5, 5)).thenReturn(city);
         boolean result = combatController.UnitAttackPosition(soldier1, 5, 5);
@@ -120,7 +112,6 @@ public class CombatControllerTest {
         when(soldier3.getRange()).thenReturn(1);
         boolean result4 = combatController.UnitAttackPosition(soldier3, 5, 5);
         Assertions.assertEquals(true, result4);
-        database1.close();
     }
 
     @Test
