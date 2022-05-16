@@ -35,7 +35,6 @@ public class GameMenuControllerTest {
 
 
     static MockedStatic<GameDatabase> database;
-
     static MockedStatic<Notification> notification;
     static MockedStatic<Worker> workerstatic;
 
