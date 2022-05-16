@@ -65,7 +65,6 @@ public class GameMenuTest {
 
     @BeforeEach
     public void setUp(){
-
         gameDatabase = mockStatic(GameDatabase.class);
         gameMenu = new GameMenu(gameMenuController, combatController);
     }
@@ -89,10 +88,6 @@ public class GameMenuTest {
 
         //GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
         Assertions.assertEquals("congrats bro you bought it",gameMenu.buyTileWithCoordinate(matcher));
-    }
-    @AfterEach
-    public void salam(){
-        gameDatabase.close();
     }
 
     @Test
