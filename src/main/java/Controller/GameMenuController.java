@@ -701,6 +701,7 @@ public class GameMenuController {
         }
         if (index + 1 == selectedUnit.route.size()){
             System.out.println(selectedUnit.getUnitType() + "--------");
+            selectedUnit.setSpeed(selectedUnit.getOriginialspeed());
             this.movingUnits.remove(selectedUnit);
             System.out.println("unit removed from moving units");
             return true;

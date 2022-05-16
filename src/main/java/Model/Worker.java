@@ -43,6 +43,8 @@ public class Worker extends Citizen {
         typeOfWork = "";
         isLocked = false;
         isMoving = false;
+        this.speed = 2;
+        this.originialspeed = 2;
     }
 
     public boolean isAssigned() {
