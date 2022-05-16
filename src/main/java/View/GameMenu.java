@@ -458,7 +458,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String buyTileWithCoordinate(Matcher matcher) {
+    public String buyTileWithCoordinate(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -473,7 +473,7 @@ public class GameMenu extends Menu {
         return "congrats bro you bought it";
     }
 
-    private void showHappinessLevel() {
+    public void showHappinessLevel() {
         String nickname = GameDatabase.players.get(turn).getNickname();
         System.out.println("your civilization is:");
         if (GameDatabase.players.get(turn).isHappy()) {
@@ -492,7 +492,7 @@ public class GameMenu extends Menu {
 
     }
 
-    private String changeCapital(Matcher matcher) {
+    public String changeCapital(Matcher matcher) {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
@@ -507,7 +507,7 @@ public class GameMenu extends Menu {
         return "capital changed successfully";
     }
 
-    private String lockCitizen(Matcher matcher) {
+    public String lockCitizen(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
