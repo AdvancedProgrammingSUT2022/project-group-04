@@ -579,7 +579,7 @@ public class GameMenu extends Menu {
         return "you must finish the game to exit";
     }
 
-    private String mapShowPosition(Matcher matcher) {
+    public String mapShowPosition(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
