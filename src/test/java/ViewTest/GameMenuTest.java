@@ -6,6 +6,7 @@ import Database.GameDatabase;
 import Model.City;
 import Model.Civilization;
 import Model.Tile;
+import Model.Worker;
 import View.GameMenu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,10 +18,10 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.asserts.Assertion;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
@@ -30,6 +31,9 @@ public class GameMenuTest {
 
 
     static MockedStatic<GameDatabase> gameDatabase;
+
+    @Mock
+    ArrayList<Civilization> civilizations;
 
     @Mock
     GameMenuController gameMenuController;
@@ -49,9 +53,15 @@ public class GameMenuTest {
     @Mock
     CombatController combatController;
 
+    @Mock
+    Worker worker;
+
+    GameMenu gameMenu;
+
     @BeforeEach
     public void setUp(){
         gameDatabase = mockStatic(GameDatabase.class);
+        gameMenu = new GameMenu(gameMenuController, combatController);
     }
 
     @Test
@@ -71,7 +81,7 @@ public class GameMenuTest {
         when(gameMenuController.isTileAdjacentToCivilization(tile, civilization)).thenReturn(true);
         when(civilization.getGold()).thenReturn(100);
 
-        GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
+        //GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
         Assertions.assertEquals("congrats bro you bought it",gameMenu.buyTileWithCoordinate(matcher));
     }
 
@@ -80,20 +90,35 @@ public class GameMenuTest {
         int turn = 0;
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(true);
+        gameDatabase.when(()->GameDatabase.getCityByName("tehran")).thenReturn(city);
         when(gameMenuController.isCityForThisCivilization(turn, city)).thenReturn(true);
         when(gameMenuController.isCityCapital("tehran")).thenReturn(false);
-        GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
+        //GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
+        gameDatabase.when(()->GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(turn)).thenReturn(civilization);
         Assertions.assertEquals("capital changed successfully",gameMenu.changeCapital(matcher));
     }
 
-//    @Test
-//    public void
+    @Test
+    public void unitStopWork(){
+        int turn = 0;
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+        gameDatabase.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        when(tile.isRaided()).thenReturn(false);
+        when(gameMenuController.isTileInCivilization(tile, turn)).thenReturn(true);
+        when(tile.getActiveWorker()).thenReturn(worker);
+        when(tile.getIsGettingWorkedOn()).thenReturn(true);
+        when(city.getIsGettingWorkedOn()).thenReturn(true);
+        Assertions.assertEquals("project stopped successfully",gameMenu.unitStopWork(matcher));
+    }
     @Test
     public void mapShowPosition_invalid() {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
-        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        //GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         assertEquals(gameMenu.mapShowPosition(matcher), "position is not valid");
     }
 
@@ -102,7 +127,7 @@ public class GameMenuTest {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
-        GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
+        //GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         assertNull(gameMenu.mapShowPosition(matcher));
     }
 
