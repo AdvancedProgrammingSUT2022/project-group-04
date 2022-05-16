@@ -203,6 +203,23 @@ public class CombatControllerTest {
         verify(tile).setRailroadBroken(true);
     }
 
+    @Test
+    public void checkTerrainBonusTest(){
+        Soldier soldier = mock(Soldier.class);
+        Tile tile1 = mock(Tile.class);
+        Tile tile2 = mock(Tile.class);
+        City city = mock(City.class);
+        database1.when(()->GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile2);
+        when(soldier.getTileOfUnit()).thenReturn(tile1);
+        when(tile1.getBaseTerrainType()).thenReturn("Hill");
+        when(tile2.getBaseTerrainType()).thenReturn("Hill");
+        when(tile2.getCity()).thenReturn(city);
+        when(city.getPower()).thenReturn(10);
+        combatController.checkTerrainBonus(soldier, 1, 1);
+
+
+    }
+
     @AfterEach
     public void after() {
         database1.close();
