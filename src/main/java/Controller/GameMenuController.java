@@ -364,46 +364,34 @@ public class GameMenuController {
             } else {
                 if (tile.getRoundsTillFinishProjectByIndex(worker.getIndexOfProject()) != 0)
                     tile.initializeRoundsTillFinish(worker.getIndexOfProject());
-                worker.setIndexOfProject(Worker.workToIndex.get(type));
+                worker.setIndexOfProject(Worker.getWorkToIndex().get(type));
                 worker.setTypeOfWork(type);
                 worker.setIsAssigned(true);
                 //if repair then initiate the index of array again
                 if (worker.getIndexOfProject() > 12) tile.initializeRoundsTillFinish(worker.getIndexOfProject());
                 switch (worker.getIndexOfProject()) {
-                    case 0:
-                        isPossible = makeRoad(worker);
-                        break;
+                    case 0: isPossible = makeRoad(worker); break;
                     case 1:
                         isPossible = makeRailRoad(worker);
                         break;
                     case 2:
                         isPossible = makeFarm(worker);
                         break;
-                    case 3:
-                        isPossible = makeMine(worker);
-                        break;
+                    case 3: isPossible = makeMine(worker);break;
                     case 4:
                     case 5:
                     case 6:
                     case 7:
                     case 8:
-                    case 9:
-                        isPossible = makeImprovement(worker);
-                        break;
+                    case 9: isPossible = makeImprovement(worker);break;
                     case 10:
                     case 11:
-                    case 12:
-                        isPossible = removeFeature(worker);
-                        break;
-                    case 13:
-                        isPossible = removeRoad(worker);
-                        break;
+                    case 12: isPossible = removeFeature(worker);break;
+                    case 13: isPossible = removeRoad(worker);break;
                     case 14:
                         isPossible = removeRailroad(worker);
                         break;
-                    case 15:
-                        isPossible = makeRepair(worker);
-                        break;
+                    case 15: isPossible = makeRepair(worker);break;
                 }
             }
             if (isPossible) {
