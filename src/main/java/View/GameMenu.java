@@ -596,7 +596,7 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    private String addHitPointUnit(Matcher matcher) {
+    public String addHitPointUnit(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -950,7 +950,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String addHitPointCity(Matcher matcher) {
+    public String addHitPointCity(Matcher matcher) {
         String cityName = matcher.group("cityName");
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForHP(amount)) {
@@ -969,7 +969,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " hit point added to city " + cityName;
     }
 
-    private String citySelectByName(Matcher matcher) {
+    public String citySelectByName(Matcher matcher) {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
@@ -977,7 +977,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String citySelectByPosition(Matcher matcher) {
+    public String citySelectByPosition(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -989,22 +989,22 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    private String cheatGold(Matcher matcher) {
+    public String cheatGold(Matcher matcher) {
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForGold(amount)) {
             return "invalid amount";
         }
         this.gameMenuController.addGold(turn, amount);
-        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getGold()) + " golds.";
+        return "Now you have " + Integer.toString(GameDatabase.getPlayers().get(turn).getGold()) + " golds.";
     }
 
-    private String addScience(Matcher matcher) {
+    public String addScience(Matcher matcher) {
         int science = Integer.parseInt(matcher.group("science"));
         if (!this.gameMenuController.isAmountValidForScience(science)) {
             return "invalid amount";
         }
         this.gameMenuController.addScience(turn, science);
-        return "Now you have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " science.";
+        return "Now you have " + Integer.toString(GameDatabase.getPlayers().get(turn).getScience()) + " science.";
     }
 
     private String addScore(Matcher matcher) {

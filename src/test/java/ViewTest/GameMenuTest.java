@@ -587,6 +587,206 @@ public class GameMenuTest {
         verify(gameMenuController).makeHappy(gameMenu.getTurn());
     }
 
+    @Test
+    public void addScience_invalid() {
+        when(matcher.group("science")).thenReturn("20");
+        when(gameMenuController.isAmountValidForScience(20)).thenReturn(false);
+        assertEquals(gameMenu.addScience(matcher), "invalid amount");
+    }
+
+    @Test
+    public void addScience() {
+        when(matcher.group("science")).thenReturn("20");
+        when(gameMenuController.isAmountValidForScience(20)).thenReturn(true);
+        gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.getTurn())).thenReturn(civilization);
+        when(civilization.getScience()).thenReturn(25);
+        assertEquals(gameMenu.addScience(matcher), "Now you have 25 science.");
+        verify(gameMenuController).addScience(gameMenu.getTurn(), 20);
+    }
+
+    @Test
+    public void cheatGold_invalidAmount() {
+        when(matcher.group("amount")).thenReturn("20");
+        when(gameMenuController.isAmountValidForGold(20)).thenReturn(false);
+        assertEquals(gameMenu.cheatGold(matcher), "invalid amount");
+    }
+
+    @Test
+    public void cheatGold() {
+        when(matcher.group("amount")).thenReturn("20");
+        when(gameMenuController.isAmountValidForGold(20)).thenReturn(true);
+        gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.getTurn())).thenReturn(civilization);
+        when(civilization.getGold()).thenReturn(25);
+        assertEquals(gameMenu.cheatGold(matcher), "Now you have 25 golds.");
+        verify(gameMenuController).addGold(gameMenu.getTurn(), 20);
+    }
+
+    @Test
+    public void addHPUnit_invalidAmount() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(false);
+        assertEquals(gameMenu.addHitPointUnit(matcher), "invalid amount");
+    }
+
+    @Test
+    public void addHPUnit_aLotAmount() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(true);
+        assertEquals(gameMenu.addHitPointUnit(matcher), "please cheat with another amount of HP!");
+    }
+
+    @Test
+    public void addHPUnit_invalidPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
+        assertEquals(gameMenu.addHitPointUnit(matcher), "position is not valid");
+    }
+
+    @Test
+    public void addHPUnit_notCombatPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isCombatUnitInThisPosition(1, 1)).thenReturn(false);
+        assertEquals(gameMenu.addHitPointUnit(matcher), "you can't change hit point of non combat units");
+    }
+
+    @Test
+    public void addHPUnit_unitIsNotForYou() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isCombatUnitInThisPosition(1, 1)).thenReturn(true);
+        when(gameMenuController.selectCombatUnit(1, 1)).thenReturn(unit);
+        when(gameMenuController.isUnitForThisCivilization(gameMenu.getTurn(), unit)).thenReturn(false);
+        assertEquals(gameMenu.addHitPointUnit(matcher), "unit in this position is not for your civilization");
+    }
+
+    @Test
+    public void addHPUnit() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
+        when(gameMenuController.isCombatUnitInThisPosition(1, 1)).thenReturn(true);
+        when(gameMenuController.selectCombatUnit(1, 1)).thenReturn(unit);
+        when(gameMenuController.isUnitForThisCivilization(gameMenu.getTurn(), unit)).thenReturn(true);
+        assertEquals(gameMenu.addHitPointUnit(matcher), "5 hit point added to unit in position 1 and 1");
+        verify(gameMenuController).addHP(1, 1, 5);
+    }
+
+    @Test
+    public void addHPCity_invalidAmount() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(false);
+        assertEquals(gameMenu.addHitPointCity(matcher), "invalid amount");
+    }
+
+    @Test
+    public void addHPCity_aLotAmount() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(true);
+        assertEquals(gameMenu.addHitPointCity(matcher), "please cheat with another amount of HP!");
+    }
+
+    @Test
+    public void addHPCity_invalidCity() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isCityValid("tehran")).thenReturn(false);
+        assertEquals(gameMenu.addHitPointCity(matcher), "invalid city");
+
+    }
+
+    @Test
+    public void addHPCity_cityIsNotForYou() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isCityValid("tehran")).thenReturn(true);
+        gameDatabase.when(() -> GameDatabase.getCityByName("tehran")).thenReturn(city);
+        when(gameMenuController.isCityForThisCivilization(gameMenu.getTurn(), city)).thenReturn(false);
+        assertEquals(gameMenu.addHitPointCity(matcher), "city is not for your civilization");
+    }
+
+    @Test
+    public void addHPCity() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(matcher.group("amount")).thenReturn("5");
+        when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
+        when(gameMenuController.isAmountALot(5)).thenReturn(false);
+        when(gameMenuController.isCityValid("tehran")).thenReturn(true);
+        gameDatabase.when(() -> GameDatabase.getCityByName("tehran")).thenReturn(city);
+        when(gameMenuController.isCityForThisCivilization(gameMenu.getTurn(), city)).thenReturn(true);
+        assertEquals(gameMenu.addHitPointCity(matcher), "5 hit point added to city tehran");
+        verify(gameMenuController).addHP("tehran", 5);
+    }
+
+    @Test
+    public void selectCityByName_null() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(gameMenuController.isCityValid("tehran")).thenReturn(true);
+        assertNull(gameMenu.citySelectByName(matcher));
+    }
+
+    @Test
+    public void selectCityByName() {
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(gameMenuController.isCityValid("tehran")).thenReturn(false);
+        assertEquals(gameMenu.citySelectByName(matcher), "invalid city");
+    }
+
+    @Test
+    public void citySelectByPosition_invalidPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1,1)).thenReturn(false);
+        assertEquals(gameMenu.citySelectByPosition(matcher), "invalid position");
+    }
+
+    @Test
+    public void citySelectByPosition_invalidCityPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1,1)).thenReturn(true);
+        when(gameMenuController.isCityPositionValid(1,1)).thenReturn(false);
+        assertEquals(gameMenu.citySelectByPosition(matcher), "no city in position 1 and 1");
+    }
+
+    @Test
+    public void citySelectByPosition() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(gameMenuController.isPositionValid(1,1)).thenReturn(true);
+        when(gameMenuController.isCityPositionValid(1,1)).thenReturn(true);
+        assertNull(gameMenu.citySelectByPosition(matcher));
+    }
+
     @AfterEach
     public void after() {
         gameDatabase.close();
