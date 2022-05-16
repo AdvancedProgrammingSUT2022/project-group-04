@@ -6,6 +6,7 @@ import Database.GameDatabase;
 
 import Model.*;
 import View.GameMenu;
+import net.bytebuddy.implementation.auxiliary.MethodCallProxy;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.asserts.Assertion;
 
 
+import javax.annotation.meta.When;
 import java.util.Set;
 
 import static org.mockito.Mockito.*;
@@ -41,6 +43,9 @@ public class GameMenuTest {
 
     @Mock
     GameMenuController gameMenuController;
+
+    @Mock
+    Settler settler;
 
     @Mock
     Matcher matcher;
@@ -585,6 +590,59 @@ public class GameMenuTest {
         when(civilization.isHappy()).thenReturn(false);
         assertEquals(gameMenu.makeHappy(), "now your happiness is 0");
         verify(gameMenuController).makeHappy(gameMenu.getTurn());
+    }
+
+    @Test
+    public void getAddTileToCity(){
+        when(matcher.group("cityName")).thenReturn("tehran");
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(null);
+        gameDatabase.when(() -> GameDatabase.getCityByName("tehran")).thenReturn(city);
+        when(gameMenuController.isTileInCivilization(tile,0)).thenReturn(true);
+        when(gameMenuController.isAdjacent(tile, city)).thenReturn(true);
+        Assertions.assertEquals("tile added to the city successfully!",gameMenu.getAddTileToCity(matcher));
+    }
+
+    @Test
+    public void addProduction(){
+        int amount = 10;
+        String cityName = "tehran";
+        when(matcher.group("cityName")).thenReturn(cityName);
+        when(matcher.group("amount")).thenReturn(Integer.toString(amount));
+        when(gameMenuController.isCityValid(cityName)).thenReturn(true);
+        when(gameMenuController.isAmountValidForProduction(amount)).thenReturn(true);
+        gameDatabase.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
+        when(gameMenuController.isCityForThisCivilization(gameMenu.turn, city)).thenReturn(true);
+        Assertions.assertEquals(Integer.toString(amount) + " production added to " + cityName,gameMenu.addProduction(matcher));
+    }
+
+    @Test
+    public void addScore(){
+        int score = 10;
+        when(matcher.group("score")).thenReturn(Integer.toString(score));
+        when(gameMenuController.isAmountValidForScore(score)).thenReturn(true);
+        gameDatabase.when(()->GameDatabase.getPlayers()).thenReturn(civilizations);
+        when(civilizations.get(gameMenu.turn)).thenReturn(civilization);
+        when(civilization.getScore()).thenReturn(10);
+        Assertions.assertEquals("Now you have " + Integer.toString(GameDatabase.getPlayers().get(gameMenu.turn).getScore()) + " score.",gameMenu.addScore(matcher));
+    }
+
+    @Test
+    public void buildCity(){
+        int x = 1;
+        int y = 1;
+        when(matcher.group("x")).thenReturn(Integer.toString(x));
+        when(matcher.group("y")).thenReturn(Integer.toString(y));
+        String cityName = "tehran";
+        when(matcher.group("cityName")).thenReturn(cityName);
+        gameDatabase.when(()->GameDatabase.getCityByName(cityName)).thenReturn(null);
+        gameDatabase.when(()->GameDatabase.getCityByXAndY(x, y)).thenReturn(null);
+        gameDatabase.when(()->GameDatabase.getTileByXAndY(x, y)).thenReturn(tile);
+        when(tile.getSettler()).thenReturn(settler);
+        when(gameMenuController.isUnitForThisCivilization(gameMenu.turn, settler)).thenReturn(true);
+        Assertions.assertEquals("city created successfully!",gameMenu.buildCity(matcher));
     }
 
     @AfterEach
