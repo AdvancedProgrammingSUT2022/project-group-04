@@ -125,7 +125,6 @@ public class Graph {
     }
 
     public boolean bfs(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
-        System.out.println("kire babat");
         Queue<Tile> queue = new LinkedList<>();
         start.setVisited(true);
         queue.add(start);
@@ -133,20 +132,7 @@ public class Graph {
         while (!queue.isEmpty()) {
             exists = false;
             Tile currentTile = queue.poll();
-            System.out.println(currentTile.getX() + " " + currentTile.getY());
-            /*for (Tile temp : copyOfMap){
-                if (currentTile.getX() == temp.getX() && currentTile.getY() == temp.getY()){
-                    currentTile = temp;
-                }
-            }
-            System.out.println(currentTile.getX() +  " " + currentTile.getY() + " this is a test");
-            for (Tile tile: currentTile.getAdjacentTiles()){
-                add_neighbor(currentTile, tile);
-                //System.out.println(currentTile.getNeighbors().size());
-            }*/
             for (Tile tile : currentTile.neighbors) {
-                System.out.println(currentTile.neighbors.size());
-                System.out.println(tile.getX() + "- " + tile.getY());
                 if (!tile.visited) {
                     tile.visited = true;
                     queue.add(tile);
@@ -161,7 +147,6 @@ public class Graph {
             if (exists)
                 break;
         }
-        System.out.println(exists);
         return exists;
     }
 
@@ -174,7 +159,6 @@ public class Graph {
         setEdges(copyOfMap);
 
         if (bfs(start, end, copyOfMap)) {//bfs path exists then return the route
-            System.out.println("salam");
             Tile tile = end;
             ArrayList<Tile> route = new ArrayList<>();
             while (tile != null) {
@@ -184,7 +168,6 @@ public class Graph {
             Collections.reverse(route);
             return route;
         } else { // bfs bath doesn't exist to the point we want
-            System.out.println("bfs path not found");
             ArrayList<Tile> route = new ArrayList<>();
             int minLength = Integer.MAX_VALUE;
             outer:
