@@ -101,7 +101,6 @@ public class GameMenuControllerTest {
         database.close();
     }
 
-
     @Test
     public void isPositionValid_Found() {
         int index = 0;
@@ -759,9 +758,25 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileAdjacentToCivilization() {
+    public void isTileAdjacentToCivilization_true() {
+        when(civilization.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tile.getAdjacentTiles()).thenReturn(tiles);
+        when(tiles.contains(tile)).thenReturn(true);
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        gameMenuController.isTileAdjacentToCivilization(tile, civilization);
+        assertTrue(gameMenuController.isTileAdjacentToCivilization(tile, civilization));
+    }
+
+    @Test
+    public void isTileAdjacentToCivilization_false() {
+        when(civilization.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tile.getAdjacentTiles()).thenReturn(tiles);
+        when(tiles.contains(tile)).thenReturn(false);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertFalse(gameMenuController.isTileAdjacentToCivilization(tile, civilization));
     }
 
     @Test
@@ -1274,5 +1289,77 @@ public class GameMenuControllerTest {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Assertions.assertFalse(gameMenuController.createNonCombatUnit("worker",x,y,0));
     }
+
+    @Test
+    public void moveUnitAlongPath_worker() {
+        when(worker.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(worker.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(worker);
+    }
+
+    @Test
+    public void moveUnitAlongPath_settler() {
+        when(settler.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(settler.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(settler);
+    }
+
+    @Test
+    public void moveUnitAlongPath_soldier() {
+        when(soldier.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(soldier.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(soldier);
+    }
+
+    @Test
+    public void isTileInAnyCivilization_true() {
+        database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
+        when(players.size()).thenReturn(1);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(tile.getX()).thenReturn(1);
+        when(tile.getY()).thenReturn(1);
+        when(civilization.isTileInCivilization(1,1)).thenReturn(true);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertTrue(gameMenuController.isTileInAnyCivilization(tile));
+    }
+
+    @Test
+    public void isTileInAnyCivilization_false() {
+        database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
+        when(players.size()).thenReturn(1);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(tile.getX()).thenReturn(1);
+        when(tile.getY()).thenReturn(1);
+        when(civilization.isTileInCivilization(1,1)).thenReturn(false);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertFalse(gameMenuController.isTileInAnyCivilization(tile));
+    }
+
+//    @Test
+//    public void createCombatUnit(){
+//        GameMenuController gameMenuController = new GameMenuController(gameModel);
+//        String unitType = "Archer";
+//        int x = 10;
+//        int y = 12;
+//        int civilizationIndex = 0;
+//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+//        when(new Soldier(x, y, unitType, civilizationIndex)).thenReturn(soldier);
+//        gameMenuController.createCombatUnit(unitType,x,y,civilizationIndex);
+//        verify(tile).addUnit(soldier);
+//        verify(soldier).setTileOfUnit(tile);
+//
+//    }
 
 }

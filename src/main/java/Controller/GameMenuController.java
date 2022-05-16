@@ -325,6 +325,7 @@ public class GameMenuController {
         return null;
     }
 
+<<<<<<< HEAD
 //    public ArrayList<Citizen> getListOfUnemployedCitizens(City city) {
 //        ArrayList<Citizen> citizenArrayList = new ArrayList<>();
 //        for (Citizen citizen : city.getCitizens()) {
@@ -333,6 +334,8 @@ public class GameMenuController {
 //        return citizenArrayList;
 //    }
 
+=======
+>>>>>>> ceb32394042e8005bbd7795cd645aa3fa2ab7e3d
     public void pauseProject(Worker worker, int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x,y);
@@ -606,8 +609,8 @@ public class GameMenuController {
     }
 
     public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
-        for (Tile civilizationTile : civilization.getTiles()) {
-            if (civilizationTile.getAdjacentTiles().contains(tile)) {
+        for (int i = 0; i < civilization.getTiles().size(); i++) {
+            if (civilization.getTiles().get(i).getAdjacentTiles().contains(tile)) {
                 return true;
             }
         }
@@ -667,30 +670,30 @@ public class GameMenuController {
 
     public boolean moveUnitAlongPath(Unit selectedUnit) {
         int index = 0;
-        for (int i = 0; i < selectedUnit.route.size(); i++) {
-            if (selectedUnit.getTileOfUnit().equals(selectedUnit.route.get(i))) {
+        for (int i = 0; i < selectedUnit.getRoute().size(); i++) {
+            if (selectedUnit.getTileOfUnit().equals(selectedUnit.getRoute().get(i))) {
                 index = i;
-                if (i + 1 != selectedUnit.route.size()) {
-                    selectedUnit.moveToAdjacentTile(selectedUnit.route.get(i + 1));
+                if (i + 1 != selectedUnit.getRoute().size()) {
+                    selectedUnit.moveToAdjacentTile(selectedUnit.getRoute().get(i + 1));
                     if (selectedUnit instanceof Worker) {
-                        selectedUnit.route.get(i + 1).addWorker((Worker) selectedUnit);
-                        selectedUnit.route.get(i).removeWorker((Worker) selectedUnit);
-                        selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                        selectedUnit.getRoute().get(i + 1).addWorker((Worker) selectedUnit);
+                        selectedUnit.getRoute().get(i).removeWorker((Worker) selectedUnit);
+                        selectedUnit.setTileOfUnit(selectedUnit.getRoute().get(i + 1));
                     } else if (selectedUnit instanceof Settler) {
-                        selectedUnit.route.get(i + 1).addSettler((Settler) selectedUnit);
-                        selectedUnit.route.get(i).removeSettler((Settler) selectedUnit);
-                        selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                        selectedUnit.getRoute().get(i + 1).addSettler((Settler) selectedUnit);
+                        selectedUnit.getRoute().get(i).removeSettler((Settler) selectedUnit);
+                        selectedUnit.setTileOfUnit(selectedUnit.getRoute().get(i + 1));
                     } else {
-                        selectedUnit.route.get(i + 1).getUnits().add(selectedUnit);
-                        selectedUnit.route.get(i).getUnits().remove(selectedUnit);
-                        selectedUnit.setTileOfUnit(selectedUnit.route.get(i + 1));
+                        selectedUnit.getRoute().get(i + 1).getUnits().add(selectedUnit);
+                        selectedUnit.getRoute().get(i).getUnits().remove(selectedUnit);
+                        selectedUnit.setTileOfUnit(selectedUnit.getRoute().get(i + 1));
                     }
                     break;
                 }
             }
 
         }
-        if (index + 1 == selectedUnit.route.size() - 1){
+        if (index + 1 == selectedUnit.getRoute().size() - 1){
             selectedUnit.setSpeed(selectedUnit.getOriginialspeed());
             this.movingUnits.remove(selectedUnit);
             return true;
@@ -700,7 +703,7 @@ public class GameMenuController {
 
 
     public boolean isTileInAnyCivilization(Tile tile) {
-        for (int i = 0; i < GameDatabase.players.size(); i++) {
+        for (int i = 0; i < GameDatabase.getPlayers().size(); i++) {
             if (isTileInCivilization(tile, i)) {
                 return true;
             }
