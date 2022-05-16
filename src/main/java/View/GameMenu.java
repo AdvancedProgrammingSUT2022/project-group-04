@@ -554,6 +554,7 @@ public class GameMenu extends Menu {
         if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
         if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
+        if (!city.getIsGettingWorkedOn()) return "this city isn't getting worked on";
         gameMenuController.pauseProject(worker, x, y);
         return "project stopped successfully";
     }

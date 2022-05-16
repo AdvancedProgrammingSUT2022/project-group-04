@@ -328,9 +328,15 @@ public class GameMenuController {
 
     public void pauseProject(Worker worker, int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if (worker.isAssigned() && !worker.isMoving() && worker.isLocked() && tile != null) {
+        City city = GameDatabase.getCityByXAndY(x,y);
+        if (worker.isAssigned()
+                && !worker.isMoving()
+                && worker.isLocked()
+                && tile != null
+                && city.getIsGettingWorkedOn()) {
             worker.setIsAssigned(false);
             tile.setIsGettingWorkedOn(false);
+            city.setIsGettingWorkedOn(false);
         }
     }
 
@@ -341,6 +347,8 @@ public class GameMenuController {
             boolean isPossible = true;
             if (worker.getTypeOfWork().equals(type)) {
                 worker.setIsAssigned(true);
+                city.setIsGettingWorkedOn(true);
+                tile.setIsGettingWorkedOn(true);
             } else {
                 if (tile.getRoundsTillFinishProjectByIndex(worker.getIndexOfProject()) != 0)
                     tile.initializeRoundsTillFinish(worker.getIndexOfProject());
