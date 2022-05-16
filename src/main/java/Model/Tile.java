@@ -101,38 +101,30 @@ public class Tile {
 
 
     public void initializeRoundsTillFinish(int flag) {
-        int[] base = new int[25];
+        int[] base = new int[16];
+        //build road - railroad - farm - mine
         base[0] = 3;
         base[1] = 3;
         base[2] = 6;
         base[3] = 6;
-        //TODO improvements number of turns needed
+        //improvements
         base[4] = 6;
         base[5] = 6;
         base[6] = 6;
         base[7] = 6;
         base[8] = 6;
         base[9] = 6;
-        //
+        //remove
         base[10] = 4;
         base[11] = 7;
         base[12] = 6;
         base[13] = 3;
         base[14] = 3;
+        //repair
         base[15] = 3;
-        //
-        base[16] = 3;
-        base[17] = 3;
-        base[18] = 3;
-        base[19] = 3;
-        base[20] = 3;
-        base[21] = 3;
-        base[22] = 3;
-        base[23] = 3;
-        base[24] = 3;
         if (flag == -1) {
-            roundsTillFinish = new int[25];
-            for (int i = 0; i < 25; i++) {
+            roundsTillFinish = new int[16];
+            for (int i = 0; i < 16; i++) {
                 roundsTillFinish[i] = base[i];
             }
         } else {

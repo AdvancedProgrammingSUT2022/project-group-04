@@ -337,10 +337,6 @@ public class Civilization {
                 return true;
             }
         }
-//        for (Technology technology1 : technologies) {
-//            if (technology1.getName().equals(technology))
-//                return true;
-//        }
         return false;
     }
 

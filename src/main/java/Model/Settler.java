@@ -23,7 +23,7 @@ public class Settler extends Citizen {
     public void createNewCity(String name) {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTurn(this.getCivilizationIndex());
-        //TODO edit if there is more than one turn for creating city
+        //taking only one turn to build a city
         City city = new City(name, 10, tile.baseTerrain.getFoodNum(), tile.baseTerrain.getGold(), 5,
                 tile.baseTerrain.getProduction(), 0, 0, GameDatabase.getCivilizationByTurn(this.getCivilizationIndex()).getNickname(),
                 false, tile.type, tile.getBaseTerrainType(), tile.getX(), tile.getY(), tile);
@@ -33,20 +33,6 @@ public class Settler extends Citizen {
         city.addTile(tile);
         tile.removeSettler(this);
     }
-
-//    public void addTileToTheCity(int xOfCity, int yOfCity) {
-//        Tile tile = GameDatabase.getTileByXAndY(xOfCity, yOfCity);
-//        Tile tileOfOriginalCity = GameDatabase.getTileByXAndY(this.x, this.y);
-//        Civilization civilization = GameDatabase.getCivilizationByTile(tileOfOriginalCity);
-//        //ArrayList<Tile> tiles = tile.getNeighbors();
-//        City city = GameDatabase.getCityByXAndY(this.x,this.y);
-//        if (!civilization.isCityInCivilization(xOfCity,yOfCity)) {
-//            //TODO edit if there is more than one turn for creating city
-//            city.addTile(tile);
-//            civilization.getCityByXAndY(x,y).removeSettler(this);//kill the settler after making city
-//            tile.removeUnit(this);
-//        }
-//    }
 
     @Override
     public boolean isSettler() {

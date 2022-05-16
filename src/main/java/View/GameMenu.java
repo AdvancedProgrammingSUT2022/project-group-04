@@ -561,6 +561,7 @@ public class GameMenu extends Menu {
         if (city == null) return "this tile is in no city";
         Worker worker = tile.getActiveWorker();
         if (!tile.getIsGettingWorkedOn() || worker == null) return "this tile isn't getting worked on";
+        if (!city.getIsGettingWorkedOn()) return "this city isn't getting worked on";
         gameMenuController.pauseProject(worker, x, y);
         return "project stopped successfully";
     }
@@ -705,7 +706,6 @@ public class GameMenu extends Menu {
                 return "not enough movementpoints";
             }
         }
-
     }
 
     private String createUnit(Matcher matcher) {
@@ -724,7 +724,7 @@ public class GameMenu extends Menu {
         if (!gameMenuController.isTileInCivilization(GameDatabase.getTileByXAndY(x, y), turn % numberOfPlayers)) {
             return "this tile is not for you";
         } else {
-            boolean success = gameMenuController.createUnit(unitType, x, y, turn); //todo civilization index what to do?
+            boolean success = gameMenuController.createUnit(unitType, x, y, turn);
             if (success) {
                 this.x = x;
                 this.y = y;
@@ -797,7 +797,6 @@ public class GameMenu extends Menu {
                 Settler settler = (Settler) unitSelected;
                 String cityName = matcher.group("name");
                 settler.createNewCity(cityName);
-                //TODO should fix the MVC
             }
         }
         return "unit found city";
@@ -925,17 +924,17 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
+        City city = GameDatabase.getCityByXAndY(x,y);
+        if (tile == null) return "invalid tile";
+        if (city == null) return "no city";
         if (tile.isRaided()) return "this tile is raided";
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !gameMenuController.isImprovementValid(improvementName)) {
             return "invalid improvement";
         }
-        if (tile == null) return "invalid tile";
-
         if (!GameDatabase.isTileInCivilization(tile, GameDatabase.getCivilizationByTurn(turn % numberOfPlayers)))
             return "this tile belongs to another civilization!";
-        //if (!gameMenuController.isTileAdjacentToCivilization(tile, )) return "this tile ain't yours bro";
         if (!gameMenuController.isTileInCivilization(tile,turn%numberOfPlayers)) return "this isn't in your civilization";
         if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
         Worker worker = tile.getAvailableWorker();
@@ -950,6 +949,9 @@ public class GameMenu extends Menu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
+        if (tile == null) return "invalid tile";
+        City city = GameDatabase.getCityByXAndY(x,y);
+        if (city == null) return "no city";
         if (!improvementName.equals("Road")
                 && !improvementName.equals("Railroad")
                 && !improvementName.equals("Jungle")
@@ -957,9 +959,8 @@ public class GameMenu extends Menu {
                 && !improvementName.equals("Prairie")) {
             return "invalid improvement";
         }
-        if (tile == null) return "invalid tile";
         if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
-        if (tile.getIsGettingWorkedOn()) return "tile has an on-going project";
+        if (city.getIsGettingWorkedOn()) return "city has an on-going project";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no worker in this tile to do the project";
         if (gameMenuController.assignNewProject(worker, "remove" + improvementName))
@@ -968,13 +969,14 @@ public class GameMenu extends Menu {
     }
 
     private String unitRepair(Matcher matcher) {
-        //String type = matcher.group("typeOfRepair")
-        int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
+        int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if (tile == null) return "invalid tile";
+        if (tile == null ) return "invalid tile";
+        City city = GameDatabase.getCityByXAndY(x,y);
+        if (city == null) return "no city";
         if (!gameMenuController.isTileInCivilization(tile, turn)) return "this tile ain't yours bro";
-        if (tile.getIsGettingWorkedOn()) return "there is already a project going on in this tile";
+        if (city.getIsGettingWorkedOn()) return "there is already a project going on in city";
         Worker worker = tile.getAvailableWorker();
         if (worker == null) return "there is no available worker in this tile";
         if (!tile.isRaided()) return "this tile is not raided";
@@ -1397,4 +1399,5 @@ public class GameMenu extends Menu {
 
     // this is a comment for retards
     // this a comment for women
+    // I dedicate this comment to all the good TAs of AP,So I guess you could say that there was no point in writing this
 }

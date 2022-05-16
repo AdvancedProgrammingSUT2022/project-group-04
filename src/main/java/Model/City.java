@@ -32,7 +32,6 @@ public class City extends Tile {
     private String civilizationName;
     private boolean isColonized;
     private boolean isCapital;
-    //private int food;
     private int leftoverFood;
     private int production;
     private boolean isGettingWorkedOn;
@@ -55,13 +54,11 @@ public class City extends Tile {
         this.HP = 10;
         this.civilizationName = civilizationName;
         this.isCapital = isCapital;
-        //this.food = 0;
         this.leftoverFood = 0;
         this.production = 0;
         this.capital = capital;
         this.citizens = new ArrayList<Citizen>();
         this.attackingUnits = new ArrayList<>();
-        //this.tiles = addFirstTiles();
         this.tiles = new ArrayList<Tile>();
         capitalCalculator();
     }
@@ -150,6 +147,14 @@ public class City extends Tile {
         this.HP = HP;
     }
 
+    public void setIsGettingWorkedOn(boolean isGettingWorkedOn){
+        this.isGettingWorkedOn = isGettingWorkedOn;
+    }
+
+    public boolean getIsGettingWorkedOn(){
+        return this.isGettingWorkedOn;
+    }
+
     public void addHP(int amount) {
         this.HP += amount;
     }
@@ -207,7 +212,6 @@ public class City extends Tile {
         }
         return false;
     }
-    ///////////////////////
 
     private void generateGold() {
         Civilization civilization = GameDatabase.getCivilizationByNickname(this.civilizationName);
@@ -279,10 +283,7 @@ public class City extends Tile {
             this.production += improvement.getCityProductionChange();
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(improvement.getCivilizationGoldChange());
         }
-//        for (Resources resource : this.discoveredResources) {
-//            resource.nextTurn(this.name);
-//            addingFood += resource.foodNum;
-//        }
+
         Civilization civilization = GameDatabase.getCivilizationForCity(this.name);
         if (!civilization.isHappy()) addingFood /= 3;
         this.leftoverFood += addingFood;
@@ -325,9 +326,8 @@ public class City extends Tile {
 
     private int checkNewCitizen(int count) {
         double size = (double) citizens.size();
-        if (count > Math.pow(2.0, size)) {
-            count -= Math.pow(2.0, size);//TODO change initializing fields
-            //TODO blah
+        if (count > Math.pow(3.0, size)) {
+            count -= Math.pow(3.0, size);//3 can be changed to any constant
             Citizen newCitizen = new Citizen(x, y, "Citizen", 1, 0, false);
             citizens.add(newCitizen);
             capital.addUnit(newCitizen);
@@ -356,7 +356,6 @@ public class City extends Tile {
         return count;
     }
 
-    //
     public void createSettler(int x, int y) {
         if (citizens.size() > 1 && settler == null) {
             this.settler = new Settler(x, y, 0);
@@ -384,8 +383,6 @@ public class City extends Tile {
     }
 
     public ArrayList<Tile> getTiles() {
-//        ArrayList<Tile> tileArrayList = new ArrayList<>();
-//        Collections.copy(tileArrayList, tiles);
         return tiles;
     }
 
@@ -393,7 +390,6 @@ public class City extends Tile {
         return capital;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     private ArrayList<Tile> addFirstTiles() {
         ArrayList<Tile> firstTiles = new ArrayList<Tile>();
         firstTiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
@@ -405,7 +401,6 @@ public class City extends Tile {
         }
         return firstTiles;
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean isTileForThisCity(Tile tile) {
         for (Tile cityTile : this.tiles) {

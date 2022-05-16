@@ -302,7 +302,6 @@ public class Resources {
     }
 
     public void nextTurn(String cityName) {
-        //GameDatabase.getCityByName(cityName).addFood(this.foodNum);
         GameDatabase.getCityByName(cityName).addProduction(this.production);
         GameDatabase.getCivilizationForCity(cityName).addGold(this.gold);
     }
