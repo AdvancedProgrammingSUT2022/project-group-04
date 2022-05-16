@@ -780,10 +780,8 @@ public class GameMenuController {
         }
         if (index + 1 == selectedUnit.route.size()){
             System.out.println(selectedUnit.getUnitType() + "--------");
-            if (selectedUnit instanceof Soldier) {
-                this.getMovingUnits().remove(selectedUnit);
-                System.out.println("unit removed from moving units");
-            }
+            this.movingUnits.remove(selectedUnit);
+            System.out.println("unit removed from moving units");
             return true;
         }
         return false;
