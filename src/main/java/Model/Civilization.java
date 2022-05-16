@@ -14,6 +14,7 @@ public class Civilization {
     private ArrayList<Tile> tiles;
     private ArrayList<Tile> visibleTiles;
     private ArrayList<City> cities;
+    private ArrayList<City> dastneshandeCities;
     private int gold;
     private ArrayList<Technology> technologies;
     private int happiness;
@@ -88,6 +89,14 @@ public class Civilization {
 
     public String getNickname() {
         return this.nickname;
+    }
+
+    public ArrayList<City> getDastneshandeCities() {
+        return dastneshandeCities;
+    }
+
+    public void setDastneshandeCities(ArrayList<City> dastneshandeCities) {
+        this.dastneshandeCities = dastneshandeCities;
     }
 
     public int getScore() {

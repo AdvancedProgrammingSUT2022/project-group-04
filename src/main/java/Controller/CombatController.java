@@ -149,4 +149,8 @@ public class CombatController {
         //Todo niaz be sepehr hast
     }
 
+    public void dastneshandeCity(Civilization civilization, City city){
+        dastneshandeCity(civilization, city);
+    }
+
 }
