@@ -104,7 +104,7 @@ public class GameMenu extends Menu {
     }
 
     public void run(Scanner scanner) {
-        System.out.println(GameDatabase.players.get(0).getNickname());
+        System.out.println(GameDatabase.getPlayers().get(0).getNickname());
         String command;
         Info info = Info.getInstance();
         boolean nextTurnIsCalled = false;
@@ -114,7 +114,7 @@ public class GameMenu extends Menu {
             Matcher matcher;
             command = scanner.nextLine();
             if (command.equals(CHEAT_WIN)) {
-                System.out.println(GameDatabase.players.get(turn).getNickname() + " is the winner!");
+                System.out.println(GameDatabase.getPlayers().get(turn).getNickname() + " is the winner!");
                 break;
             } else if ((matcher = getCommandMatcher(command, MENU_SHOW)) != null) {
                 System.out.println(menuShow());
@@ -432,9 +432,6 @@ public class GameMenu extends Menu {
                 System.out.println(result);
             } else {
                 System.out.println("invalid command");
-            }
-            if (nextTurnIsCalled){
-
             }
         }
     }
