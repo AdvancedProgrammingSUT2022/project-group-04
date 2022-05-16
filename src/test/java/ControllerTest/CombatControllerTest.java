@@ -96,7 +96,7 @@ public class CombatControllerTest {
             Unit unitInPosition = new Unit(1,1,"Panzer",10, 0, 0);
             units.add(unitInPosition);
         }
-        when(tile.getUnits()).thenReturn(units);
+        database1.when(()->GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
         database1.when(()-> getTileByXAndY(5, 5)).thenReturn(tile);
         database1.when(()->getCityByXAndY(5, 5)).thenReturn(city);
         boolean result = combatController.UnitAttackPosition(soldier1, 5, 5);
@@ -112,7 +112,6 @@ public class CombatControllerTest {
         when(soldier3.getRange()).thenReturn(1);
         boolean result4 = combatController.UnitAttackPosition(soldier3, 5, 5);
         Assertions.assertEquals(true, result4);
-        database1.close();
     }
 
     @Test
