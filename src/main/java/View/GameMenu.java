@@ -498,7 +498,7 @@ public class GameMenu extends Menu {
         if (!this.gameMenuController.isCityValid(cityName)) return "invalid city";
         if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) return "selected city is not for your civilization";
         if (this.gameMenuController.isCityCapital(cityName)) return "selected city is already capital of your civilization";
-        GameDatabase.players.get(turn).changeCapital(cityName);
+        GameDatabase.getPlayers().get(turn).changeCapital(cityName);
         return "capital changed successfully";
     }
 
@@ -545,7 +545,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String unitStopWork(Matcher matcher) {
+    public String unitStopWork(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
