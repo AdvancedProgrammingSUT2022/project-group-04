@@ -576,8 +576,7 @@ public class GameMenuController {
                     || unitType.equals("worker")) {
                 return createNonCombatUnit(unitType, x, y, civilizationIndex);
             } else {
-                createCombatUnit(unitType, x, y, civilizationIndex);
-                return true;
+                return createCombatUnit(unitType, x, y, civilizationIndex);
             }
         } else {
             return false;
@@ -588,10 +587,20 @@ public class GameMenuController {
         return GameDatabase.getCivilizationByTurn(turn).getClearTiles().contains(GameDatabase.getTileByXAndY(x, y));
     }
 
-    public void createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+    public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
+        ArrayList<Unit> soldiers = new ArrayList<>();
+        for (Unit unit : tile.getUnits()){
+            if (unit instanceof Soldier)
+                soldiers.add(unit);
+        }
+        if ( soldiers.size() != 0){
+            return false;
+        }
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));
+        return true;
     }
 
     public boolean isAmountValidForScore(int amount) {
@@ -699,9 +708,10 @@ public class GameMenuController {
             }
 
         }
-        if (index + 1 == selectedUnit.route.size()){
+        if (index + 1 == selectedUnit.route.size() - 1){
             System.out.println(selectedUnit.getUnitType() + "--------");
             selectedUnit.setSpeed(selectedUnit.getOriginialspeed());
+            System.out.println(movingUnits.size());
             this.movingUnits.remove(selectedUnit);
             System.out.println("unit removed from moving units");
             return true;

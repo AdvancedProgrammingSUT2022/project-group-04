@@ -434,14 +434,6 @@ public class GameMenu extends Menu {
                 System.out.println("invalid command");
             }
             if (nextTurnIsCalled){
-                if (gameMenuController.getMovingUnits().size() != 0) {
-                    System.out.println(gameMenuController.getMovingUnits().get(0) + " kose ammeeee");
-                    boolean b = gameMenuController.moveUnitAlongPath(gameMenuController.getMovingUnits().get(0));
-                    if (b){
-                        System.out.println("salap");
-                        System.out.println(gameMenuController.getMovingUnits().size());
-                    }
-                }
 
             }
         }
@@ -1103,6 +1095,14 @@ public class GameMenu extends Menu {
     }
 
     private int nextTurn() {
+        if (gameMenuController.getMovingUnits().size() != 0) {
+            System.out.println(gameMenuController.getMovingUnits().get(0) + " kose ammeeee");
+            boolean b = gameMenuController.moveUnitAlongPath(gameMenuController.getMovingUnits().get(0));
+            if (b){
+                System.out.println("salap");
+                System.out.println(gameMenuController.getMovingUnits().size());
+            }
+        }
         printMap(x, y);
         showNextTurn();
         GameDatabase.nextTurn();

@@ -278,11 +278,6 @@ public class Unit {
                 return -1;
             }
         }
-        if (destTile.getUnits() != null){
-            if (destTile.getUnits().get(0).getCivilizationIndex() != selectedUnit.getCivilizationIndex()){
-                return -1;
-            }
-        }
         Graph graph = new Graph();
         ArrayList<Tile> copyOfMap = new ArrayList<>(GameDatabase.map);
         Tile currentInCopy = null;
