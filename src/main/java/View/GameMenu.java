@@ -450,6 +450,7 @@ public class GameMenu extends Menu {
                         //}
                         //System.out.println(gameMenuController.getMovingUnits().get(0).getUnitType() + "++++++");
                         System.out.println(gameMenuController.getMovingUnits().size());
+
                     }
                 }
 

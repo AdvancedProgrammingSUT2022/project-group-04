@@ -782,7 +782,6 @@ public class GameMenuController {
             System.out.println(selectedUnit.getUnitType() + "--------");
             this.movingUnits.remove(selectedUnit);
             System.out.println("unit removed from moving units");
-
             return true;
         }
         return false;
