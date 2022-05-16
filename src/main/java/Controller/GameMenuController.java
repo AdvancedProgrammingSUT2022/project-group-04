@@ -358,12 +358,8 @@ public class GameMenuController {
                 if (worker.getIndexOfProject() > 12) tile.initializeRoundsTillFinish(worker.getIndexOfProject());
                 switch (worker.getIndexOfProject()) {
                     case 0: isPossible = makeRoad(worker); break;
-                    case 1:
-                        isPossible = makeRailRoad(worker);
-                        break;
-                    case 2:
-                        isPossible = makeFarm(worker);
-                        break;
+                    case 1: isPossible = makeRailRoad(worker);break;
+                    case 2: isPossible = makeFarm(worker);break;
                     case 3: isPossible = makeMine(worker);break;
                     case 4:
                     case 5:
@@ -375,9 +371,7 @@ public class GameMenuController {
                     case 11:
                     case 12: isPossible = removeFeature(worker);break;
                     case 13: isPossible = removeRoad(worker);break;
-                    case 14:
-                        isPossible = removeRailroad(worker);
-                        break;
+                    case 14: isPossible = removeRailroad(worker);break;
                     case 15: isPossible = makeRepair(worker);break;
                 }
             }
