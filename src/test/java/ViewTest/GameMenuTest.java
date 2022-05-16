@@ -93,6 +93,18 @@ public class GameMenuTest {
     }
 
     @Test
+    public void lockCitizen() {
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
+        gameDatabase.when(() -> GameDatabase.getCityByXAndY(1, 1)).thenReturn(city);
+        gameDatabase.when(() -> GameDatabase.getCityByName("tehran")).thenReturn(city);
+        when(gameMenuController.isTileInCivilization(tile, gameMenu.turn)).thenReturn(true);
+        when(tile.getWorker()).thenReturn(worker);
+        Assertions.assertEquals("worker started locking process successfully!", gameMenu.lockCitizen(matcher));
+    }
+
+    @Test
     public void changeCapital() {
         int turn = 0;
         when(matcher.group("cityName")).thenReturn("tehran");
