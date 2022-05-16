@@ -49,20 +49,41 @@ public class GameMenuTest {
 
     @BeforeEach
     public void setUp(){
-        when(matcher.group("x")).thenReturn("1");
-        when(matcher.group("y")).thenReturn("1");
         gameDatabase = mockStatic(GameDatabase.class);
-        //when(Integer.parseInt("1")).thenReturn(1);
-        gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
-        gameDatabase.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
     }
 
     @Test
     public void buyTileWithCoordinate(){
+        /////////
         int turn = 0;
+        when(matcher.group("x")).thenReturn("1");
+        when(matcher.group("y")).thenReturn("1");
+        when(matcher.group("cityName")).thenReturn("tehran");
+        //when(Integer.parseInt("1")).thenReturn(1);
+        gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+        gameDatabase.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+        gameDatabase.when(()->GameDatabase.getCityByName("tehran")).thenReturn(city);
         gameDatabase.when(()->GameDatabase.getCivilizationByTurn(turn)).thenReturn(civilization);
-        when(gameMenuController.isTileInCivilization(tile,turn)).thenReturn(true);
+        ////////
+        when(gameMenuController.isTileInCivilization(tile,turn)).thenReturn(false);
+        when(gameMenuController.isTileInAnyCivilization(tile)).thenReturn(false);
+        when(gameMenuController.isTileAdjacentToCivilization(tile, civilization)).thenReturn(true);
+        when(civilization.getGold()).thenReturn(100);
+
         GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
-        Assertions.assertEquals("you already have this tile!",gameMenu.buyTileWithCoordinate(matcher));
+        Assertions.assertEquals("congrats bro you bought it",gameMenu.buyTileWithCoordinate(matcher));
     }
+
+    @Test
+    public void changeCapital(){
+        int turn = 0;
+        when(gameMenuController.isCityValid("tehran")).thenReturn(true);
+        when(gameMenuController.isCityForThisCivilization(turn, city)).thenReturn(true);
+        when(gameMenuController.isCityCapital("tehran")).thenReturn(false);
+        GameMenu gameMenu = new GameMenu(gameMenuController,combatController);
+        Assertions.assertEquals("capital changed successfully",gameMenu.changeCapital(matcher));
+    }
+
+//    @Test
+//    public void
 }

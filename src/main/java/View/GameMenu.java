@@ -466,8 +466,7 @@ public class GameMenu extends Menu {
         if (tile == null) return "invalid tile";
         if (gameMenuController.isTileInCivilization(tile, turn)) return "you already have this tile!";
         if (gameMenuController.isTileInAnyCivilization(tile)) return "somebody else has bought this tile";
-        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization))
-            return "this tile ain't adjacent to your tiles bro";
+        if (!gameMenuController.isTileAdjacentToCivilization(tile, civilization)) return "this tile ain't adjacent to your tiles bro";
         if (civilization.getGold() < priceOfBuyingTile) return "bro you dont have enough gold";
         gameMenuController.addTileToCivilization(tile, civilization);
         return "congrats bro you bought it";
@@ -494,15 +493,9 @@ public class GameMenu extends Menu {
 
     public String changeCapital(Matcher matcher) {
         String cityName = matcher.group("cityName");
-        if (!this.gameMenuController.isCityValid(cityName)) {
-            return "invalid city";
-        }
-        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) {
-            return "selected city is not for your civilization";
-        }
-        if (this.gameMenuController.isCityCapital(cityName)) {
-            return "selected city is already capital of your civilization";
-        }
+        if (!this.gameMenuController.isCityValid(cityName)) return "invalid city";
+        if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) return "selected city is not for your civilization";
+        if (this.gameMenuController.isCityCapital(cityName)) return "selected city is already capital of your civilization";
         GameDatabase.players.get(turn).changeCapital(cityName);
         return "capital changed successfully";
     }
