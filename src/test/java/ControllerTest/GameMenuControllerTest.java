@@ -4,6 +4,7 @@ import Controller.GameMenuController;
 import Database.GameDatabase;
 import Database.GlobalVariables;
 import Database.UserDatabase;
+import Enums.TerrainFeature;
 import Model.*;
 
 import View.GameMenu;
@@ -34,10 +35,14 @@ public class GameMenuControllerTest {
 
 
     static MockedStatic<GameDatabase> database;
+    static MockedStatic<Notification> notification;
     static MockedStatic<Worker> workerstatic;
 
     @Mock
     GameModel gameModel;
+
+    @Mock
+    ArrayList<Soldier> soldiers;
 
     @Mock
     ArrayList<Tile> tiles;
@@ -93,12 +98,13 @@ public class GameMenuControllerTest {
     @BeforeAll
     public static void setUp() {
         database = mockStatic(GameDatabase.class);
+        notification = mockStatic(Notification.class);
     }
     @AfterAll
     public static void salam(){
         database.close();
+        notification.close();
     }
-
 
     @Test
     public void isPositionValid_Found() {
@@ -120,6 +126,15 @@ public class GameMenuControllerTest {
         when(tiles.get(0)).thenReturn(tile0);
         when(tile0.getX()).thenReturn(5);
         Assertions.assertFalse(gameMenuController.isPositionValid(2, 1));
+    }
+
+    @Test
+    public void sendMessage() {
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
+        when(players.get(0)).thenReturn(civilization);
+        when(civilization.getNickname()).thenReturn("n1");
+        gameMenuController.sendMessage(0, "n1", "hi");
     }
 
     @Test
@@ -176,7 +191,6 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
         Assertions.assertFalse(gameMenuController.isNonCombatUnitInThisPosition(x,y));
     }
 
@@ -186,11 +200,9 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
         when(tile.getUnits()).thenReturn(units);
         when(units.size()).thenReturn(1);
         when(units.get(0)).thenReturn(unit);
-        //when(unit.getUnitType()).thenReturn("Archer");
         doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         Assertions.assertNotEquals(gameMenuController.selectCombatUnit(x,y),null);
     }
@@ -201,11 +213,9 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
         when(tile.getUnits()).thenReturn(units);
         when(units.size()).thenReturn(1);
         when(units.get(0)).thenReturn(unit);
-        //when(unit.getUnitType()).thenReturn("Archer");
         doReturn(false).when(gameMenuController).isUnitSoldier(unit);
         Assertions.assertEquals(gameMenuController.selectCombatUnit(x,y),null);
     }
@@ -216,12 +226,8 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //ArrayList<Unit> units1 = new ArrayList<>();
         Settler settler = mock(Settler.class);
-        //Worker worker1 = mock(Worker.class);
         when(tile.getSettler()).thenReturn(settler);
-        //when(tile.getWorker()).thenReturn(worker1);
-        //when(unit.getUnitType()).thenReturn("Archer");
         Assertions.assertNotEquals(gameMenuController.selectNonCombatUnit(x,y),null);
     }
 
@@ -231,27 +237,8 @@ public class GameMenuControllerTest {
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-
-        //when(unit.getUnitType()).thenReturn("Archer");
-        //doReturn(false).when(gameMenuController).isUnitCivilian(unit);
         Assertions.assertEquals(gameMenuController.selectNonCombatUnit(x,y),null);
     }
-
-//
-//    @Test
-//    public void isCombatUnitInThisPosition_False(){
-//        int x = 10;
-//        int y = 20;
-//        GameMenuController gameMenuController = new GameMenuController(gameModel) ;
-//        Tile tile1 = new Tile("","",x,y);
-//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile1);
-//        //ArrayList<Unit> units1 = new ArrayList<>();
-//        when(tile1.getUnits()).thenReturn(units);
-//        when(units.size()).thenReturn(1);
-//        when(units.get(0)).thenReturn(unit);
-//        when(unit.getUnitType()).thenReturn("Archer");
-//        Assertions.assertFalse(gameMenuController.isCombatUnitInThisPosition(x,y));
-//    }
 
     @Test
     public void isDirectionValidForMap_True(){
@@ -344,25 +331,12 @@ public class GameMenuControllerTest {
         verify(civilization).addScience(amount);
     }
 
-//    @Test
-//    public void sendMessage(){
-//        Notification notification = Mockito.spy(new Notification(" ", "","            "));
-//        int amount = 10;
-//        int turn = 0;
-//        GameMenuController gameMenuController = new GameMenuController(gameModel);
-//        database.when(()->GameDatabase.getPlayers()).thenReturn(players);
-//        when(players.get(turn)).thenReturn(civilization);
-//        gameMenuController.addScience(turn,amount);
-//        verifyStatic
-//    }
-//
     @Test
     public void addScore(){
         int amount = 10;
         int turn = 0;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getPlayers()).thenReturn(players);
-        //when(players.size()).thenReturn(1);
         when(players.get(0)).thenReturn(civilization);
         gameMenuController.addScore(turn,amount);
         verify(civilization).addScore(amount);
@@ -410,7 +384,6 @@ public class GameMenuControllerTest {
         when(tile.getUnits()).thenReturn(units);
         when(units.size()).thenReturn(1);
         when(units.get(0)).thenReturn(unit);
-        //Mockito.doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         boolean result = gameMenuController.isDestinationOkForMove(unit,x,y);
         Assertions.assertFalse(result);
     }
@@ -423,10 +396,6 @@ public class GameMenuControllerTest {
         Mockito.doReturn(true).when(gameMenuController).isPositionValid(x,y);
         Mockito.doReturn(false).when(gameMenuController).isUnitSoldier(unit);
         when(GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-        //when(tile.getUnits()).thenReturn(units);
-        //when(units.size()).thenReturn(1);
-        //when(units.get(0)).thenReturn(unit);
-        //Mockito.doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         boolean result = gameMenuController.isDestinationOkForMove(unit,x,y);
         Assertions.assertTrue(result);
     }
@@ -444,7 +413,6 @@ public class GameMenuControllerTest {
         Unit unit1 = mock(Unit.class);
         when(units.get(0)).thenReturn(unit1);
         when(unit1.getUnitType()).thenReturn("worker");
-        //Mockito.doReturn(true).when(gameMenuController).isUnitSoldier(unit);
         boolean result = gameMenuController.isDestinationOkForMove(unit,x,y);
         Assertions.assertTrue(result);
     }
@@ -492,6 +460,13 @@ public class GameMenuControllerTest {
         int amount = 0;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Assertions.assertFalse(gameMenuController.isAmountValidForHP(amount));
+    }
+
+    @Test
+    public void isAmountValidForScore(){
+        int amount = 0;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertFalse(gameMenuController.isAmountValidForScore(amount));
     }
 
     @Test
@@ -665,22 +640,6 @@ public class GameMenuControllerTest {
         Assertions.assertFalse(gameMenuController.isImprovementValid(name));
     }
 
-////    @Test
-////    public void isPositionValidTestTwo(){
-////        //GameMenuController gameMenuController = new GameMenuController(gameModel);
-////        Tile tile0 = new Tile("","",0,1);
-////        Tile tile1 = new Tile("","",20,30);
-////        Tile tile2 = new Tile("","",89,40);
-////        Tile tile3 = new Tile("","",2,2);
-////        Tile tile4 = new Tile("","",0,3);
-////        Tile tile5 = new Tile("","",3,1);
-////        Tile tile6 = new Tile("","",5,1);
-////        ArrayList<Tile> map = new ArrayList<>();
-////        map.add(tile0);map.add(tile1);map.add(tile2);map.add(tile3);map.add(tile4);map.add(tile5);map.add(tile6);
-////        when(GameDatabase.map).thenReturn(map);
-////        Assertions.assertFalse(gameMenuController.isPositionValid(10,80));
-////    }
-
     @Test
     public void pillageCurrentTile() {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -750,9 +709,25 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileAdjacentToCivilization() {
+    public void isTileAdjacentToCivilization_true() {
+        when(civilization.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tile.getAdjacentTiles()).thenReturn(tiles);
+        when(tiles.contains(tile)).thenReturn(true);
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        gameMenuController.isTileAdjacentToCivilization(tile, civilization);
+        assertTrue(gameMenuController.isTileAdjacentToCivilization(tile, civilization));
+    }
+
+    @Test
+    public void isTileAdjacentToCivilization_false() {
+        when(civilization.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tile.getAdjacentTiles()).thenReturn(tiles);
+        when(tiles.contains(tile)).thenReturn(false);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertFalse(gameMenuController.isTileAdjacentToCivilization(tile, civilization));
     }
 
     @Test
@@ -783,12 +758,6 @@ public class GameMenuControllerTest {
         assertFalse(gameMenuController.createNonCombatUnit("Spearman", 0, 0, 0));
     }
 
-    @Test
-    public void isAmountValidForScore() {
-        GameMenuController gameMenuController = new GameMenuController(gameModel);
-        assertFalse(gameMenuController.isAmountValidForScore(0));
-    }
-
 
     @Test
     public void isTileValidForCreatingUnit() {
@@ -800,12 +769,27 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createUnit() {
+    public void createUnit_1() {
+        int x = 0;
+        int y = 0;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        database.when(() -> GameDatabase.getTileByXAndY(0, 0)).thenReturn(tile);
+        database.when(() -> GameDatabase.getTileByXAndY(x, y)).thenReturn(tile);
         database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
         when(civilization.getClearTiles()).thenReturn(tiles);
-        assertFalse(gameMenuController.createUnit("worker", 0, 0, 0));
+        when(tiles.contains(tile)).thenReturn(true);
+        assertTrue(gameMenuController.createUnit("Archer", x, y, 0));
+    }
+
+    @Test
+    public void createUnit_2() {
+        int x = 0;
+        int y = 0;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        database.when(() -> GameDatabase.getTileByXAndY(x, y)).thenReturn(tile);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(civilization.getClearTiles()).thenReturn(tiles);
+        when(tiles.contains(tile)).thenReturn(false);
+        assertFalse(gameMenuController.createUnit("Shahabi", x, y, 0));
     }
 
     @Test
@@ -973,22 +957,6 @@ public class GameMenuControllerTest {
         Assertions.assertEquals(null, workerResult);
     }
 
-
-
-//    @Test
-//    public void tileHasRiver_True(){
-//        int x = 10;
-//        int y = 20;
-//        Tile tile1 = Mockito.spy(new Tile("","",x,y));
-//        GameMenuController gameMenuController = new GameMenuController(gameModel);
-//        when(tile1.getIsRiver()).thenReturn(new {true,true,true,true,true,true});
-//        Assertions.assertTrue(gameMenuController.tileHasRiver(tile1));
-//    }
-//
-//    @Test
-//    public void tileHasRiver_False(){
-//
-//    }
     @Test
     public void makeRainRoad_True(){
         int x = 10;
@@ -999,7 +967,6 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(true);
-        //when(tile.hasRoad()).thenReturn(false);
         when(tile.getBaseTerrainType()).thenReturn("amiri");
         Assertions.assertTrue(gameMenuController.makeRailRoad(worker));
     }
@@ -1014,8 +981,6 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(false);
-        //when(tile.hasRoad()).thenReturn(false);
-        //when(tile.getBaseTerrainType()).thenReturn("amiri");
         Assertions.assertFalse(gameMenuController.makeRailRoad(worker));
     }
 
@@ -1029,8 +994,6 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("Wheel")).thenReturn(false);
-        //when(tile.hasRoad()).thenReturn(false);
-        //when(tile.getBaseTerrainType()).thenReturn("amiri");
         Assertions.assertFalse(gameMenuController.makeRoad(worker));
     }
 
@@ -1044,7 +1007,6 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("Wheel")).thenReturn(true);
-        //when(tile.hasRoad()).thenReturn(false);
         when(tile.getBaseTerrainType()).thenReturn("amiri");
         Worker.setHashMap();
         Assertions.assertTrue(gameMenuController.makeRoad(worker));
@@ -1060,7 +1022,6 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("Mining")).thenReturn(true);
-        //when(tile.hasRoad()).thenReturn(false);
         when(tile.getBaseTerrainType()).thenReturn("Hill");
         BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
         when(tile.getBaseTerrain()).thenReturn(baseTerrain);
@@ -1081,12 +1042,10 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("Mining")).thenReturn(true);
-        //when(tile.hasRoad()).thenReturn(false);
         when(tile.getBaseTerrainType()).thenReturn("Hill");
         BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
         when(tile.getBaseTerrain()).thenReturn(baseTerrain);
         TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("amiri"));
-        //when(civilization.isTechnologyInCivilization("BronzeWorking")).thenReturn(true);
         when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
         Worker.setHashMap();
         Assertions.assertFalse(gameMenuController.makeMine(worker));
@@ -1102,12 +1061,11 @@ public class GameMenuControllerTest {
         database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
         database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(civilization.isTechnologyInCivilization("Agriculture")).thenReturn(true);
-        //when(tile.hasRoad()).thenReturn(false);
         when(tile.getBaseTerrainType()).thenReturn("Hill");
         BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
         when(tile.getBaseTerrain()).thenReturn(baseTerrain);
-        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("DenseJungle"));
-        when(civilization.isTechnologyInCivilization("BronzeWorking")).thenReturn(true);
+        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("Prairie"));
+        when(civilization.isTechnologyInCivilization("Masonry")).thenReturn(true);
         when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
         Worker.setHashMap();
         Assertions.assertTrue(gameMenuController.makeFarm(worker));
@@ -1188,6 +1146,7 @@ public class GameMenuControllerTest {
     }
 
 
+
     @Test
     public void assignNewProjectTest(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1234,8 +1193,7 @@ public class GameMenuControllerTest {
     @Test
     public void assignNewProjectTest2(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        Worker worker = mock(Worker.class);
-        workerstatic = mockStatic(Worker.class);
+        //Worker worker = mock(Worker.class);
         when(worker.getX()).thenReturn(1);
         when(worker.getY()).thenReturn(1);
         Tile tile = mock(Tile.class);
@@ -1244,6 +1202,7 @@ public class GameMenuControllerTest {
         when(civilization.isTechnologyInCivilization("Agriculture")).thenReturn(true);
         when(worker.getIndexOfProject()).thenReturn(2);
         HashMap<String, Integer> laanati = mock(HashMap.class);
+        workerstatic = mockStatic(Worker.class);
         workerstatic.when(()->Worker.getWorkToIndex()).thenReturn(laanati);
         when(laanati.get(type)).thenReturn(1);
         when(tile.getRoundsTillFinishProjectByIndex(2)).thenReturn(1);
@@ -1261,49 +1220,159 @@ public class GameMenuControllerTest {
         boolean result = gameMenuController.assignNewProject(worker, type);
         Assertions.assertEquals(false, result);
     }
+//
+//    @Test
+//    public void assignNewProjectTest3(){
+//        GameMenuController gameMenuController = new GameMenuController(gameModel);
+//        Worker worker = mock(Worker.class);
+//        workerstatic = mockStatic(Worker.class);
+//        when(worker.getX()).thenReturn(1);
+//        when(worker.getY()).thenReturn(1);
+//        Tile tile = mock(Tile.class);
+//        City city = mock(City.class);
+//        String type = "kire babat";
+//        when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(true);
+//        when(worker.getIndexOfProject()).thenReturn(2);
+//        HashMap<String, Integer> laanati = mock(HashMap.class);
+//        workerstatic.when(()->Worker.getWorkToIndex()).thenReturn(laanati);
+//        when(laanati.get(type)).thenReturn(1);
+//        when(tile.getRoundsTillFinishProjectByIndex(2)).thenReturn(1);
+//        database.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
+//        database.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
+//        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+//        when(tile.getIsGettingWorkedOn()).thenReturn(false);
+//        when(tile.getBaseTerrainType()).thenReturn("kos");
+//        when(worker.getTypeOfWork()).thenReturn("kire babat!");
+//        boolean result = gameMenuController.assignNewProject(worker, type);
+//        Assertions.assertEquals(true, result);
+//    }
 
     @Test
-    public void assignNewProjectTest3(){
+    public void getMovingUnits(){
         GameMenuController gameMenuController = new GameMenuController(gameModel);
-        Worker worker = mock(Worker.class);
-        workerstatic = mockStatic(Worker.class);
-        when(worker.getX()).thenReturn(1);
-        when(worker.getY()).thenReturn(1);
-        Tile tile = mock(Tile.class);
-        City city = mock(City.class);
-        String type = "kire babat";
-        when(civilization.isTechnologyInCivilization("SteamPower")).thenReturn(true);
-        when(worker.getIndexOfProject()).thenReturn(2);
-        HashMap<String, Integer> laanati = mock(HashMap.class);
-        workerstatic.when(()->Worker.getWorkToIndex()).thenReturn(laanati);
-        when(laanati.get(type)).thenReturn(1);
-        when(tile.getRoundsTillFinishProjectByIndex(2)).thenReturn(1);
-        database.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
-        database.when(()->GameDatabase.getCityByXAndY(1,1)).thenReturn(city);
-        database.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
-        when(tile.getIsGettingWorkedOn()).thenReturn(false);
-        when(tile.getBaseTerrainType()).thenReturn("kos");
-        when(worker.getTypeOfWork()).thenReturn("kire babat!");
-        boolean result = gameMenuController.assignNewProject(worker, type);
-        Assertions.assertEquals(true, result);
+        ArrayList<Unit> units = new ArrayList<>();
+        Assertions.assertEquals(units,gameMenuController.getMovingUnits());
     }
-//    @Test
-//    public void createCombatUnit(){
-//        GameMenuController gameMenuController = new GameMenuController(gameModel);
-//        String unitType = "Archer";
-//        int x = 10;
-//        int y = 12;
-//        int civilizationIndex = 0;
-//        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
-//        when(new Soldier(x, y, unitType, civilizationIndex)).thenReturn(soldier);
-//        gameMenuController.createCombatUnit(unitType,x,y,civilizationIndex);
-//        verify(tile).addUnit(soldier);
-//        verify(soldier).setTileOfUnit(tile);
-//
-//    }
 
-//    @Test
-//    public void addTileToCivilization(){
-//
-//    }
+    @Test
+    public void removeFeature_True(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
+        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("Jungle"));
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
+        when(baseTerrainFeature.getType()).thenReturn("Jungle");
+        Worker.setHashMap();
+        Assertions.assertTrue(gameMenuController.removeFeature(worker));
+    }
+
+    @Test
+    public void removeFeature_False(){
+        int x = 10;
+        int y = 1;
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        when(worker.getX()).thenReturn(x);
+        when(worker.getY()).thenReturn(y);
+        database.when(()->GameDatabase.getTileByXAndY(x,y)).thenReturn(tile);
+        BaseTerrain baseTerrain = Mockito.spy(new BaseTerrain("Hill"));
+        TerrainFeatures baseTerrainFeature = Mockito.spy(new TerrainFeatures("Jungle"));
+        when(tile.getBaseTerrain()).thenReturn(baseTerrain);
+        when(baseTerrain.getFeature()).thenReturn(baseTerrainFeature);
+        when(baseTerrainFeature.getType()).thenReturn("zahre mar");
+        Worker.setHashMap();
+        Assertions.assertFalse(gameMenuController.removeFeature(worker));
+    }
+
+    @Test
+    public void createCombatUnit(){
+        int x = 10;
+        int y = 10;
+        database.when(()->GameDatabase.getTileByXAndY(x, y)).thenReturn(tile);
+        when(tile.getUnits()).thenReturn(units);
+        when(units.size()).thenReturn(1);
+        when(units.get(0)).thenReturn(unit);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertTrue(gameMenuController.createCombatUnit("Archer",x,y,0));
+    }
+
+    @Test
+    public void createNonCombatUnit_True(){
+        int x = 10;
+        int y = 10;
+        database.when(()->GameDatabase.getCityByXAndY(x, y)).thenReturn(city);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertTrue(gameMenuController.createNonCombatUnit("worker",x,y,0));
+    }
+
+    @Test
+    public void createNonCombatUnit_False(){
+        int x = 10;
+        int y = 10;
+        database.when(()->GameDatabase.getCityByXAndY(x, y)).thenReturn(null);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        Assertions.assertFalse(gameMenuController.createNonCombatUnit("worker",x,y,0));
+    }
+
+    @Test
+    public void moveUnitAlongPath_worker() {
+        when(worker.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(worker.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(worker);
+    }
+
+    @Test
+    public void moveUnitAlongPath_settler() {
+        when(settler.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(settler.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(settler);
+    }
+
+    @Test
+    public void moveUnitAlongPath_soldier() {
+        when(soldier.getRoute()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(2);
+        when(soldier.getTileOfUnit()).thenReturn(tile);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tiles.get(1)).thenReturn(tile);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        gameMenuController.moveUnitAlongPath(soldier);
+    }
+
+    @Test
+    public void isTileInAnyCivilization_true() {
+        database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
+        when(players.size()).thenReturn(1);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(tile.getX()).thenReturn(1);
+        when(tile.getY()).thenReturn(1);
+        when(civilization.isTileInCivilization(1,1)).thenReturn(true);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertTrue(gameMenuController.isTileInAnyCivilization(tile));
+    }
+
+    @Test
+    public void isTileInAnyCivilization_false() {
+        database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
+        when(players.size()).thenReturn(1);
+        database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
+        when(tile.getX()).thenReturn(1);
+        when(tile.getY()).thenReturn(1);
+        when(civilization.isTileInCivilization(1,1)).thenReturn(false);
+        GameMenuController gameMenuController = new GameMenuController(gameModel);
+        assertFalse(gameMenuController.isTileInAnyCivilization(tile));
+    }
+
 }
