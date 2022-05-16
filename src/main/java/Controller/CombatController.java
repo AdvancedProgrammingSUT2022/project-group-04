@@ -53,7 +53,7 @@ public class CombatController {
                 dastneshandeCity(GameDatabase.getCivilizationByTurn(unit1.getCivilizationIndex()), cityOfPosition);
             }
             if (won) {
-                //checkTerrainBonus();
+                checkTerrainBonus(unit1, x, y);
                 unit1.moveUnitFromTo(unit1, unit1.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
             }
 
@@ -63,8 +63,21 @@ public class CombatController {
         }
     }
 
-    public void checkTerrainBonus(Tile tile1, Tile tile2) {
-
+    public void checkTerrainBonus(Unit unit, int x, int y) {
+        Tile tile1 = unit.getTileOfUnit();
+        Tile tile2 = GameDatabase.getTileByXAndY(x, y);
+        City city = tile2.getCity();
+        if (tile1.getBaseTerrainType().equals("Hill")) {
+            unit.setCombatStrength(unit.getCombatStrength() * 2);
+        }
+        if (tile2.getBaseTerrainType().equals("Hill")){
+            city.setPower(city.getPower() * 3);
+        }
+        Graph graph = new Graph();
+        if (tile1.isRiverByNumberOfEdge(graph.commonEdgeNumber(tile1, tile2))){unit.setCombatStrength(unit.getCombatStrength() / 2);
+        }
+        if (tile2.getBaseTerrainType().equals("Jungle")){city.setPower(city.getPower() * 3);
+        }
     }
 
     public void DefendCity(City city){
