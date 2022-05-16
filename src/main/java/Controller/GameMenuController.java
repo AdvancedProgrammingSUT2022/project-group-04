@@ -3,13 +3,9 @@ package Controller;
 import Database.GameDatabase;
 import Database.GlobalVariables;
 import Model.*;
-import com.sun.jdi.ArrayReference;
-import org.mockito.internal.stubbing.defaultanswers.GloballyConfiguredAnswer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
 
 public class GameMenuController {
 
@@ -49,6 +45,22 @@ public class GameMenuController {
         this.x = 0;
         this.y = 0;
         this.c = 1;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public HashMap<String, Integer> getDirectionX() {
+        return this.directionX;
+    }
+
+    public HashMap<String, Integer> getDirectionY() {
+        return this.directionY;
     }
 
     public boolean isPositionValid(int x, int y) {
