@@ -26,8 +26,25 @@ public class CombatControllerTest {
     CombatController combatController;
     static MockedStatic<GameDatabase> database1;
 
+    @Mock
+    ArrayList<Tile> tiles;
+
+    @Mock
+    Tile tile;
+
+    @Mock
+    Civilization civilization;
+
+    @Mock
+    City city;
+
+    @Mock
+    ArrayList<Unit> units;
+
+
     @BeforeEach
     public void setUp(){
+        database1 = mockStatic(GameDatabase.class);
         combatController = new CombatController();
     }
     @Test
@@ -67,7 +84,7 @@ public class CombatControllerTest {
     GameDatabase gameDatabase;
     @Test
     public void unitAttackPositionTest(){
-        database1 = mockStatic(GameDatabase.class);
+        //database1 = mockStatic(GameDatabase.class);
         City city = mock(City.class);
         Soldier soldier1 = mock(Soldier.class);
         Soldier soldier2 = mock(Soldier.class);
@@ -105,7 +122,6 @@ public class CombatControllerTest {
         boolean result4 = combatController.UnitAttackPosition(soldier3, 5, 5);
         Assertions.assertEquals(true, result4);
         database1.close();
-
     }
 
     @Test
@@ -120,11 +136,31 @@ public class CombatControllerTest {
     }
 
     @Test
-    public void healUnitTest(){
+    public void healUnitTest_1(){
         Civilization civilization = mock(Civilization.class);
         Tile tile = mock(Tile.class);
-        City city = new City("blah", 10, 1,1,1,1,1,1,"tehran", true, "salap", "ocean", 11, 1, null);
+        //City city = new City("blah", 10, 1,1,1,1,1,1,"tehran", true, "salap", "ocean", 11, 1, null);
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
+        database1.when(()->GameDatabase.getTileByXAndY(unit.getX(), unit.getY())).thenReturn(tile);
+        database1.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.getAllUnitsOfCivilization()).thenReturn(units);
+        when(units.contains(unit)).thenReturn(true);
+        when(tile.getCity()).thenReturn(city);
+        combatController.healUnit(unit);
+        int result = unit.getHP();
+        Assertions.assertEquals(13, result);
+    }
+
+    @Test
+    public void healUnitTest_2(){
+        Civilization civilization = mock(Civilization.class);
+        Tile tile = mock(Tile.class);
+        //City city = new City("blah", 10, 1,1,1,1,1,1,"tehran", true, "salap", "ocean", 11, 1, tile);
+        Unit unit = new Unit(1,1,"blah", 10, 0, 0);
+        database1.when(()->GameDatabase.getTileByXAndY(unit.getX(), unit.getY())).thenReturn(tile);
+        database1.when(()->GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
+        when(civilization.getAllUnitsOfCivilization()).thenReturn(units);
+        when(units.contains(unit)).thenReturn(false);
         combatController.healUnit(unit);
         int result = unit.getHP();
         Assertions.assertEquals(11, result);
@@ -162,5 +198,32 @@ public class CombatControllerTest {
         Assertions.assertEquals(false, result1);
     }
 
+    @Test
+    public void destroyCity(){
+        City city = mock(City.class);
+        when(city.getCitizens()).thenReturn(null);
+        when(city.getSettler()).thenReturn(null);
+        when(city.getWorker()).thenReturn(null);
+        when(city.getBuildings()).thenReturn(null);
+        when(city.getTiles()).thenReturn(tiles);
+        when(tiles.size()).thenReturn(1);
+        when(tiles.get(0)).thenReturn(tile);
+        when(tile.hasRoad()).thenReturn(true);
+        when(tile.hasRailroad()).thenReturn(true);
+        when(tile.getImprovements()).thenReturn(null);
+        combatController.destroyCity(city);
+        verify(tile).setRoadBroken(true);
+        verify(tile).setRailroadBroken(true);
+    }
+
+//    @Test
+//    public void dastneshandeCity(){
+//        combatController.dastneshandeCity(civilization,city);
+//        verify()
+//    }
+    @AfterEach
+    public void after() {
+        database1.close();
+    }
 
 }
