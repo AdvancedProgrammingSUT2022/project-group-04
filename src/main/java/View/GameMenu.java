@@ -439,12 +439,7 @@ public class GameMenu extends Menu {
                     boolean b = gameMenuController.moveUnitAlongPath(gameMenuController.getMovingUnits().get(0));
                     if (b){
                         System.out.println("salap");
-                        //if (gameMenuController.getMovingUnits().get(0) instanceof Settler || gameMenuController.getMovingUnits().get(0) instanceof Worker) {
-                        //    gameMenuController.getMovingUnits().remove(gameMenuController.getMovingUnits().get(0));
-                        //}
-                        //System.out.println(gameMenuController.getMovingUnits().get(0).getUnitType() + "++++++");
                         System.out.println(gameMenuController.getMovingUnits().size());
-
                     }
                 }
 

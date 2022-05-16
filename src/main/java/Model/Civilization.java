@@ -178,7 +178,7 @@ public class Civilization {
     public ArrayList<Unit> getAllUnitsOfCivilization() {
 
         ArrayList<Unit> allUnits = new ArrayList<>();
-        for (Tile tile : tiles) {
+        for (Tile tile : getClearTiles()) {
             allUnits.addAll(tile.getUnits());
         }
         return allUnits;

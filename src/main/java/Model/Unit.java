@@ -9,6 +9,7 @@ public class Unit {
     protected int x;
     protected int y;
     protected int speed;
+    protected int originialspeed;
     protected int rangedCombatStrength;
     protected int combatStrength;
     protected int cost;
@@ -60,6 +61,14 @@ public class Unit {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public int getOriginialspeed() {
+        return originialspeed;
+    }
+
+    public void setOriginialspeed(int originialspeed) {
+        this.originialspeed = originialspeed;
     }
 
     public int getRangedCombatStrength() {
@@ -291,26 +300,35 @@ public class Unit {
         selectedUnit.route = path;
 
         System.out.println(path.size() + "aslkdhjgwelkjahgluakehlisugryaiu");
-        for (int i = 1; i < path.size(); i++) {
-            //if (selectedUnit.getSpeed() >= path.get(i).movementPriceForTile()) {
-                /*selectedUnit.moveToAdjacentTile(path.get(i));
-                if (selectedUnit instanceof Soldier) {
-                    path.get(i).units.add(selectedUnit);
-                    path.get(i - 1).units.remove(selectedUnit);
+        int movementPriceForPath = 0;
+        outer: for (int i = 1; i < path.size(); i++) {
+            if (path.get(i).hasRoad() || path.get(i).hasRailroad()){
+                movementPriceForPath += path.get(i).movementPriceForTile() - 1;
+            }
+            else {
+                movementPriceForPath += path.get(i).movementPriceForTile();
+            }
+            for (Civilization player : GameDatabase.getPlayers()){
+                if (!player.equals(GameDatabase.getCivilizationByTurn(selectedUnit.getCivilizationIndex()))) {
+                    for (Unit unit : player.getAllUnitsOfCivilization()) {
+                        if (unit instanceof Soldier) {
+                            Soldier soldier = (Soldier) unit;
+                            if (soldier.isTileInRangeOfUnit(path.get(i))) {
+                                movementPriceForPath = selectedUnit.getSpeed();
+                                break outer;
+                            }
+                        }
+                    }
                 }
-                else if(selectedUnit instanceof Settler){
-                    path.get(i).addSettler((Settler) selectedUnit);
-                    path.get(i - 1).removeSettler((Settler) selectedUnit);
-                }
-                else if (selectedUnit instanceof Worker){
-                    path.get(i).addWorker((Worker) selectedUnit);
-                    path.get(i - 1).removeWorker((Worker) selectedUnit);
-                }
-                System.out.println(path.get(i).getX() + path.get(i).getY() + " " + path.get(i).getUnits());*/
-            //} else {
-            //    selectedUnit.route = null;
-            //    return -2;
-            //}
+            }
+        }
+        if (selectedUnit.getSpeed() < movementPriceForPath){
+            System.out.println(movementPriceForPath + "------" + selectedUnit.getSpeed());
+            selectedUnit.route = null;
+            return -2;
+        }
+        else {
+            selectedUnit.setSpeed(selectedUnit.getSpeed() - movementPriceForPath);
         }
         return 0;
     }

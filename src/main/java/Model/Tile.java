@@ -148,6 +148,7 @@ public class Tile {
         return this.y;
     }
 
+
     public ArrayList<Tile> getNeighbors() {
         return neighbors;
     }
@@ -246,7 +247,8 @@ public class Tile {
     public int movementPriceForTile() {
         int movementPriceSum = getBaseTerrain().getMovementPrice();
         if (getBaseTerrain().getFeature() != null) {
-            movementPriceSum += getBaseTerrain().getFeature().getMovementPrice();
+            if (getBaseTerrain().getFeature().getMovementPrice() > movementPriceSum)
+                movementPriceSum = getBaseTerrain().getFeature().getMovementPrice();
         }
         return movementPriceSum;
     }
