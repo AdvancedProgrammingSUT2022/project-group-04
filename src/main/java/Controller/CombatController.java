@@ -72,14 +72,6 @@ public class CombatController {
         }
     }
 
-    public void Unit1CanSeeUnit2(Unit unit1, Unit unit2) {
-
-    }
-
-    public void giveBonusToUnits(ArrayList<Unit> unitsInWar) {
-
-    }
-
     public void checkTerrainBonus(Tile tile1, Tile tile2) {
 
     }
