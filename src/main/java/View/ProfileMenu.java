@@ -1,7 +1,6 @@
 package View;
 
 import Controller.ProfileMenuController;
-import Controller.UserController;
 import Model.User;
 
 import java.util.Scanner;

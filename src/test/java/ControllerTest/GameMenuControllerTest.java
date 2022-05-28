@@ -3,14 +3,10 @@ package ControllerTest;
 import Controller.GameMenuController;
 import Database.GameDatabase;
 import Database.GlobalVariables;
-import Database.UserDatabase;
-import Enums.TerrainFeature;
 import Model.*;
 
-import View.GameMenu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.*;
@@ -20,11 +16,9 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertFalse;

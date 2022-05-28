@@ -1,17 +1,12 @@
 package ControllerTest;
 import Controller.CombatController;
-import Controller.GameMenuController;
 import Database.GameDatabase;
-import Database.GlobalVariables;
-import Database.UserDatabase;
 import Model.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testng.Assert;
 
 import java.util.ArrayList;
 

@@ -3,8 +3,6 @@ package Model;
 import Database.GameDatabase;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
 
 public class City extends Tile {
 

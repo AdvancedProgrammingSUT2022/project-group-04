@@ -3,7 +3,6 @@ package Model;
 import Database.GameDatabase;
 import Database.GlobalVariables;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Civilization {

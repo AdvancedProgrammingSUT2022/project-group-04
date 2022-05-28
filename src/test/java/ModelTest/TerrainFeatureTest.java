@@ -1,7 +1,6 @@
 package ModelTest;
 
 import Database.GlobalVariables;
-import Model.Technology;
 import Model.TerrainFeatures;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

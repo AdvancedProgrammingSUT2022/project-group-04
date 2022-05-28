@@ -37,7 +37,5 @@ public class Main {
         }
 
         UserDatabase.writeInFile("UserDatabase.json");
-
-
     }
 }

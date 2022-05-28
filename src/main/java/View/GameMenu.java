@@ -6,12 +6,9 @@ import Database.GameDatabase;
 import Database.GlobalVariables;
 import Model.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-import java.lang.Object;
 
 public class GameMenu extends Menu {
 

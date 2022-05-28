@@ -2,8 +2,6 @@ package Model;
 
 import Database.GameDatabase;
 
-import java.util.ArrayList;
-
 public class Settler extends Citizen {
 
 

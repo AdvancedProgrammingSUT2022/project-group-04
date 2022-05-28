@@ -1,7 +1,5 @@
 package Model;
 
-import Enums.TerrainFeature;
-
 import java.util.ArrayList;
 
 public class TerrainFeatures {

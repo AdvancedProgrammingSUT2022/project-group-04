@@ -1,7 +1,6 @@
 package ModelTest;
 
 import Database.GlobalVariables;
-import Model.BaseTerrain;
 import Model.Building;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

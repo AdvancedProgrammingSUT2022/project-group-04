@@ -3,7 +3,6 @@ package Model;
 import Database.GameDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Tile {
     protected String type; //fogOfWar , Visible , Clear

@@ -1,11 +1,9 @@
 package ViewTest;
 
 import Controller.MainMenuController;
-import Controller.ProfileMenuController;
 import Database.UserDatabase;
 import Model.User;
 import View.MainMenu;
-import View.ProfileMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
