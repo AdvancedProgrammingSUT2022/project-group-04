@@ -1,16 +1,34 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Controller.LoginMenuController;
+import Civilization.Database.UserDatabase;
+import Civilization.Model.LoginMenuModel;
+import Civilization.Model.User;
+import Civilization.View.GraphicalConstants;
+import Civilization.View.Transitions.CursorTransition;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class LoginMenuFXMLController {
+
+    @FXML
+    private VBox mainVBox;
+
+    @FXML
+    private Label nicknameLabel;
 
     @FXML
     private TextField nickname;
@@ -25,13 +43,7 @@ public class LoginMenuFXMLController {
     private Text error;
 
     @FXML
-    private Button exit;
-
-    @FXML
-    private Button register;
-
-    @FXML
-    private Button login;
+    private  Button register;
 
     @FXML
     private TextField password;
@@ -41,25 +53,97 @@ public class LoginMenuFXMLController {
 
     private boolean userLogin;
 
+    private CursorTransition cursorTransition;
+
+    private static final LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
+
+
     @FXML
     public void initialize() {
-        userLogin = true;
         setBackground();
+        setRegister();
+        setCursor();
+    }
+
+    public void setCursor() {
+        cursorTransition = new CursorTransition(register,500, 530);
     }
 
     private void setBackground() {
         Image backgroundImage = new Image(getClass().getResource("/pics/Menus/LoginMenuBackground.png").toExternalForm());
         ImagePattern backgroundImagePattern = new ImagePattern(backgroundImage);
         this.background.setFill(backgroundImagePattern);
+        this.background.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                cursorTransition.setMouseEvent(mouseEvent);
+                cursorTransition.play();
+            }
+        });
     }
 
     public void setColorTransparent(KeyEvent keyEvent) {
+        this.username.setStyle("-fx-border-color: none");
+        this.password.setStyle("-fx-border-color: none");
+        if(userLogin) {
+            this.nickname.setStyle("-fx-border-color: none");
+        }
+        checkAbilityToClickForButtons();
     }
 
-    public void LoginButton(MouseEvent mouseEvent) {
+    private void checkAbilityToClickForButtons() {
+        this.error.setText("");
+        if (this.username.getText().length() != 0
+                && this.password.getText().length() != 0) {
+            if (!userLogin) {
+                if (this.nickname.getText().length() != 0) {
+                    this.register.setDisable(false);
+                }
+            } else {
+                this.register.setDisable(false);
+            }
+        } else {
+            if (!userLogin) {
+                if (this.nickname.getText().length() == 0) {
+                    this.register.setDisable(true);
+                }
+            } else {
+                this.register.setDisable(true);
+            }
+        }
     }
 
-    public void RegisterButton(MouseEvent mouseEvent) {
+    public void registerButton(MouseEvent mouseEvent) {
+        String username = this.username.getText();
+        String password = this.password.getText();
+        String nickname = this.nickname.getText();
+        if(!loginMenuController.isUsernameUnique(username)) {
+            setError("Username is not unique");
+            return;
+        } else if(!loginMenuController.isNicknameUnique(nickname)) {
+            setError("Nickname is not unique");
+            return;
+        }
+        loginMenuController.userCreate(username, nickname, password);
+        this.error.setText("Registered successfully");
+        this.error.setFill(Color.BLUE);
+        this.username.setText("");
+        this.password.setText("");
+        this.nickname.setText("");
+    }
+
+    private void setError(String errorText) {
+        this.error.setText(errorText);
+        this.username.setStyle("-fx-border-color: red");
+        this.username.setText("");
+        if(!userLogin) {
+            this.nickname.setStyle("-fx-border-color: red");
+            this.nickname.setText("");
+        }
+        this.password.setStyle("-fx-border-color: red");
+        this.password.setText("");
+        this.error.setFill(Color.RED);
+        return;
     }
 
     public void Exit(MouseEvent mouseEvent) {
@@ -68,9 +152,53 @@ public class LoginMenuFXMLController {
 
     public void ChangeRegisterOrLogin(MouseEvent mouseEvent) {
         if(userLogin) {
-            userLogin = false;
+            setRegister();
         } else {
-            userLogin = true;
+            setLogin();
         }
+    }
+
+    public void loginButton(MouseEvent mouseEvent) {
+        String username = this.username.getText();
+        String password = this.password.getText();
+        if(!loginMenuController.isUserExists(username) || !loginMenuController.isPasswordCorrect(username, password)) {
+            setError("Username and password didn't match");
+            return;
+        }
+        User.loggedInUser = UserDatabase.getUserByUsername(username);
+    }
+
+    private void setLogin() {
+        userLogin = true;
+        this.username.setText("");
+        this.nickname.setText("");
+        this.password.setText("");
+        this.nickname.setVisible(false);
+        this.nicknameLabel.setVisible(false);
+        this.register.setText("Login");
+        this.register.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                loginButton(mouseEvent);
+            }
+        });
+        this.loginOrRegister.setText("Don't have an account?");
+    }
+
+    private void setRegister() {
+        userLogin = false;
+        this.username.setText("");
+        this.nickname.setText("");
+        this.password.setText("");
+        this.nickname.setVisible(true);
+        this.nicknameLabel.setVisible(true);
+        register.setText("Register");
+        register.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                registerButton(mouseEvent);
+            }
+        });
+        this.loginOrRegister.setText("Already have an account?");
     }
 }
