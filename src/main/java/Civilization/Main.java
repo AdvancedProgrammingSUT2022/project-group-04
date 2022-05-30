@@ -11,6 +11,8 @@ import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.MainMenuModel;
 import Civilization.Model.User;
+import Civilization.View.FXMLControllers.LoginMenuFXMLController;
+import Civilization.View.GraphicalConstants;
 import Civilization.View.LoginMenu;
 import Civilization.View.MainMenu;
 import javafx.application.Application;
@@ -29,11 +31,12 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+        GraphicalConstants.stage = stage;
         URL address = new URL(Objects.requireNonNull(getClass().getResource("/fxml/Menus/LoginMenu.fxml")).toString());
         Parent root = FXMLLoader.load(address);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        GraphicalConstants.scene = new Scene(root);
+        GraphicalConstants.stage.setScene(GraphicalConstants.scene);
+        GraphicalConstants.stage.show();
 
 
 
