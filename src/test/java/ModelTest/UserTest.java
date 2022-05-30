@@ -1,6 +1,6 @@
 package ModelTest;
 
-import Model.User;
+import Civilization.Model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

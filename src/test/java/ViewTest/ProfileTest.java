@@ -1,9 +1,9 @@
 package ViewTest;
 
 
-import Controller.ProfileMenuController;
-import Model.User;
-import View.ProfileMenu;
+import Civilization.Controller.ProfileMenuController;
+import Civilization.Model.User;
+import Civilization.View.ProfileMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

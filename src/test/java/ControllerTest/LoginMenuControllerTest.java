@@ -1,10 +1,10 @@
 package ControllerTest;
 
-import Controller.LoginMenuController;
-import Controller.UserController;
-import Database.UserDatabase;
-import Model.LoginMenuModel;
-import Model.User;
+import Civilization.Controller.LoginMenuController;
+import Civilization.Controller.UserController;
+import Civilization.Database.UserDatabase;
+import Civilization.Model.LoginMenuModel;
+import Civilization.Model.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

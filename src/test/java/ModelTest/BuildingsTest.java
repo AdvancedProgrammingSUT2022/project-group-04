@@ -1,8 +1,7 @@
 package ModelTest;
 
-import Database.GlobalVariables;
-import Model.BaseTerrain;
-import Model.Building;
+import Civilization.Database.GlobalVariables;
+import Civilization.Model.Building;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

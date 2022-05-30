@@ -1,10 +1,10 @@
 package ModelTest;
 
-import Database.GlobalVariables;
-import Model.BaseTerrain;
-import Model.Improvement;
-import Model.TerrainFeatures;
-import Model.Tile;
+import Civilization.Database.GlobalVariables;
+import Civilization.Model.BaseTerrain;
+import Civilization.Model.Improvement;
+import Civilization.Model.TerrainFeatures;
+import Civilization.Model.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
