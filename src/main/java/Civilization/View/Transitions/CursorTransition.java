@@ -1,12 +1,10 @@
 package Civilization.View.Transitions;
 
-import Civilization.View.GraphicalConstants;
+import Civilization.View.GraphicalBases;
 import javafx.animation.Transition;
-import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
@@ -32,12 +30,10 @@ public class CursorTransition extends Transition {
                 && y > buttonY
                 && y < buttonY + cursorSet.getHeight() + 10
                 && cursorSet.isDisable()) {
-            GraphicalConstants.scene.setCursor(new ImageCursor(GraphicalConstants.CURSOR));
+            GraphicalBases.scene.setCursor(new ImageCursor(GraphicalBases.CURSOR));
         } else {
-            GraphicalConstants.scene.setCursor(Cursor.DEFAULT);
+            GraphicalBases.scene.setCursor(Cursor.DEFAULT);
         }
-        System.out.println(x);
-        System.out.println(y);
     }
 
     public void run(MouseEvent mouseEvent) {
