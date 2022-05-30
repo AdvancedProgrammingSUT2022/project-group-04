@@ -4,12 +4,10 @@ import Civilization.Controller.LoginMenuController;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.User;
-import Civilization.View.GraphicalConstants;
+import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
-import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,6 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 public class LoginMenuFXMLController {
 
@@ -85,7 +85,7 @@ public class LoginMenuFXMLController {
     public void setColorTransparent(KeyEvent keyEvent) {
         this.username.setStyle("-fx-border-color: none");
         this.password.setStyle("-fx-border-color: none");
-        if(userLogin) {
+        if(!userLogin) {
             this.nickname.setStyle("-fx-border-color: none");
         }
         checkAbilityToClickForButtons();
@@ -113,7 +113,7 @@ public class LoginMenuFXMLController {
         }
     }
 
-    public void registerButton(MouseEvent mouseEvent) {
+    public void registerButton(MouseEvent mouseEvent) throws IOException {
         String username = this.username.getText();
         String password = this.password.getText();
         String nickname = this.nickname.getText();
@@ -130,6 +130,7 @@ public class LoginMenuFXMLController {
         this.username.setText("");
         this.password.setText("");
         this.nickname.setText("");
+        UserDatabase.writeInFile("UserDatabase.json");
     }
 
     private void setError(String errorText) {
@@ -146,7 +147,8 @@ public class LoginMenuFXMLController {
         return;
     }
 
-    public void Exit(MouseEvent mouseEvent) {
+    public void Exit(MouseEvent mouseEvent) throws IOException {
+        UserDatabase.writeInFile("UserDatabase.json");
         System.exit(0);
     }
 
@@ -166,6 +168,7 @@ public class LoginMenuFXMLController {
             return;
         }
         User.loggedInUser = UserDatabase.getUserByUsername(username);
+        GraphicalBases.stage.close();
     }
 
     private void setLogin() {
@@ -196,7 +199,11 @@ public class LoginMenuFXMLController {
         register.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                registerButton(mouseEvent);
+                try {
+                    registerButton(mouseEvent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         this.loginOrRegister.setText("Already have an account?");

@@ -28,5 +28,11 @@
     "nickname": "yahcraft",
     "password": "123456aA",
     "score": 0
+  },
+  {
+    "username": "accountTest",
+    "nickname": "test",
+    "password": "1234",
+    "score": 0
   }
 ]

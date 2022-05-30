@@ -5,15 +5,11 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.Scanner;
 
-import Civilization.Controller.LoginMenuController;
 import Civilization.Controller.MainMenuController;
 import Civilization.Database.UserDatabase;
-import Civilization.Model.LoginMenuModel;
 import Civilization.Model.MainMenuModel;
 import Civilization.Model.User;
-import Civilization.View.FXMLControllers.LoginMenuFXMLController;
-import Civilization.View.GraphicalConstants;
-import Civilization.View.LoginMenu;
+import Civilization.View.GraphicalBases;
 import Civilization.View.MainMenu;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,29 +27,19 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        GraphicalConstants.stage = stage;
-        URL address = new URL(Objects.requireNonNull(getClass().getResource("/fxml/Menus/LoginMenu.fxml")).toString());
-        Parent root = FXMLLoader.load(address);
-        GraphicalConstants.scene = new Scene(root);
-        GraphicalConstants.stage.setScene(GraphicalConstants.scene);
-        GraphicalConstants.stage.show();
+        GraphicalBases.stage = stage;
+        GraphicalBases.login();
 
 
 
 
         Scanner scanner = new Scanner(System.in);
 
-        //UserDatabase.readFromFile("UserDatabase.json");
-
-        LoginMenuModel loginMenuModel = new LoginMenuModel();
-        LoginMenuController loginMenuController = new LoginMenuController(loginMenuModel);
-        LoginMenu loginMenu = new LoginMenu(loginMenuController);
+        UserDatabase.readFromFile("UserDatabase.json");
 
         MainMenuModel mainMenuModel = new MainMenuModel();
         MainMenuController mainMenuController = new MainMenuController(mainMenuModel);
         MainMenu mainMenu = new MainMenu(mainMenuController);
-
-        User loggedInUser;
 
 //        while (true) {
 //            loggedInUser = loginMenu.run(scanner);
@@ -63,6 +49,7 @@ public class Main extends Application {
 //            mainMenu.run(scanner, loggedInUser);
 //        }
 
-        //UserDatabase.writeInFile("UserDatabase.json");
+        UserDatabase.writeInFile("UserDatabase.json");
     }
+
 }
