@@ -1,22 +1,17 @@
 package ControllerTest;
-import Controller.CombatController;
-import Controller.GameMenuController;
-import Database.GameDatabase;
-import Database.GlobalVariables;
-import Database.UserDatabase;
-import Model.*;
+import Civilization.Controller.CombatController;
+import Civilization.Database.GameDatabase;
+import Civilization.Model.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testng.Assert;
 
 import java.util.ArrayList;
 
-import static Database.GameDatabase.getCityByXAndY;
-import static Database.GameDatabase.getTileByXAndY;
+import static Civilization.Database.GameDatabase.getCityByXAndY;
+import static Civilization.Database.GameDatabase.getTileByXAndY;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;

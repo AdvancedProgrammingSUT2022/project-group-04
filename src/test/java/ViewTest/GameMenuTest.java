@@ -1,33 +1,26 @@
 package ViewTest;
 
-import Controller.CombatController;
-import Controller.GameMenuController;
-import Database.GameDatabase;
+import Civilization.Controller.CombatController;
+import Civilization.Controller.GameMenuController;
+import Civilization.Database.GameDatabase;
 
-import Model.*;
-import View.GameMenu;
-import net.bytebuddy.implementation.auxiliary.MethodCallProxy;
+import Civilization.Model.*;
+import Civilization.View.GameMenu;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testng.asserts.Assertion;
 
 
-import javax.annotation.meta.When;
 import java.util.Scanner;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
-import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
