@@ -1,0 +1,39 @@
+Button{
+    -fx-pref-width: 220;
+    -fx-pref-height: 30;
+    -fx-border-radius: 8;
+}
+
+TextField{
+    -fx-max-width: 220;
+    -fx-pref-height: 30;
+    -fx-border-radius: 8;
+}
+
+lable{
+    -fx-text-fill: #712274;
+}
+
+.buttons {
+    -fx-background-color: #1775e1;
+    -fx-text-fill: white;
+}
+
+#civilization{
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+#name{
+    -fx-font-weight: bold;
+}
+
+#label{
+    -fx-text-fill: white;
+}
+
+.exitButton {
+    -fx-background-color: RED;
+    -fx-text-fill: white;
+}
