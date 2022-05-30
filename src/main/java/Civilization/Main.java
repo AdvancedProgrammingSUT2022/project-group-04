@@ -29,7 +29,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        URL address = new URL(Objects.requireNonNull(getClass().getResource("/test.fxml")).toString());
+        URL address = new URL(Objects.requireNonNull(getClass().getResource("/fxml/Menus/LoginMenu.fxml")).toString());
         Parent root = FXMLLoader.load(address);
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -40,7 +40,7 @@ public class Main extends Application {
 
         Scanner scanner = new Scanner(System.in);
 
-        UserDatabase.readFromFile("UserDatabase.json");
+        //UserDatabase.readFromFile("UserDatabase.json");
 
         LoginMenuModel loginMenuModel = new LoginMenuModel();
         LoginMenuController loginMenuController = new LoginMenuController(loginMenuModel);
@@ -52,14 +52,14 @@ public class Main extends Application {
 
         User loggedInUser;
 
-        while (true) {
-            loggedInUser = loginMenu.run(scanner);
-            if (loggedInUser == null) {
-                break;
-            }
-            mainMenu.run(scanner, loggedInUser);
-        }
+//        while (true) {
+//            loggedInUser = loginMenu.run(scanner);
+//            if (loggedInUser == null) {
+//                break;
+//            }
+//            mainMenu.run(scanner, loggedInUser);
+//        }
 
-        UserDatabase.writeInFile("UserDatabase.json");
+        //UserDatabase.writeInFile("UserDatabase.json");
     }
 }
