@@ -18,11 +18,11 @@ public class Account {
 
     public static ArrayList<Account> accounts = new ArrayList<Account>();
 
-    private User user;
+    private String username;
     private String avatarURL;
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
     public String getAvatarURL() {
@@ -33,8 +33,8 @@ public class Account {
         this.avatarURL = toJson(avatarURL);
     }
 
-    public Account(User user) {
-        this.user = user;
+    public Account(String username) {
+        this.username = username;
         this.avatarURL = assignAvatar();
     }
 
