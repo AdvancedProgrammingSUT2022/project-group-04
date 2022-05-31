@@ -17,7 +17,7 @@
             <Label text="Username" id="label"/>
             <TextField promptText="Enter your Username" fx:id="username" onKeyTyped="#setColorTransparent"/>
             <Label text="Password" id="label"/>
-            <TextField promptText="Enter your Password" fx:id="password" onKeyTyped="#setColorTransparent"/>
+            <PasswordField promptText="Enter your Password" fx:id="password" onKeyTyped="#setColorTransparent"/>
             <Label text="Nickname" fx:id="nicknameLabel" id="label"/>
             <TextField promptText="Enter your Nickname" fx:id="nickname" onKeyTyped="#setColorTransparent"/>
             <Button text="Register" fx:id="register" onMouseClicked="#registerButton" disable="true" styleClass="buttons"/>
