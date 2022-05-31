@@ -17,13 +17,26 @@ public class GraphicalBases {
     public static Stage stage;
     public static Scene scene;
 
+    // Cursor images
     public static final Image CURSOR = new Image(GraphicalBases.class.getResource("/pics/cursor.png").toExternalForm());
 
-    public static void login() {
+    // Menus background images
+    public static final Image LOGIN_MENU_BACKGROUND = new Image(GraphicalBases.class.getResource("/pics/Menus/LoginMenuBackground.png").toExternalForm());
+    public static final Image MAIN_MENU_BACKGROUND_IMAGE = new Image(GraphicalBases.class.getResource("/pics/Menus/MainMenuBackground.png").toExternalForm());
+
+    public static void firstLogin() {
         Parent root = loadFXMLMenus("LoginMenu");
         GraphicalBases.scene = new Scene(root);
         GraphicalBases.stage.setScene(GraphicalBases.scene);
         GraphicalBases.stage.show();
+    }
+
+    public static void login() {
+        changeMenu("LoginMenu");
+    }
+
+    public static void userLoggedIn() {
+        changeMenu("MainMenu");
     }
 
     public static void changeMenu(String name){

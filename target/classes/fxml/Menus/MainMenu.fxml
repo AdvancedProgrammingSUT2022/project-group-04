@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Civilization.View.FXMLControllers.MainMenuFXMLController"
+            prefHeight="720" prefWidth="1280" stylesheets="@../../css/MainMenuStyle.css">
+    <Rectangle fx:id="background" width="1280" height="720"/>
+    <Label text="" fx:id="userLabel" id="label" layoutX="200" layoutY="50"/>
+    <VBox  fx:id="mainVBox" alignment="CENTER" maxWidth="300" spacing="25" layoutX="200" layoutY="300">
+        <Button text="Profile menu" onMouseClicked="#goToProfileMenu" minWidth="200"/>
+        <Button text="Game menu" onMouseClicked="#goToGameMenu" minWidth="200"/>
+        <Button text="Scoreboard" onMouseClicked="#goToScoreboard" minWidth="200"/>
+        <Button text="Chatroom" onMouseClicked="#goToChatroom" minWidth="200"/>
+        <Button text="Logout" onMouseClicked="#logout" styleClass="buttons" minWidth="200"/>
+    </VBox>
+
+</AnchorPane>
