@@ -34,5 +34,23 @@
     "nickname": "test",
     "password": "1234",
     "score": 0
+  },
+  {
+    "username": "Hi",
+    "nickname": "Hi",
+    "password": "Ho",
+    "score": 0
+  },
+  {
+    "username": "Hii",
+    "nickname": "Hee",
+    "password": "Hoo",
+    "score": 0
+  },
+  {
+    "username": "Hiiii",
+    "nickname": "Heeee",
+    "password": "Hoooo",
+    "score": 0
   }
 ]

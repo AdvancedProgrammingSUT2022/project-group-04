@@ -4,6 +4,7 @@
      requires javafx.graphics;
      requires com.google.gson;
      requires java.sql;
+     requires java.desktop;
 
      opens Civilization.Database to com.google.gson;
      opens Civilization.Model to com.google.gson;
@@ -12,11 +13,12 @@
      opens Civilization.View.FXMLControllers to javafx.fxml;
 
      exports Civilization.View.Transitions;
-     opens Civilization.View.Transitions to javafx.fxml;
+     opens Civilization.View.Transitions to javafx.fxml,java.desktop;
 
-     exports Civilization.View;
+      exports Civilization.View;
      opens Civilization.View to javafx.fxml;
 
      exports Civilization;
      opens Civilization to javafx.fxml;
+
  }
