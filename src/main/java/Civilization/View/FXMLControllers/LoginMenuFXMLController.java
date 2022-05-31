@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
@@ -48,14 +49,12 @@ public class LoginMenuFXMLController {
     private  Button register;
 
     @FXML
-    private TextField password;
+    private PasswordField password;
 
     @FXML
     private TextField username;
 
     private boolean userLogin;
-
-    private CursorTransition cursorTransition;
 
     private static final LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
 
@@ -68,7 +67,7 @@ public class LoginMenuFXMLController {
     }
 
     public void setCursor() {
-        cursorTransition = new CursorTransition(register,650, 590);
+        CursorTransition cursorTransition = new CursorTransition(register, 650, 590);
         cursorTransition.play();
     }
 

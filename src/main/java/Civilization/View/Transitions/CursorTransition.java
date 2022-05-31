@@ -31,9 +31,9 @@ public class CursorTransition extends Transition {
         x = MouseInfo.getPointerInfo().getLocation().x;
         y = MouseInfo.getPointerInfo().getLocation().y;
         if(x > buttonX
-                && x < buttonX + cursorSet.getWidth() + 10
+                && x < buttonX + cursorSet.getWidth()
                 && y > buttonY
-                && y < buttonY + cursorSet.getHeight() + 10
+                && y < buttonY + cursorSet.getHeight()
                 && cursorSet.isDisable()) {
             GraphicalBases.scene.setCursor(new ImageCursor(GraphicalBases.CURSOR));
         } else {
