@@ -22,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class LoginMenuFXMLController {
 
@@ -131,7 +132,7 @@ public class LoginMenuFXMLController {
     }
 
     private void createAccount(String username) throws IOException {
-        Account account = new Account(UserDatabase.getUserByUsername(username));
+        Account account = new Account(username);
         Account.accounts.add(account);
         Account.writeAccounts("AccountURLs.json");
     }
@@ -175,6 +176,7 @@ public class LoginMenuFXMLController {
     }
 
     private void login() {
+        User.loggedInUser.setLastLoginTime(LocalDateTime.now());
         GraphicalBases.userLoggedIn();
     }
 

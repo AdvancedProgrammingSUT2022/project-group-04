@@ -3,36 +3,40 @@
     "username": "sepehr",
     "nickname": "smiz",
     "password": "123456aA",
-    "score": 0
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_May_31_2022_20^30^31"
   },
   {
     "username": "alirezaRM",
     "nickname": "ARM",
     "password": "123456aA",
-    "score": 0
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "alirezaAmiri",
     "nickname": "amiri",
     "password": "123456aA",
-    "score": 0
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "kasra",
     "nickname": "kysre",
     "password": "123456aA",
-    "score": 0
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "yahya",
     "nickname": "yahcraft",
     "password": "123456aA",
-    "score": 0
-  },
-  {
-    "username": "hi",
-    "nickname": "hiiii",
-    "password": "hii",
-    "score": 0
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   }
 ]
