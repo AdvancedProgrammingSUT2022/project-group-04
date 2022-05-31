@@ -27,19 +27,16 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        GraphicalBases.stage = stage;
-        GraphicalBases.login();
-
-
-
-
-        Scanner scanner = new Scanner(System.in);
-
         UserDatabase.readFromFile("UserDatabase.json");
 
-        MainMenuModel mainMenuModel = new MainMenuModel();
-        MainMenuController mainMenuController = new MainMenuController(mainMenuModel);
-        MainMenu mainMenu = new MainMenu(mainMenuController);
+        GraphicalBases.stage = stage;
+        GraphicalBases.firstLogin();
+
+//        Scanner scanner = new Scanner(System.in);
+//
+//        MainMenuModel mainMenuModel = new MainMenuModel();
+//        MainMenuController mainMenuController = new MainMenuController(mainMenuModel);
+//        MainMenu mainMenu = new MainMenu(mainMenuController);
 
 //        while (true) {
 //            loggedInUser = loginMenu.run(scanner);

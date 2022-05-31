@@ -71,7 +71,7 @@ public class LoginMenuFXMLController {
     }
 
     private void setBackground() {
-        Image backgroundImage = new Image(getClass().getResource("/pics/Menus/LoginMenuBackground.png").toExternalForm());
+        Image backgroundImage = GraphicalBases.LOGIN_MENU_BACKGROUND;
         ImagePattern backgroundImagePattern = new ImagePattern(backgroundImage);
         this.background.setFill(backgroundImagePattern);
     }
@@ -163,7 +163,11 @@ public class LoginMenuFXMLController {
             return;
         }
         User.loggedInUser = UserDatabase.getUserByUsername(username);
-        GraphicalBases.stage.close();
+        login();
+    }
+
+    private void login() {
+        GraphicalBases.userLoggedIn();
     }
 
     private void setLogin() {
