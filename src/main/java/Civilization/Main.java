@@ -9,6 +9,7 @@ import Civilization.Controller.MainMenuController;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.MainMenuModel;
 import Civilization.Model.User;
+import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.MainMenu;
 import javafx.application.Application;
@@ -28,6 +29,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
         UserDatabase.readFromFile("UserDatabase.json");
+        Account.readAccounts("AccountURLs.json");
 
         GraphicalBases.stage = stage;
         GraphicalBases.firstLogin();

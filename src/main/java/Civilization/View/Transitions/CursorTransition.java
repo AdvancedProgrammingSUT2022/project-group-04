@@ -23,7 +23,7 @@ public class CursorTransition extends Transition {
         this.buttonX = buttonX;
         this.buttonY = buttonY;
         this.setCycleCount(-1);
-        this.setCycleDuration(Duration.millis(690));
+        this.setCycleDuration(Duration.millis(200));
     }
 
     @Override

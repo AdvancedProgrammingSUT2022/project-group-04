@@ -4,6 +4,7 @@ import Civilization.Controller.LoginMenuController;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.User;
+import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
 import javafx.event.EventHandler;
@@ -119,6 +120,7 @@ public class LoginMenuFXMLController {
             return;
         }
         loginMenuController.userCreate(username, nickname, password);
+        createAccount(username);
         this.error.setText("Registered successfully");
         this.error.setFill(Color.BLUE);
         this.username.setText("");
@@ -126,6 +128,12 @@ public class LoginMenuFXMLController {
         this.nickname.setText("");
         checkAbilityToClickForButtons();
         UserDatabase.writeInFile("UserDatabase.json");
+    }
+
+    private void createAccount(String username) throws IOException {
+        Account account = new Account(UserDatabase.getUserByUsername(username));
+        Account.accounts.add(account);
+        Account.writeAccounts("AccountURLs.json");
     }
 
     private void setError(String errorText) {

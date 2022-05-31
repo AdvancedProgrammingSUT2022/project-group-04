@@ -1,5 +1,7 @@
 package Civilization.Model;
 
+import Civilization.View.Components.Account;
+
 import java.util.ArrayList;
 
 public class User {
@@ -50,5 +52,14 @@ public class User {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public String getAvatarURL() {
+        for (Account account : Account.accounts) {
+            if(account.getUser().getUsername().equals(this.username)) {
+                return account.getAvatarURL();
+            }
+        }
+        return null;
     }
 }

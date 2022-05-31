@@ -1,0 +1,56 @@
+[
+  {
+    "user": {
+      "username": "sepehr",
+      "nickname": "smiz",
+      "password": "123456aA",
+      "score": 0
+    },
+    "avatarURL": "*pics*Avatars*3.png"
+  },
+  {
+    "user": {
+      "username": "alirezaRM",
+      "nickname": "ARM",
+      "password": "123456aA",
+      "score": 0
+    },
+    "avatarURL": "*pics*Avatars*2.png"
+  },
+  {
+    "user": {
+      "username": "alirezaAmiri",
+      "nickname": "amiri",
+      "password": "123456aA",
+      "score": 0
+    },
+    "avatarURL": "*pics*Avatars*3.png"
+  },
+  {
+    "user": {
+      "username": "kasra",
+      "nickname": "kysre",
+      "password": "123456aA",
+      "score": 0
+    },
+    "avatarURL": "*pics*Avatars*1.png"
+  },
+  {
+    "user": {
+      "username": "yahya",
+      "nickname": "yahcraft",
+      "password": "123456aA",
+      "score": 0
+    },
+    "avatarURL": "*pics*Avatars*3.png"
+  },
+  {
+    "user": {
+      "username": "hi",
+      "nickname": "hiiii",
+      "password": "hii",
+      "score": 0
+    },
+    "avatarURL": "*pics*Avatars*1.png"
+  }
+]

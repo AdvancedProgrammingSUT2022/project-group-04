@@ -24,11 +24,22 @@ public class GraphicalBases {
     public static final Image LOGIN_MENU_BACKGROUND = new Image(GraphicalBases.class.getResource("/pics/Menus/LoginMenuBackground.png").toExternalForm());
     public static final Image MAIN_MENU_BACKGROUND_IMAGE = new Image(GraphicalBases.class.getResource("/pics/Menus/MainMenuBackground.png").toExternalForm());
 
+    // Avatars
+    public static final int NUMBER_OF_AVATARS = 4;
+    public static final Image[] AVATARS = new Image[NUMBER_OF_AVATARS];
+
     public static void firstLogin() {
+        GraphicalBases.start();
         Parent root = loadFXMLMenus("LoginMenu");
         GraphicalBases.scene = new Scene(root);
         GraphicalBases.stage.setScene(GraphicalBases.scene);
         GraphicalBases.stage.show();
+    }
+
+    public static void start() {
+        for (int i = 0; i < AVATARS.length; i++) {
+            AVATARS[i] = new Image(GraphicalBases.class.getResource("/pics/Avatars/" + (i + 1) + ".png").toExternalForm());
+        }
     }
 
     public static void login() {
