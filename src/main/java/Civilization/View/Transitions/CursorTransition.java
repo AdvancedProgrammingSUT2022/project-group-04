@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
+import java.awt.*;
+
 public class CursorTransition extends Transition {
 
     private final Button cursorSet;
@@ -20,11 +22,14 @@ public class CursorTransition extends Transition {
         this.cursorSet = cursorSet;
         this.buttonX = buttonX;
         this.buttonY = buttonY;
+        this.setCycleCount(-1);
         this.setCycleDuration(Duration.millis(690));
     }
 
     @Override
     protected void interpolate(double v) {
+        x = MouseInfo.getPointerInfo().getLocation().x;
+        y = MouseInfo.getPointerInfo().getLocation().y;
         if(x > buttonX
                 && x < buttonX + cursorSet.getWidth() + 10
                 && y > buttonY
@@ -36,13 +41,4 @@ public class CursorTransition extends Transition {
         }
     }
 
-    public void run(MouseEvent mouseEvent) {
-        this.setMouseEvent(mouseEvent);
-        this.play();
-    }
-
-    public void setMouseEvent(MouseEvent mouseEvent) {
-        x = mouseEvent.getX();
-        y = mouseEvent.getY();
-    }
 }

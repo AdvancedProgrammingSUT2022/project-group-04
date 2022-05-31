@@ -66,20 +66,14 @@ public class LoginMenuFXMLController {
     }
 
     public void setCursor() {
-        cursorTransition = new CursorTransition(register,500, 530);
+        cursorTransition = new CursorTransition(register,650, 590);
+        cursorTransition.play();
     }
 
     private void setBackground() {
         Image backgroundImage = new Image(getClass().getResource("/pics/Menus/LoginMenuBackground.png").toExternalForm());
         ImagePattern backgroundImagePattern = new ImagePattern(backgroundImage);
         this.background.setFill(backgroundImagePattern);
-        this.background.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                cursorTransition.setMouseEvent(mouseEvent);
-                cursorTransition.play();
-            }
-        });
     }
 
     public void setColorTransparent(KeyEvent keyEvent) {
@@ -130,6 +124,7 @@ public class LoginMenuFXMLController {
         this.username.setText("");
         this.password.setText("");
         this.nickname.setText("");
+        checkAbilityToClickForButtons();
         UserDatabase.writeInFile("UserDatabase.json");
     }
 

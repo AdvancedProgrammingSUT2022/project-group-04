@@ -11,6 +11,10 @@
                 <configuration>
                     <source>18</source>
                     <target>18</target>
+                    <compilerArgs>
+                        <arg>--add-modules</arg>
+                        <arg>java.se,java.desktop</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -71,6 +75,20 @@
             <artifactId>javafx-fxml</artifactId>
             <version>18.0.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/de.mirkosertic.bytecoder/java.desktop -->
+        <dependency>
+            <groupId>de.mirkosertic.bytecoder</groupId>
+            <artifactId>java.desktop</artifactId>
+            <version>2021-11-02</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mavenlibs.com/maven/dependency/com.github.nbbrd.java-desktop-util/java-desktop-util-swing -->
+        <dependency>
+            <groupId>com.github.nbbrd.java-desktop-util</groupId>
+            <artifactId>java-desktop-util-swing</artifactId>
+            <version>2.2.5</version>
+        </dependency>
+
     </dependencies>
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
