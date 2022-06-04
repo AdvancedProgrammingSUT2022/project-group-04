@@ -42,6 +42,7 @@ public class MainMenuFXMLController {
     }
 
     public void goToProfileMenu(MouseEvent mouseEvent) {
+        GraphicalBases.changeMenu("ProfileMenu");
     }
 
     public void goToGameMenu(MouseEvent mouseEvent) {
