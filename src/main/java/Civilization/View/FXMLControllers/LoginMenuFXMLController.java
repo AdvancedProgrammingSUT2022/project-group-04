@@ -147,7 +147,6 @@ public class LoginMenuFXMLController {
         this.password.setStyle("-fx-border-color: red");
         this.password.setText("");
         this.error.setFill(Color.RED);
-        return;
     }
 
     public void Exit(MouseEvent mouseEvent) throws IOException {

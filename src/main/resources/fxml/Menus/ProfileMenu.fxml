@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Civilization.View.FXMLControllers.ProfileMenuFXMLController"
+            prefHeight="720" prefWidth="1280" stylesheets="@../../css/LoginMenuStyle.css">
+
+    <Rectangle fx:id="background" width="1280" height="720"/>
+    <VBox fx:id="avatarVBox" maxWidth="100" spacing="15" layoutX="70" layoutY="70"/>
+</AnchorPane>
