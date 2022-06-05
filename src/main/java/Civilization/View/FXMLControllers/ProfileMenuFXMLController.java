@@ -336,4 +336,8 @@ public class ProfileMenuFXMLController {
         this.passwordOKButton.setVisible(false);
         this.passwordError.setText("");
     }
+
+    public void BackToMainMenu(MouseEvent mouseEvent) {
+        GraphicalBases.changeMenu("MainMenu");
+    }
 }
