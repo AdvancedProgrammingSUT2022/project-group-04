@@ -1,18 +1,28 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Controller.ProfileMenuController;
+import Civilization.Database.UserDatabase;
+import Civilization.Model.ProfileMenuModel;
 import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -21,17 +31,54 @@ import java.io.IOException;
 public class ProfileMenuFXMLController {
 
     @FXML
+    private Button changePassword;
+
+    @FXML
+    private PasswordField currentPasswordTextField;
+
+    @FXML
+    private PasswordField newPasswordTextField;
+
+    @FXML
+    private Button passwordOKButton;
+
+    @FXML
+    private Text passwordError;
+
+    @FXML
+    private Label userLabel;
+
+    @FXML
+    private Button changeNickname;
+
+    @FXML
+    private TextField changeNicknameTextField;
+
+    @FXML
+    private Button nicknameOKButton;
+
+    @FXML
+    private Text nicknameError;
+
+    @FXML
     private Rectangle background;
 
     @FXML
     private VBox avatarVBox;
 
     private Circle userAvatar;
+    private ProfileMenuController profileMenuController;
 
     @FXML
     public void initialize() {
+        this.profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         setBackground();
+        setUsername();
         setAvatars();
+    }
+
+    private void setUsername() {
+        this.userLabel.setText(User.loggedInUser.getUsername());
     }
 
     private void setAvatars() {
@@ -182,5 +229,111 @@ public class ProfileMenuFXMLController {
         Image backgroundImage = GraphicalBases.PROFILE_MENU_BACKGROUND_IMAGE;
         ImagePattern backgroundImagePattern = new ImagePattern(backgroundImage);
         this.background.setFill(backgroundImagePattern);
+    }
+
+    public void openNicknameTextField(MouseEvent mouseEvent) {
+        if(changeNicknameTextField.isVisible()) {
+            resetProfileMenu();
+            return;
+        }
+        this.changeNicknameTextField.setVisible(true);
+        this.nicknameOKButton.setVisible(true);
+    }
+
+    public void openPasswordTextField(MouseEvent mouseEvent) {
+        if(currentPasswordTextField.isVisible()) {
+            resetProfileMenu();
+            return;
+        }
+        this.currentPasswordTextField.setVisible(true);
+        this.newPasswordTextField.setVisible(true);
+        this.passwordOKButton.setVisible(true);
+    }
+
+    public void visibleOkNickname(KeyEvent mouseEvent) {
+        this.nicknameError.setText("");
+        this.changeNicknameTextField.setStyle("-fx-border-color: none");
+        this.nicknameOKButton.setDisable(false);
+    }
+
+
+    public void visibleOkPassword(KeyEvent keyEvent) {
+        if(this.newPasswordTextField.getText().length() > 0
+            && this.currentPasswordTextField.getText().length() > 0) {
+            this.passwordError.setText("");
+            this.currentPasswordTextField.setStyle("-fx-border-color: none");
+            this.newPasswordTextField.setStyle("-fx-border-color: none");
+            this.passwordOKButton.setDisable(false);
+        } else {
+            this.passwordOKButton.setDisable(true);
+        }
+    }
+
+    public void changeNickname(MouseEvent mouseEvent) throws IOException {
+        String nickname = this.changeNicknameTextField.getText();
+        if(!profileMenuController.isNicknameUnique(nickname)) {
+            setNicknameError("Nickname is not unique");
+            return;
+        }
+        if(!profileMenuController.isNicknameValid(nickname)) {
+            setNicknameError("Please enter a new nickname");
+            return;
+        }
+        profileMenuController.changeNickname(User.loggedInUser, nickname);
+        UserDatabase.writeInFile("UserDatabase.json");
+        resetProfileMenu();
+    }
+
+    public void changePassword(MouseEvent mouseEvent) throws IOException {
+        String password = this.currentPasswordTextField.getText();
+        String newPassword = this.newPasswordTextField.getText();
+        if(!profileMenuController.isPasswordCorrect(User.loggedInUser.getUsername(), password)) {
+            setPasswordError("current password is invalid");
+            return;
+        }
+        if(!profileMenuController.isNewPasswordDifferent(password, newPassword)
+            || !profileMenuController.isPasswordValid(newPassword)) {
+            setPasswordError("Please enter a new password");
+            return;
+        }
+        profileMenuController.changePassword(User.loggedInUser, newPassword);
+        UserDatabase.writeInFile("UserDatabase.json");
+        resetProfileMenu();
+    }
+
+    private void setNicknameError(String errorText) {
+        this.changeNicknameTextField.setStyle("-fx-border-color: red");
+        this.changeNicknameTextField.setText("");
+        this.nicknameError.setText(errorText);
+        this.nicknameError.setFill(Color.RED);
+        this.nicknameOKButton.setDisable(true);
+    }
+
+    private void setPasswordError(String errorText) {
+        this.currentPasswordTextField.setStyle("-fx-border-color: red");
+        this.currentPasswordTextField.setText("");
+        this.newPasswordTextField.setStyle("-fx-border-color: red");
+        this.newPasswordTextField.setText("");
+        this.passwordError.setText(errorText);
+        this.passwordError.setFill(Color.RED);
+        passwordOKButton.setDisable(true);
+    }
+
+    private void resetProfileMenu() {
+        this.changeNicknameTextField.setText("");
+        this.changeNicknameTextField.setVisible(false);
+        this.changeNicknameTextField.setStyle("-fx-border-color: null");
+        this.nicknameOKButton.setDisable(true);
+        this.nicknameOKButton.setVisible(false);
+        this.nicknameError.setText("");
+        this.currentPasswordTextField.setText("");
+        this.currentPasswordTextField.setVisible(false);
+        this.currentPasswordTextField.setStyle("-fx-border-color: null");
+        this.newPasswordTextField.setText("");
+        this.newPasswordTextField.setVisible(false);
+        this.newPasswordTextField.setStyle("-fx-border-color: null");
+        this.passwordOKButton.setDisable(true);
+        this.passwordOKButton.setVisible(false);
+        this.passwordError.setText("");
     }
 }
