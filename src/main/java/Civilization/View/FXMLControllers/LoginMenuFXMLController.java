@@ -67,7 +67,7 @@ public class LoginMenuFXMLController {
     }
 
     public void setCursor() {
-        CursorTransition cursorTransition = new CursorTransition(register, 650, 590);
+        CursorTransition cursorTransition = new CursorTransition(register, 640, 580);
         cursorTransition.play();
     }
 
