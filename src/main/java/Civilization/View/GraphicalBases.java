@@ -8,7 +8,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
@@ -18,19 +17,22 @@ public class GraphicalBases {
     public static Scene scene;
 
     // Cursor images
-    public static final Image CURSOR = new Image(GraphicalBases.class.getResource("/pics/cursor.png").toExternalForm());
+    public static final Image CURSOR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/cursor.png")).toExternalForm());
 
     // Menus background images
-    public static final Image LOGIN_MENU_BACKGROUND = new Image(GraphicalBases.class.getResource("/pics/Menus/LoginMenuBackground.png").toExternalForm());
-    public static final Image MAIN_MENU_BACKGROUND_IMAGE = new Image(GraphicalBases.class.getResource("/pics/Menus/MainMenuBackground.png").toExternalForm());
+    public static final Image LOGIN_MENU_BACKGROUND = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/LoginMenuBackground.png")).toExternalForm());
+    public static final Image MAIN_MENU_BACKGROUND_IMAGE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/MainMenuBackground.png")).toExternalForm());
+    public static final Image PROFILE_MENU_BACKGROUND_IMAGE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/ProfileMenuBackground.png")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;
     public static final Image[] AVATARS = new Image[NUMBER_OF_AVATARS];
+    public static final Image ADD_AVATAR_ICON = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Avatars/addAvatarIcon.jpg")).toExternalForm());
 
     public static void firstLogin() {
         GraphicalBases.start();
         Parent root = loadFXMLMenus("LoginMenu");
+        assert root != null;
         GraphicalBases.scene = new Scene(root);
         GraphicalBases.stage.setScene(GraphicalBases.scene);
         GraphicalBases.stage.show();
@@ -38,7 +40,7 @@ public class GraphicalBases {
 
     public static void start() {
         for (int i = 0; i < AVATARS.length; i++) {
-            AVATARS[i] = new Image(GraphicalBases.class.getResource("/pics/Avatars/" + (i + 1) + ".png").toExternalForm());
+            AVATARS[i] = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Avatars/" + (i + 1) + ".png")).toExternalForm());
         }
     }
 

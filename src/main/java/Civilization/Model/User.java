@@ -100,4 +100,13 @@ public class User {
         }
         return null;
     }
+
+    public void setAvatarURL(String avatarURL) {
+        for (Account account : Account.accounts) {
+            if(account.getUsername().equals(this.username)) {
+                account.setAvatarURL(avatarURL);
+                return;
+            }
+        }
+    }
 }

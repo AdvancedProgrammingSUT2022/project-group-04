@@ -5,7 +5,6 @@ import javafx.animation.Transition;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -13,8 +12,8 @@ import java.awt.*;
 public class CursorTransition extends Transition {
 
     private final Button cursorSet;
-    private double buttonX;
-    private double buttonY;
+    private final double buttonX;
+    private final double buttonY;
     private double x;
     private double y;
 
