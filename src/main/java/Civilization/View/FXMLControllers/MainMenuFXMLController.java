@@ -53,5 +53,6 @@ public class MainMenuFXMLController {
     }
 
     public void goToChatroom(MouseEvent mouseEvent) {
+        GraphicalBases.changeMenu("Chatroom");
     }
 }
