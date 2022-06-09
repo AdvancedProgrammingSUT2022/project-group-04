@@ -49,7 +49,7 @@ public class User {
     }
 
     public void setTimeOfScore(LocalDateTime timeOfScore) {
-        this.timeOfScore = timeToJsonString(timeOfScore.format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss")));
+        this.timeOfScore = timeToJsonString(timeOfScore.format(DateTimeFormatter.ofPattern("E,HH:mm:ss")));
     }
 
     public String getLastLoginTime() {
@@ -57,7 +57,7 @@ public class User {
     }
 
     public void setLastLoginTime(LocalDateTime lastLoginTime) {
-        this.lastLoginTime = timeToJsonString(lastLoginTime.format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss")));
+        this.lastLoginTime = timeToJsonString(lastLoginTime.format(DateTimeFormatter.ofPattern("E, HH:mm:ss")));
     }
 
     public String getUsername() {
