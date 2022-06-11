@@ -6,6 +6,7 @@ import Civilization.Model.ProfileMenuModel;
 import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
+import Civilization.View.Transitions.CursorTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -27,6 +28,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ProfileMenuFXMLController {
 
@@ -73,8 +75,23 @@ public class ProfileMenuFXMLController {
     public void initialize() {
         this.profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         setBackground();
+        setCursorTransitions();
         setUsername();
         setAvatars();
+    }
+
+    private void setCursorTransitions() {
+        ArrayList<Button> cursorSets = new ArrayList<>();
+        cursorSets.add(nicknameOKButton);
+        cursorSets.add(passwordOKButton);
+        double[] buttonXs = new double[2];
+        buttonXs[0] = 630;
+        buttonXs[1] = 1130;
+        double[] buttonYs = new double[2];
+        buttonYs[0] = 480;
+        buttonYs[1] = 520;
+        CursorTransition cursorTransition = new CursorTransition(cursorSets, buttonXs, buttonYs);
+        cursorTransition.play();
     }
 
     private void setUsername() {

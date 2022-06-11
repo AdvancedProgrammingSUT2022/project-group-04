@@ -1,0 +1,49 @@
+.title{
+    -fx-font-size: 50;
+}
+.AnchorPaneMain{
+    -fx-background-image: url("../pics/Menus/ChatroomBackground.png");
+}
+
+.chatBox{
+    -fx-border-width: 3;
+    -fx-border-color: #fffde9;
+
+}
+.chatBoxInner{
+    -fx-background-color: black;
+}
+
+.sendButton{
+    -fx-background-image: url("../pics/Menus/send.png");
+    -fx-background-size: cover;
+    -fx-border-color: #fffde9;
+    -fx-border-width: 3;
+}
+.TextFeild{
+    -fx-border-color: #fffde9;
+    -fx-border-width: 3;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-fill: white;
+
+}
+
+.backButton{
+    -fx-background-color: black;
+    -fx-border-color: #fffde9;
+    -fx-text-fill: white;
+    -fx-border-width: 3;
+    -fx-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-highlight-text-fill: white;
+}
+.choiceButton{
+    -fx-background-color: white;
+    -fx-border-color: #e5e0ba;
+    -fx-text-fill: white;
+    -fx-border-width: 3;
+    -fx-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-highlight-text-fill: white;
+}
