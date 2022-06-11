@@ -45,7 +45,6 @@ public class ChatRoomFXMLController {
         for (User user: UserDatabase.getAllUsers()){
             names.add(user.getNickname());
         }
-        System.out.println(users);
         ObservableList<String> availableUsers = FXCollections.observableArrayList(names);
         users.setItems(availableUsers);
     }
@@ -94,6 +93,5 @@ public class ChatRoomFXMLController {
         } else {
             users.setVisible(false);
         }
-        System.out.println(choiceBox.getValue());
     }
 }
