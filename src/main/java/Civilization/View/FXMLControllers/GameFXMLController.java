@@ -98,18 +98,21 @@ public class GameFXMLController {
                     } else {
                         isResult = true;
                         String command = commandFounder();
-                        cheater = new Cheater();
+                        cheater = new Cheater(turn);
                         addResult(cheater.run(command));
                     }
                 }
             }
 
             private void addResult(String result) {
-                terminal.setStyle("-fx-control-inner-background:#000000; " +
-                        "-fx-font-family: Consolas; " +
-                        "-fx-highlight-fill: #00ff00; " +
-                        "-fx-highlight-text-fill: #000000; " +
-                        "-fx-text-fill: #ff0000;");
+                if(result.startsWith("Error:")) {
+                    terminal.setStyle("-fx-control-inner-background:#000000; " +
+                            "-fx-font-family: Consolas; " +
+                            "-fx-highlight-fill: #00ff00; " +
+                            "-fx-highlight-text-fill: #000000; " +
+                            "-fx-text-fill: #ff0000;");
+                }
+                result += " Press Ctrl+Shift+R to Restart the Terminal.";
                 terminal.setText(terminal.getText() + result);
                 terminal.setEditable(false);
             }
