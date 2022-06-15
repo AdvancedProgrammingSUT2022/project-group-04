@@ -13,6 +13,7 @@ public class GameDatabase {
     public static ArrayList<Tile> map = new ArrayList<Tile>();
     private static final int length = 50;
     private static final int width = 50;
+    public static int turn = 0;
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.players = players;
@@ -284,9 +285,21 @@ public class GameDatabase {
     }
 
     public static void nextTurn() {
+        turn = calculateNextTurn();
         for (Civilization player : GameDatabase.players) {
             player.nextTurn();
         }
+    }
+
+    private static int calculateNextTurn() {
+        if (turn != GameDatabase.players.size() - 1) {
+            return turn + 1;
+        }
+        return 0;
+    }
+
+    public static int getTurn() {
+        return turn;
     }
 
     public static Civilization getCivilizationByTurn(int turn) {
