@@ -1,9 +1,11 @@
 package Civilization.View;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -55,11 +57,36 @@ public class GraphicalBases {
     public static void changeMenu(String name){
         Parent root = loadFXMLMenus(name);
         GraphicalBases.scene.setRoot(root);
+        setKeyEventsDefault();
+    }
+
+    private static void setKeyEventsDefault() {
+        GraphicalBases.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                // Noting
+            }
+        });
     }
 
     private static Pane loadFXMLMenus(String name){
         try {
             URL address = new URL(Objects.requireNonNull(GraphicalBases.class.getResource("/fxml/Menus/" + name + ".fxml")).toString());
+            return FXMLLoader.load(address);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void enterGame(String name) {
+        Parent root = loadGame(name);
+        GraphicalBases.scene.setRoot(root);
+    }
+
+    private static Pane loadGame(String name) {
+        try {
+            URL address = new URL(Objects.requireNonNull(GraphicalBases.class.getResource("/fxml/Game/" + name + ".fxml")).toString());
             return FXMLLoader.load(address);
         } catch (IOException exception) {
             exception.printStackTrace();
