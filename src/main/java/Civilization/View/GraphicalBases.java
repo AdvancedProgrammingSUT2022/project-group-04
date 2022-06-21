@@ -31,6 +31,13 @@ public class GraphicalBases {
     public static final Image[] AVATARS = new Image[NUMBER_OF_AVATARS];
     public static final Image ADD_AVATAR_ICON = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Avatars/addAvatarIcon.jpg")).toExternalForm());
 
+    // Status bar
+    public static final Image HAPPY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/StatusBar/happy.png")).toExternalForm());
+    public static final Image UNHAPPY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/StatusBar/unhappy.png")).toExternalForm());
+    public static final Image SCIENCE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/StatusBar/science.png")).toExternalForm());
+    public static final Image COIN = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/StatusBar/coin.png")).toExternalForm());
+
+
     public static void firstLogin() {
         GraphicalBases.start();
         Parent root = loadFXMLMenus("LoginMenu");
