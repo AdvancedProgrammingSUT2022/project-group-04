@@ -85,7 +85,7 @@ public class Cheater extends Menu{
             return "Error: No River in This Tile";
         }
         this.gameMenuController.dryUp(x, y);
-        return "Success! There is No River in Position " + Integer.toString(x) + " And " + Integer.toString(y) + ".";
+        return "Success! Now There is No River in Position " + Integer.toString(x) + " And " + Integer.toString(y) + ".";
     }
 
     public String addScore(Matcher matcher) {
@@ -204,6 +204,7 @@ public class Cheater extends Menu{
         if (!this.gameMenuController.isCheatForTurn(civilizationName, turn)) {
             return "Error: There is Already Your Turn!";
         }
+        GameDatabase.setTurn(GameDatabase.getCivilizationIndex(civilizationName));
         return "Success! Now it's Your Turn!";
     }
 

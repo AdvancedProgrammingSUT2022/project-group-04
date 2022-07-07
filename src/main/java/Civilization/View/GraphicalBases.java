@@ -37,6 +37,8 @@ public class GraphicalBases {
     public static final Image SCIENCE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/StatusBar/science.png")).toExternalForm());
     public static final Image COIN = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/StatusBar/coin.png")).toExternalForm());
 
+    // Info Panel
+    public static final Image INFO_PANEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/InfoPanel/infoPanel.png")).toExternalForm());
 
     public static void firstLogin() {
         GraphicalBases.start();
