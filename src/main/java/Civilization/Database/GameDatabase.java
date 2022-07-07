@@ -1,10 +1,12 @@
 package Civilization.Database;
 
 import Civilization.Model.*;
+import Civilization.View.FXMLControllers.GameFXMLController;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameDatabase {
@@ -285,7 +287,7 @@ public class GameDatabase {
     }
 
     public static void nextTurn() {
-        turn = calculateNextTurn();
+        setTurn(calculateNextTurn());
         for (Civilization player : GameDatabase.players) {
             player.nextTurn();
         }
@@ -349,5 +351,15 @@ public class GameDatabase {
             return true;
         }
         return false;
+    }
+
+    public static void setTurn(int newTurn) {
+        turn = newTurn;
+        GameFXMLController.turn = turn;
+    }
+
+    public static User getUserForCivilization(String civilizationName) {
+        String username = Objects.requireNonNull(getCivilizationByNickname(civilizationName)).getUsername();
+        return UserDatabase.getUserByUsername(username);
     }
 }

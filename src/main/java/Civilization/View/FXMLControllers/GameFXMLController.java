@@ -4,19 +4,29 @@ import Civilization.Controller.CombatController;
 import Civilization.Controller.GameMenuController;
 import Civilization.Controller.MainMenuController;
 import Civilization.Database.GameDatabase;
+import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
 import Civilization.Model.MainMenuModel;
+import Civilization.Model.User;
 import Civilization.View.*;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -31,8 +41,17 @@ public class GameFXMLController {
     // Status bar
     private Rectangle statusBar;
     private HBox statusBarHBox;
-    private Rectangle happy;
-    private Rectangle unhappy;
+    private Rectangle showHappiness;
+    private Text coinText;
+    private Text scienceText;
+    private Text happinessText;
+    private Text showHappinessText;
+    private Text civilizationName;
+
+    // Info Panel
+    private Rectangle infoPanel;
+    private VBox infoPanelVBox;
+    private Circle technologyUnderSearch;
 
     // Terminal
     private TextArea terminal;
@@ -41,6 +60,10 @@ public class GameFXMLController {
     private String terminalDefault;
     private boolean isTerminalOn;
 
+    // Game
+    public static int turn = 0;
+    private Button nextTurn;
+
     @FXML
     public void initialize() {
 
@@ -48,14 +71,61 @@ public class GameFXMLController {
         ArrayList<String> users = new ArrayList<>();
         users.add("sepehr");
         users.add("alirezaRM");
+        users.add("alirezaAmiri");
         GameModel gameModel = new GameModel();
         gameModel.startGame(users);
         /////
 
 
+        turn = 0;
         setStatusBar();
+        setNextTurnButton();
+        setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+    }
+
+    private void setNextTurnButton() {
+        nextTurn = new Button("NEXT TURN");
+        nextTurn.setLayoutX(1200);
+        nextTurn.setLayoutY(0);
+        nextTurn.setPrefHeight(40);
+        nextTurn.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        nextTurn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GameDatabase.nextTurn();
+                if(isTerminalOn) {
+                    endTerminal();
+                }
+                updateStatusBar();
+                updateInfoPanel();
+            }
+        });
+        mainAnchorPane.getChildren().add(nextTurn);
+    }
+
+    private void setInfoPanel() {
+        infoPanel = new Rectangle();
+        infoPanel.setX(0);
+        infoPanel.setY(0);
+        infoPanel.setWidth(150);
+        infoPanel.setHeight(720);
+        infoPanel.setFill(new ImagePattern(GraphicalBases.INFO_PANEL));
+
+        infoPanelVBox = new VBox();
+        technologyUnderSearch = new Circle(75);
+        infoPanelVBox.getChildren().add(technologyUnderSearch);
+
+        mainAnchorPane.getChildren().add(infoPanel);
+        mainAnchorPane.getChildren().add(infoPanelVBox);
+
+        updateInfoPanel();
+
+    }
+
+    private void updateInfoPanel() {
+
     }
 
     private void setStatusBar() {
@@ -64,50 +134,89 @@ public class GameFXMLController {
         statusBar.setY(0);
         statusBar.setHeight(40);
         statusBar.setWidth(1280);
+        statusBar.setStyle("-fx-fill: #222c41");
         mainAnchorPane.getChildren().add(statusBar);
 
         statusBarHBox = new HBox();
-        statusBarHBox.setLayoutX(30);
+        statusBarHBox.setLayoutX(200);
         statusBarHBox.setLayoutY(5);
         fillStatusBar();
         mainAnchorPane.getChildren().add(statusBarHBox);
 
-        updateStatusBar(0);
+        updateStatusBar();
     }
 
     private void fillStatusBar() {
+        // name
+        civilizationName = new Text("");
+        civilizationName.setStyle("-fx-font-size: 30; -fx-fill: white");
+        statusBarHBox.getChildren().add(civilizationName);
+
+
         // coin
+        coinText = new Text("  ");
+        coinText.setStyle("-fx-font-size: 30; -fx-fill: white");
+        statusBarHBox.getChildren().add(coinText);
         Rectangle coin = new Rectangle(30, 30);
         coin.setFill(new ImagePattern(GraphicalBases.COIN));
         statusBarHBox.getChildren().add(coin);
-        Text coinText = new Text("  ");
-        coinText.setStyle("-fx-font-size: 30; -fx-fill: white");
-        statusBarHBox.getChildren().add(coinText);
 
         // science
+        scienceText = new Text("  ");
+        scienceText.setStyle("-fx-font-size: 30; -fx-fill: white");
+        statusBarHBox.getChildren().add(scienceText);
         Rectangle science = new Rectangle(30, 30);
         science.setFill(new ImagePattern(GraphicalBases.SCIENCE));
         statusBarHBox.getChildren().add(science);
-        Text scienceText = new Text("  ");
-        scienceText.setStyle("-fx-font-size: 30; -fx-fill: white");
-        statusBarHBox.getChildren().add(scienceText);
 
         // happiness
+        happinessText = new Text("  ");
+        happinessText.setStyle("-fx-font-size: 30; -fx-fill: white");
+        statusBarHBox.getChildren().add(happinessText);
+        VBox happinessVBox = new VBox();
         Rectangle happiness = new Rectangle(30, 30);
         happiness.setFill(new ImagePattern(GraphicalBases.HAPPY));
-        happy = new Rectangle(30, 30);
-        happy.setFill(new ImagePattern(GraphicalBases.HAPPY));
-        unhappy = new Rectangle(30, 30);
-        unhappy.setFill(new ImagePattern(GraphicalBases.UNHAPPY));
-        statusBarHBox.getChildren().add(happiness);
-        Text happinessText = new Text("  ");
-        happinessText.setStyle("-fx-font-size: 30; -fx-fill: white");
-
-        statusBarHBox.getChildren().add(happinessText);
+        showHappinessText = new Text("");
+        showHappinessText.setVisible(false);
+        showHappinessText.setStyle("-fx-font-size: 10");
+        showHappiness = new Rectangle();
+        showHappiness.setWidth(happiness.getWidth());
+        showHappiness.setHeight(happiness.getHeight());
+        showHappiness.setX(150);
+        showHappiness.setY(happiness.getHeight() + 20);
+        showHappiness.setVisible(false);
+        happiness.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(GameDatabase.getCivilizationByTurn(turn).isHappy()) {
+                    showHappiness.setFill(new ImagePattern(GraphicalBases.HAPPY));
+                } else {
+                    showHappiness.setFill(new ImagePattern(GraphicalBases.UNHAPPY));
+                }
+                showHappinessText.setText("Happiness: " + GameDatabase.getCivilizationByTurn(turn).getHappiness() +
+                        "\n Unhappiness: " + (GameDatabase.getCivilizationByTurn(turn).getHappiness()*-1));
+                showHappinessText.setVisible(true);
+                showHappiness.setVisible(true);
+            }
+        });
+        happiness.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                showHappinessText.setVisible(false);
+                showHappiness.setVisible(false);
+            }
+        });
+        happinessVBox.getChildren().add(happiness);
+        happinessVBox.getChildren().add(showHappiness);
+        happinessVBox.getChildren().add(showHappinessText);
+        statusBarHBox.getChildren().add(happinessVBox);
     }
 
-    private void updateStatusBar(int turn) {
-
+    private void updateStatusBar() {
+        coinText.setText("   " + Integer.toString(GameDatabase.getPlayers().get(turn).getGold()) + "   ");
+        happinessText.setText("   " + Integer.toString(GameDatabase.getPlayers().get(turn).getHappiness()) + "   ");
+        scienceText.setText("   " + Integer.toString(GameDatabase.players.get(turn).getScience()) + "   ");
+        civilizationName.setText(GameDatabase.getCivilizationByTurn(turn).getNickname());
     }
 
     private void setTerminal() {
@@ -127,7 +236,7 @@ public class GameFXMLController {
             public void handle(KeyEvent keyEvent) {
                 boolean shallStartTerminal = keyEvent.getText().equals("c") && keyEvent.isShiftDown() && keyEvent.isControlDown();
                 if(shallStartTerminal && !isTerminalOn) {
-                    startTerminal(GameDatabase.getTurn());
+                    startTerminal();
                 } else {
                     boolean shallEndTerminal = keyEvent.getText().equals("e") && keyEvent.isShiftDown() && keyEvent.isControlDown();
                     if(shallEndTerminal && isTerminalOn) {
@@ -135,7 +244,7 @@ public class GameFXMLController {
                     } else {
                         boolean shallRestartTerminal = keyEvent.getText().equals("r") && keyEvent.isShiftDown() && keyEvent.isControlDown();
                         if(shallRestartTerminal && isTerminalOn) {
-                            restartTerminal(GameDatabase.getTurn());
+                            restartTerminal();
                         }
                     }
                 }
@@ -148,10 +257,10 @@ public class GameFXMLController {
         mainAnchorPane.getChildren().remove(terminal);
     }
 
-    private void startTerminal(int turn) {
+    private void startTerminal() {
         isTerminalOn = true;
         terminal.setEditable(true);
-        terminalDefault = terminalDefaultStart + "Sepehr" + terminalDefaultEnd;
+        terminalDefault = terminalDefaultStart + GameDatabase.getCivilizationByTurn(turn).getNickname() + terminalDefaultEnd;
         terminal.setText(terminalDefault);
         terminal.positionCaret(terminalDefault.length());
         terminal.setStyle("-fx-control-inner-background:#000000; " +
@@ -172,12 +281,13 @@ public class GameFXMLController {
                     terminal.positionCaret(terminalDefault.length());
                 } else if(isCharEnter(keyEvent)) {
                     if(shallRestart()) {
-                        restartTerminal(turn);
+                        restartTerminal();
                     } else {
                         isResult = true;
                         String command = commandFounder();
                         cheater = new Cheater(turn);
                         addResult(cheater.run(command));
+                        updateStatusBar();
                     }
                 }
             }
@@ -213,8 +323,8 @@ public class GameFXMLController {
         mainAnchorPane.getChildren().add(terminal);
     }
 
-    private void restartTerminal(int turn) {
+    private void restartTerminal() {
         endTerminal();
-        startTerminal(turn);
+        startTerminal();
     }
 }

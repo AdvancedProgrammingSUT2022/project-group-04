@@ -16,8 +16,8 @@ public class GameModel {
     public void startGame(ArrayList<String> users) {
 
         ArrayList<Civilization> players = new ArrayList<Civilization>();
-        for (int i = 1; i < users.size(); i++) {
-            Civilization civilization = new Civilization(users.get(i), Objects.requireNonNull(UserDatabase.getUserByUsername(users.get(i))).getNickname());
+        for (String user : users) {
+            Civilization civilization = new Civilization(user, Objects.requireNonNull(UserDatabase.getUserByUsername(user)).getNickname());
             players.add(civilization);
         }
 
