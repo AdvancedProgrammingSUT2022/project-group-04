@@ -385,6 +385,15 @@ public class Civilization {
         return true;
     }
 
+    public Technology getTechnologyUnderResearch(){
+        for (Technology technology : technologies) {
+            if(!technology.wasReached()) {
+                return technology;
+            }
+        }
+        return null;
+    }
+
 
     public ArrayList<Tile> getFriendlyTiles() {
         ArrayList<Tile> friendlyTiles = new ArrayList<>();
