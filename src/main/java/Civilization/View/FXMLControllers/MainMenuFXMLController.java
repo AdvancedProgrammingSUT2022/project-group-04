@@ -46,7 +46,8 @@ public class MainMenuFXMLController {
     }
 
     public void goToGameMenu(MouseEvent mouseEvent) {
-        GraphicalBases.enterGame("Game");
+        GraphicalBases.changeMenu("GameMenu");
+        //GraphicalBases.enterGame("Game");
     }
 
     public void goToScoreboard(MouseEvent mouseEvent) {
