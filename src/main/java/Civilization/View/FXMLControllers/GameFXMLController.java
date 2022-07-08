@@ -4,10 +4,7 @@ import Civilization.Controller.CombatController;
 import Civilization.Controller.GameMenuController;
 import Civilization.Controller.MainMenuController;
 import Civilization.Database.GameDatabase;
-import Civilization.Model.Civilization;
-import Civilization.Model.GameModel;
-import Civilization.Model.MainMenuModel;
-import Civilization.Model.User;
+import Civilization.Model.*;
 import Civilization.View.*;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -51,7 +48,7 @@ public class GameFXMLController {
     // Info Panel
     private Rectangle infoPanel;
     private VBox infoPanelVBox;
-    private Circle technologyUnderSearch;
+    private Rectangle technologyUnderSearch;
 
     // Terminal
     private TextArea terminal;
@@ -114,7 +111,9 @@ public class GameFXMLController {
         infoPanel.setFill(new ImagePattern(GraphicalBases.INFO_PANEL));
 
         infoPanelVBox = new VBox();
-        technologyUnderSearch = new Circle(75);
+        technologyUnderSearch = new Rectangle();
+        technologyUnderSearch.setWidth(150);
+        technologyUnderSearch.setHeight(technologyUnderSearch.getWidth());
         infoPanelVBox.getChildren().add(technologyUnderSearch);
 
         mainAnchorPane.getChildren().add(infoPanel);
@@ -125,7 +124,12 @@ public class GameFXMLController {
     }
 
     private void updateInfoPanel() {
-
+        Technology technology = GameDatabase.getCivilizationByTurn(turn).getTechnologyUnderResearch();
+        if(technology == null) {
+            technologyUnderSearch.setFill(new ImagePattern(GraphicalBases.NULL));
+        } else {
+            technologyUnderSearch.setFill(new ImagePattern(GraphicalBases.TECHNOLOGIES.get(technology.getName())));
+        }
     }
 
     private void setStatusBar() {

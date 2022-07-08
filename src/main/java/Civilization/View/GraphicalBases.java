@@ -1,5 +1,6 @@
 package Civilization.View;
 
+import Civilization.Database.GlobalVariables;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class GraphicalBases {
@@ -39,6 +41,10 @@ public class GraphicalBases {
 
     // Info Panel
     public static final Image INFO_PANEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/InfoPanel/infoPanel.png")).toExternalForm());
+    public static final Image NULL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/null.png")).toExternalForm());
+
+    // Technologies
+    public static HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
 
     public static void firstLogin() {
         GraphicalBases.start();
@@ -53,6 +59,9 @@ public class GraphicalBases {
         for (int i = 0; i < AVATARS.length; i++) {
             AVATARS[i] = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Avatars/" + (i + 1) + ".png")).toExternalForm());
         }
+//        for (String technologyName : GlobalVariables.TECHNOLOGIES) {
+//            TECHNOLOGIES.put(technologyName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/" + technologyName + ".png")).toExternalForm()));
+//        }
     }
 
     public static void login() {
