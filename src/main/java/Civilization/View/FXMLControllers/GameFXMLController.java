@@ -64,14 +64,6 @@ public class GameFXMLController {
     @FXML
     public void initialize() {
 
-        //// start game for test ////
-        ArrayList<String> users = new ArrayList<>();
-        users.add("sepehr");
-        users.add("alirezaRM");
-        users.add("alirezaAmiri");
-        GameModel gameModel = new GameModel();
-        gameModel.startGame(users);
-        /////
 
 
         turn = 0;
