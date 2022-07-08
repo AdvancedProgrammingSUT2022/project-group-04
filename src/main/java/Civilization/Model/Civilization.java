@@ -20,7 +20,11 @@ public class Civilization {
     private int science;
     private boolean isInWar = false;
     private Civilization isInWarWith;
+    private Unit selectedUnit;
 
+    public Unit getSelectedUnit() {
+        return selectedUnit;
+    }
 
     public int getHappiness() {
         return happiness;
