@@ -27,6 +27,8 @@ public class GraphicalBases {
     public static final Image LOGIN_MENU_BACKGROUND = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/LoginMenuBackground.png")).toExternalForm());
     public static final Image MAIN_MENU_BACKGROUND_IMAGE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/MainMenuBackground.png")).toExternalForm());
     public static final Image PROFILE_MENU_BACKGROUND_IMAGE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/ProfileMenuBackground.png")).toExternalForm());
+    public static final Image BLACK = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/black.jpg")).toExternalForm());
+    public static final Image KING_DAVID = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/KingDavidStatue.png")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;
