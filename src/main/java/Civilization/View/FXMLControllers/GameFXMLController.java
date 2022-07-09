@@ -67,9 +67,25 @@ public class GameFXMLController {
         turn = 0;
         setStatusBar();
         setNextTurnButton();
+        setBackButton();
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+    }
+
+    private void setBackButton() {
+        Button backButton = new Button("BACK");
+        backButton.setLayoutY(0);
+        backButton.setPrefHeight(40);
+        backButton.setLayoutX(nextTurn.getLayoutX() - 50);
+        backButton.setStyle(nextTurn.getStyle());
+        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.userLoggedIn();
+            }
+        });
+        mainAnchorPane.getChildren().add(backButton);
     }
 
     private void setNextTurnButton() {
