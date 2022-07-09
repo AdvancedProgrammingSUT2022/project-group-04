@@ -28,6 +28,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameFXMLController {
@@ -82,6 +83,11 @@ public class GameFXMLController {
         backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                try {
+                    GameDatabase.saveGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 GraphicalBases.userLoggedIn();
             }
         });
