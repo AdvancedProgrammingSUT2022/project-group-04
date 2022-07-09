@@ -36,6 +36,10 @@ public class GameMenuFXMLController {
 
     private Button OKButton;
 
+    // map and saving information
+    private TextField numberOfTiles;
+    private int tileCount;
+
     // searching users
     private ChoiceBox<String> users;
     private Set<String> selectedUsers;
@@ -48,12 +52,73 @@ public class GameMenuFXMLController {
 
         selectedUsers = new HashSet<>();
         selectedUsers.add(User.loggedInUser.getUsername());
+        tileCount = 0;
 
         setBackground();
         setOKButton();
         setBackButton();
         setChoiceBox();
         setNumberOfUsers();
+        setNumberOfTiles();
+    }
+
+    private void setNumberOfTiles() {
+
+        Label label = new Label("Number of Tiles in a Row: ");
+        label.setStyle("-fx-fill: white");
+        label.setLayoutX(800);
+        label.setLayoutY(130);
+        mainAnchorPane.getChildren().add(label);
+
+
+        numberOfTiles = new TextField();
+        numberOfTiles.setPromptText("Number of Tiles in a Row: ");
+        numberOfTiles.setLayoutX(label.getLayoutX());
+        numberOfTiles.setLayoutY(label.getLayoutY() + numberOfTiles.getHeight() + 20);
+
+
+        Button tileOkButton = new Button("OK");
+        tileOkButton.setLayoutX(numberOfTiles.getLayoutX() + numberOfTiles.getWidth() + 170);
+        tileOkButton.setLayoutY(numberOfTiles.getLayoutY());
+        tileOkButton.setDisable(true);
+        tileOkButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String text = numberOfTiles.getText();
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(text);
+                if(!matcher.matches()) {
+                    numberOfTiles.setText("");
+                    numberOfTiles.setStyle("-fx-border-color: red");
+                } else {
+                    int number = Integer.parseInt(text);
+                    if(number <= User.users.size() || number > User.users.size() + 50) {
+                        numberOfTiles.setText("");
+                        numberOfTiles.setStyle("-fx-border-color: red");
+                    } else {
+                        tileCount = number;
+                        numberOfTiles.setEditable(false);
+                    }
+                }
+            }
+        });
+        mainAnchorPane.getChildren().add(tileOkButton);
+
+
+        numberOfTiles.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                String text = numberOfTiles.getText();
+                tileOkButton.setDisable(text.length() == 0);
+                numberOfTiles.setStyle("-fx-border-color: null");
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(text);
+                if(!matcher.matches()) {
+                    numberOfTiles.setText("");
+                }
+            }
+        });
+        mainAnchorPane.getChildren().add(numberOfTiles);
     }
 
     public Button getOKButton() {
@@ -145,6 +210,9 @@ public class GameMenuFXMLController {
         if(users.getValue() != null) {
             selectedUsers.add(users.getValue());
             usersInGame.setText(calculateText());
+            if(selectedUsers.size() == usersCount) {
+                users.setDisable(true);
+            }
         }
     }
 
@@ -174,6 +242,8 @@ public class GameMenuFXMLController {
 
     public boolean isOKValid() {
         if(selectedUsers.size() != usersCount) {
+            return false;
+        } else if (tileCount == 0) {
             return false;
         }
         return true;
