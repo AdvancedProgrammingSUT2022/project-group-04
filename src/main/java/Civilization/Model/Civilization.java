@@ -20,7 +20,26 @@ public class Civilization {
     private int science;
     private boolean isInWar = false;
     private Civilization isInWarWith;
+    private Unit selectedUnit;
 
+    @Override
+    public String toString() {
+        String result = this.nickname + " " + this.username;
+        result += "\n Happiness = " + this.happiness;
+        result += "\n Science = " + this.science;
+        result += "\n Gold = " + this.gold;
+        if(technologies.size() != 0) {
+            result += "\n Technologies = \n";
+            for (Technology technology : technologies) {
+                result += technology.getName() + " " + technology.wasReached() + "\n";
+            }
+        }
+        return result;
+    }
+
+    public Unit getSelectedUnit() {
+        return selectedUnit;
+    }
 
     public int getHappiness() {
         return happiness;

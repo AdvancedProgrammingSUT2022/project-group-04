@@ -28,6 +28,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameFXMLController {
@@ -49,6 +50,7 @@ public class GameFXMLController {
     private Rectangle infoPanel;
     private VBox infoPanelVBox;
     private Rectangle technologyUnderSearch;
+    private Rectangle unitSelected;
 
     // Terminal
     private TextArea terminal;
@@ -63,23 +65,33 @@ public class GameFXMLController {
 
     @FXML
     public void initialize() {
-
-        //// start game for test ////
-        ArrayList<String> users = new ArrayList<>();
-        users.add("sepehr");
-        users.add("alirezaRM");
-        users.add("alirezaAmiri");
-        GameModel gameModel = new GameModel();
-        gameModel.startGame(users);
-        /////
-
-
         turn = 0;
         setStatusBar();
         setNextTurnButton();
+        setBackButton();
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+    }
+
+    private void setBackButton() {
+        Button backButton = new Button("BACK");
+        backButton.setLayoutY(0);
+        backButton.setPrefHeight(40);
+        backButton.setLayoutX(nextTurn.getLayoutX() - 50);
+        backButton.setStyle(nextTurn.getStyle());
+        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    GameDatabase.saveGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                GraphicalBases.userLoggedIn();
+            }
+        });
+        mainAnchorPane.getChildren().add(backButton);
     }
 
     private void setNextTurnButton() {
@@ -111,10 +123,15 @@ public class GameFXMLController {
         infoPanel.setFill(new ImagePattern(GraphicalBases.INFO_PANEL));
 
         infoPanelVBox = new VBox();
+        infoPanelVBox.setSpacing(10);
         technologyUnderSearch = new Rectangle();
         technologyUnderSearch.setWidth(150);
         technologyUnderSearch.setHeight(technologyUnderSearch.getWidth());
         infoPanelVBox.getChildren().add(technologyUnderSearch);
+        unitSelected = new Rectangle();
+        unitSelected.setWidth(150);
+        unitSelected.setHeight(unitSelected.getWidth());
+        infoPanelVBox.getChildren().add(unitSelected);
 
         mainAnchorPane.getChildren().add(infoPanel);
         mainAnchorPane.getChildren().add(infoPanelVBox);
@@ -129,6 +146,13 @@ public class GameFXMLController {
             technologyUnderSearch.setFill(new ImagePattern(GraphicalBases.NULL));
         } else {
             technologyUnderSearch.setFill(new ImagePattern(GraphicalBases.TECHNOLOGIES.get(technology.getName())));
+        }
+
+        Unit unit = GameDatabase.getCivilizationByTurn(turn).getSelectedUnit();
+        if(unit == null) {
+            unitSelected.setFill(new ImagePattern(GraphicalBases.NULL));
+        } else {
+            unitSelected.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
         }
     }
 

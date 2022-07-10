@@ -1,6 +1,7 @@
 package Civilization.View;
 
 import Civilization.Database.GlobalVariables;
+import Civilization.Model.Unit;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,6 +48,7 @@ public class GraphicalBases {
 
     // Technologies
     public static HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
+    public static HashMap<String, Image> UNITS = new HashMap<>();
 
     public static void firstLogin() {
         GraphicalBases.start();
@@ -63,6 +65,9 @@ public class GraphicalBases {
         }
 //        for (String technologyName : GlobalVariables.TECHNOLOGIES) {
 //            TECHNOLOGIES.put(technologyName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/" + technologyName + ".png")).toExternalForm()));
+//        }
+//        for (String unitName : GlobalVariables.UNITS) {
+//            UNITS.put(unitName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Units/" + unitName + ".png")).toExternalForm()));
 //        }
     }
 
