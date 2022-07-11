@@ -7,6 +7,7 @@ import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
+import Client.Client;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -112,15 +114,23 @@ public class LoginMenuFXMLController {
         String username = this.username.getText();
         String password = this.password.getText();
         String nickname = this.nickname.getText();
-        if(!loginMenuController.isUsernameUnique(username)) {
+        JSONObject input = new JSONObject();
+        input.put("username", username);
+        input.put("password", password);
+        input.put("nickname", nickname);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        System.out.println(message);
+        if (message.equals("Username is not unique")){
+            System.out.println("bus");
             setError("Username is not unique");
             return;
-        } else if(!loginMenuController.isNicknameUnique(nickname)) {
+        } else if (message.equals("Nickname is not unique")){
             setError("Nickname is not unique");
             return;
         }
-        loginMenuController.userCreate(username, nickname, password);
-        createAccount(username);
+        //=======================
         this.error.setText("Registered successfully");
         this.error.setFill(Color.BLUE);
         this.username.setText("");
@@ -162,10 +172,16 @@ public class LoginMenuFXMLController {
         }
     }
 
-    public void loginButton(MouseEvent mouseEvent) {
+    public void loginButton(MouseEvent mouseEvent) throws IOException {
         String username = this.username.getText();
         String password = this.password.getText();
-        if(!loginMenuController.isUserExists(username) || !loginMenuController.isPasswordCorrect(username, password)) {
+        JSONObject input = new JSONObject();
+        input.put("username", username);
+        input.put("password", password);
+        Client.dataOutputStream2.writeUTF(input.toString());
+        Client.dataOutputStream2.flush();
+        String message = Client.dataInputStream2.readUTF();
+        if (message.equals("Username and password didn't match")){
             setError("Username and password didn't match");
             return;
         }
@@ -189,7 +205,11 @@ public class LoginMenuFXMLController {
         this.register.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                loginButton(mouseEvent);
+                try {
+                    loginButton(mouseEvent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         this.loginOrRegister.setText("Don't have an account?");
