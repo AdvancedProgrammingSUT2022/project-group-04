@@ -3,9 +3,11 @@ package Civilization.View.FXMLControllers;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.GameModel;
 import Civilization.Model.User;
+import Civilization.View.Components.SwitchButton;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
 import Civilization.View.Transitions.GameMenuUserChoosingTransition;
+import Civilization.View.Transitions.SwitchButtonTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -39,6 +41,11 @@ public class GameMenuFXMLController {
     // map and saving information
     private TextField numberOfTiles;
     private int tileCount;
+    private TextField autoSaveRate;
+    private int autoSave;
+    private SwitchButton autoSaveSwitchButton;
+    private Label autoSaveRateLabel;
+    private Button autoSaveOKButton;
 
     // searching users
     private ChoiceBox<String> users;
@@ -60,6 +67,86 @@ public class GameMenuFXMLController {
         setChoiceBox();
         setNumberOfUsers();
         setNumberOfTiles();
+        setAutoSaveInformation();
+    }
+
+    private void setAutoSaveInformation() {
+        Label autoSaveLabel = new Label("Auto Saving: ");
+        autoSaveLabel.setStyle("-fx-fill: white");
+        autoSaveLabel.setLayoutX(800);
+        autoSaveLabel.setLayoutY(110);
+        mainAnchorPane.getChildren().add(autoSaveLabel);
+
+        autoSaveSwitchButton = new SwitchButton();
+        autoSaveSwitchButton.setLayoutX(870);
+        autoSaveSwitchButton.setLayoutY(110);
+        mainAnchorPane.getChildren().add(autoSaveSwitchButton);
+        SwitchButtonTransition switchButtonTransition = new SwitchButtonTransition(autoSaveSwitchButton, this);
+        switchButtonTransition.play();
+
+        autoSaveRateLabel = new Label("Auto Saving Rate: ");
+        autoSaveRateLabel.setStyle("-fx-fill: white");
+        autoSaveRateLabel.setLayoutX(900);
+        autoSaveRateLabel.setLayoutY(110);
+        autoSaveRateLabel.setVisible(false);
+        mainAnchorPane.getChildren().add(autoSaveRateLabel);
+
+        autoSaveRate = new TextField();
+        autoSaveRate.setPromptText("Auto Saving Rate: ");
+        autoSaveRate.setLayoutX(970);
+        autoSaveRate.setLayoutY(110);
+        autoSaveRate.setVisible(false);
+
+        autoSaveOKButton = new Button("OK");
+        autoSaveOKButton.setLayoutX(1130);
+        autoSaveOKButton.setLayoutY(110);
+        autoSaveOKButton.setDisable(true);
+        autoSaveOKButton.setVisible(false);
+        autoSaveOKButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String text = autoSaveRate.getText();
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(text);
+                if(!matcher.matches()) {
+                    autoSaveRate.setText("");
+                    autoSaveRate.setStyle("-fx-border-color: red");
+                } else {
+                    int number = Integer.parseInt(text);
+                    if(number <= 0 || number > 10) {
+                        autoSaveRate.setText("");
+                        autoSaveRate.setStyle("-fx-border-color: red");
+                    } else {
+                        autoSave = number;
+                        autoSaveRate.setEditable(false);
+                        autoSaveSwitchButton.setDisable(true);
+                    }
+                }
+            }
+        });
+        mainAnchorPane.getChildren().add(autoSaveOKButton);
+
+        autoSaveRate.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                String text = autoSaveRate.getText();
+                autoSaveOKButton.setDisable(text.length() == 0);
+                autoSaveRate.setStyle("-fx-border-color: null");
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(text);
+                if(!matcher.matches()) {
+                    autoSaveRate.setText("");
+                }
+            }
+        });
+        mainAnchorPane.getChildren().add(autoSaveRate);
+
+    }
+
+    public void handleSwitchButton() {
+        autoSaveRateLabel.setVisible(autoSaveSwitchButton.getState());
+        autoSaveRate.setVisible(autoSaveRateLabel.isVisible());
+        autoSaveOKButton.setVisible(autoSaveRateLabel.isVisible());
     }
 
     private void setNumberOfTiles() {
@@ -244,6 +331,8 @@ public class GameMenuFXMLController {
         if(selectedUsers.size() != usersCount) {
             return false;
         } else if (tileCount == 0) {
+            return false;
+        } else if (autoSaveSwitchButton.getState() && autoSaveRate.getText().length() == 0) {
             return false;
         }
         return true;
