@@ -63,9 +63,9 @@ public class GraphicalBases {
         for (int i = 0; i < AVATARS.length; i++) {
             AVATARS[i] = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Avatars/" + (i + 1) + ".png")).toExternalForm());
         }
-//        for (String technologyName : GlobalVariables.TECHNOLOGIES) {
-//            TECHNOLOGIES.put(technologyName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/" + technologyName + ".png")).toExternalForm()));
-//        }
+        for (String technologyName : GlobalVariables.TECHNOLOGIES) {
+            TECHNOLOGIES.put(technologyName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/" + technologyName + ".png")).toExternalForm()));
+        }
         for (String unitName : GlobalVariables.UNITS) {
             UNITS.put(unitName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Units/" + unitName + ".png")).toExternalForm()));
         }
