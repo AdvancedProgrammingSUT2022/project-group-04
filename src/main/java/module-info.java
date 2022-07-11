@@ -5,6 +5,7 @@
      requires com.google.gson;
      requires java.sql;
      requires java.desktop;
+     requires org.json;
 
      opens Civilization.Database to com.google.gson;
      opens Civilization.Model to com.google.gson;
