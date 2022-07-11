@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Civilization.View.FXMLControllers.GameMenuFXMLController"
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@../../css/LoginMenuStyle.css">
+    <Rectangle fx:id="background" width="1280" height="720"/>
+    <VBox  fx:id="mainVBox" alignment="CENTER" maxWidth="300" spacing="15" layoutX="520" layoutY="200">
+        <Label text="Civilization" id="civilization"/>
+        <Label text="Project group IV" id="name"/>
+        <Label text="Username" id="label"/>
+        <TextField promptText="Enter your Username" fx:id="username" onKeyTyped="#setColorTransparent"/>
+        <Label text="Password" id="label"/>
+        <PasswordField promptText="Enter your Password" fx:id="password" onKeyTyped="#setColorTransparent"/>
+        <Label text="Nickname" fx:id="nicknameLabel" id="label"/>
+        <TextField promptText="Enter your Nickname" fx:id="nickname" onKeyTyped="#setColorTransparent"/>
+        <Button text="Register" fx:id="register" onMouseClicked="#registerButton" disable="true" styleClass="buttons"/>
+        <Button text="Already have an account?" fx:id="loginOrRegister" onMouseClicked="#ChangeRegisterOrLogin"/>
+        <Button text="Exit" styleClass="exitButton" onMouseClicked="#Exit"/>
+        <Text text="" fx:id="error"/>
+    </VBox>
+
+</AnchorPane>

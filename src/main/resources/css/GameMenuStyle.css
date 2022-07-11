@@ -38,3 +38,8 @@ lable{
     -fx-text-fill: white;
 }
 
+.tooltip{
+    -fx-background-color: #e5e56f;
+    -fx-text-fill: white;
+    -fx-font-size: 8;
+}
