@@ -66,9 +66,10 @@ public class GraphicalBases {
 //        for (String technologyName : GlobalVariables.TECHNOLOGIES) {
 //            TECHNOLOGIES.put(technologyName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/" + technologyName + ".png")).toExternalForm()));
 //        }
-//        for (String unitName : GlobalVariables.UNITS) {
-//            UNITS.put(unitName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Units/" + unitName + ".png")).toExternalForm()));
-//        }
+        for (String unitName : GlobalVariables.UNITS) {
+            System.out.println(unitName);
+            UNITS.put(unitName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Units/" + unitName + ".png")).toExternalForm()));
+        }
     }
 
     public static void login() {
