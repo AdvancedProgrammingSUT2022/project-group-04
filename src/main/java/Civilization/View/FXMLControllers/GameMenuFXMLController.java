@@ -54,6 +54,20 @@ public class GameMenuFXMLController {
     private TextField numberOfUsers;
     private int usersCount;
 
+    // information
+    private Text autoSaving;
+    private boolean isAutoSavingOn;
+    private Text autoSavingRate;
+    private boolean isAutoSavingRateOn;
+    private Text numberOfTilesInformation;
+    private boolean isNumberOfTilesOn;
+    private Text numberOfUsersInformation;
+    private boolean isNumberOfUsersOn;
+    private Text choosingUsers;
+    private boolean isChoosingUsersOn;
+    private Text listOfUsers;
+    private boolean isListOfUsersOn;
+
     @FXML
     public void initialize() {
 
@@ -68,6 +82,221 @@ public class GameMenuFXMLController {
         setNumberOfUsers();
         setNumberOfTiles();
         setAutoSaveInformation();
+        setInformation();
+    }
+
+    private void setInformation() {
+        setAutoSavingInformation();
+        setAutoSavingRateInformation();
+        setNumberOfTilesInformation();
+        setNumberOfUsersInformation();
+        setChoosingUsersInformation();
+        setListOfUsersInformation();
+    }
+
+    private void setListOfUsersInformation() {
+        listOfUsers = new Text("List of Users in Game");
+        listOfUsers.setStyle("-fx-fill: white; -fx-font-size: 20");
+        listOfUsers.setLayoutY(usersInGame.getLayoutY() - 20);
+        listOfUsers.setLayoutX(usersInGame.getLayoutX() + 100);
+        listOfUsers.setVisible(false);
+        isListOfUsersOn = false;
+        mainAnchorPane.getChildren().add(listOfUsers);
+        usersInGame.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isListOfUsersOn) {
+                    isListOfUsersOn = true;
+                    listOfUsers.setVisible(true);
+                } else {
+                    isListOfUsersOn = false;
+                    listOfUsers.setVisible(false);
+                }
+            }
+        });
+        usersInGame.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isListOfUsersOn) {
+                    isListOfUsersOn = true;
+                    listOfUsers.setVisible(true);
+                } else {
+                    isListOfUsersOn = false;
+                    listOfUsers.setVisible(false);
+                }
+            }
+        });
+    }
+
+    private void setChoosingUsersInformation() {
+        choosingUsers = new Text("List of Valid Users");
+        choosingUsers.setStyle("-fx-fill: white; -fx-font-size: 20");
+        choosingUsers.setLayoutY(users.getLayoutY());
+        choosingUsers.setLayoutX(users.getLayoutX() - 100);
+        choosingUsers.setVisible(false);
+        isChoosingUsersOn = false;
+        mainAnchorPane.getChildren().add(choosingUsers);
+        users.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isChoosingUsersOn) {
+                    isChoosingUsersOn = true;
+                    choosingUsers.setVisible(true);
+                } else {
+                    isChoosingUsersOn = false;
+                    choosingUsers.setVisible(false);
+                }
+            }
+        });
+        users.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isChoosingUsersOn) {
+                    isChoosingUsersOn = true;
+                    choosingUsers.setVisible(true);
+                } else {
+                    isChoosingUsersOn = false;
+                    choosingUsers.setVisible(false);
+                }
+            }
+        });
+    }
+
+    private void setNumberOfUsersInformation() {
+        numberOfUsersInformation = new Text("Number of Users in Game");
+        numberOfUsersInformation.setStyle("-fx-fill: white; -fx-font-size: 20");
+        numberOfUsersInformation.setLayoutY(numberOfUsers.getLayoutY());
+        numberOfUsersInformation.setLayoutX(numberOfUsers.getLayoutX() - 100);
+        numberOfUsersInformation.setVisible(false);
+        isNumberOfUsersOn = false;
+        mainAnchorPane.getChildren().add(numberOfUsersInformation);
+        numberOfUsers.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isNumberOfUsersOn) {
+                    isNumberOfUsersOn = true;
+                    numberOfUsersInformation.setVisible(true);
+                } else {
+                    isNumberOfUsersOn = false;
+                    numberOfUsersInformation.setVisible(false);
+                }
+            }
+        });
+        numberOfUsers.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isNumberOfUsersOn) {
+                    isNumberOfUsersOn = true;
+                    numberOfUsersInformation.setVisible(true);
+                } else {
+                    isNumberOfUsersOn = false;
+                    numberOfUsersInformation.setVisible(false);
+                }
+            }
+        });
+    }
+
+
+    private void setNumberOfTilesInformation() {
+        numberOfTilesInformation = new Text("Number of Tiles in a Row");
+        numberOfTilesInformation.setStyle("-fx-fill: white; -fx-font-size: 20");
+        numberOfTilesInformation.setLayoutY(numberOfTiles.getLayoutY());
+        numberOfTilesInformation.setLayoutX(numberOfTiles.getLayoutX() - 100);
+        numberOfTilesInformation.setVisible(false);
+        isNumberOfTilesOn = false;
+        mainAnchorPane.getChildren().add(numberOfTilesInformation);
+        numberOfTiles.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isNumberOfTilesOn) {
+                    isNumberOfTilesOn = true;
+                    numberOfTilesInformation.setVisible(true);
+                } else {
+                    isNumberOfTilesOn = false;
+                    numberOfTilesInformation.setVisible(false);
+                }
+            }
+        });
+        numberOfTiles.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isNumberOfTilesOn) {
+                    isNumberOfTilesOn = true;
+                    numberOfTilesInformation.setVisible(true);
+                } else {
+                    isNumberOfTilesOn = false;
+                    numberOfTilesInformation.setVisible(false);
+                }
+            }
+        });
+    }
+
+    private void setAutoSavingRateInformation() {
+        autoSavingRate = new Text("AutoSaving Rate");
+        autoSavingRate.setStyle("-fx-fill: white; -fx-font-size: 20");
+        autoSavingRate.setLayoutY(autoSaveRate.getLayoutY());
+        autoSavingRate.setLayoutX(autoSaveRate.getLayoutX() - 100);
+        autoSavingRate.setVisible(false);
+        isAutoSavingRateOn = false;
+        mainAnchorPane.getChildren().add(autoSavingRate);
+        autoSaveRate.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isAutoSavingRateOn) {
+                    isAutoSavingRateOn = true;
+                    autoSavingRate.setVisible(true);
+                } else {
+                    isAutoSavingRateOn = false;
+                    autoSavingRate.setVisible(false);
+                }
+            }
+        });
+        autoSaveRate.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isAutoSavingRateOn) {
+                    isAutoSavingRateOn = true;
+                    autoSavingRate.setVisible(true);
+                } else {
+                    isAutoSavingRateOn = false;
+                    autoSavingRate.setVisible(false);
+                }
+            }
+        });
+    }
+
+    private void setAutoSavingInformation() {
+        autoSaving = new Text("AutoSaving");
+        autoSaving.setStyle("-fx-fill: white; -fx-font-size: 20");
+        autoSaving.setLayoutY(autoSaveSwitchButton.getLayoutY());
+        autoSaving.setLayoutX(autoSaveSwitchButton.getLayoutX() - 100);
+        autoSaving.setVisible(false);
+        isAutoSavingOn = false;
+        mainAnchorPane.getChildren().add(autoSaving);
+        autoSaveSwitchButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isAutoSavingOn) {
+                    isAutoSavingOn = true;
+                    autoSaving.setVisible(true);
+                } else {
+                    isAutoSavingOn = false;
+                    autoSaving.setVisible(false);
+                }
+            }
+        });
+        autoSaveSwitchButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isAutoSavingOn) {
+                    isAutoSavingOn = true;
+                    autoSaving.setVisible(true);
+                } else {
+                    isAutoSavingOn = false;
+                    autoSaving.setVisible(false);
+                }
+            }
+        });
     }
 
     private void setAutoSaveInformation() {
@@ -239,6 +468,7 @@ public class GameMenuFXMLController {
                     } else {
                         usersCount = number;
                         numberOfUsers.setEditable(false);
+                        users.setVisible(true);
                         users.setDisable(false);
                     }
                 }
@@ -281,6 +511,7 @@ public class GameMenuFXMLController {
         ObservableList<String> usersInput = FXCollections.observableArrayList(usersNames);
         users.setItems(usersInput);
         users.setDisable(true);
+        users.setVisible(false);
 
         users.setLayoutX(800);
         users.setLayoutY(300);
