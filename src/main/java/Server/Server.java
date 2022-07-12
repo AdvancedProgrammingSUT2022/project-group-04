@@ -1,6 +1,7 @@
 package Server;
 
 import Civilization.Controller.LoginMenuController;
+import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
 import Civilization.View.Components.Account;
 import com.google.gson.JsonObject;
@@ -26,7 +27,9 @@ public class Server {
     }
 
 
-    public void startServer() {
+    public void startServer() throws IOException {
+        UserDatabase.readFromFile("UserDatabase.json");
+        LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         try {
             while (true) {
                 Socket socket = serverSocket1.accept();
@@ -34,7 +37,7 @@ public class Server {
                     try {
                         DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                         DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                        processSocketRequestLoginMenuRegister(dataInputStream1, dataOutputStream1);
+                        processSocketRequestLoginMenuRegister(dataInputStream1, dataOutputStream1, loginMenuController);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -44,7 +47,7 @@ public class Server {
                     try {
                         DataOutputStream dataOutputStream2 = new DataOutputStream(new BufferedOutputStream(socket1.getOutputStream()));
                         DataInputStream dataInputStream2 = new DataInputStream(new BufferedInputStream(socket1.getInputStream()));
-                        processSocketRequestLoginMenuLogin(dataInputStream2, dataOutputStream2);
+                        processSocketRequestLoginMenuLogin(dataInputStream2, dataOutputStream2, loginMenuController);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -55,15 +58,14 @@ public class Server {
         }
     }
 
-    private void processSocketRequestLoginMenuRegister(DataInputStream dataInputStream, DataOutputStream dataOutputStream) throws IOException {
+    private void processSocketRequestLoginMenuRegister(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController) throws IOException {
          while(true) {
              String clientCommand = dataInputStream.readUTF();
              JSONObject clientCommandJ = new JSONObject(clientCommand);
              String username = clientCommandJ.get("username").toString();
              String nickname = clientCommandJ.get("nickname").toString();
              String password = clientCommandJ.get("password").toString();
-             LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
-             System.out.println(username);
+             System.out.println(loginMenuController.isUsernameUnique("Alireza"));
              if (!loginMenuController.isUsernameUnique(username)) {
                  dataOutputStream.writeUTF("Username is not unique");
                  dataOutputStream.flush();
@@ -81,13 +83,12 @@ public class Server {
          }
     }
 
-    private void processSocketRequestLoginMenuLogin(DataInputStream dataInputStream, DataOutputStream dataOutputStream) throws IOException {
+    private void processSocketRequestLoginMenuLogin(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController) throws IOException {
         while(true) {
             String clientCommand = dataInputStream.readUTF();
             JSONObject clientCommandJ = new JSONObject(clientCommand);
             String username = clientCommandJ.get("username").toString();
             String password = clientCommandJ.get("password").toString();
-            LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
             if(!loginMenuController.isUserExists(username) || !loginMenuController.isPasswordCorrect(username, password)) {
                 dataOutputStream.writeUTF("Username and password didn't match");
                 dataOutputStream.flush();
