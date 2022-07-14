@@ -29,6 +29,7 @@ public class Server {
 
     public void startServer() throws IOException {
         UserDatabase.readFromFile("UserDatabase.json");
+        Account.readAccounts("AccountURLs.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         try {
             while (true) {
