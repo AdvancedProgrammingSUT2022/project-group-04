@@ -56,9 +56,30 @@ public class GameFXMLController {
         setStatusBar();
         setNextTurnButton();
         setBackButton();
+        setStopButton();
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+    }
+
+    private void setStopButton() {
+        Button stopButton = new Button("STOP");
+        stopButton.setLayoutY(0);
+        stopButton.setPrefHeight(40);
+        stopButton.setLayoutX(nextTurn.getLayoutX() - 100);
+        stopButton.setStyle(nextTurn.getStyle());
+        stopButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    GameDatabase.saveGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                GraphicalBases.changeMenu("GameMenu");
+            }
+        });
+        mainAnchorPane.getChildren().add(stopButton);
     }
 
     private void setTechnologyTree() {
