@@ -35,7 +35,9 @@ public class Cheater extends Menu{
     public String run(String command) {
         Matcher matcher;
         if(command.equals(CHEAT_WIN)) {
-            GraphicalBases.userLoggedIn();
+            GameDatabase.cheated = true;
+            GameDatabase.cheatedCivilization = GameDatabase.getCivilizationByTurn(turn);
+            GraphicalBases.enterGame("Win");
             return "Success!";
         } else if ((matcher = getCommandMatcher(command, CHEAT_TURN_BY_NAME)) != null) {
             String result = changeTurn(matcher);
