@@ -293,6 +293,10 @@ public class City extends Tile {
         return leftoverFood;
     }
 
+    public void setLeftoverFood(int leftoverFood) {
+        this.leftoverFood = leftoverFood;
+    }
+
     public int getProduction() {
         return production;
     }
