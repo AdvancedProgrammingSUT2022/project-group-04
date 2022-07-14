@@ -59,42 +59,58 @@ public class Server {
     }
 
     private void processSocketRequestLoginMenuRegister(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController) throws IOException {
-         while(true) {
-             String clientCommand = dataInputStream.readUTF();
-             JSONObject clientCommandJ = new JSONObject(clientCommand);
-             String username = clientCommandJ.get("username").toString();
-             String nickname = clientCommandJ.get("nickname").toString();
-             String password = clientCommandJ.get("password").toString();
-             System.out.println(loginMenuController.isUsernameUnique("Alireza"));
-             if (!loginMenuController.isUsernameUnique(username)) {
-                 dataOutputStream.writeUTF("Username is not unique");
-                 dataOutputStream.flush();
-                 System.out.println("salam salam");
-             } else if (!loginMenuController.isNicknameUnique(nickname)) {
-                 dataOutputStream.writeUTF("Nickname is not unique");
-                 dataOutputStream.flush();
-             } else {
-                 loginMenuController.userCreate(username, nickname, password);
-                 createAccount(username);
-                 dataOutputStream.writeUTF("Registered successfully");
-                 dataOutputStream.flush();
+        boolean disconnected = true;
+        while(true) {
+             try{
+                 String clientCommand = dataInputStream.readUTF();
+                 JSONObject clientCommandJ = new JSONObject(clientCommand);
+                 String username = clientCommandJ.get("username").toString();
+                 String nickname = clientCommandJ.get("nickname").toString();
+                 String password = clientCommandJ.get("password").toString();
+                 System.out.println(loginMenuController.isUsernameUnique("Alireza"));
+                 if (!loginMenuController.isUsernameUnique(username)) {
+                     dataOutputStream.writeUTF("Username is not unique");
+                     dataOutputStream.flush();
+                     System.out.println("salam salam");
+                 } else if (!loginMenuController.isNicknameUnique(nickname)) {
+                     dataOutputStream.writeUTF("Nickname is not unique");
+                     dataOutputStream.flush();
+                 } else {
+                     loginMenuController.userCreate(username, nickname, password);
+                     createAccount(username);
+                     dataOutputStream.writeUTF("Registered successfully");
+                     dataOutputStream.flush();
+                 }
+             } catch (Exception e) {
+                 if(disconnected) {
+                     System.out.println("Client disconnected");
+                     disconnected = false;
+                 }
              }
 
          }
     }
 
     private void processSocketRequestLoginMenuLogin(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController) throws IOException {
+        boolean disconnected = true;
         while(true) {
-            String clientCommand = dataInputStream.readUTF();
-            JSONObject clientCommandJ = new JSONObject(clientCommand);
-            String username = clientCommandJ.get("username").toString();
-            String password = clientCommandJ.get("password").toString();
-            if(!loginMenuController.isUserExists(username) || !loginMenuController.isPasswordCorrect(username, password)) {
-                dataOutputStream.writeUTF("Username and password didn't match");
-                dataOutputStream.flush();
-            } else {
-                dataOutputStream.writeUTF("success");
-                dataOutputStream.flush();
+            try{
+                String clientCommand = dataInputStream.readUTF();
+                JSONObject clientCommandJ = new JSONObject(clientCommand);
+                String username = clientCommandJ.get("username").toString();
+                String password = clientCommandJ.get("password").toString();
+                if(!loginMenuController.isUserExists(username) || !loginMenuController.isPasswordCorrect(username, password)) {
+                    dataOutputStream.writeUTF("Username and password didn't match");
+                    dataOutputStream.flush();
+                } else {
+                    dataOutputStream.writeUTF("success");
+                    dataOutputStream.flush();
+                }
+            } catch (Exception e) {
+                if(disconnected) {
+                    System.out.println("Please try again");
+                    disconnected = false;
+                }
             }
         }
     }
