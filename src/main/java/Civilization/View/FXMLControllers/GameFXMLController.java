@@ -1,35 +1,22 @@
 package Civilization.View.FXMLControllers;
 
-import Civilization.Controller.CombatController;
-import Civilization.Controller.GameMenuController;
-import Civilization.Controller.MainMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Model.*;
 import Civilization.View.*;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class GameFXMLController {
 
@@ -65,13 +52,40 @@ public class GameFXMLController {
 
     @FXML
     public void initialize() {
-        turn = 0;
+        turn = GameDatabase.getTurn();
         setStatusBar();
         setNextTurnButton();
         setBackButton();
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+    }
+
+    private void setTechnologyTree() {
+        Button technologyTree = new Button("Technology Tree");
+        technologyTree.setPrefWidth(infoPanel.getWidth());
+        technologyTree.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        technologyTree.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("E inja ro hanooz nazadim ke :(");
+                // TODO go to technology tree
+            }
+        });
+        infoPanelVBox.getChildren().add(technologyTree);
+    }
+
+    private void setGameDiscussion() {
+        Button discussion = new Button("Game Discussion");
+        discussion.setPrefWidth(infoPanel.getWidth());
+        discussion.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        discussion.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.enterGame("Discussion");
+            }
+        });
+        infoPanelVBox.getChildren().add(discussion);
     }
 
     private void setBackButton() {
@@ -128,6 +142,10 @@ public class GameFXMLController {
         technologyUnderSearch.setWidth(150);
         technologyUnderSearch.setHeight(technologyUnderSearch.getWidth());
         infoPanelVBox.getChildren().add(technologyUnderSearch);
+
+        setTechnologyTree();
+        setGameDiscussion();
+
         unitSelected = new Rectangle();
         unitSelected.setWidth(150);
         unitSelected.setHeight(unitSelected.getWidth());

@@ -21,6 +21,7 @@ public class Civilization {
     private boolean isInWar = false;
     private Civilization isInWarWith;
     private Unit selectedUnit;
+    private ArrayList<String> messages;
 
     @Override
     public String toString() {
@@ -45,6 +46,10 @@ public class Civilization {
         return happiness;
     }
 
+    public ArrayList<String> getMessages() {
+        return messages;
+    }
+
     public Civilization(String username, String nickname) {
         this.username = username;
         this.nickname = nickname;
@@ -57,6 +62,7 @@ public class Civilization {
         this.technologies = new ArrayList<Technology>();
         this.happiness = GlobalVariables.firstHappiness * GameDatabase.players.size();
         this.science = 0;
+        this.messages = new ArrayList<>();
 
     }
 

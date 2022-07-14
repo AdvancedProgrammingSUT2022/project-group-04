@@ -76,6 +76,7 @@ public class GameDatabase {
     }
 
     public static void setPlayers(ArrayList<Civilization> players) {
+        GameDatabase.turn = 0;
         GameDatabase.players = players;
     }
 
