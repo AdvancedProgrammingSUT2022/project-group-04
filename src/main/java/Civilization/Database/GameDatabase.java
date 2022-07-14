@@ -23,6 +23,7 @@ public class GameDatabase {
     private static final int length = 50;
     private static final int width = 50;
     public static int turn = 0;
+    public static int year = 0;
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
 
@@ -30,13 +31,15 @@ public class GameDatabase {
         private int length;
         private int width;
         private int turn;
+        private int year;
         private ArrayList<String> mapData;
         private ArrayList<String> civilizationData;
 
-        public SavingData(int length, int width, int turn, ArrayList<Civilization> players, ArrayList<Tile> map) {
+        public SavingData(int length, int width, int turn, int year, ArrayList<Civilization> players, ArrayList<Tile> map) {
             this.length = length;
             this.width = width;
             this.turn = turn;
+            this.year = year;
             mapData = new ArrayList<>();
             civilizationData = new ArrayList<>();
             setMapData(players, map);
@@ -79,11 +82,18 @@ public class GameDatabase {
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.turn = 0;
+        GameDatabase.year = 0;
         GameDatabase.cheated = false;
         GameDatabase.cheatedCivilization = null;
         GameDatabase.players = players;
         for (Civilization civilization : players) {
             civilization.setHappiness(GlobalVariables.firstHappiness * GameDatabase.players.size());
+            if(civilization.getNickname().equals(User.loggedInUser.getNickname())) {
+                civilization.getMessages().add("It's your game, Good luck ;)");
+            } else {
+                civilization.getMessages().add("You have an invitation from " + User.loggedInUser.getNickname());
+            }
+
         }
     }
 
@@ -363,6 +373,7 @@ public class GameDatabase {
         if (turn != GameDatabase.players.size() - 1) {
             return turn + 1;
         }
+        year++;
         return 0;
     }
 
@@ -430,7 +441,7 @@ public class GameDatabase {
     }
 
     public static void saveGame() throws IOException {
-        SavingData savingData = new SavingData(length, width, turn, players, map);
+        SavingData savingData = new SavingData(length, width, turn, year, players, map);
 
         // saving information;
         Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
@@ -441,6 +452,9 @@ public class GameDatabase {
     }
 
     public static Civilization checkIfWin() {
+        if(GameDatabase.year == 2050) {
+            return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
+        }
         if(GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
             return cheatedCivilization;
         }

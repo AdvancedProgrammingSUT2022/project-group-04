@@ -390,8 +390,8 @@ public class DiscussionFXMLController {
     }
 
     private void writeMessages() {
-        if(GameDatabase.getCivilizationByNickname(you).getMessages().size() == 0) {
-            messagePart.setText(defaultText + "No Messages Yet.");
+        if(GameDatabase.getCivilizationByNickname(you).getMessages().size() == 1) {
+            messagePart.setText(defaultText + GameDatabase.getCivilizationByNickname(you).getMessages().get(0) + "\nNo Messages Yet.");
         } else {
             String text = defaultText;
             for (String message : GameDatabase.getCivilizationByNickname(you).getMessages()) {
