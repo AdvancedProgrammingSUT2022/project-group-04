@@ -23,6 +23,8 @@ public class GameDatabase {
     private static final int length = 50;
     private static final int width = 50;
     public static int turn = 0;
+    public static boolean cheated = false;
+    public static Civilization cheatedCivilization = null;
 
     public static class SavingData{
         private int length;
@@ -77,7 +79,12 @@ public class GameDatabase {
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.turn = 0;
+        GameDatabase.cheated = false;
+        GameDatabase.cheatedCivilization = null;
         GameDatabase.players = players;
+        for (Civilization civilization : players) {
+            civilization.setHappiness(GlobalVariables.firstHappiness * GameDatabase.players.size());
+        }
     }
 
     /**
@@ -431,5 +438,21 @@ public class GameDatabase {
         Writer writer = Files.newBufferedWriter(userPath);
         gsonBuilder.toJson(savingData, writer);
         writer.close();
+    }
+
+    public static Civilization checkIfWin() {
+        if(GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
+            return cheatedCivilization;
+        }
+        if(players.size() == 1) {
+            return players.get(0);
+        } else {
+            for (Civilization civilization : players) {
+                if(civilization.getTechnologies().size() == GlobalVariables.TECHNOLOGIES.length) {
+                    return civilization;
+                }
+            }
+        }
+        return null;
     }
 }
