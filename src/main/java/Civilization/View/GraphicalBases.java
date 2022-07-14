@@ -46,9 +46,10 @@ public class GraphicalBases {
     public static final Image INFO_PANEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/InfoPanel/infoPanel.png")).toExternalForm());
     public static final Image NULL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Technologies/null.png")).toExternalForm());
 
-    // Technologies
-    public static HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
-    public static HashMap<String, Image> UNITS = new HashMap<>();
+    // Game
+    public static final HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
+    public static final HashMap<String, Image> UNITS = new HashMap<>();
+    public static final HashMap<String, Image> BUILDINGS = new HashMap<>();
 
     public static void firstLogin() {
         GraphicalBases.start();
@@ -68,6 +69,9 @@ public class GraphicalBases {
         }
         for (String unitName : GlobalVariables.UNITS) {
             UNITS.put(unitName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Units/" + unitName + ".png")).toExternalForm()));
+        }
+        for (String buildingName : GlobalVariables.BUILDINGS) {
+            BUILDINGS.put(buildingName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/" + buildingName + ".png")).toExternalForm()));
         }
     }
 

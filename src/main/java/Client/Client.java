@@ -19,7 +19,8 @@ public class Client {
             dataInputStream1 = new DataInputStream(socket1.getInputStream());
             dataOutputStream1 = new DataOutputStream(socket1.getOutputStream());
         } catch (IOException e){
-            e.printStackTrace();
+            System.out.println("Connection lost");
+            System.exit(5);
         }
     }
     public static void setupSocketConnectionLogin(){
