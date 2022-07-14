@@ -46,6 +46,14 @@ public class Civilization {
         return happiness;
     }
 
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public void setScience(int science) {
+        this.science = science;
+    }
+
     public ArrayList<String> getMessages() {
         return messages;
     }
