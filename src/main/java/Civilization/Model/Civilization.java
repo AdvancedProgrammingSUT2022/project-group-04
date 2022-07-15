@@ -21,19 +21,23 @@ public class Civilization {
     private boolean isInWar = false;
     private Civilization isInWarWith;
     private Unit selectedUnit;
+    private ArrayList<String> messages;
 
     @Override
     public String toString() {
-        String result = this.nickname + " " + this.username;
-        result += "\n Happiness = " + this.happiness;
-        result += "\n Science = " + this.science;
-        result += "\n Gold = " + this.gold;
+        String result = this.nickname;
+        result += "\n\t Happiness = " + this.happiness;
+        result += "\n\t Science = " + this.science;
+        result += "\n\t Gold = " + this.gold;
+        result += "\n\t Population = " + getPopulation();
+        result += "\n\t Size = " + this.tiles.size();
         if(technologies.size() != 0) {
-            result += "\n Technologies = \n";
+            result += "\n\t Technologies = \n";
             for (Technology technology : technologies) {
-                result += technology.getName() + " " + technology.wasReached() + "\n";
+                result +=  "\t\t" + technology.getName() + " " + technology.wasReached() + "\n";
             }
         }
+        result += "\n\t Total Score = " + getFinalScore();
         return result;
     }
 
@@ -43,6 +47,22 @@ public class Civilization {
 
     public int getHappiness() {
         return happiness;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public void setScience(int science) {
+        this.science = science;
+    }
+
+    public ArrayList<String> getMessages() {
+        return messages;
+    }
+
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
     }
 
     public Civilization(String username, String nickname) {
@@ -55,8 +75,9 @@ public class Civilization {
         this.cities = new ArrayList<City>();
         this.gold = 0;
         this.technologies = new ArrayList<Technology>();
-        this.happiness = GlobalVariables.firstHappiness * GameDatabase.players.size();
+        this.happiness = 0;
         this.science = 0;
+        this.messages = new ArrayList<>();
 
     }
 
@@ -417,5 +438,17 @@ public class Civilization {
     public ArrayList<Tile> getFriendlyTiles() {
         ArrayList<Tile> friendlyTiles = new ArrayList<>();
         return friendlyTiles;
+    }
+
+    public int getPopulation() {
+        int population = 0;
+        for (City city : this.cities) {
+            population += city.getUnits().size() + city.getCitizens().size();
+        }
+        return population;
+    }
+
+    public int getFinalScore() {
+        return this.score + this.tiles.size() + this.cities.size() + getPopulation() + this.technologies.size();
     }
 }

@@ -360,5 +360,37 @@ public class Technology {
         Notification notification = new Notification(source, destination, text);
         Notification.addNotification(notification);
     }
+
+    public ArrayList<Technology> getLeadingTechnologies() {
+        ArrayList<Technology> leadingTechnologies = new ArrayList<>();
+        for (String technologyName : GlobalVariables.TECHNOLOGIES) {
+            Technology technology = new Technology(technologyName);
+            for (Technology prerequisiteTechnology : technology.getPrerequisiteTechnologies()) {
+                if(prerequisiteTechnology.getName().equals(this.getName())) {
+                    leadingTechnologies.add(technology);
+                }
+            }
+        }
+        return leadingTechnologies;
+    }
+
+    public static int getMaxLevel() {
+        Technology first = new Technology(GlobalVariables.TECHNOLOGIES[0]);
+        return first.getLeadingMaxLevel(1);
+    }
+
+    private int getLeadingMaxLevel(int level) {
+        if(getLeadingTechnologies().size() == 0) {
+            return level;
+        }
+        int maxLevel = 0;
+        for (Technology leadingTechnology : getLeadingTechnologies()) {
+            int subLevel = leadingTechnology.getLeadingMaxLevel(level + 1);
+            if(subLevel > maxLevel) {
+                maxLevel = subLevel;
+            }
+        }
+        return maxLevel;
+    }
 }
 

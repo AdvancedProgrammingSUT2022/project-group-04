@@ -1,6 +1,9 @@
 package Civilization;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Scanner;
@@ -12,6 +15,7 @@ import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.MainMenu;
+import Client.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,8 +24,9 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-
     public static void main(String[] args) throws IOException {
+        Client.setupSocketConnectionRegister();
+        Client.setupSocketConnectionLogin();
         launch(args);
     }
 

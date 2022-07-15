@@ -24,6 +24,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +47,10 @@ public class GameMenuFXMLController {
     private SwitchButton autoSaveSwitchButton;
     private Label autoSaveRateLabel;
     private Button autoSaveOKButton;
+    private Button saveButton;
+
+    // game speed
+    private SwitchButton speed;
 
     // searching users
     private ChoiceBox<String> users;
@@ -66,6 +72,10 @@ public class GameMenuFXMLController {
     private boolean isChoosingUsersOn;
     private Text listOfUsers;
     private boolean isListOfUsersOn;
+    private Text savingGame;
+    private boolean isSavingGameOn;
+    private Text speedInformation;
+    private boolean isSpeedOn;
 
     @FXML
     public void initialize() {
@@ -81,7 +91,53 @@ public class GameMenuFXMLController {
         setNumberOfUsers();
         setNumberOfTiles();
         setAutoSaveInformation();
+        setPlayingSavedGame();
+        setSpeed();
         setInformation();
+    }
+
+    private void setSpeed() {
+        speed = new SwitchButton();
+        Label label = new Label("X2 Speed: ");
+        label.setStyle("-fx-fill: white");
+        label.setLayoutX(800);
+        label.setLayoutY(40);
+        speed.setLayoutX(860);
+        speed.setLayoutY(40);
+
+        mainAnchorPane.getChildren().add(label);
+        mainAnchorPane.getChildren().add(speed);
+    }
+
+    private void setPlayingSavedGame() {
+        saveButton = new Button("Playing Saved Game");
+        saveButton.setPrefWidth(200);
+        saveButton.setLayoutX(800);
+        saveButton.setLayoutY(70);
+        saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // TODO playing saved, stopped game
+
+                // test
+                Set<String> usernames = new HashSet<>();
+                usernames.add("sepehr");
+                usernames.add("alirezaRM");
+                selectedUsers = usernames;
+                runGame();
+                GraphicalBases.enterGame("Game");
+                //
+            }
+        });
+
+        saveButton.setVisible(isFileValid("savedMap.json"));
+
+        mainAnchorPane.getChildren().add(saveButton);
+    }
+
+    private boolean isFileValid(String fileName) {
+        Path userPath = Paths.get(fileName);
+        return userPath.toFile().isFile();
     }
 
     private void setInformation() {
@@ -91,6 +147,76 @@ public class GameMenuFXMLController {
         setNumberOfUsersInformation();
         setChoosingUsersInformation();
         setListOfUsersInformation();
+        setSavingGameInformation();
+        setSpeedInformation();
+    }
+
+    private void setSpeedInformation() {
+        speedInformation = new Text("Speed of game");
+        speedInformation.setStyle("-fx-fill: white; -fx-font-size: 20");
+        speedInformation.setLayoutY(speed.getLayoutY() - 10);
+        speedInformation.setLayoutX(speed.getLayoutX());
+        speedInformation.setVisible(false);
+        isSpeedOn = false;
+        mainAnchorPane.getChildren().add(speedInformation);
+        speed.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isSpeedOn) {
+                    isSpeedOn= true;
+                    speedInformation.setVisible(true);
+                } else {
+                    isSpeedOn = false;
+                    speedInformation.setVisible(false);
+                }
+            }
+        });
+        speed.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isSpeedOn) {
+                    isSpeedOn= true;
+                    speedInformation.setVisible(true);
+                } else {
+                    isSpeedOn = false;
+                    speedInformation.setVisible(false);
+                }
+            }
+        });
+    }
+
+    private void setSavingGameInformation() {
+        savingGame = new Text("Playing a saved Game");
+        savingGame.setStyle("-fx-fill: white; -fx-font-size: 20");
+        savingGame.setLayoutY(saveButton.getLayoutY() - 10);
+        savingGame.setLayoutX(saveButton.getLayoutX());
+        savingGame.setVisible(false);
+        isSavingGameOn = false;
+        mainAnchorPane.getChildren().add(savingGame);
+        saveButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isSavingGameOn) {
+                    isSavingGameOn= true;
+                    savingGame.setVisible(true);
+                } else {
+                    isSavingGameOn = false;
+                    savingGame.setVisible(false);
+                }
+            }
+        });
+        saveButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isSavingGameOn) {
+                    isSavingGameOn= true;
+                    savingGame.setVisible(true);
+                } else {
+                    isSavingGameOn = false;
+                    savingGame.setVisible(false);
+                }
+            }
+        });
     }
 
     private void setListOfUsersInformation() {
