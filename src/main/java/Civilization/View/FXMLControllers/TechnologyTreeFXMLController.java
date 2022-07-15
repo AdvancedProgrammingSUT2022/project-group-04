@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -18,6 +19,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 public class TechnologyTreeFXMLController {
 
@@ -39,7 +42,14 @@ public class TechnologyTreeFXMLController {
 
     private void setTree() {
         HBox hBox = drawTree();
-        mainScrollPane = new ScrollPane(hBox);
+        Rectangle rectangle = new Rectangle();
+        rectangle.setFill(new ImagePattern(GraphicalBases.TREE));
+        rectangle.setWidth(6195);
+        rectangle.setHeight(567);
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(rectangle);
+        anchorPane.getChildren().add(hBox);
+        mainScrollPane = new ScrollPane(anchorPane);
         mainScrollPane.setLayoutX(50);
         mainScrollPane.setLayoutY(50);
         mainScrollPane.setPrefWidth(1180);
@@ -48,9 +58,12 @@ public class TechnologyTreeFXMLController {
     }
 
     private HBox drawTree() {
+        int x = 60;
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         for (int i = 0; i < GlobalVariables.TECHNOLOGIES.length; i++) {
+            System.out.println((i+1) + "-" + x);
+            x += 120 + 10;
             boolean disable = false;
             VBox vBox = new VBox();
             vBox.setSpacing(10);
@@ -79,7 +92,7 @@ public class TechnologyTreeFXMLController {
             }
             vBox.getChildren().add(circle);
             Text text = new Text(technology.getName());
-            text.setStyle("-fx-font-size: 15");
+            text.setStyle("-fx-fill: Red; -fx-font-size: 15");
             vBox.getChildren().add(text);
             for (Technology leadingTechnology : technology.getLeadingTechnologies()) {
                 Circle leadingCircle = new Circle(30);
