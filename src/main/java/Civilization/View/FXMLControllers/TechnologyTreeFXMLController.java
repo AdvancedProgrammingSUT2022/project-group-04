@@ -45,7 +45,7 @@ public class TechnologyTreeFXMLController {
         Rectangle rectangle = new Rectangle();
         rectangle.setFill(new ImagePattern(GraphicalBases.TREE));
         rectangle.setWidth(6195);
-        rectangle.setHeight(567);
+        rectangle.setHeight(564);
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().add(rectangle);
         anchorPane.getChildren().add(hBox);
@@ -62,7 +62,6 @@ public class TechnologyTreeFXMLController {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         for (int i = 0; i < GlobalVariables.TECHNOLOGIES.length; i++) {
-            System.out.println((i+1) + "-" + x);
             x += 120 + 10;
             boolean disable = false;
             VBox vBox = new VBox();
@@ -90,10 +89,10 @@ public class TechnologyTreeFXMLController {
                     circle.setStroke(Color.BLUE);
                 }
             }
-            vBox.getChildren().add(circle);
             Text text = new Text(technology.getName());
             text.setStyle("-fx-fill: Red; -fx-font-size: 15");
             vBox.getChildren().add(text);
+            vBox.getChildren().add(circle);
             for (Technology leadingTechnology : technology.getLeadingTechnologies()) {
                 Circle leadingCircle = new Circle(30);
                 leadingCircle.setStroke(circle.getStroke());

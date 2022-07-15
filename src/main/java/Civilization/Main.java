@@ -8,12 +8,15 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.Scanner;
 
+import Civilization.Controller.LoginMenuController;
 import Civilization.Controller.MainMenuController;
 import Civilization.Database.UserDatabase;
+import Civilization.Model.LoginMenuModel;
 import Civilization.Model.MainMenuModel;
 import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
+import Civilization.View.LoginMenu;
 import Civilization.View.MainMenu;
 import Client.Client;
 import javafx.application.Application;
@@ -44,13 +47,15 @@ public class Main extends Application {
 //        MainMenuModel mainMenuModel = new MainMenuModel();
 //        MainMenuController mainMenuController = new MainMenuController(mainMenuModel);
 //        MainMenu mainMenu = new MainMenu(mainMenuController);
-
+//
+//        LoginMenu loginMenu = new LoginMenu(new LoginMenuController(new LoginMenuModel()));
+//
 //        while (true) {
-//            loggedInUser = loginMenu.run(scanner);
-//            if (loggedInUser == null) {
+//            User.loggedInUser = loginMenu.run(scanner);
+//            if (User.loggedInUser == null) {
 //                break;
 //            }
-//            mainMenu.run(scanner, loggedInUser);
+//            mainMenu.run(scanner, User.loggedInUser);
 //        }
 
         UserDatabase.writeInFile("UserDatabase.json");
