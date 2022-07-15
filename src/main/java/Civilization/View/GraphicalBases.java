@@ -32,6 +32,7 @@ public class GraphicalBases {
     public static final Image KING_DAVID = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/KingDavidStatue.png")).toExternalForm());
     public static final Image EZEKIEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/RaphaelEzekiel'sVision1518.jpg")).toExternalForm());
     public static final Image WIN = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/win.jpg")).toExternalForm());
+    public static final Image OVERVIEWS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Overviews.jpg")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;

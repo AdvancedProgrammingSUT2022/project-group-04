@@ -120,13 +120,27 @@ public class Info {
         }
     }
 
-    private void printEconomy(int turn) {
+    private String printEconomy(int turn) {
+        String result = "";
         for (City city : GameDatabase.players.get(turn).getCities()) {
-            System.out.println(city);
+            result += city.toString();
+            if(city.getBuildings().size() != 0) {
+                result += "\n\t Buildings: ";
+            }
             for (Building building : city.getBuildings()) {
-                System.out.println(building);
+                result += "\n\t" + building.toString();
             }
         }
+        return result;
+    }
+
+    public String infoEconomy(int turn) {
+        String result = GameDatabase.getCivilizationByTurn(turn).getNickname() + "\n";
+        result += "Your science is " + Integer.toString(GameDatabase.players.get(turn).getScience()) + "\n";
+        result += "Your happiness is " + Integer.toString(GameDatabase.players.get(turn).getHappiness()) + "\n";
+        result += "Your population is " + Integer.toString(GameDatabase.players.get(turn).getPopulation()) + "\n";
+        result += printEconomy(turn);
+        return result;
     }
 
     public void infoEconomy(int turn, Scanner scanner) {
@@ -188,6 +202,20 @@ public class Info {
                 }
             }
         }
+    }
+
+    public String infoMilitary(int turn) {
+        String result = GameDatabase.getCivilizationByTurn(turn).getNickname() + "\n";
+        ArrayList<Unit> soldiers = getSoldiers(new GameMenuController(new GameModel()), turn);
+        if (soldiers.size() == 0) {
+            result += "No Soldiers";
+            return result;
+        }
+        result += "Soldiers:\n";
+        for (Unit soldier : soldiers) {
+            result += "\t" + soldier.toString() + "\n";
+        }
+        return  result;
     }
 
     public void infoMilitary(GameMenuController gameMenuController, int turn) {
