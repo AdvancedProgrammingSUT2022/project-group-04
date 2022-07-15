@@ -1,6 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
+import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
 import Civilization.View.*;
 import javafx.event.EventHandler;
@@ -89,8 +90,7 @@ public class GameFXMLController {
         technologyTree.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("E inja ro hanooz nazadim ke :(");
-                // TODO go to technology tree
+                GraphicalBases.enterGame("TechnologyTree");
             }
         });
         infoPanelVBox.getChildren().add(technologyTree);
