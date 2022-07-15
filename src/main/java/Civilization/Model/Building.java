@@ -338,12 +338,20 @@ public class Building {
         }
     }
 
-    private void sendNotification() {
+    private void sendNotificationInCLI() {
         String source = GlobalVariables.SYSTEM_NAME;
         String text = "Building " + this.name + " was built on city " + this.cityName;
         String destination = GameDatabase.getCivilizationForCity(cityName).getNickname();
         Notification notification = new Notification(source, destination, text);
         Notification.addNotification(notification);
+    }
+
+    private void sendNotification() {
+        Civilization civilization = GameDatabase.getCivilizationForCity(cityName);
+        String message = GlobalVariables.SYSTEM_NAME + " notification:\n";
+        message += "\tBuilding " + this.name + " was built on city " + this.cityName;
+        civilization.getMessages().add(message);
+
     }
 
     public boolean wasBuilt() {
