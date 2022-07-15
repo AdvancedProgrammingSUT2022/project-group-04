@@ -1,0 +1,44 @@
+AnchorPane{
+    -fx-background-image: url("../pics/Menus/LeaderboardBackground.png");
+}
+
+.tile{
+     -fx-fill: white;
+     -fx-font-size: 50;
+}
+
+.miniTile{
+     -fx-fill: white;
+     -fx-font-size: 30;
+}
+
+.startGame{
+    -fx-font-size: 40;
+    -fx-border-radius: 100;
+    -fx-background-radius: 100;
+    -fx-background-color: #222c41;
+    -fx-border-width: 5;
+    -fx-border-color: #555564;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-tile-alignment: center;
+}
+
+.nameAndScores{
+    -fx-font-size: 17;
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+.lastLogin{
+    -fx-font-size: 10;
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+.backButton{
+    -fx-background-color: #222c41;
+    -fx-border-color: #555564;
+    -fx-text-fill: white;
+    -fx-border-width: 3;
+}

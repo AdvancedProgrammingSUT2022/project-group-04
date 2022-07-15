@@ -46,11 +46,15 @@ public class MainMenuFXMLController {
     }
 
     public void goToGameMenu(MouseEvent mouseEvent) {
+        GraphicalBases.changeMenu("GameMenu");
+        //GraphicalBases.enterGame("Game");
     }
 
     public void goToScoreboard(MouseEvent mouseEvent) {
+        GraphicalBases.changeMenu("LeaderBoard");
     }
 
     public void goToChatroom(MouseEvent mouseEvent) {
+        GraphicalBases.changeMenu("Chatroom");
     }
 }

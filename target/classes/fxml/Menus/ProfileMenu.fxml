@@ -11,8 +11,27 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="Civilization.View.FXMLControllers.ProfileMenuFXMLController"
-            prefHeight="720" prefWidth="1280" stylesheets="@../../css/LoginMenuStyle.css">
+            prefHeight="720" prefWidth="1280" stylesheets="@../../css/ProfileMenuStyle.css">
 
     <Rectangle fx:id="background" width="1280" height="720"/>
     <VBox fx:id="avatarVBox" maxWidth="100" spacing="15" layoutX="70" layoutY="70"/>
+    <Label text="" fx:id="userLabel" id="label" layoutX="300" layoutY="50"/>
+    <VBox minWidth="400" spacing="10" layoutX="200" layoutY="400">
+        <Button fx:id="changeNickname" text="Change Nickname" onMouseClicked="#openNicknameTextField" minWidth="400"/>
+        <HBox>
+            <TextField fx:id="changeNicknameTextField" promptText="Enter your new Nickname" onKeyTyped="#visibleOkNickname" visible="false" minWidth="300"/>
+            <Button fx:id="nicknameOKButton" text="OK" onMouseClicked="#changeNickname" visible="false" disable="true" minWidth="100"/>
+        </HBox>
+        <Text text="" fx:id="nicknameError"/>
+    </VBox>
+    <VBox minWidth="400" spacing="10" layoutX="700" layoutY="400">
+        <Button fx:id="changePassword" text="Change Password" onMouseClicked="#openPasswordTextField" minWidth="400"/>
+        <PasswordField fx:id="currentPasswordTextField" promptText="Enter your current password" onKeyTyped="#visibleOkPassword" visible="false" minWidth="400"/>
+        <HBox>
+            <PasswordField fx:id="newPasswordTextField" promptText="Enter your new password" onKeyTyped="#visibleOkPassword" visible="false" minWidth="300"/>
+            <Button fx:id="passwordOKButton" text="OK" onMouseClicked="#changePassword" visible="false" disable="true" minWidth="100"/>
+        </HBox>
+        <Text text="" fx:id="passwordError"/>
+    </VBox>
+    <Button text="Back" layoutX="200" layoutY="550" minWidth="200" onMouseClicked="#BackToMainMenu"/>
 </AnchorPane>

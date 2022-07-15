@@ -1,10 +1,19 @@
 package Civilization.Database;
 
 import Civilization.Model.*;
+import Civilization.View.FXMLControllers.GameFXMLController;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameDatabase {
@@ -13,6 +22,58 @@ public class GameDatabase {
     public static ArrayList<Tile> map = new ArrayList<Tile>();
     private static final int length = 50;
     private static final int width = 50;
+    public static int turn = 0;
+
+    public static class SavingData{
+        private int length;
+        private int width;
+        private int turn;
+        private ArrayList<String> mapData;
+        private ArrayList<String> civilizationData;
+
+        public SavingData(int length, int width, int turn, ArrayList<Civilization> players, ArrayList<Tile> map) {
+            this.length = length;
+            this.width = width;
+            this.turn = turn;
+            mapData = new ArrayList<>();
+            civilizationData = new ArrayList<>();
+            setMapData(players, map);
+            setCivilizationData(players);
+        }
+
+        private void setCivilizationData(ArrayList<Civilization> players) {
+            for (Civilization civilization : players) {
+                civilizationData.add(civilization.toString());
+            }
+        }
+
+        private void setMapData(ArrayList<Civilization> players, ArrayList<Tile> map) {
+            for (Tile tile : map) {
+                String tileData = tile.toString();
+                if(GameDatabase.getCivilizationByTile(tile) != null) {
+                    tileData += " " + Objects.requireNonNull(GameDatabase.getCivilizationByTile(tile)).getNickname();
+                }
+                if(GameDatabase.getCityByXAndY(tile.getX(), tile.getY()) != null) {
+                    tileData += " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getName() +
+                            " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getCivilizationName();
+                }
+                mapData.add(tileData);
+            }
+
+        }
+
+        public int getLength() {
+            return length;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getTurn() {
+            return turn;
+        }
+    }
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.players = players;
@@ -284,9 +345,21 @@ public class GameDatabase {
     }
 
     public static void nextTurn() {
+        setTurn(calculateNextTurn());
         for (Civilization player : GameDatabase.players) {
             player.nextTurn();
         }
+    }
+
+    private static int calculateNextTurn() {
+        if (turn != GameDatabase.players.size() - 1) {
+            return turn + 1;
+        }
+        return 0;
+    }
+
+    public static int getTurn() {
+        return turn;
     }
 
     public static Civilization getCivilizationByTurn(int turn) {
@@ -336,5 +409,26 @@ public class GameDatabase {
             return true;
         }
         return false;
+    }
+
+    public static void setTurn(int newTurn) {
+        turn = newTurn;
+        GameFXMLController.turn = turn;
+    }
+
+    public static User getUserForCivilization(String civilizationName) {
+        String username = Objects.requireNonNull(getCivilizationByNickname(civilizationName)).getUsername();
+        return UserDatabase.getUserByUsername(username);
+    }
+
+    public static void saveGame() throws IOException {
+        SavingData savingData = new SavingData(length, width, turn, players, map);
+
+        // saving information;
+        Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
+        Path userPath = Paths.get("savedMap.json");
+        Writer writer = Files.newBufferedWriter(userPath);
+        gsonBuilder.toJson(savingData, writer);
+        writer.close();
     }
 }

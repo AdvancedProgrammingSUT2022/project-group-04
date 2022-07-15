@@ -5,7 +5,7 @@
     "password": "123456aA",
     "score": 0,
     "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
-    "lastLoginTime": "Sat*_Jun_04_2022_16^51^16"
+    "lastLoginTime": "Mon*_12^56^05"
   },
   {
     "username": "alirezaRM",
@@ -41,10 +41,26 @@
   },
   {
     "username": "testAccount",
-    "nickname": "testPassword",
+    "nickname": "testPass",
     "password": "123456aA",
     "score": 0,
     "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
     "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
+  },
+  {
+    "username": "Alireza",
+    "nickname": "Alireza",
+    "password": "Amiri",
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
+  },
+  {
+    "username": "Hasti",
+    "nickname": "Hmiz",
+    "password": "1234aA",
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Fri*_14^00^53"
   }
 ]

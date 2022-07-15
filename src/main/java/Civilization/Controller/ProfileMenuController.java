@@ -4,6 +4,9 @@ import Civilization.Database.UserDatabase;
 import Civilization.Model.ProfileMenuModel;
 import Civilization.Model.User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ProfileMenuController {
 
     private ProfileMenuModel profileMenuModel;
@@ -12,6 +15,18 @@ public class ProfileMenuController {
     public ProfileMenuController(ProfileMenuModel profileMenuModel) {
         this.profileMenuModel = profileMenuModel;
         this.userController = new UserController();
+    }
+
+    public boolean isPasswordValid(String newPassword) {
+        Pattern pattern = Pattern.compile("\\w+");
+        Matcher matcher = pattern.matcher(newPassword);
+        return matcher.matches();
+    }
+
+    public boolean isNicknameValid(String nickname) {
+        Pattern pattern = Pattern.compile("\\w+");
+        Matcher matcher = pattern.matcher(nickname);
+        return matcher.matches();
     }
 
     public boolean isPasswordCorrect(String username, String password) {

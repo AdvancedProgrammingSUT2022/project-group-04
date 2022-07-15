@@ -1,7 +1,7 @@
 [
   {
     "username": "sepehr",
-    "avatarURL": "*pics*Avatars*1.png"
+    "avatarURL": "*pics*Avatars*3.png"
   },
   {
     "username": "alirezaRM",
@@ -21,6 +21,14 @@
   },
   {
     "username": "testAccount",
+    "avatarURL": "*pics*Avatars*3.png"
+  },
+  {
+    "username": "Alireza",
+    "avatarURL": "*pics*Avatars*4.png"
+  },
+  {
+    "username": "Hasti",
     "avatarURL": "*pics*Avatars*3.png"
   }
 ]

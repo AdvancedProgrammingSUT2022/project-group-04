@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<<<<<<< HEAD
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.shape.Rectangle?>
 <AnchorPane xmlns="http://javafx.com/javafx"
@@ -28,5 +29,12 @@
         <Button text="Exit" styleClass="exitButton" onMouseClicked="#Exit"/>
         <Text text="" fx:id="error"/>
     </VBox>
+=======
+<AnchorPane xmlns="http://javafx.com/javafx"
+             xmlns:fx="http://javafx.com/fxml"
+             fx:controller="Civilization.View.FXMLControllers.GameMenuFXMLController"
+             prefHeight="720" prefWidth="1280"
+             fx:id="mainAnchorPane">
+>>>>>>> 9d0d078741647aed9c3e406deedc2be8ecb89623
 
 </AnchorPane>
