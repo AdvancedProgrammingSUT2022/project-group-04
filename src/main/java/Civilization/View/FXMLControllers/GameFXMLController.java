@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class GameFXMLController {
 
@@ -81,6 +82,7 @@ public class GameFXMLController {
             this.y = y;
         }
         Polygon polygon;
+        ArrayList<Polygon> sides = new ArrayList<>(6);
     }
 
 
@@ -102,9 +104,33 @@ public class GameFXMLController {
                 if ( i % 2 == 0) {
                     tile = new TileFX(j, i);
                     tile.polygon = new Polygon(b + 100.0, a + 100, b + 250.0, a + 100, b + 300.0, a + 200.0, b + 250.0, a + 300.0, b + 100.0, a + 300.0, b + 50.0, a + 200.0);
+                    Polygon side1 = new Polygon(b + 100, a + 100, b + 250 , a + 100, b + 250 , a + 105, b + 100, a + 105);
+                    Polygon side2 = new Polygon(b + 250, a + 100, b + 300, a + 200, b + 300, a + 205, b + 250, a + 105);
+                    Polygon side3 = new Polygon(b + 300, a + 200, b + 250, a + 300,b + 250, a + 295, b + 300, a + 195);
+                    Polygon side4 = new Polygon(b + 250, a + 300, b + 100, a + 300, b + 100, a + 295, b + 250, a + 295);
+                    Polygon side5 = new Polygon(b + 100, a + 300, b + 50, a + 200, b + 50 , a + 195, b + 100, a + 295);
+                    Polygon side6 = new Polygon(b + 50, a + 200, b + 100, a + 100, b + 100, a + 105, b + 50 , a + 205);
+                    tile.sides.add(side1);
+                    tile.sides.add(side2);
+                    tile.sides.add(side3);
+                    tile.sides.add(side4);
+                    tile.sides.add(side5);
+                    tile.sides.add(side6);
                 } else {
                     tile = new TileFX(j, i);
                     tile.polygon = new Polygon(b + 100.0, a, b + 250.0, a , b + 300.0, a + 100.0, b + 250.0, a + 200.0, b + 100.0, a + 200.0, b + 50.0, a + 100.0);
+                    Polygon side1 = new Polygon(b + 100, a , b + 250 , a , b + 250 , a + 5, b + 100, a + 5);
+                    Polygon side2 = new Polygon(b + 250, a , b + 300, a + 100, b + 300, a + 105, b + 250, a + 5);
+                    Polygon side3 = new Polygon(b + 300, a + 100, b + 250, a + 200,b + 250, a + 195, b + 300, a + 95);
+                    Polygon side4 = new Polygon(b + 250, a + 200, b + 100, a + 200, b + 100, a + 195, b + 250, a + 195);
+                    Polygon side5 = new Polygon(b + 100, a + 200, b + 50, a + 100, b + 50 , a + 95, b + 100, a + 195);
+                    Polygon side6 = new Polygon(b + 50, a + 100, b + 100, a , b + 100, a + 5, b + 50 , a + 105);
+                    tile.sides.add(side1);
+                    tile.sides.add(side2);
+                    tile.sides.add(side3);
+                    tile.sides.add(side4);
+                    tile.sides.add(side5);
+                    tile.sides.add(side6);
                 }
                 for (Tile tileMap : GameDatabase.map){
                     if (tileMap.getX() == tile.x && tileMap.getY() == tile.y){
@@ -125,9 +151,30 @@ public class GameFXMLController {
                         } else if (tileMap.getBaseTerrainType().equals("Tundra")){
                             tile.polygon.setFill(Color.RED);
                         }
+
+                        if (tileMap.isRiverByNumberOfEdge(0)){
+                            tile.sides.get(0).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(1)){
+                            tile.sides.get(1).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(2)){
+                            tile.sides.get(2).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(3)){
+                            tile.sides.get(3).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(4)){
+                            tile.sides.get(4).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(5)){
+                            tile.sides.get(5).setFill(Color.BLUE);
+                        }
                     }
+
+
                 }
                 mapPane.getChildren().add(tile.polygon);
+                for (Polygon side : tile.sides) {
+                    mapPane.getChildren().add(side);
+                }
+
+
             }
         }
 
