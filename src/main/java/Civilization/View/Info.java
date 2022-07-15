@@ -229,7 +229,7 @@ public class Info {
         }
     }
 
-    private ArrayList<Unit> getSoldiers(GameMenuController gameMenuController, int turn) {
+    public ArrayList<Unit> getSoldiers(GameMenuController gameMenuController, int turn) {
         ArrayList<Unit> soldiers = new ArrayList<Unit>();
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
             for (Unit unit : tile.getUnits()) {

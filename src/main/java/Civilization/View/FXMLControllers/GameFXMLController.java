@@ -167,6 +167,7 @@ public class GameFXMLController {
         setTechnologyTree();
         setGameDiscussion();
         setOverviews();
+        setPanelLists();
 
         unitSelected = new Rectangle();
         unitSelected.setWidth(150);
@@ -178,6 +179,19 @@ public class GameFXMLController {
 
         updateInfoPanel();
 
+    }
+
+    private void setPanelLists() {
+        Button button = new Button("Panel lists");
+        button.setPrefWidth(infoPanel.getWidth());
+        button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.enterGame("PanelList");
+            }
+        });
+        infoPanelVBox.getChildren().add(button);
     }
 
     private void setOverviews() {
