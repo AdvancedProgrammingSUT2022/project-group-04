@@ -187,7 +187,7 @@ public class GameMenuFXMLController {
     }
 
     private void setSavingGameInformation() {
-        savingGame = new Text("List of Users in Game");
+        savingGame = new Text("Playing a saved Game");
         savingGame.setStyle("-fx-fill: white; -fx-font-size: 20");
         savingGame.setLayoutY(saveButton.getLayoutY() - 10);
         savingGame.setLayoutX(saveButton.getLayoutX());
