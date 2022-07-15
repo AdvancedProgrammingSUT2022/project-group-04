@@ -34,6 +34,7 @@ public class GraphicalBases {
     public static final Image WIN = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/win.jpg")).toExternalForm());
     public static final Image OVERVIEWS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Overviews.jpg")).toExternalForm());
     public static final Image SASANI = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Sasani.jpg")).toExternalForm());
+    public static final Image MEADOW = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Terrain/meadow.jpeg")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;
