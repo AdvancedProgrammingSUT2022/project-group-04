@@ -114,6 +114,10 @@ public class Civilization {
         this.science = 0;
     }
 
+    public void setSelectedUnit(Unit selectedUnit) {
+        this.selectedUnit = selectedUnit;
+    }
+
     public void addTile(Tile newTile) {
         this.tiles.add(newTile);
     }
