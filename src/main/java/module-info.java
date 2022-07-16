@@ -6,6 +6,7 @@
      requires java.sql;
      requires java.desktop;
      requires org.json;
+     requires com.googlecode.json-simple;
 
      opens Civilization.Database to com.google.gson;
      opens Civilization.Model to com.google.gson;
@@ -22,5 +23,7 @@
 
      exports Civilization;
      opens Civilization to javafx.fxml;
+
+
 
  }
