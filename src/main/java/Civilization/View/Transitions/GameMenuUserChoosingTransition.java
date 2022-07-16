@@ -12,6 +12,7 @@ public class GameMenuUserChoosingTransition extends Transition {
         this.gameMenuFXMLController = gameMenuFXMLController;
         this.setCycleCount(-1);
         this.setCycleDuration(Duration.millis(1000));
+        TransitionDatabase.transitions.add(this);
     }
     @Override
     protected void interpolate(double v) {
