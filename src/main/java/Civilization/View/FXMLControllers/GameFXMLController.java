@@ -181,7 +181,7 @@ public class GameFXMLController {
                     tile.informationOfTile.setPrefWidth(300);
                     tile.informationOfTile.setVisible(false);
                     tile.informationOfTile.setBackground(Background.fill(new ImagePattern(GraphicalBases.BLACK)));
-                    tile.informationText.setText(GameDatabase.getTileByXAndY(tile.x, tile.y).toString());
+                    tile.informationText.setText(GameDatabase.getTileByXAndY(tile.x, tile.y).getInformation());
                     tile.informationText.setFill(Color.WHITE);
                     isClickedOnce = false;
                     isClickedTwice = false;
@@ -221,6 +221,9 @@ public class GameFXMLController {
                             }
                         }
                     });
+                    if(GameDatabase.getTileByXAndY(tile.x, tile.y).ruin != null) {
+                        tile.polygon.setFill(new ImagePattern(GraphicalBases.RUINS));
+                    }
 
 
                 }
