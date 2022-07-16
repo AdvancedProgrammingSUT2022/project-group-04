@@ -25,6 +25,7 @@ public class GameModel {
 
         GameDatabase.setPlayers(players);
         GameDatabase.generateMap(users.size());
+        GameDatabase.generateRuin();
 
     }
 

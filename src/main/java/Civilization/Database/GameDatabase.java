@@ -23,7 +23,7 @@ public class GameDatabase {
     public static ArrayList<Tile> map = new ArrayList<Tile>();
     
     public static final int length = 50;
-    public static int width = 50;
+    public static int width = 10;
 
     public static int turn = 0;
     public static int year = 0;
@@ -38,6 +38,18 @@ public class GameDatabase {
             }
         }
         return null;
+    }
+
+    public static void generateRuin() {
+        Random random = new Random();
+        for (Tile tile : GameDatabase.map) {
+            if(getCivilizationByTile(tile) == null) {
+                int ruin = random.nextInt(500);
+                if(ruin == 12) {
+                    tile.setRuin(new Ruin());
+                }
+            }
+        }
     }
 
     public static class SavingData{
