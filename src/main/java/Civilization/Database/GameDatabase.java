@@ -1,5 +1,6 @@
 package Civilization.Database;
 
+import Civilization.Controller.CopyOfGameDatabase;
 import Civilization.Controller.SavingGame;
 import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
@@ -30,13 +31,25 @@ public class GameDatabase {
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
 
-    public static final int length = 50;
+    public static int length = 50;
     public static int width = 10;
 
     public static int turn = 0;
     public static int year = 0;
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
+
+    public static void setStaticFields(ArrayList<Civilization> civilizations,ArrayList<Tile> tiles,int tool,int arz,int nobat
+            ,int sal, boolean taghalobKarde,Civilization civilizationtaghalob){
+        players = civilizations;
+        map = tiles;
+        length = tool;
+        width = arz;
+        year = sal;
+        turn = nobat;
+        cheated = taghalobKarde;
+        cheatedCivilization = civilizationtaghalob;
+    }
 
 //    public static class SavingData {
 //        private int length;
@@ -592,10 +605,11 @@ public class GameDatabase {
         }
         return null;
     }
-    
+
 
 
     public static void saveGame() {
-        SavingGame.saveGame(new GameDatabase());
+        CopyOfGameDatabase copy = new CopyOfGameDatabase(players,map,length,width,turn,year,cheated,cheatedCivilization);
+        SavingGame.saveGame(copy);
     }
 }

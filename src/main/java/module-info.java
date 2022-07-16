@@ -12,8 +12,9 @@
      exports Civilization.Database;
      opens Civilization.Database to com.google.gson, java.xml;
 
+     exports Civilization.Model;
      opens Civilization.Model to com.google.gson;
-     opens Civilization.View.Components to com.google.gson;
+     opens Civilization.View.Components to com.google.gson,java.xml;
 
      exports Civilization.View.FXMLControllers;
      opens Civilization.View.FXMLControllers to javafx.fxml;
