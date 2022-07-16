@@ -55,6 +55,15 @@ public class DiscussionFXMLController {
     private ChoiceBox<String> resources;
     private Button sendResource;
 
+    private Button peace;
+    private Button war;
+    private Button acceptingPeace;
+    private boolean isPeace;
+    private boolean isAccepting;
+
+    private DiscussionResourceChoosingTransition discussionResourceChoosingTransition;
+    private DiscussionUserChoosingTransition discussionUserChoosingTransition;
+
     @FXML
     public void initialize() {
         you = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getNickname();
@@ -101,22 +110,71 @@ public class DiscussionFXMLController {
         setScienceHBox();
         setFoodHBox();
         if(!GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isInWar()) {
-            setWar();
+            isPeace = false;
+            isAccepting = false;
+        } else {
+            isPeace = true;
+            isAccepting = GameDatabase.getCivilizationByNickname(you).isAcceptingPeace();
         }
+        setWar();
+        setPeace();
+        setAcceptingPeace();
+    }
+
+    private void setAcceptingPeace() {
+        acceptingPeace = new Button("Accept Peace");
+        acceptingPeace.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // TODO start war
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(false);
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(null);
+                sendMessage("Peace accepted");
+                GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(false);
+                GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(null);
+                isPeace = false;
+                isAccepting = false;
+            }
+        });
+        acceptingPeace.setPrefWidth(200);
+        acceptingPeace.setVisible(isAccepting);
+        diplomacyVBox.getChildren().add(acceptingPeace);
+    }
+
+    private void setPeace() {
+        peace = new Button("Peace");
+        peace.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // TODO start war
+                sendMessage("Peace with " + selected.getNickname());
+                GameDatabase.getCivilizationByNickname(selected.getNickname()).setAcceptingPeace(true);
+                isPeace = false;
+                isAccepting = false;
+            }
+        });
+        peace.setPrefWidth(200);
+        peace.setVisible(isPeace);
+        diplomacyVBox.getChildren().add(peace);
     }
 
     private void setWar() {
-        Button button = new Button("Declare War");
-        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        war = new Button("Declare War");
+        war.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 // TODO start war
                 GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(selected);
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(GameDatabase.getCivilizationByNickname(selected.getNickname()));
                 sendMessage(you + " is Now in WAR with " + selected.getNickname());
+                GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(GameDatabase.getCivilizationByNickname(you));
+                GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(true);
+                isPeace = true;
             }
         });
-        diplomacyVBox.getChildren().add(button);
+        war.setPrefWidth(200);
+        war.setVisible(!isPeace);
+        diplomacyVBox.getChildren().add(war);
     }
 
     private void setFoodHBox() {
@@ -335,7 +393,7 @@ public class DiscussionFXMLController {
 
     private void setResourcesChoiceBox() {
 
-        DiscussionResourceChoosingTransition discussionResourceChoosingTransition = new DiscussionResourceChoosingTransition(this);
+        discussionResourceChoosingTransition = new DiscussionResourceChoosingTransition(this);
         discussionResourceChoosingTransition.play();
 
         ArrayList<String> validResources = new ArrayList<>();
@@ -448,7 +506,7 @@ public class DiscussionFXMLController {
 
     private void setUsersChoiceBox() {
 
-        DiscussionUserChoosingTransition discussionUserChoosingTransition = new DiscussionUserChoosingTransition(this);
+        discussionUserChoosingTransition = new DiscussionUserChoosingTransition(this);
         discussionUserChoosingTransition.play();
 
         ArrayList<String> users = new ArrayList<>();
@@ -488,6 +546,12 @@ public class DiscussionFXMLController {
         backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                if(discussionResourceChoosingTransition != null) {
+                    discussionResourceChoosingTransition.pause();
+                }
+                if(discussionUserChoosingTransition != null) {
+                    discussionUserChoosingTransition.pause();
+                }
                 GraphicalBases.enterGame("Game");
             }
         });
@@ -504,6 +568,29 @@ public class DiscussionFXMLController {
 
             sendHBox.setVisible(true);
             resourcesHBox.setVisible(true);
+            if (isPeace) {
+                war.setVisible(false);
+                if(GameDatabase.getCivilizationByNickname(you).getIsInWarWith().getNickname().equals(selected.getNickname())) {
+                    if(isAccepting) {
+                        acceptingPeace.setVisible(true);
+                        peace.setVisible(false);
+                    } else {
+                        acceptingPeace.setVisible(false);
+                        peace.setVisible(true);
+                    }
+                } else {
+                    peace.setVisible(false);
+                    acceptingPeace.setVisible(false);
+                }
+            } else {
+                peace.setVisible(false);
+                acceptingPeace.setVisible(false);
+                if(selected.isInWar() || GameDatabase.getCivilizationByNickname(you).isInWar()) {
+                    war.setVisible(false);
+                } else {
+                    war.setVisible(true);
+                }
+            }
         } else {
             sendHBox.setVisible(false);
             resourcesHBox.setVisible(false);
