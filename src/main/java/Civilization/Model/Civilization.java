@@ -22,6 +22,15 @@ public class Civilization {
     private Civilization isInWarWith;
     private Unit selectedUnit;
     private City selectedCity;
+    private boolean acceptingPeace;
+
+    public boolean isAcceptingPeace() {
+        return acceptingPeace;
+    }
+
+    public void setAcceptingPeace(boolean acceptingPeace) {
+        this.acceptingPeace = acceptingPeace;
+    }
 
     public void setSelectedCity(City selectedCity) {
         this.selectedCity = selectedCity;
