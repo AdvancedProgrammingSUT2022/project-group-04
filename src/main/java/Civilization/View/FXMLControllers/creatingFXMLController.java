@@ -40,7 +40,7 @@ public class creatingFXMLController {
 
         Text totalText = new Text("Build/Buy buildings. number of valid buildings = " + Integer.toString(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getValidBuildings().size()));
         totalText.setX(50);
-        totalText.setY(30);
+        totalText.setY(230);
         totalText.setStyle("-fx-font-size: 30");
         mainAnchorPane.getChildren().add(totalText);
         HBox hBox = new HBox();
@@ -51,18 +51,18 @@ public class creatingFXMLController {
         for (String building : GlobalVariables.BUILDINGS) {
             VBox vBox = new VBox();
             vBox.setSpacing(10);
-            Circle circle = new Circle(30);
+            Circle circle = new Circle(80);
             circle.setFill(new ImagePattern(GraphicalBases.BUILDINGS.get(building)));
             HBox subHBox = new HBox();
             subHBox.setSpacing(10);
             Rectangle buy = new Rectangle();
-            buy.setWidth(20);
-            buy.setHeight(20);
+            buy.setWidth(40);
+            buy.setHeight(40);
             buy.setFill(new ImagePattern(GraphicalBases.COIN));
             buy.setVisible(false);
             Rectangle build = new Rectangle();
-            build.setWidth(20);
-            build.setHeight(20);
+            build.setWidth(40);
+            build.setHeight(40);
             build.setFill(new ImagePattern(GraphicalBases.BUILD));
             build.setVisible(false);
 
@@ -114,9 +114,9 @@ public class creatingFXMLController {
 
         cityScrollPane = new ScrollPane(hBox);
         cityScrollPane.setLayoutX(75);
-        cityScrollPane.setLayoutY(75);
+        cityScrollPane.setLayoutY(275);
         cityScrollPane.setPrefWidth(600);
-        cityScrollPane.setPrefHeight(200);
+        cityScrollPane.setPrefHeight(300);
         mainAnchorPane.getChildren().add(cityScrollPane);
     }
 
