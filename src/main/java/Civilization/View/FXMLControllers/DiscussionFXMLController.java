@@ -480,7 +480,7 @@ public class DiscussionFXMLController {
     public void handleChoiceBox() {
         if(usersChoiceBox.getValue() != null) {
             String nickname = usersChoiceBox.getValue();
-            selected = GameDatabase.getCivilizationByNickname(nickname);
+            selected = GameDatabase.getCivilizationByUsername(nickname);
 
             foodHBox.setVisible(GameDatabase.getCivilizationByNickname(you).getCities().size() != 0
                     && selected.getCities().size() != 0);

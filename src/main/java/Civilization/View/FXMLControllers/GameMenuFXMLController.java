@@ -1,4 +1,6 @@
 package Civilization.View.FXMLControllers;
+
+import Civilization.Database.GameDatabase;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.GameModel;
 import Civilization.Model.User;
@@ -323,7 +325,7 @@ public class GameMenuFXMLController {
 
 
     private void setNumberOfTilesInformation() {
-        numberOfTilesInformation = new Text("Number of Tiles in a Row");
+        numberOfTilesInformation = new Text("Number of Tiles in a Column");
         numberOfTilesInformation.setStyle("-fx-fill: white; -fx-font-size: 20");
         numberOfTilesInformation.setLayoutY(numberOfTiles.getLayoutY());
         numberOfTilesInformation.setLayoutX(numberOfTiles.getLayoutX() - 100);
@@ -501,11 +503,12 @@ public class GameMenuFXMLController {
         autoSaveRateLabel.setVisible(autoSaveSwitchButton.getState());
         autoSaveRate.setVisible(autoSaveRateLabel.isVisible());
         autoSaveOKButton.setVisible(autoSaveRateLabel.isVisible());
+        GameModel.autoSave = autoSaveSwitchButton.getState();
     }
 
     private void setNumberOfTiles() {
 
-        Label label = new Label("Number of Tiles in a Row: ");
+        Label label = new Label("Number of Tiles in a Column: ");
         label.setStyle("-fx-fill: white");
         label.setLayoutX(800);
         label.setLayoutY(130);
@@ -513,7 +516,7 @@ public class GameMenuFXMLController {
 
 
         numberOfTiles = new TextField();
-        numberOfTiles.setPromptText("Number of Tiles in a Row: ");
+        numberOfTiles.setPromptText("Number of Tiles in a Column: ");
         numberOfTiles.setLayoutX(label.getLayoutX());
         numberOfTiles.setLayoutY(label.getLayoutY() + numberOfTiles.getHeight() + 20);
 
@@ -533,12 +536,13 @@ public class GameMenuFXMLController {
                     numberOfTiles.setStyle("-fx-border-color: red");
                 } else {
                     int number = Integer.parseInt(text);
-                    if(number <= User.users.size() || number > User.users.size() + 50) {
+                    if(number <= User.users.size() || number > User.users.size() + 20) {
                         numberOfTiles.setText("");
                         numberOfTiles.setStyle("-fx-border-color: red");
                     } else {
                         tileCount = number;
                         numberOfTiles.setEditable(false);
+                        GameDatabase.width = number;
                     }
                 }
             }

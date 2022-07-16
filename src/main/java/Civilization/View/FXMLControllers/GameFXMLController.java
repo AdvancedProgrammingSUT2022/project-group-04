@@ -6,18 +6,29 @@ import Civilization.Model.*;
 import Civilization.View.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 
+import javax.swing.*;
+import javax.swing.text.html.ImageView;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class GameFXMLController {
 
@@ -50,10 +61,14 @@ public class GameFXMLController {
     // Game
     public static int turn = 0;
     private Button nextTurn;
+    boolean isClickedOnce =false;
+    boolean isClickedTwice = false;
 
+    int NUMBER_OF_TILES_IN_COLUMN = 25;
     @FXML
     public void initialize() {
         turn = GameDatabase.getTurn();
+        setMap();
         setStatusBar();
         setNextTurnButton();
         setBackButton();
@@ -61,6 +76,180 @@ public class GameFXMLController {
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+    }
+
+    class TileFX extends Polygon {
+        int x, y;
+        public TileFX(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+        Polygon polygon;
+        ArrayList<Polygon> sides = new ArrayList<>(6);
+        Text informationText = new Text();
+        VBox vBox = new VBox(informationText);
+        Pane informationOfTile = new Pane(vBox);
+        Text nameOfOwner = new Text();
+
+    }
+
+
+    private void setMap(){
+        ScrollPane map = new ScrollPane();
+        map.setLayoutX(150);
+        map.setLayoutY(40);
+        map.setPrefHeight(720 - 40);
+        map.setPrefWidth(1280-150);
+        map.setPannable(true);
+        AnchorPane mapPane = new AnchorPane();
+        mapPane.setPrefHeight(2000);
+        mapPane.setPrefWidth(2000);
+        for (int i = 0; i < GameDatabase.length; i++){
+            for (int j = 0; j < GameDatabase.width; j++) {
+                double a = j * 200;
+                double b = i * 200;
+                TileFX tile;
+                if ( i % 2 == 0) {
+                    tile = new TileFX(i, j);
+                    tile.polygon = new Polygon(b + 100.0, a + 100, b + 250.0, a + 100, b + 300.0, a + 200.0, b + 250.0, a + 300.0, b + 100.0, a + 300.0, b + 50.0, a + 200.0);
+                    Polygon side1 = new Polygon(b + 100, a + 100, b + 250 , a + 100, b + 250 , a + 105, b + 100, a + 105);
+                    Polygon side2 = new Polygon(b + 250, a + 100, b + 300, a + 200, b + 300, a + 205, b + 250, a + 105);
+                    Polygon side3 = new Polygon(b + 300, a + 200, b + 250, a + 300,b + 250, a + 295, b + 300, a + 195);
+                    Polygon side4 = new Polygon(b + 250, a + 300, b + 100, a + 300, b + 100, a + 295, b + 250, a + 295);
+                    Polygon side5 = new Polygon(b + 100, a + 300, b + 50, a + 200, b + 50 , a + 195, b + 100, a + 295);
+                    Polygon side6 = new Polygon(b + 50, a + 200, b + 100, a + 100, b + 100, a + 105, b + 50 , a + 205);
+                    tile.sides.add(side1);
+                    tile.sides.add(side2);
+                    tile.sides.add(side3);
+                    tile.sides.add(side4);
+                    tile.sides.add(side5);
+                    tile.sides.add(side6);
+                } else {
+                    tile = new TileFX(i, j);
+                    tile.polygon = new Polygon(b + 100.0, a, b + 250.0, a , b + 300.0, a + 100.0, b + 250.0, a + 200.0, b + 100.0, a + 200.0, b + 50.0, a + 100.0);
+                    Polygon side1 = new Polygon(b + 100, a , b + 250 , a , b + 250 , a + 5, b + 100, a + 5);
+                    Polygon side2 = new Polygon(b + 250, a , b + 300, a + 100, b + 300, a + 105, b + 250, a + 5);
+                    Polygon side3 = new Polygon(b + 300, a + 100, b + 250, a + 200,b + 250, a + 195, b + 300, a + 95);
+                    Polygon side4 = new Polygon(b + 250, a + 200, b + 100, a + 200, b + 100, a + 195, b + 250, a + 195);
+                    Polygon side5 = new Polygon(b + 100, a + 200, b + 50, a + 100, b + 50 , a + 95, b + 100, a + 195);
+                    Polygon side6 = new Polygon(b + 50, a + 100, b + 100, a , b + 100, a + 5, b + 50 , a + 105);
+                    tile.sides.add(side1);
+                    tile.sides.add(side2);
+                    tile.sides.add(side3);
+                    tile.sides.add(side4);
+                    tile.sides.add(side5);
+                    tile.sides.add(side6);
+                }
+                for (Tile tileMap : GameDatabase.map){
+                    if (tileMap.getX() == tile.x && tileMap.getY() == tile.y){
+                        if (tileMap.getBaseTerrainType().equals("Desert")){
+                            tile.polygon.setFill(Color.TAN);
+                        } else if (tileMap.getBaseTerrainType().equals("Meadow")){
+                            tile.polygon.setFill(Color.YELLOW);
+                        } else if (tileMap.getBaseTerrainType().equals("Hill")){
+                            tile.polygon.setFill(Color.GREEN);
+                        } else if (tileMap.getBaseTerrainType().equals("Mountain")){
+                            tile.polygon.setFill(Color.BROWN);
+                        } else if (tileMap.getBaseTerrainType().equals("Ocean")){
+                            tile.polygon.setFill(Color.BLUE);
+                        } else if (tileMap.getBaseTerrainType().equals("Plain")){
+                            tile.polygon.setFill(Color.LIGHTGREEN);
+                        } else if (tileMap.getBaseTerrainType().equals("Snow")){
+                            tile.polygon.setFill(Color.GRAY);
+                        } else if (tileMap.getBaseTerrainType().equals("Tundra")){
+                            tile.polygon.setFill(Color.RED);
+                        }
+
+                        if (tileMap.isRiverByNumberOfEdge(0)){
+                            tile.sides.get(0).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(1)){
+                            tile.sides.get(1).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(2)){
+                            tile.sides.get(2).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(3)){
+                            tile.sides.get(3).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(4)){
+                            tile.sides.get(4).setFill(Color.BLUE);
+                        } else if (tileMap.isRiverByNumberOfEdge(5)){
+                            tile.sides.get(5).setFill(Color.BLUE);
+                        }
+                        Civilization player = GameDatabase.getCivilizationByTile(tileMap);
+                        if (player != null) {
+                            tile.nameOfOwner.setText(player.getNickname());
+                            tile.nameOfOwner.setLayoutX(tile.polygon.getPoints().get(0) + 10);
+                            tile.nameOfOwner.setLayoutY(tile.polygon.getPoints().get(1) + 20);
+                            tile.nameOfOwner.prefWidth(100);
+                            tile.nameOfOwner.setFill(Color.BLACK);
+                        }
+                    }
+
+                    // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+                    tile.informationOfTile.setLayoutX(800);
+                    tile.informationOfTile.setLayoutY(0);
+                    tile.informationOfTile.setPrefHeight(300);
+                    tile.informationOfTile.setPrefWidth(300);
+                    tile.informationOfTile.setVisible(false);
+                    tile.informationOfTile.setBackground(Background.fill(new ImagePattern(GraphicalBases.BLACK)));
+                    tile.informationText.setText(GameDatabase.getTileByXAndY(tile.x, tile.y).getInformation());
+                    tile.informationText.setFill(Color.WHITE);
+                    isClickedOnce = false;
+                    isClickedTwice = false;
+                    tile.polygon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (!isClickedOnce && !isClickedTwice) {
+                                isClickedOnce = true;
+                            } else if (!isClickedTwice){
+                                isClickedTwice = true;
+                                isClickedOnce = false;
+                            } else {
+                                isClickedTwice = false;
+                                isClickedOnce = false;
+                            }
+
+                        }
+                    });
+                    tile.polygon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (!isClickedOnce) {
+                                tile.informationOfTile.toFront();
+                                if (!tile.informationOfTile.isVisible()) {
+                                    tile.informationOfTile.setVisible(true);
+                                }
+                            }
+                        }
+                    });
+                    tile.polygon.setOnMouseExited(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (!isClickedOnce) {
+                                tile.informationOfTile.toFront();
+                                if (tile.informationOfTile.isVisible())
+                                    tile.informationOfTile.setVisible(false);
+                            }
+                        }
+                    });
+                    if(GameDatabase.getTileByXAndY(tile.x, tile.y).ruin != null) {
+                        tile.polygon.setFill(new ImagePattern(GraphicalBases.RUINS));
+                    }
+
+
+                }
+                mapPane.getChildren().add(tile.polygon);
+                mapPane.getChildren().add(tile.nameOfOwner);
+                for (Polygon side : tile.sides) {
+                    mapPane.getChildren().add(side);
+                }
+                mainAnchorPane.getChildren().add(tile.informationOfTile);
+                tile.informationOfTile.toFront();
+                tile.nameOfOwner.toFront();
+
+            }
+        }
+
+        map.setContent(mapPane);
+        mainAnchorPane.getChildren().add(map);
     }
 
     private void setStopButton() {
@@ -130,6 +319,14 @@ public class GameFXMLController {
         nextTurn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                checkIfWin();
+                if(GameModel.autoSave && GameDatabase.getTurn()%50 == 49) {
+                    try {
+                        autoSave();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 GameDatabase.nextTurn();
                 if(isTerminalOn) {
                     endTerminal();
@@ -139,6 +336,18 @@ public class GameFXMLController {
             }
         });
         mainAnchorPane.getChildren().add(nextTurn);
+    }
+
+    private void autoSave() throws IOException {
+        GameDatabase.saveGame();
+    }
+
+    private void checkIfWin() {
+        if(GameDatabase.checkIfWin() == null) {
+            return;
+        }
+        GraphicalBases.enterGame("Win");
+
     }
 
     private void setInfoPanel() {
@@ -160,6 +369,7 @@ public class GameFXMLController {
         setGameDiscussion();
         setOverviews();
         setPanelLists();
+        //setUnitCreating();
 
         unitSelected = new Rectangle();
         unitSelected.setWidth(150);
@@ -171,6 +381,19 @@ public class GameFXMLController {
 
         updateInfoPanel();
 
+    }
+
+    private void setUnitCreating() {
+        Button button = new Button("Creating Units\nand Buildings");
+        button.setPrefWidth(infoPanel.getWidth());
+        button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.enterGame("creating");
+            }
+        });
+        infoPanelVBox.getChildren().add(button);
     }
 
     private void setPanelLists() {
@@ -414,4 +637,6 @@ public class GameFXMLController {
         endTerminal();
         startTerminal();
     }
+
+   
 }

@@ -194,6 +194,9 @@ public class Unit {
 
     public void setTileOfUnit(Tile isOnTile) {
         this.tileOfUnit = isOnTile;
+        if(isOnTile.getRuin() != null) {
+            isOnTile.arriveRuin(this);
+        }
     }
 
     public Tile getTileOfUnit() {

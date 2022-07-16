@@ -27,6 +27,15 @@ public class Tile {
     protected boolean isRailroadBroken;
     protected City city;
     protected ArrayList<Citizen> citizens;
+    public Ruin ruin;
+
+    public void setRuin(Ruin ruin) {
+        this.ruin = ruin;
+    }
+
+    public Ruin getRuin() {
+        return ruin;
+    }
 
     public boolean[] getIsRiver() {
         return isRiver;
@@ -260,6 +269,35 @@ public class Tile {
     public String toString() {
         String result = "type = " + this.baseTerrain.getType() + "\n";
         result += "X = " + Integer.toString(this.x) + " Y = " + Integer.toString(this.y);
+        return result;
+    }
+
+    public String getInformation() {
+        String result = this.toString();
+        if(city == null) {
+            result += "\n Food = 0";
+        } else {
+            result += "\n Food = " + Integer.toString(city.getFood());
+        }
+        result += "\n Production = " + baseTerrain.getProduction();
+        result += "\n Gold = " + baseTerrain.getGold();
+        result += "\n Combat Modification = 0";
+        result += "\n Movement Point = " + baseTerrain.getMovementPrice();
+        if(baseTerrain.getFeature() != null) {
+            result += addFeatureData();
+        }
+        return result;
+    }
+
+    private String addFeatureData() {
+        TerrainFeatures terrainFeatures = baseTerrain.getFeature();
+        String result = "\nFeatures Data:\n";
+        result += "\t Name: " + terrainFeatures.getType();
+        result += "\n\t Food: " + terrainFeatures.getFoodNum();
+        result += "\n\t Production: " + terrainFeatures.getProduction();
+        result += "\n\t Gold: " + terrainFeatures.getGold();
+        result += "\n\t Combat Modification: 0";
+        result += "\n\t Movement Point: " + terrainFeatures.getMovementPrice();
         return result;
     }
 
@@ -504,5 +542,10 @@ public class Tile {
 
     public boolean isRaided() {
         return isRaided;
+    }
+
+    public void arriveRuin(Unit unit) {
+        ruin.arrive(unit);
+        ruin = null;
     }
 }

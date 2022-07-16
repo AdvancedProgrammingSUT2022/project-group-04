@@ -353,12 +353,22 @@ public class Technology {
         }
     }
 
-    private void sendNotification(String civilizationName) {
+    private void sendNotificationInCLI(String civilizationName) {
         String source = GlobalVariables.SYSTEM_NAME;
-        String text = "you reached " + this.name + "technology";
+        String text = "you reached " + this.name + " technology";
         String destination = GameDatabase.getCivilizationByNickname(civilizationName).getNickname();
         Notification notification = new Notification(source, destination, text);
         Notification.addNotification(notification);
+    }
+
+    private void sendNotification(String civilizationName) {
+
+        Civilization civilization = GameDatabase.getCivilizationByNickname(civilizationName);
+        String message = GlobalVariables.SYSTEM_NAME + " notification:\n";
+        message += "\tyou reached " + this.name + " technology";
+        civilization.getMessages().add(message);
+
+
     }
 
     public ArrayList<Technology> getLeadingTechnologies() {
