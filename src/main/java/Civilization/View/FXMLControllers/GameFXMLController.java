@@ -72,11 +72,7 @@ public class GameFXMLController {
         stopButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    GameDatabase.saveGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                GameDatabase.saveGame();
                 GraphicalBases.changeMenu("GameMenu");
             }
         });
@@ -118,11 +114,7 @@ public class GameFXMLController {
         backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    GameDatabase.saveGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                GameDatabase.saveGame();
                 GraphicalBases.userLoggedIn();
             }
         });

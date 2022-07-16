@@ -6,9 +6,9 @@
      requires java.sql;
      requires java.desktop;
      requires org.json;
-     requires com.googlecode.json-simple;
+      requires xstream;
 
-     opens Civilization.Database to com.google.gson;
+      opens Civilization.Database to com.google.gson;
      opens Civilization.Model to com.google.gson;
      opens Civilization.View.Components to com.google.gson;
 
