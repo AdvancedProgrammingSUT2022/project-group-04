@@ -287,7 +287,7 @@ public class GameFXMLController {
         setGameDiscussion();
         setOverviews();
         setPanelLists();
-        setUnitCreating();
+        //setUnitCreating();
 
         unitSelected = new Rectangle();
         unitSelected.setWidth(150);
