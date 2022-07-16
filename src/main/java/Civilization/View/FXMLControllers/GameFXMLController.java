@@ -4,30 +4,25 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
 import Civilization.View.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 
-import javax.swing.*;
-import javax.swing.text.html.ImageView;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class GameFXMLController {
@@ -63,6 +58,7 @@ public class GameFXMLController {
     private Button nextTurn;
     boolean isClickedOnce =false;
     boolean isClickedTwice = false;
+    ObservableList<String> Units = FXCollections.observableArrayList(GlobalVariables.UNITS);
 
     int NUMBER_OF_TILES_IN_COLUMN = 25;
     @FXML
@@ -87,7 +83,11 @@ public class GameFXMLController {
         Polygon polygon;
         ArrayList<Polygon> sides = new ArrayList<>(6);
         Text informationText = new Text();
-        VBox vBox = new VBox(informationText);
+        ChoiceBox<String> soldiers = new ChoiceBox<>(Units);
+        Button createUnit = new Button("create unit");
+
+        HBox hBox = new HBox(new Text("Choose unit :"),soldiers, createUnit);
+        VBox vBox = new VBox(informationText, hBox);
         Pane informationOfTile = new Pane(vBox);
         Text nameOfOwner = new Text();
 
@@ -184,14 +184,21 @@ public class GameFXMLController {
                     }
 
                     // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+                    tile.informationOfTile.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
                     tile.informationOfTile.setLayoutX(800);
                     tile.informationOfTile.setLayoutY(0);
                     tile.informationOfTile.setPrefHeight(300);
                     tile.informationOfTile.setPrefWidth(300);
                     tile.informationOfTile.setVisible(false);
+                    tile.vBox.setAlignment(Pos.CENTER_LEFT);
+                    tile.hBox.setAlignment(Pos.CENTER);
+                    tile.hBox.setSpacing(10);
+                    Text text = (Text) tile.hBox.getChildren().get(0);
+                    text.setFill(Color.WHITE);
                     tile.informationOfTile.setBackground(Background.fill(new ImagePattern(GraphicalBases.BLACK)));
                     tile.informationText.setText(GameDatabase.getTileByXAndY(tile.x, tile.y).getInformation());
                     tile.informationText.setFill(Color.WHITE);
+                    tile.informationText.setStyle("-fx-padding: 20");
                     isClickedOnce = false;
                     isClickedTwice = false;
                     tile.polygon.setOnMouseClicked(new EventHandler<MouseEvent>() {
