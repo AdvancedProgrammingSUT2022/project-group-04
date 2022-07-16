@@ -6,9 +6,12 @@
      requires java.sql;
      requires java.desktop;
      requires org.json;
-      requires xstream;
+     requires java.xml;
+     requires xstream;
 
-      opens Civilization.Database to com.google.gson;
+     exports Civilization.Database;
+     opens Civilization.Database to com.google.gson, java.xml;
+
      opens Civilization.Model to com.google.gson;
      opens Civilization.View.Components to com.google.gson;
 
@@ -23,6 +26,9 @@
 
      exports Civilization;
      opens Civilization to javafx.fxml;
+
+     exports Civilization.Controller;
+     opens Civilization.Controller to java.xml;
 
 
 
