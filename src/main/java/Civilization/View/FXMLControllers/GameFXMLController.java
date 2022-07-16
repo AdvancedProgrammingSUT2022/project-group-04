@@ -204,7 +204,6 @@ public class GameFXMLController {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
                             if (!isClickedOnce) {
-                                System.out.println(isClickedOnce);
                                 tile.informationOfTile.toFront();
                                 if (!tile.informationOfTile.isVisible()) {
                                     tile.informationOfTile.setVisible(true);

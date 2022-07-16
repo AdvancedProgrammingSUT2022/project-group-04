@@ -1,5 +1,6 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Database.GameDatabase;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.GameModel;
 import Civilization.Model.User;
@@ -541,6 +542,7 @@ public class GameMenuFXMLController {
                     } else {
                         tileCount = number;
                         numberOfTiles.setEditable(false);
+                        GameDatabase.width = number;
                     }
                 }
             }
