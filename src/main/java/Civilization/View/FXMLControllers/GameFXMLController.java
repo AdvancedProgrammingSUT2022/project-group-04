@@ -258,6 +258,13 @@ public class GameFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 checkIfWin();
+                if(GameModel.autoSave && GameDatabase.getTurn()%50 == 49) {
+                    try {
+                        autoSave();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 GameDatabase.nextTurn();
                 if(isTerminalOn) {
                     endTerminal();
@@ -267,6 +274,10 @@ public class GameFXMLController {
             }
         });
         mainAnchorPane.getChildren().add(nextTurn);
+    }
+
+    private void autoSave() throws IOException {
+        GameDatabase.saveGame();
     }
 
     private void checkIfWin() {

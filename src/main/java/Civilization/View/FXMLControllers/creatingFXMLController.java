@@ -74,6 +74,7 @@ public class creatingFXMLController {
                 circle.setDisable(true);
                 circle.setEffect(new DropShadow());
                 circle.setStroke(Color.RED);
+                vBox.setVisible(false);
             }
 
             int finalI = i;

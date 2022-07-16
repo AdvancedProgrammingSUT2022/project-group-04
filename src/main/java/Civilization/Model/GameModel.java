@@ -13,6 +13,8 @@ import java.util.regex.Matcher;
 
 public class GameModel {
 
+    public static boolean autoSave = false;
+
     public void startGame(ArrayList<String> users) {
 
         ArrayList<Civilization> players = new ArrayList<Civilization>();
