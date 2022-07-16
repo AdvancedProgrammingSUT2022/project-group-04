@@ -29,7 +29,7 @@ public class GameDatabase {
 
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
-    
+
     public static final int length = 50;
     public static int width = 10;
 
@@ -553,8 +553,7 @@ public class GameDatabase {
 //    }
 
     public static Civilization checkIfWin() {
-        if (GameDatabase.year == 2050) {
-        if(GameDatabase.year >= 2050) {
+        if (GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
         if (GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
@@ -570,6 +569,28 @@ public class GameDatabase {
             }
         }
         return null;
+    }
+
+    public static Civilization getCivilizationByUnit(Unit unit) {
+        GameMenuController gameMenuController = new GameMenuController(new GameModel());
+        for (Civilization player : players) {
+            if(gameMenuController.isUnitForThisCivilization(getCivilizationIndex(player.getNickname()), unit)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public static void generateRuin() {
+        Random random = new Random();
+        for (Tile tile : GameDatabase.map) {
+            if(getCivilizationByTile(tile) == null) {
+                int ruin = random.nextInt(500);
+                if(ruin == 12) {
+                    tile.setRuin(new Ruin());
+                }
+            }
+        }
     }
 
     public static void saveGame() {
