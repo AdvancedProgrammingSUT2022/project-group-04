@@ -21,8 +21,10 @@ public class GameDatabase {
 
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
-    private static final int length = 25;
-    private static final int width = 25;
+    
+    public static final int length = 50;
+    public static int width = 50;
+
     public static int turn = 0;
     public static int year = 0;
     public static boolean cheated = false;
