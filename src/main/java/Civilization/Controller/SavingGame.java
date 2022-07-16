@@ -10,11 +10,10 @@ import java.nio.file.Paths;
 
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 public class SavingGame {
-    public static boolean saveGame(GameDatabase game){
+    public static boolean saveGame(CopyOfGameDatabase game){
         try {
             FileWriter fileWriter;
             if (Files.exists(Paths.get("save/game.xml")))
@@ -32,13 +31,14 @@ public class SavingGame {
         }
     }
 
-    public static GameDatabase readGame(){
+    public static CopyOfGameDatabase readGame(){
         try {
             String xml = new String(Files.readAllBytes(Paths.get("save/game.xml")));
             XStream xStream = new XStream();
             xStream.addPermission(AnyTypePermission.ANY);
             if(xml.length() != 0){
-                GameDatabase game = (GameDatabase) xStream.fromXML(xml);
+                CopyOfGameDatabase game = (CopyOfGameDatabase) xStream.fromXML(xml);
+                game.setGameDatabase();
                 return game;
             }
         } catch (IOException e) {
