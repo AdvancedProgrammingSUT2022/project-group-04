@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<<<<<<< HEAD
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
-
-<?import javafx.scene.control.Tooltip?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/GameMenuStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Civilization.View.FXMLControllers.GameMenuFXMLController">
-    <Rectangle fx:id="background" height="720" width="1280" />
-    <VBox fx:id="mainVBox" alignment="CENTER" layoutX="520" layoutY="200" maxWidth="300" spacing="15" />
-     <Label id="civilization" layoutX="357.0" layoutY="200.0" text="Civilization" />
-   <Button fx:id="challenge" layoutX="351.0" layoutY="304.0" mnemonicParsing="false" text="Challenge Others" onMouseClicked="#enterSearchEngine" >
-       <tooltip>
-           <Tooltip styleClass="tooltip" text="challenge other players. may the best man win!"/>
-       </tooltip>
-    </Button>
-   <Button fx:id="start" layoutX="351.0" layoutY="398.0" mnemonicParsing="false" text="start game" onMouseClicked="#enterGameSettings">
-    <tooltip>
-        <Tooltip styleClass="tooltip" text="start the game! customize settings for the game."/>
-    </tooltip>
-</Button>
-   <Button fx:id="save" layoutX="351.0" layoutY="501.0" mnemonicParsing="false" text="Save Settings" onMouseClicked="#enterSaveSettings">
-       <tooltip>
-           <Tooltip styleClass="tooltip" text="choose the number of games that you want to be saved so that you can continue them later!"/>
-       </tooltip>
-   </Button>
-=======
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -39,6 +10,5 @@
              fx:controller="Civilization.View.FXMLControllers.GameMenuFXMLController"
              prefHeight="720" prefWidth="1280"
              fx:id="mainAnchorPane">
->>>>>>> 9d0d078741647aed9c3e406deedc2be8ecb89623
 
 </AnchorPane>
