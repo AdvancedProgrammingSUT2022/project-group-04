@@ -502,6 +502,7 @@ public class GameMenuFXMLController {
         autoSaveRateLabel.setVisible(autoSaveSwitchButton.getState());
         autoSaveRate.setVisible(autoSaveRateLabel.isVisible());
         autoSaveOKButton.setVisible(autoSaveRateLabel.isVisible());
+        GameModel.autoSave = autoSaveSwitchButton.getState();
     }
 
     private void setNumberOfTiles() {
