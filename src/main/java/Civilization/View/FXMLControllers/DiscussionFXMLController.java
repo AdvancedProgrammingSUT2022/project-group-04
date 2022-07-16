@@ -100,6 +100,23 @@ public class DiscussionFXMLController {
         setGoldHBox();
         setScienceHBox();
         setFoodHBox();
+        if(!GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isInWar()) {
+            setWar();
+        }
+    }
+
+    private void setWar() {
+        Button button = new Button("Declare War");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // TODO start war
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(selected);
+                sendMessage(you + " is Now in WAR with " + selected.getNickname());
+            }
+        });
+        diplomacyVBox.getChildren().add(button);
     }
 
     private void setFoodHBox() {
@@ -480,7 +497,7 @@ public class DiscussionFXMLController {
     public void handleChoiceBox() {
         if(usersChoiceBox.getValue() != null) {
             String nickname = usersChoiceBox.getValue();
-            selected = GameDatabase.getCivilizationByUsername(nickname);
+            selected = GameDatabase.getCivilizationByNickname(nickname);
 
             foodHBox.setVisible(GameDatabase.getCivilizationByNickname(you).getCities().size() != 0
                     && selected.getCities().size() != 0);

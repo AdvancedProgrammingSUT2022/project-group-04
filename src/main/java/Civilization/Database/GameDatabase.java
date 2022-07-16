@@ -4,6 +4,7 @@ import Civilization.Controller.SavingGame;
 import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
+import Civilization.View.Transitions.TransitionDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -203,12 +204,14 @@ public class GameDatabase {
         }
     }
 
+
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.turn = 0;
         GameDatabase.year = 0;
         GameDatabase.cheated = false;
         GameDatabase.cheatedCivilization = null;
         GameDatabase.players = players;
+        TransitionDatabase.restart();
         for (Civilization civilization : players) {
             civilization.setHappiness(GlobalVariables.firstHappiness * GameDatabase.players.size());
             if (civilization.getNickname().equals(User.loggedInUser.getNickname())) {
@@ -572,6 +575,7 @@ public class GameDatabase {
 //    }
 
     public static Civilization checkIfWin() {
+
         if(GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
