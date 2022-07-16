@@ -20,6 +20,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
@@ -88,7 +89,7 @@ public class GameFXMLController {
         Text informationText = new Text();
         VBox vBox = new VBox(informationText);
         Pane informationOfTile = new Pane(vBox);
-
+        Text nameOfOwner = new Text();
 
     }
 
@@ -154,7 +155,7 @@ public class GameFXMLController {
                         } else if (tileMap.getBaseTerrainType().equals("Plain")){
                             tile.polygon.setFill(Color.LIGHTGREEN);
                         } else if (tileMap.getBaseTerrainType().equals("Snow")){
-                            tile.polygon.setFill(Color.WHITE);
+                            tile.polygon.setFill(Color.GRAY);
                         } else if (tileMap.getBaseTerrainType().equals("Tundra")){
                             tile.polygon.setFill(Color.RED);
                         }
@@ -171,6 +172,14 @@ public class GameFXMLController {
                             tile.sides.get(4).setFill(Color.BLUE);
                         } else if (tileMap.isRiverByNumberOfEdge(5)){
                             tile.sides.get(5).setFill(Color.BLUE);
+                        }
+                        Civilization player = GameDatabase.getCivilizationByTile(tileMap);
+                        if (player != null) {
+                            tile.nameOfOwner.setText(player.getNickname());
+                            tile.nameOfOwner.setLayoutX(tile.polygon.getPoints().get(0) + 10);
+                            tile.nameOfOwner.setLayoutY(tile.polygon.getPoints().get(1) + 20);
+                            tile.nameOfOwner.prefWidth(100);
+                            tile.nameOfOwner.setFill(Color.BLACK);
                         }
                     }
 
@@ -228,13 +237,13 @@ public class GameFXMLController {
 
                 }
                 mapPane.getChildren().add(tile.polygon);
+                mapPane.getChildren().add(tile.nameOfOwner);
                 for (Polygon side : tile.sides) {
                     mapPane.getChildren().add(side);
                 }
                 mainAnchorPane.getChildren().add(tile.informationOfTile);
                 tile.informationOfTile.toFront();
-
-
+                tile.nameOfOwner.toFront();
 
             }
         }
@@ -252,11 +261,7 @@ public class GameFXMLController {
         stopButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    GameDatabase.saveGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                GameDatabase.saveGame();
                 GraphicalBases.changeMenu("GameMenu");
             }
         });
@@ -298,11 +303,7 @@ public class GameFXMLController {
         backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    GameDatabase.saveGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                GameDatabase.saveGame();
                 GraphicalBases.userLoggedIn();
             }
         });

@@ -1,22 +1,29 @@
 package Civilization.Database;
 
+import Civilization.Controller.SavingGame;
 import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
+import java.text.ParseException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GameDatabase {
 
@@ -31,80 +38,150 @@ public class GameDatabase {
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
 
-    public static Civilization getCivilizationByUnit(Unit unit) {
-        GameMenuController gameMenuController = new GameMenuController(new GameModel());
-        for (Civilization player : players) {
-            if(gameMenuController.isUnitForThisCivilization(getCivilizationIndex(player.getNickname()), unit)) {
-                return player;
-            }
-        }
-        return null;
-    }
-
-    public static void generateRuin() {
-        Random random = new Random();
-        for (Tile tile : GameDatabase.map) {
-            if(getCivilizationByTile(tile) == null) {
-                int ruin = random.nextInt(500);
-                if(ruin == 12) {
-                    tile.setRuin(new Ruin());
-                }
-            }
-        }
-    }
-
-    public static class SavingData{
-        private int length;
-        private int width;
-        private int turn;
-        private int year;
-        private ArrayList<String> mapData;
-        private ArrayList<String> civilizationData;
-
-        public SavingData(int length, int width, int turn, int year, ArrayList<Civilization> players, ArrayList<Tile> map) {
-            this.length = length;
-            this.width = width;
-            this.turn = turn;
-            this.year = year;
-            mapData = new ArrayList<>();
-            civilizationData = new ArrayList<>();
-            setMapData(players, map);
-            setCivilizationData(players);
-        }
-
-        private void setCivilizationData(ArrayList<Civilization> players) {
-            for (Civilization civilization : players) {
-                civilizationData.add(civilization.toString());
-            }
-        }
-
-        private void setMapData(ArrayList<Civilization> players, ArrayList<Tile> map) {
-            for (Tile tile : map) {
-                String tileData = tile.toString();
-                if(GameDatabase.getCivilizationByTile(tile) != null) {
-                    tileData += " " + Objects.requireNonNull(GameDatabase.getCivilizationByTile(tile)).getNickname();
-                }
-                if(GameDatabase.getCityByXAndY(tile.getX(), tile.getY()) != null) {
-                    tileData += " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getName() +
-                            " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getCivilizationName();
-                }
-                mapData.add(tileData);
-            }
-
-        }
-
-        public int getLength() {
-            return length;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getTurn() {
-            return turn;
-        }
-    }
+//    public static class SavingData {
+//        private int length;
+//        private int width;
+//        private int turn;
+//        private int year;
+//        private ArrayList<String> mapData;
+//        private ArrayList<String> civilizationData;
+//
+//        public SavingData(int length, int width, int turn, int year, ArrayList<Civilization> players, ArrayList<Tile> map) {
+//            this.length = length;
+//            this.width = width;
+//            this.turn = turn;
+//            this.year = year;
+//            mapData = new ArrayList<>();
+//            civilizationData = new ArrayList<>();
+//            setMapData(players, map);
+//            setCivilizationData(players);
+//        }
+//
+//        public void retrieveGameFromSavingData() {
+//            Matcher mapMatcher;
+//            for (int i = 0; i < mapData.size(); i++) {
+//                String tile = mapData.get(i);
+//                mapMatcher = Pattern.compile("type \u003d (?<type>.+)\nX \u003d (?<x>\\d+) Y \u003d (?<y>\\d+)").matcher(tile);
+//                map = new ArrayList<>();
+//                if (mapMatcher.matches()) {
+//
+//                    Tile newTile = new Tile("fogOfWar", mapMatcher.group("type")
+//                            , Integer.parseInt(mapMatcher.group("x"))
+//                            , Integer.parseInt(mapMatcher.group("y")));
+//                    map.add(newTile);
+//                } else {
+//                    mapMatcher = Pattern.compile("type \u003d (?<type>.+)\nX \u003d (?<x>\\d+) Y \u003d (?<y>\\d+) (?<civilName>\\S+)").matcher(tile);
+//                    if (mapMatcher.matches()){
+//                        String civilName = mapMatcher.group("civilName");
+//                        Civilization civilization = GameDatabase.getCivilizationByNickname(civilName);
+//                        if (civilization == null){
+//                            civilization = new Civilization(UserDatabase.getUserByNickname(civilName).getUsername(),civilName);
+//                            players.add(civilization);
+//                        }
+//                        Tile newTile = new Tile("fogOfWar", mapMatcher.group("type")
+//                                , Integer.parseInt(mapMatcher.group("x"))
+//                                , Integer.parseInt(mapMatcher.group("y")));
+//                        map.add(newTile);
+//                        civilization.addTile(newTile);
+//                    }
+//                    else {
+//                        mapMatcher = Pattern.compile("type \u003d (?<type>.+)\nX \u003d (?<x>\\d+) Y \u003d (?<y>\\d+) (?<civilName>\\S+) (?<cityName>\\S+)").matcher(tile);
+//                        if (mapMatcher.matches()){
+//                            String civilName = mapMatcher.group("civilName");
+//                            Civilization civilization = GameDatabase.getCivilizationByNickname(civilName);
+//                            City city = GameDatabase.getCityByName(mapMatcher.group("cityName"));
+//                            if (civilization == null){
+//                                civilization = new Civilization(UserDatabase.getUserByNickname(civilName).getUsername(),civilName);
+//                                players.add(civilization);
+//                            }
+//                            if (city == null){
+//                                city = new City(mapMatcher.group("cityName"),0,0,);
+//                            }
+//                            Tile newTile = new Tile("fogOfWar", mapMatcher.group("type")
+//                                    , Integer.parseInt(mapMatcher.group("x"))
+//                                    , Integer.parseInt(mapMatcher.group("y")));
+//                            map.add(newTile);
+//                            civilization.addTile(newTile);
+//                        }
+//                        else {
+//                            System.out.println("dude the fuck?!");
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        public void writeMapOnTheFile() throws FileNotFoundException {
+//
+//            try {
+//                Object obj = new JSONParser().parse(new FileReader("c:\\file.json"));
+//
+//                JSONObject jsonObject = (JSONObject) obj;
+//
+//                turn = (int) jsonObject.get("turn");
+//                width = (int) jsonObject.get("width");
+//                length = (int) jsonObject.get("length");
+//                year = (int) jsonObject.get("year");
+//                mapData = new ArrayList<>();
+//                JSONArray jsonArray = (JSONArray) jsonObject.get("mapData");
+//                if (jsonArray != null) {
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        mapData.add(jsonArray.getString(i));
+//                    }
+//                }
+//                civilizationData = new ArrayList<>();
+//                jsonArray = (JSONArray) jsonObject.get("civilizationData");
+//                if (jsonArray != null) {
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        civilizationData.add(jsonArray.getString(i));
+//                    }
+//                }
+//
+//
+//            } catch (Exception ex) {
+//                System.out.println("kose nanat!");
+//            }
+//            // generate players
+//            // generate tiles
+//            // assign tiles --> players
+//            //
+//        }
+//
+//
+//        private void setCivilizationData(ArrayList<Civilization> players) {
+//            for (Civilization civilization : players) {
+//                civilizationData.add(civilization.toString());
+//            }
+//        }
+//
+//        private void setMapData(ArrayList<Civilization> players, ArrayList<Tile> map) {
+//            for (Tile tile : map) {
+//                String tileData = tile.toString();
+//                if (GameDatabase.getCivilizationByTile(tile) != null) {
+//                    tileData += " " + Objects.requireNonNull(GameDatabase.getCivilizationByTile(tile)).getNickname();
+//                }
+//                if (GameDatabase.getCityByXAndY(tile.getX(), tile.getY()) != null) {
+//                    tileData += " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getName() +
+//                            " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getCivilizationName();
+//                }
+//                mapData.add(tileData);
+//            }
+//
+//        }
+//
+//        public int getLength() {
+//            return length;
+//        }
+//
+//        public int getWidth() {
+//            return width;
+//        }
+//
+//        public int getTurn() {
+//            return turn;
+//        }
+//
+//    }
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.turn = 0;
@@ -115,7 +192,7 @@ public class GameDatabase {
         TransitionDatabase.restart();
         for (Civilization civilization : players) {
             civilization.setHappiness(GlobalVariables.firstHappiness * GameDatabase.players.size());
-            if(civilization.getNickname().equals(User.loggedInUser.getNickname())) {
+            if (civilization.getNickname().equals(User.loggedInUser.getNickname())) {
                 civilization.getMessages().add("It's your game, Good luck ;)");
             } else {
                 civilization.getMessages().add("You have an invitation from " + User.loggedInUser.getNickname());
@@ -218,10 +295,6 @@ public class GameDatabase {
 
     public static void readMapFromFile() {
 
-
-    }
-
-    public static void writeMapOnTheFile() {
 
     }
 
@@ -339,6 +412,7 @@ public class GameDatabase {
 
                 continue;
             }
+            System.out.println(x1 + " " + y1);
             boolean isOccupied = false;
             for (int i = 0; i < counter; i++) {
                 if (players.get(i).isTileInCivilization(xRandomGenerate, yRandomGenerate)
@@ -450,8 +524,8 @@ public class GameDatabase {
         return GameDatabase.players;
     }
 
-    public static boolean isTileInCivilization(Tile tile, Civilization civilization){
-        if (civilization.isTileInCivilization(tile.getX(), tile.getY())){
+    public static boolean isTileInCivilization(Tile tile, Civilization civilization) {
+        if (civilization.isTileInCivilization(tile.getX(), tile.getY())) {
             return true;
         }
         return false;
@@ -467,33 +541,38 @@ public class GameDatabase {
         return UserDatabase.getUserByUsername(username);
     }
 
-    public static void saveGame() throws IOException {
-        SavingData savingData = new SavingData(length, width, turn, year, players, map);
-
-        // saving information;
-        Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
-        Path userPath = Paths.get("savedMap.json");
-        Writer writer = Files.newBufferedWriter(userPath);
-        gsonBuilder.toJson(savingData, writer);
-        writer.close();
-    }
+//    public static void saveGame() throws IOException {
+//        SavingData savingData = new SavingData(length, width, turn, year, players, map);
+//
+//        // saving information;
+//        Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
+//        Path userPath = Paths.get("savedMap.json");
+//        Writer writer = Files.newBufferedWriter(userPath);
+//        gsonBuilder.toJson(savingData, writer);
+//        writer.close();
+//    }
 
     public static Civilization checkIfWin() {
+        if (GameDatabase.year == 2050) {
         if(GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
-        if(GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
+        if (GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
             return cheatedCivilization;
         }
-        if(players.size() == 1) {
+        if (players.size() == 1) {
             return players.get(0);
         } else {
             for (Civilization civilization : players) {
-                if(civilization.getTechnologies().size() == GlobalVariables.TECHNOLOGIES.length) {
+                if (civilization.getTechnologies().size() == GlobalVariables.TECHNOLOGIES.length) {
                     return civilization;
                 }
             }
         }
         return null;
+    }
+
+    public static void saveGame() {
+        SavingGame.saveGame(new GameDatabase());
     }
 }
