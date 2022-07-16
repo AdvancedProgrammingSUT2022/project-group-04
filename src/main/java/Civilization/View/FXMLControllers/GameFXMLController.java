@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -54,11 +55,13 @@ public class GameFXMLController {
     private boolean isTerminalOn;
 
     // Game
+    AnchorPane mapPane = new AnchorPane();
     public static int turn = 0;
     private Button nextTurn;
     boolean isClickedOnce =false;
     boolean isClickedTwice = false;
     ObservableList<String> Units = FXCollections.observableArrayList(GlobalVariables.UNITS);
+    TileFX selectedTile = null;
 
     int NUMBER_OF_TILES_IN_COLUMN = 25;
     @FXML
@@ -82,14 +85,17 @@ public class GameFXMLController {
         }
         Polygon polygon;
         ArrayList<Polygon> sides = new ArrayList<>(6);
+        // Tile info ::::::::::::::::;
         Text informationText = new Text();
         ChoiceBox<String> soldiers = new ChoiceBox<>(Units);
         Button createUnit = new Button("create unit");
-
         HBox hBox = new HBox(new Text("Choose unit :"),soldiers, createUnit);
         VBox vBox = new VBox(informationText, hBox);
         Pane informationOfTile = new Pane(vBox);
         Text nameOfOwner = new Text();
+
+        //Soldiers :::::::::::::::::::;
+        Circle unit;
 
     }
 
@@ -101,7 +107,6 @@ public class GameFXMLController {
         map.setPrefHeight(720 - 40);
         map.setPrefWidth(1280-150);
         map.setPannable(true);
-        AnchorPane mapPane = new AnchorPane();
         mapPane.setPrefHeight(2000);
         mapPane.setPrefWidth(2000);
         for (int i = 0; i < GameDatabase.length; i++){
@@ -206,9 +211,11 @@ public class GameFXMLController {
                         public void handle(MouseEvent mouseEvent) {
                             if (!isClickedOnce && !isClickedTwice) {
                                 isClickedOnce = true;
+                                selectedTile = tile;
                             } else if (!isClickedTwice){
                                 isClickedTwice = true;
                                 isClickedOnce = false;
+                                selectedTile = null;
                             } else {
                                 isClickedTwice = false;
                                 isClickedOnce = false;
@@ -237,6 +244,15 @@ public class GameFXMLController {
                             }
                         }
                     });
+
+                    tile.createUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            createUnit();
+                        }
+                    });
+
+
                     if(GameDatabase.getTileByXAndY(tile.x, tile.y).ruin != null) {
                         tile.polygon.setFill(new ImagePattern(GraphicalBases.RUINS));
                     }
@@ -257,6 +273,19 @@ public class GameFXMLController {
 
         map.setContent(mapPane);
         mainAnchorPane.getChildren().add(map);
+    }
+
+    private void createUnit(){
+        System.out.println(selectedTile.soldiers.getValue().toString());
+        selectedTile.unit = new Circle(10, Color.BLACK);
+        selectedTile.unit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
+        selectedTile.unit.setLayoutX(selectedTile.polygon.getPoints().get(6) -20);
+        selectedTile.unit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 20);
+        selectedTile.unit.prefHeight(100);
+        selectedTile.unit.prefWidth(100);
+        mapPane.getChildren().add(selectedTile.unit);
+        selectedTile.unit.toFront();
+
     }
 
     private void setStopButton() {
