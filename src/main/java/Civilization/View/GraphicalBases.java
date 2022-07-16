@@ -35,6 +35,8 @@ public class GraphicalBases {
     public static final Image OVERVIEWS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Overviews.jpg")).toExternalForm());
     public static final Image SASANI = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Sasani.jpg")).toExternalForm());
     public static final Image TREE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Tree.jpg")).toExternalForm());
+    public static final Image INDIA = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/india.jpg")).toExternalForm());
+    public static final Image WHITE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/white.jpg")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;
@@ -55,6 +57,7 @@ public class GraphicalBases {
     public static final HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
     public static final HashMap<String, Image> UNITS = new HashMap<>();
     public static final HashMap<String, Image> BUILDINGS = new HashMap<>();
+    public static final Image BUILD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/build.png")).toExternalForm());
 
     public static void firstLogin() {
         GraphicalBases.start();
