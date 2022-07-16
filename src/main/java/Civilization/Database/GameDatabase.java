@@ -337,6 +337,7 @@ public class GameDatabase {
 
                 continue;
             }
+            System.out.println(x1 + " " + y1);
             boolean isOccupied = false;
             for (int i = 0; i < counter; i++) {
                 if (players.get(i).isTileInCivilization(xRandomGenerate, yRandomGenerate)
