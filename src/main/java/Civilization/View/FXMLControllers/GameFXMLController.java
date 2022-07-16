@@ -302,14 +302,13 @@ public class GameFXMLController {
     }
 
     private void setUnitCreating() {
-        Button button = new Button("Creating Unit");
+        Button button = new Button("Creating Units\nand Buildings");
         button.setPrefWidth(infoPanel.getWidth());
         button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                // TODO creating units
-                //GraphicalBases.enterGame("creatingUnit");
+                GraphicalBases.enterGame("creating");
             }
         });
         infoPanelVBox.getChildren().add(button);
