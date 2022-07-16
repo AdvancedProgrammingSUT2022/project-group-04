@@ -257,6 +257,7 @@ public class GameFXMLController {
         nextTurn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                checkIfWin();
                 GameDatabase.nextTurn();
                 if(isTerminalOn) {
                     endTerminal();
@@ -266,6 +267,14 @@ public class GameFXMLController {
             }
         });
         mainAnchorPane.getChildren().add(nextTurn);
+    }
+
+    private void checkIfWin() {
+        if(GameDatabase.checkIfWin() == null) {
+            return;
+        }
+        GraphicalBases.enterGame("Win");
+
     }
 
     private void setInfoPanel() {
