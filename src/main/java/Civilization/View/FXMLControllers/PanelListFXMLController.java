@@ -5,11 +5,9 @@ import Civilization.Database.GameDatabase;
 import Civilization.Model.City;
 import Civilization.Model.GameModel;
 import Civilization.Model.Unit;
-import Civilization.Model.User;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Info;
 import Civilization.View.Transitions.CityPanelChoosingTransition;
-import Civilization.View.Transitions.GameMenuUserChoosingTransition;
 import Civilization.View.Transitions.UnitPanelChoosingTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +23,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PanelListFXMLController {
 
@@ -174,17 +174,35 @@ public class PanelListFXMLController {
         if(cities.getValue() != null) {
             cityInformation.setText(GameDatabase.getCityByName(cities.getValue()).toString());
             cityInformation.setVisible(true);
+            selectCity(cities.getValue());
         } else {
             cityInformation.setVisible(false);
         }
+    }
+
+    private void selectCity(String value) {
+        GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedCity(GameDatabase.getCityByName(value));
     }
 
     public void handleUnitChoiceBox() {
         if(units.getValue() != null) {
             unitInformation.setText(GameDatabase.getCityByName(units.getValue()).toString());
             unitInformation.setVisible(true);
+            selectUnit(units.getValue());
         } else {
             unitInformation.setVisible(false);
+        }
+    }
+
+    private void selectUnit(String value) {
+        Pattern pattern = Pattern.compile("(?<name>\\S+) in X: (?<x>\\d+) and Y: (?<y>\\d+)");
+        Matcher matcher = pattern.matcher(value);
+        GameMenuController gameMenuController = new GameMenuController(new GameModel());
+        for (Unit unit : GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getUnits()) {
+            if(unit.getUnitType().equals(matcher.group("name"))
+                && gameMenuController.isUnitForThisCivilization(GameDatabase.getTurn(), unit)) {
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(unit);
+            }
         }
     }
 }

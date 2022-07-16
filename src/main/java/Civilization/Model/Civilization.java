@@ -21,6 +21,30 @@ public class Civilization {
     private boolean isInWar = false;
     private Civilization isInWarWith;
     private Unit selectedUnit;
+    private City selectedCity;
+
+    public void setSelectedCity(City selectedCity) {
+        this.selectedCity = selectedCity;
+    }
+
+    public ArrayList<Building> getValidBuildings() {
+        ArrayList<Building> validBuildings = new ArrayList<>();
+        if(selectedCity == null) {
+            return validBuildings;
+        }
+        for (String buildingName : GlobalVariables.BUILDINGS) {
+            Building building = new Building(buildingName);
+            if (building.isBuildingValidForCivilization(GameDatabase.players.get(GameDatabase.getTurn()), GameDatabase.players.get(GameDatabase.getTurn()).getSelectedCity())) {
+                validBuildings.add(building);
+            }
+        }
+        return validBuildings;
+    }
+
+    public City getSelectedCity() {
+        return selectedCity;
+    }
+
     private ArrayList<String> messages;
 
     @Override
@@ -112,6 +136,10 @@ public class Civilization {
     public void addTechnology(Technology newTechnology) {
         this.technologies.add(newTechnology);
         this.science = 0;
+    }
+
+    public void setSelectedUnit(Unit selectedUnit) {
+        this.selectedUnit = selectedUnit;
     }
 
     public void addTile(Tile newTile) {
@@ -450,5 +478,14 @@ public class Civilization {
 
     public int getFinalScore() {
         return this.score + this.tiles.size() + this.cities.size() + getPopulation() + this.technologies.size();
+    }
+
+    public void getPrize(Ruin ruin) {
+        for (Technology technology : ruin.getTechnologies()) {
+            if(!isTechnologyForThisCivilization(technology)) {
+                technologies.add(technology);
+            }
+        }
+        this.gold += ruin.getGold();
     }
 }

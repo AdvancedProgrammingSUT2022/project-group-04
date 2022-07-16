@@ -316,6 +316,14 @@ public class GameFXMLController {
         nextTurn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                checkIfWin();
+                if(GameModel.autoSave && GameDatabase.getTurn()%50 == 49) {
+                    try {
+                        autoSave();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 GameDatabase.nextTurn();
                 if(isTerminalOn) {
                     endTerminal();
@@ -325,6 +333,18 @@ public class GameFXMLController {
             }
         });
         mainAnchorPane.getChildren().add(nextTurn);
+    }
+
+    private void autoSave() throws IOException {
+        GameDatabase.saveGame();
+    }
+
+    private void checkIfWin() {
+        if(GameDatabase.checkIfWin() == null) {
+            return;
+        }
+        GraphicalBases.enterGame("Win");
+
     }
 
     private void setInfoPanel() {
@@ -346,6 +366,7 @@ public class GameFXMLController {
         setGameDiscussion();
         setOverviews();
         setPanelLists();
+        //setUnitCreating();
 
         unitSelected = new Rectangle();
         unitSelected.setWidth(150);
@@ -357,6 +378,19 @@ public class GameFXMLController {
 
         updateInfoPanel();
 
+    }
+
+    private void setUnitCreating() {
+        Button button = new Button("Creating Units\nand Buildings");
+        button.setPrefWidth(infoPanel.getWidth());
+        button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.enterGame("creating");
+            }
+        });
+        infoPanelVBox.getChildren().add(button);
     }
 
     private void setPanelLists() {
