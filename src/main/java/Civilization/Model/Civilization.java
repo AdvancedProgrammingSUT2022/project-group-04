@@ -479,4 +479,13 @@ public class Civilization {
     public int getFinalScore() {
         return this.score + this.tiles.size() + this.cities.size() + getPopulation() + this.technologies.size();
     }
+
+    public void getPrize(Ruin ruin) {
+        for (Technology technology : ruin.getTechnologies()) {
+            if(!isTechnologyForThisCivilization(technology)) {
+                technologies.add(technology);
+            }
+        }
+        this.gold += ruin.getGold();
+    }
 }

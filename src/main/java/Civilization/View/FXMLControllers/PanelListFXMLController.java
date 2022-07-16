@@ -174,9 +174,14 @@ public class PanelListFXMLController {
         if(cities.getValue() != null) {
             cityInformation.setText(GameDatabase.getCityByName(cities.getValue()).toString());
             cityInformation.setVisible(true);
+            selectCity(cities.getValue());
         } else {
             cityInformation.setVisible(false);
         }
+    }
+
+    private void selectCity(String value) {
+        GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedCity(GameDatabase.getCityByName(value));
     }
 
     public void handleUnitChoiceBox() {

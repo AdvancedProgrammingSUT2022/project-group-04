@@ -1,5 +1,6 @@
 package Civilization.Database;
 
+import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import com.google.gson.Gson;
@@ -26,6 +27,16 @@ public class GameDatabase {
     public static int year = 0;
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
+
+    public static Civilization getCivilizationByUnit(Unit unit) {
+        GameMenuController gameMenuController = new GameMenuController(new GameModel());
+        for (Civilization player : players) {
+            if(gameMenuController.isUnitForThisCivilization(getCivilizationIndex(player.getNickname()), unit)) {
+                return player;
+            }
+        }
+        return null;
+    }
 
     public static class SavingData{
         private int length;
@@ -452,7 +463,7 @@ public class GameDatabase {
     }
 
     public static Civilization checkIfWin() {
-        if(GameDatabase.year == 2050) {
+        if(GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
         if(GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
