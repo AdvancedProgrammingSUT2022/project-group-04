@@ -1,6 +1,7 @@
 package Civilization.Database;
 
 import Civilization.Controller.SavingGame;
+import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import com.google.gson.Gson;
@@ -27,8 +28,10 @@ public class GameDatabase {
 
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
-    private static final int length = 50;
-    private static final int width = 50;
+    
+    public static final int length = 50;
+    public static int width = 10;
+
     public static int turn = 0;
     public static int year = 0;
     public static boolean cheated = false;
@@ -178,6 +181,27 @@ public class GameDatabase {
 //        }
 //
 //    }
+    public static Civilization getCivilizationByUnit(Unit unit) {
+        GameMenuController gameMenuController = new GameMenuController(new GameModel());
+        for (Civilization player : players) {
+            if(gameMenuController.isUnitForThisCivilization(getCivilizationIndex(player.getNickname()), unit)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public static void generateRuin() {
+        Random random = new Random();
+        for (Tile tile : GameDatabase.map) {
+            if(getCivilizationByTile(tile) == null) {
+                int ruin = random.nextInt(500);
+                if(ruin == 12) {
+                    tile.setRuin(new Ruin());
+                }
+            }
+        }
+    }
 
     public static void setPlayers(ArrayList<Civilization> players) {
         GameDatabase.turn = 0;
@@ -407,6 +431,7 @@ public class GameDatabase {
 
                 continue;
             }
+            System.out.println(x1 + " " + y1);
             boolean isOccupied = false;
             for (int i = 0; i < counter; i++) {
                 if (players.get(i).isTileInCivilization(xRandomGenerate, yRandomGenerate)
@@ -547,7 +572,7 @@ public class GameDatabase {
 //    }
 
     public static Civilization checkIfWin() {
-        if (GameDatabase.year == 2050) {
+        if(GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
         if (GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {

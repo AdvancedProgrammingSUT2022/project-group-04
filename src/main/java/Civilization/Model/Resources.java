@@ -289,12 +289,20 @@ public class Resources {
         sendNotification(tile);
     }
 
-    private void sendNotification(Tile tile) {
+    private void sendNotificationInCLI(Tile tile) {
         String source = GlobalVariables.SYSTEM_NAME;
         String text = "Resource " + this.name + " discovered on tile X = " + Integer.toString(tile.getX()) + " and Y = " + Integer.toString(tile.getY());
         String destination = GameDatabase.getCivilizationByTile(tile).getNickname();
         Notification notification = new Notification(source, destination, text);
         Notification.addNotification(notification);
+    }
+
+    private void sendNotification(Tile tile) {
+
+        Civilization civilization = GameDatabase.getCivilizationByTile(tile);
+        String message = GlobalVariables.SYSTEM_NAME + " notification:\n";
+        message += "\tResource " + this.name + " discovered on tile X = " + Integer.toString(tile.getX()) + " and Y = " + Integer.toString(tile.getY());
+        civilization.getMessages().add(message);
     }
 
     public boolean isResourceVisibleForThisCivilization(Civilization civilization) {
