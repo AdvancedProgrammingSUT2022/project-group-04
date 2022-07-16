@@ -6,15 +6,14 @@
      requires java.sql;
      requires java.desktop;
      requires org.json;
-     requires java.xml;
      requires xstream;
 
-     exports Civilization.Database;
-     opens Civilization.Database to com.google.gson, java.xml;
+     exports Civilization.Database to xstream;
+     opens Civilization.Database to com.google.gson, xstream;
 
-     exports Civilization.Model;
-     opens Civilization.Model to com.google.gson;
-     opens Civilization.View.Components to com.google.gson,java.xml;
+     exports Civilization.Model to xstream;
+     opens Civilization.Model to com.google.gson,xstream;
+     opens Civilization.View.Components to com.google.gson,xstream;
 
      exports Civilization.View.FXMLControllers;
      opens Civilization.View.FXMLControllers to javafx.fxml;
@@ -26,10 +25,10 @@
      opens Civilization.View to javafx.fxml;
 
      exports Civilization;
-     opens Civilization to javafx.fxml;
+     opens Civilization to javafx.fxml,xstream;
 
-     exports Civilization.Controller;
-     opens Civilization.Controller to java.xml;
+     exports Civilization.Controller to xstream;
+     opens Civilization.Controller to xstream;
 
 
 

@@ -1,7 +1,9 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Controller.SavingGame;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.UserDatabase;
+import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
 import Civilization.Model.User;
 import Civilization.View.Components.SwitchButton;
@@ -119,16 +121,9 @@ public class GameMenuFXMLController {
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                // TODO playing saved, stopped game
-
-                // test
-                Set<String> usernames = new HashSet<>();
-                usernames.add("sepehr");
-                usernames.add("alirezaRM");
-                selectedUsers = usernames;
-                runGame();
+                SavingGame.readGame();
                 GraphicalBases.enterGame("Game");
-                //
+
             }
         });
 
