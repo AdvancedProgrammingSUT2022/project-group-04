@@ -13,9 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
@@ -23,7 +21,9 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 
+import javax.swing.*;
 import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.net.URL;
@@ -60,11 +60,14 @@ public class GameFXMLController {
     // Game
     public static int turn = 0;
     private Button nextTurn;
+    boolean isClickedOnce =false;
+    boolean isClickedTwice = false;
 
     int NUMBER_OF_TILES_IN_COLUMN = 25;
     @FXML
     public void initialize() {
         turn = GameDatabase.getTurn();
+        setMap();
         setStatusBar();
         setNextTurnButton();
         setBackButton();
@@ -72,7 +75,6 @@ public class GameFXMLController {
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
-        setMap();
     }
 
     class TileFX extends Polygon {
@@ -83,6 +85,11 @@ public class GameFXMLController {
         }
         Polygon polygon;
         ArrayList<Polygon> sides = new ArrayList<>(6);
+        Text informationText = new Text();
+        VBox vBox = new VBox(informationText);
+        Pane informationOfTile = new Pane(vBox);
+
+
     }
 
 
@@ -96,13 +103,13 @@ public class GameFXMLController {
         AnchorPane mapPane = new AnchorPane();
         mapPane.setPrefHeight(2000);
         mapPane.setPrefWidth(2000);
-        for (int i = 0; i < 50; i++){
-            for (int j = 0; j < NUMBER_OF_TILES_IN_COLUMN; j++) {
+        for (int i = 0; i < GameDatabase.length; i++){
+            for (int j = 0; j < GameDatabase.width; j++) {
                 double a = j * 200;
                 double b = i * 200;
                 TileFX tile;
                 if ( i % 2 == 0) {
-                    tile = new TileFX(j, i);
+                    tile = new TileFX(i, j);
                     tile.polygon = new Polygon(b + 100.0, a + 100, b + 250.0, a + 100, b + 300.0, a + 200.0, b + 250.0, a + 300.0, b + 100.0, a + 300.0, b + 50.0, a + 200.0);
                     Polygon side1 = new Polygon(b + 100, a + 100, b + 250 , a + 100, b + 250 , a + 105, b + 100, a + 105);
                     Polygon side2 = new Polygon(b + 250, a + 100, b + 300, a + 200, b + 300, a + 205, b + 250, a + 105);
@@ -117,7 +124,7 @@ public class GameFXMLController {
                     tile.sides.add(side5);
                     tile.sides.add(side6);
                 } else {
-                    tile = new TileFX(j, i);
+                    tile = new TileFX(i, j);
                     tile.polygon = new Polygon(b + 100.0, a, b + 250.0, a , b + 300.0, a + 100.0, b + 250.0, a + 200.0, b + 100.0, a + 200.0, b + 50.0, a + 100.0);
                     Polygon side1 = new Polygon(b + 100, a , b + 250 , a , b + 250 , a + 5, b + 100, a + 5);
                     Polygon side2 = new Polygon(b + 250, a , b + 300, a + 100, b + 300, a + 105, b + 250, a + 5);
@@ -167,12 +174,64 @@ public class GameFXMLController {
                         }
                     }
 
+                    // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+                    tile.informationOfTile.setLayoutX(800);
+                    tile.informationOfTile.setLayoutY(0);
+                    tile.informationOfTile.setPrefHeight(300);
+                    tile.informationOfTile.setPrefWidth(300);
+                    tile.informationOfTile.setVisible(false);
+                    tile.informationOfTile.setBackground(Background.fill(new ImagePattern(GraphicalBases.BLACK)));
+                    tile.informationText.setText(GameDatabase.getTileByXAndY(tile.x, tile.y).toString());
+                    tile.informationText.setFill(Color.WHITE);
+                    isClickedOnce = false;
+                    isClickedTwice = false;
+                    tile.polygon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (!isClickedOnce && !isClickedTwice) {
+                                isClickedOnce = true;
+                            } else if (!isClickedTwice){
+                                isClickedTwice = true;
+                                isClickedOnce = false;
+                            } else {
+                                isClickedTwice = false;
+                                isClickedOnce = false;
+                            }
+
+                        }
+                    });
+                    tile.polygon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (!isClickedOnce) {
+                                System.out.println(isClickedOnce);
+                                tile.informationOfTile.toFront();
+                                if (!tile.informationOfTile.isVisible()) {
+                                    tile.informationOfTile.setVisible(true);
+                                }
+                            }
+                        }
+                    });
+                    tile.polygon.setOnMouseExited(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (!isClickedOnce) {
+                                tile.informationOfTile.toFront();
+                                if (tile.informationOfTile.isVisible())
+                                    tile.informationOfTile.setVisible(false);
+                            }
+                        }
+                    });
+
 
                 }
                 mapPane.getChildren().add(tile.polygon);
                 for (Polygon side : tile.sides) {
                     mapPane.getChildren().add(side);
                 }
+                mainAnchorPane.getChildren().add(tile.informationOfTile);
+                tile.informationOfTile.toFront();
+
 
 
             }
