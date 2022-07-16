@@ -14,6 +14,7 @@ public class CityPanelChoosingTransition
         this.panelListFXMLController = panelListFXMLController;
         this.setCycleCount(-1);
         this.setCycleDuration(Duration.millis(1000));
+        TransitionDatabase.transitions.add(this);
     }
 
     @Override

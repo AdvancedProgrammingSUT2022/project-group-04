@@ -12,6 +12,7 @@ public class DiscussionResourceChoosingTransition extends Transition {
         this.discussionFXMLController = discussionFXMLController;
         this.setCycleCount(-1);
         this.setCycleDuration(Duration.millis(1000));
+        TransitionDatabase.transitions.add(this);
     }
 
     @Override
