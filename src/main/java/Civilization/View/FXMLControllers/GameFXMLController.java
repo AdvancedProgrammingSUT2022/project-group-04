@@ -110,7 +110,7 @@ public class GameFXMLController {
         Circle nonCombatUnit;
 
        //Features and resources :::::::::::::::::::;
-        Rectangle feature = new Rectangle();
+        Polygon feature = new Polygon();
         Rectangle resource = new Rectangle();
 
     }
@@ -234,10 +234,14 @@ public class GameFXMLController {
             } else {
                 tile.feature.setFill(Color.BLACK);
             }
-            tile.feature.setLayoutX(tile.polygon.getPoints().get(0) + 10);
-            tile.feature.setLayoutY(tile.polygon.getPoints().get(1) + 20);
-            tile.feature.prefWidth(60);
-            tile.feature.prefHeight(60);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
 
             // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             tile.informationOfTile.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
