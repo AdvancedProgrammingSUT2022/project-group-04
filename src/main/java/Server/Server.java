@@ -14,9 +14,11 @@ import java.net.Socket;
 public class Server {
     private ServerSocket serverSocket1;
     private ServerSocket serverSocket2;
+    private GameMenuServer game;
 
 
     public Server() {
+        //game = new GameMenuServer();
         try {
             serverSocket1 = new ServerSocket(8080);
         } catch (IOException e) {
@@ -56,14 +58,32 @@ public class Server {
                 JSONObject clientCommandJ = new JSONObject(clientCommand);
                 if (clientCommandJ.get("menu type").equals("Login")) {
                     processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected);
-                }
-                else if (clientCommandJ.get("menu type").equals("Profile")){
+                } else if (clientCommandJ.get("menu type").equals("Profile")) {
+                    processProfileMenuReqs(clientCommandJ, dataOutputStream);
+                } else if (clientCommandJ.get("menu type").equals("Game")) {
+                    processGameMenuReqs(clientCommandJ, dataOutputStream);
+                } else if (clientCommandJ.get("menu type").equals("Main")) {
+                    processMainMenuReqs(clientCommandJ, dataOutputStream);
+                } else if (clientCommandJ.get("menu type").equals("")) {
 
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+    }
+
+    private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
+
+    }
+
+    private void processGameMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        JSONObject response = game.processGameMenuReqs(clientCommandJ,dataOutputStream);
+        dataOutputStream.writeUTF(response.toString());
+        dataOutputStream.flush();
+    }
+
+    private void processProfileMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
     }
 
     private void processLoginMenuReqs(JSONObject clientCommandJ, LoginMenuController loginMenuController, DataOutputStream dataOutputStream, boolean disconnected) throws IOException {
