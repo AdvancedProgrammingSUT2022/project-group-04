@@ -15,6 +15,7 @@ public class Client {
             socket1 = new Socket("localhost", 8080);
             dataInputStream1 = new DataInputStream(socket1.getInputStream());
             dataOutputStream1 = new DataOutputStream(socket1.getOutputStream());
+            GameClient.setSocket(socket1,dataOutputStream1,dataInputStream1);
         } catch (IOException e){
             System.out.println("Connection lost");
             System.exit(5);
