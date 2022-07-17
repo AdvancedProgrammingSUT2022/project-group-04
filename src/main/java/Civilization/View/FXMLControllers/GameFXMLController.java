@@ -110,6 +110,7 @@ public class GameFXMLController {
         Circle nonCombatUnit;
 
        //Features and resources :::::::::::::::::::;
+
         Polygon feature = new Polygon();
         Rectangle resource = new Rectangle();
 
@@ -229,11 +230,13 @@ public class GameFXMLController {
                 }
             }
 
+            tile.feature = new Rectangle();
             if(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getFeature() != null) {
                 tile.feature.setFill(Color.BLUE);
             } else {
                 tile.feature.setFill(Color.BLACK);
             }
+
             tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
@@ -242,6 +245,7 @@ public class GameFXMLController {
             tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+
 
             // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             tile.informationOfTile.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
@@ -374,16 +378,39 @@ public class GameFXMLController {
     }
 
     private void createUnit(){
+        if(selectedTile.soldiers.getValue() == null) {
+            return;
+        }
         System.out.println(selectedTile.soldiers.getValue().toString());
-        selectedTile.combatUnit = new Circle(10, Color.BLACK);
+        if(selectedTile.soldiers.getValue().equals("Settler")
+            || selectedTile.soldiers.getValue().equals("worker")) {
+            createNonCombat();
+        } else {
+            createCombat();
+        }
+
+    }
+
+    private void createNonCombat() {
+        selectedTile.nonCombatUnit = new Circle(30, Color.BLACK);
+        selectedTile.nonCombatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
+        selectedTile.nonCombatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 120);
+        selectedTile.nonCombatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
+        selectedTile.nonCombatUnit.prefHeight(100);
+        selectedTile.nonCombatUnit.prefWidth(100);
+        mapPane.getChildren().add(selectedTile.nonCombatUnit);
+        selectedTile.nonCombatUnit.toFront();
+    }
+
+    private void createCombat() {
+        selectedTile.combatUnit = new Circle(30, Color.BLACK);
         selectedTile.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
-        selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) -20);
-        selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 20);
+        selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 40);
+        selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
         selectedTile.combatUnit.prefHeight(100);
         selectedTile.combatUnit.prefWidth(100);
         mapPane.getChildren().add(selectedTile.combatUnit);
         selectedTile.combatUnit.toFront();
-
     }
 
     private void setStopButton() {
