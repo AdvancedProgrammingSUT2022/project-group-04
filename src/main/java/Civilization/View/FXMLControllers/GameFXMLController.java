@@ -1,5 +1,6 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
@@ -170,6 +171,19 @@ public class GameFXMLController {
                     tile.sides.add(side5);
                     tile.sides.add(side6);
                 }
+
+                if(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit() != null) {
+                    showNonCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit(), tile);
+
+                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit().getUnitType());
+
+                } else if(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
+                    showCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit(), tile);
+
+                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getUnitType());
+
+                }
+
                 updateMapForOneTile(tile);
                 mapPane.getChildren().add(tile.polygon);
                 mapPane.getChildren().add(tile.nameOfOwner);
@@ -181,6 +195,12 @@ public class GameFXMLController {
                 tile.informationOfTile.toFront();
                 tile.nameOfOwner.toFront();
                 tile.feature.toFront();
+                if(tile.nonCombatUnit != null) {
+                    tile.nonCombatUnit.toFront();
+                }
+                if(tile.combatUnit != null) {
+                    tile.combatUnit.toFront();
+                }
 
             }
         }
@@ -230,7 +250,6 @@ public class GameFXMLController {
                 }
             }
 
-            tile.feature = new Rectangle();
             if(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getFeature() != null) {
                 tile.feature.setFill(Color.BLUE);
             } else {
@@ -392,6 +411,9 @@ public class GameFXMLController {
     }
 
     private void createNonCombat() {
+        if(!addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue())) {
+            return;
+        }
         selectedTile.nonCombatUnit = new Circle(30, Color.BLACK);
         selectedTile.nonCombatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
         selectedTile.nonCombatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 120);
@@ -400,9 +422,36 @@ public class GameFXMLController {
         selectedTile.nonCombatUnit.prefWidth(100);
         mapPane.getChildren().add(selectedTile.nonCombatUnit);
         selectedTile.nonCombatUnit.toFront();
+        addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
+
+    }
+
+    private void showNonCombatByUnit(Unit unit, TileFX tileFX) {
+        tileFX.nonCombatUnit = new Circle(30, Color.BLACK);
+        tileFX.nonCombatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
+        tileFX.nonCombatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 120);
+        tileFX.nonCombatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
+        tileFX.nonCombatUnit.prefHeight(100);
+        tileFX.nonCombatUnit.prefWidth(100);
+        mapPane.getChildren().add(tileFX.nonCombatUnit);
+        tileFX.nonCombatUnit.toFront();
+    }
+
+    private void showCombatByUnit(Unit unit, TileFX tileFX) {
+        tileFX.combatUnit = new Circle(30, Color.BLACK);
+        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
+        tileFX.combatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 40);
+        tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
+        tileFX.combatUnit.prefHeight(100);
+        tileFX.combatUnit.prefWidth(100);
+        mapPane.getChildren().add(tileFX.combatUnit);
+        tileFX.combatUnit.toFront();
     }
 
     private void createCombat() {
+        if(!addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue())) {
+            return;
+        }
         selectedTile.combatUnit = new Circle(30, Color.BLACK);
         selectedTile.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
         selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 40);
@@ -411,6 +460,17 @@ public class GameFXMLController {
         selectedTile.combatUnit.prefWidth(100);
         mapPane.getChildren().add(selectedTile.combatUnit);
         selectedTile.combatUnit.toFront();
+    }
+
+    private boolean addToTileInReal(Tile tileByXAndY, String value) {
+        if(tileByXAndY == null) {
+            return false;
+        }
+        boolean create = new GameMenuController(new GameModel()).createUnit(value, tileByXAndY.getY(), tileByXAndY.getY(), GameDatabase.getTurn());
+        if(!create) {
+            selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n Creating unit is invalid.");
+        }
+        return create;
     }
 
     private void setStopButton() {
