@@ -80,6 +80,11 @@ public class GameFXMLController {
         setCheatCodesTerminal();
         setTerminal();
         GameModel.isGame = true;
+
+        for (Civilization civilization : GameDatabase.players) {
+            System.out.println(civilization.getClearTiles().size());
+        }
+
     }
 
     class TileFX extends Polygon {
