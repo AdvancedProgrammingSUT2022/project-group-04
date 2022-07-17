@@ -28,6 +28,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -705,7 +706,11 @@ public class GameMenuFXMLController {
         OKButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                runGame();
+                try {
+                    runGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 GraphicalBases.enterGame("Game");
             }
         });
@@ -714,7 +719,7 @@ public class GameMenuFXMLController {
         cursorTransition.play();
     }
 
-    private void runGame() {
+    private void runGame() throws IOException {
         ArrayList<String> users = new ArrayList<>(selectedUsers);
         GameModel gameModel = new GameModel();
         gameModel.startGame(users);

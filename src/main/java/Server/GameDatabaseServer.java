@@ -7,6 +7,7 @@ import Civilization.Database.UserDatabase;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,17 +50,17 @@ public class GameDatabaseServer {
         return null;
     }
 
-//    public static void generateRuin() {
-//        Random random = new Random();
-//        for (Tile tile : Civilization.Database.GameDatabase.map) {
-//            if (getCivilizationByTile(tile) == null) {
-//                int ruin = random.nextInt(500);
-//                if (ruin == 12) {
-//                    tile.setRuin(new Ruin());
-//                }
-//            }
-//        }
-//    }
+    public static void generateRuin() {
+        Random random = new Random();
+        for (Tile tile : map) {
+            if (getCivilizationByTile(tile) == null) {
+                int ruin = random.nextInt(500);
+                if (ruin == 12) {
+                    tile.setRuin(new Ruin());
+                }
+            }
+        }
+    }
 
 
     public static void setPlayers(ArrayList<Civilization> player) {
@@ -462,4 +463,75 @@ public class GameDatabaseServer {
     }
 
 
+    public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {
+        JSONObject response = new JSONObject();
+        switch ((String) clientCommandJ.get("action")) {
+            case "getCivilizationByUnit":
+                Unit unit = (Unit) clientCommandJ.get("unit");
+                Civilization civilization = getCivilizationByUnit(unit);
+                response.put("civilization", civilization);
+                break;
+            case "generateRuin":
+                generateRuin();
+                break;
+            case "setPlayers":
+                setPlayers((ArrayList<Civilization>) clientCommandJ.get("players"));
+                break;
+            case "getCivilizationByUsername":
+                response.put("civilization", getCivilizationByUsername((String) clientCommandJ.get("civilization name")));
+                break;
+            case "getCivilizationByNickname":
+                response.put("civilization", getCivilizationByNickname((String) clientCommandJ.get("civilization name")));
+                break;
+            case "getCityByName":
+                response.put("city", getCityByName((String) clientCommandJ.get("city name")));
+                break;
+            case "getTileByXAndY":
+                response.put("tile", getTileByXAndY(Integer.parseInt((String) clientCommandJ.get("x"))
+                        , Integer.parseInt((String) clientCommandJ.get("y"))));
+                break;
+            case "isTileForACity":
+                response.put("isIt?", isTileForACity((Tile) clientCommandJ.get("Tile")));
+                break;
+            case "getCivilizationByTile":
+                response.put("civilization", getCivilizationByTile((Tile) clientCommandJ.get("Tile")));
+                break;
+            case "getCivilizationIndex":
+                response.put("index", getCivilizationIndex((String) clientCommandJ.get("civilization name")));
+                break;
+            case "generateMap":
+                generateMap((int) clientCommandJ.get("number of players"));
+                response.put("players", players);
+                response.put("tiles", map);
+                break;
+            case "getCivilizationForCity":
+                response.put("civilization", getCivilizationForCity((String) clientCommandJ.get("city name")));
+                break;
+            case "nextTurn":
+                nextTurn();
+                break;
+            case "calculateNextTurn":
+                response.put("turn", calculateNextTurn());
+                break;
+            case "findTileByCitizen":
+                response.put("Tile", findTileByCitizen((Citizen) clientCommandJ.get("citizen")));
+                break;
+            case "getCivilizationByTurn":
+                response.put("civilization", getCivilizationByTurn((int) clientCommandJ.get("turn")));
+                break;
+            case "isTileInCivilization":
+                response.put("return value", isTileInCivilization((Tile) clientCommandJ.get("tile"),
+                        (Civilization) clientCommandJ.get("civilization")));
+                break;
+            case "checkIfWin":
+                response.put("civilization", checkIfWin());
+                break;
+            case "getLastCivilization":
+                response.put("civilization", getLastCivilization());
+                break;
+            default:
+                break;
+        }
+        return response;
+    }
 }

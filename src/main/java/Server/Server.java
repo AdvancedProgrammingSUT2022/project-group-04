@@ -1,6 +1,7 @@
 package Server;
 
 import Civilization.Controller.LoginMenuController;
+import Civilization.Database.GameDatabase;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
 import Civilization.View.Components.Account;
@@ -60,7 +61,7 @@ public class Server {
                     processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected);
                 } else if (clientCommandJ.get("menu type").equals("Profile")) {
                     processProfileMenuReqs(clientCommandJ, dataOutputStream);
-                } else if (clientCommandJ.get("menu type").equals("Game")) {
+                } else if (clientCommandJ.get("menu type").equals("Game Database")) {
                     processGameMenuReqs(clientCommandJ, dataOutputStream);
                 } else if (clientCommandJ.get("menu type").equals("Main")) {
                     processMainMenuReqs(clientCommandJ, dataOutputStream);
@@ -81,6 +82,9 @@ public class Server {
 //        JSONObject response = game.processGameMenuReqs(clientCommandJ,dataOutputStream);
 //        dataOutputStream.writeUTF(response.toString());
 //        dataOutputStream.flush();
+        JSONObject response = GameDatabaseServer.processReq(clientCommandJ);
+        dataOutputStream.writeUTF(response.toString());
+        dataOutputStream.flush();
     }
 
     private void processProfileMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {

@@ -81,15 +81,11 @@ public class GameDatabase {
     }
 
     public static void generateRuin() throws IOException {
-        Random random = new Random();
-        for (Tile tile : GameDatabase.map) {
-            if (getCivilizationByTile(tile) == null) {
-                int ruin = random.nextInt(500);
-                if (ruin == 12) {
-                    tile.setRuin(new Ruin());
-                }
-            }
-        }
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "generateRuin");
+        JSONObject serverResponse = sendToServer();
+        //TODO SYSout??
     }
 
 
@@ -277,7 +273,7 @@ public class GameDatabase {
     public static boolean isTileInCivilization(Tile tile, Civilization civilization) throws IOException {
         input = new JSONObject();
         input.put("menu type", "Game Database");
-        input.put("citizen",civilization);
+        input.put("civilization",civilization);
         input.put("tile",tile);
         input.put("action", "isTileInCivilization");
         JSONObject serverResponse = sendToServer();
