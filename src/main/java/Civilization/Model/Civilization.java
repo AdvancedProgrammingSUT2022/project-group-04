@@ -344,6 +344,15 @@ public class Civilization {
         return clearTiles;
     }
 
+    public boolean isThisTileFogOfWar(Tile tile) {
+        for (Tile clearTile : getClearTiles()) {
+            if(tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void maintenanceOfUnits() {
         for (Tile tile : this.getTiles()) {
             for (Unit unit : tile.getUnits()) {
