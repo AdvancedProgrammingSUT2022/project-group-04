@@ -3,6 +3,7 @@ package Civilization.Model;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Building {
@@ -374,14 +375,14 @@ public class Building {
         return turnsNeedToBuild;
     }
 
-    public void build() {
+    public void build() throws IOException {
         this.turnsNeedToBuild--;
         if (wasBuilt()) {
             sendNotification();
         }
     }
 
-    private void sendNotificationInCLI() {
+    private void sendNotificationInCLI() throws IOException {
         String source = GlobalVariables.SYSTEM_NAME;
         String text = "Building " + this.name + " was built on city " + this.cityName;
         String destination = GameDatabase.getCivilizationForCity(cityName).getNickname();
@@ -389,7 +390,7 @@ public class Building {
         Notification.addNotification(notification);
     }
 
-    private void sendNotification() {
+    private void sendNotification() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationForCity(cityName);
         String message = GlobalVariables.SYSTEM_NAME + " notification:\n";
         message += "\tBuilding " + this.name + " was built on city " + this.cityName;
@@ -401,13 +402,13 @@ public class Building {
         return this.turnsNeedToBuild == 0;
     }
 
-    private int libraryScienceCalculator() {
+    private int libraryScienceCalculator() throws IOException {
         int population = (GameDatabase.getCityByName(this.cityName).getWorker() != null ? 1 : 0)
                 + (GameDatabase.getCityByName(this.cityName).getSettler() != null ? 1 : 0);
         return population / 2;
     }
 
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         GameDatabase.getCivilizationForCity(this.cityName).addGold(-this.maintenance);
         switch (this.name) {
             case "Barracks":

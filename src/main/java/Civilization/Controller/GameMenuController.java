@@ -225,7 +225,7 @@ public class GameMenuController {
         return true;
     }
 
-    public boolean isCheatForTurn(String civilizationName, int turn) {
+    public boolean isCheatForTurn(String civilizationName, int turn) throws IOException {
         int index = GameDatabase.getCivilizationIndex(civilizationName);
         if (index == -1 || index == turn) {
             return false;
@@ -278,7 +278,7 @@ public class GameMenuController {
         return false;
     }
 
-    public void addTileToCity(Tile tile, City city) {
+    public void addTileToCity(Tile tile, City city) throws IOException {
         city.addTile(tile);
         Civilization civilization = GameDatabase.getCivilizationForCity(city.getName());
         addTileToCivilization(tile, civilization);
@@ -532,7 +532,7 @@ public class GameMenuController {
         return civilization.isTileInCivilization(tile.getX(), tile.getY());
     }
 
-    public void deleteUnit(Unit unit) {
+    public void deleteUnit(Unit unit) throws IOException {
         int amount = (int) ((double) 1 / 10 * unit.getCost());
         GameDatabase.getCivilizationByTile(unit.getTileOfUnit()).addGold(amount);
         unit.getTileOfUnit().removeUnit(unit);

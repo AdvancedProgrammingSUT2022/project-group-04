@@ -525,7 +525,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitGarrisonTest(){
+    public void unitGarrisonTest() throws IOException {
         Soldier soldier = mock(Soldier.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = soldier;
@@ -536,7 +536,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitGarrisonTest2(){
+    public void unitGarrisonTest2() throws IOException {
         Soldier soldier = mock(Soldier.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = soldier;
@@ -805,7 +805,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void citySelectByPosition() {
+    public void citySelectByPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);

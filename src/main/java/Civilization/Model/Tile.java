@@ -78,7 +78,7 @@ public class Tile {
     }
 
 
-    public void addResource(Resources resources) {
+    public void addResource(Resources resources) throws IOException {
         discoveredResources.add(resources);
         if (resources.getType().equals("luxury")
                 && GameDatabase.getCivilizationByTile(this).isResourceNew(resources)) {
@@ -86,7 +86,7 @@ public class Tile {
         }
     }
 
-    public void discoverResource() {
+    public void discoverResource() throws IOException {
         if (this.baseTerrain.getResources() == null) {
             return;
         }

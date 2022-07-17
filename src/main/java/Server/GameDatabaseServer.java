@@ -336,7 +336,7 @@ public class GameDatabaseServer {
         return null;
     }
 
-    public static void nextTurn() {
+    public static void nextTurn() throws IOException {
         setTurn(calculateNextTurn());
         for (Civilization player : players) {
             player.nextTurn();

@@ -479,7 +479,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isCheatForFun_False(){
+    public void isCheatForFun_False() throws IOException {
         int turn = 2;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getCivilizationIndex("")).thenReturn(turn);
@@ -487,7 +487,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isCheatForFun_True(){
+    public void isCheatForFun_True() throws IOException {
         int turn = 2;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getCivilizationIndex("")).thenReturn(turn+1);
@@ -546,7 +546,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void addTileToCity(){
+    public void addTileToCity() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         when(city.getName()).thenReturn("alireza");
         database.when(()->GameDatabase.getCivilizationForCity("alireza")).thenReturn(civilization);
@@ -788,7 +788,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void deleteUnit() {
+    public void deleteUnit() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCivilizationByTile(tile)).thenReturn(civilization);
         when(unit.getCost()).thenReturn(10);

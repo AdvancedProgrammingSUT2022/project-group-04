@@ -3,6 +3,7 @@ package Civilization.Model;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Resources {
@@ -285,11 +286,11 @@ public class Resources {
         return false;
     }
 
-    public void discover(Tile tile) {
+    public void discover(Tile tile) throws IOException {
         sendNotification(tile);
     }
 
-    private void sendNotificationInCLI(Tile tile) {
+    private void sendNotificationInCLI(Tile tile) throws IOException {
         String source = GlobalVariables.SYSTEM_NAME;
         String text = "Resource " + this.name + " discovered on tile X = " + Integer.toString(tile.getX()) + " and Y = " + Integer.toString(tile.getY());
         String destination = GameDatabase.getCivilizationByTile(tile).getNickname();
@@ -297,7 +298,7 @@ public class Resources {
         Notification.addNotification(notification);
     }
 
-    private void sendNotification(Tile tile) {
+    private void sendNotification(Tile tile) throws IOException {
 
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         String message = GlobalVariables.SYSTEM_NAME + " notification:\n";
@@ -309,7 +310,7 @@ public class Resources {
         return civilization.isImprovementReachedByThisCivilization(this.improvementNeeded.getName());
     }
 
-    public void nextTurn(String cityName) {
+    public void nextTurn(String cityName) throws IOException {
         GameDatabase.getCityByName(cityName).addProduction(this.production);
         GameDatabase.getCivilizationForCity(cityName).addGold(this.gold);
     }
