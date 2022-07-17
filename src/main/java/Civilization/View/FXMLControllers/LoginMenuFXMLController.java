@@ -2,6 +2,7 @@ package Civilization.View.FXMLControllers;
 
 import Civilization.Controller.LoginMenuController;
 import Civilization.Database.UserDatabase;
+import Civilization.Model.GameModel;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.User;
 import Civilization.View.Components.Account;
@@ -66,6 +67,7 @@ public class LoginMenuFXMLController {
         setBackground();
         setRegister();
         setCursor();
+        GameModel.isGame = false;
     }
 
     public void setCursor() {

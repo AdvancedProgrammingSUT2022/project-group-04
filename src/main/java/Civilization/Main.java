@@ -10,7 +10,9 @@ import java.util.Scanner;
 
 import Civilization.Controller.LoginMenuController;
 import Civilization.Controller.MainMenuController;
+import Civilization.Database.GameDatabase;
 import Civilization.Database.UserDatabase;
+import Civilization.Model.GameModel;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.MainMenuModel;
 import Civilization.Model.User;
@@ -59,6 +61,13 @@ public class Main extends Application {
 //        }
 
         UserDatabase.writeInFile("UserDatabase.json");
+    }
+
+    @Override
+    public void stop() {
+        if(GameModel.isGame) {
+            GameDatabase.saveGame();
+        }
     }
 
 }

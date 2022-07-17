@@ -1,10 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
-import Civilization.Model.City;
-import Civilization.Model.Civilization;
-import Civilization.Model.Resources;
-import Civilization.Model.User;
+import Civilization.Model.*;
 import Civilization.View.Cheater;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.DiscussionResourceChoosingTransition;
@@ -73,6 +70,7 @@ public class DiscussionFXMLController {
         setMessagesPart();
         setSendPart();
         setDiplomacy();
+        GameModel.isGame = true;
     }
 
     private void setDiplomacy() {

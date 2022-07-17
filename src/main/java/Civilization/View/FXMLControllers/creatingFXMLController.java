@@ -3,6 +3,7 @@ package Civilization.View.FXMLControllers;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.Building;
+import Civilization.Model.GameModel;
 import Civilization.View.GraphicalBases;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +35,7 @@ public class creatingFXMLController {
     public void initialize() {
         setBackground();
         setValidBuildings();
+        GameModel.isGame = true;
     }
 
     private void setValidBuildings() {
@@ -49,6 +51,10 @@ public class creatingFXMLController {
         int i = 0;
 
         for (String building : GlobalVariables.BUILDINGS) {
+            boolean buyingValid = true;
+            if((new Building(building)).getCost() > GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getGold()) {
+                buyingValid = false;
+            }
             VBox vBox = new VBox();
             vBox.setSpacing(10);
             Circle circle = new Circle(80);
@@ -66,7 +72,7 @@ public class creatingFXMLController {
             build.setFill(new ImagePattern(GraphicalBases.BUILD));
             build.setVisible(false);
 
-            Text text = new Text(building);
+            Text text = new Text(new Building(building).getInformation());
 
             if(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getCities().size() == 0
                 || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity() == null
@@ -78,13 +84,14 @@ public class creatingFXMLController {
             }
 
             int finalI = i;
+            boolean finalBuyingValid = buyingValid;
             circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     selectedBuilding = new Building(building);
                     setDisableAll(hBox, finalI);
                     build.setVisible(true);
-                    buy.setVisible(true);
+                    buy.setVisible(finalBuyingValid);
                 }
             });
 

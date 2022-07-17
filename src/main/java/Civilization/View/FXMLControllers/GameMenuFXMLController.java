@@ -87,6 +87,7 @@ public class GameMenuFXMLController {
         selectedUsers = new HashSet<>();
         selectedUsers.add(User.loggedInUser.getUsername());
         tileCount = 0;
+        GameModel.isGame = false;
 
         setBackground();
         setOKButton();

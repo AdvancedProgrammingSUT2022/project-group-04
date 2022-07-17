@@ -75,6 +75,7 @@ public class GameFXMLController {
         setInfoPanel();
         setCheatCodesTerminal();
         setTerminal();
+        GameModel.isGame = true;
     }
 
     class TileFX extends Polygon {
