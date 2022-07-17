@@ -348,7 +348,7 @@ public class Civilization {
         ArrayList<Tile> clearTiles = new ArrayList<>();
         clearTiles.addAll(tiles);
         for (Tile tile : tiles) {
-            for (Tile neighbor : tile.getNeighbors()) {
+            for (Tile neighbor : tile.getAdjacentTiles()) {
                 if(neighbor != null && isTileNew(clearTiles, neighbor)) {
                     clearTiles.add(neighbor);
                 }
