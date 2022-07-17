@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +29,7 @@ public class TechnologyTreeFXMLController {
     private AnchorPane mainAnchorPane;
 
     private ScrollPane mainScrollPane;
+    private TextArea information;
     private boolean hasCity;
 
     @FXML
@@ -37,7 +39,17 @@ public class TechnologyTreeFXMLController {
 
         setBackground();
         setBackButton();
+        setTextArea();
         setTree();
+    }
+
+    private void setTextArea() {
+        information = new TextArea();
+        information.setLayoutX(1100);
+        information.setLayoutY(50);
+        information.setPrefWidth(130);
+        information.setPrefHeight(580);
+        mainAnchorPane.getChildren().add(information);
     }
 
     private void setTree() {
@@ -52,7 +64,7 @@ public class TechnologyTreeFXMLController {
         mainScrollPane = new ScrollPane(anchorPane);
         mainScrollPane.setLayoutX(50);
         mainScrollPane.setLayoutY(50);
-        mainScrollPane.setPrefWidth(1180);
+        mainScrollPane.setPrefWidth(1000);
         mainScrollPane.setPrefHeight(580);
         mainAnchorPane.getChildren().add(mainScrollPane);
     }
@@ -71,8 +83,7 @@ public class TechnologyTreeFXMLController {
             Technology technology = new Technology(GlobalVariables.TECHNOLOGIES[i]);
             int finalI = i;
             if(!hasCity || !technology.isTechnologyValidForCivilization(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()))
-                || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isTechnologyForThisCivilization(technology)
-                || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getTechnologyUnderResearch() != null) {
+                || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isTechnologyForThisCivilization(technology)) {
                 disable = true;
             }
             circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -90,6 +101,21 @@ public class TechnologyTreeFXMLController {
                 }
             }
             Text text = new Text(technology.getName());
+
+            text.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    information.setText(technology.getInformation());
+                }
+            });
+
+            text.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    information.setText("");
+                }
+            });
+
             text.setStyle("-fx-fill: Red; -fx-font-size: 15");
             vBox.getChildren().add(text);
             vBox.getChildren().add(circle);

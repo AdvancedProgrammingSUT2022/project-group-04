@@ -270,6 +270,15 @@ public class Technology {
         return true;
     }
 
+    public String getInformation() {
+        String result = this.name + "\n";
+        result += "\t turns need: " + Integer.toString(this.turnsNeedToResearch) + "\n";
+        result += "\t cost: " + Integer.toString(this.cost) + "\n";
+        result += leadingTechnologies();
+        result += leadingBuildings();
+        return result;
+    }
+
     public boolean wasReached() {
         return this.turnsNeedToResearch < 0;
     }

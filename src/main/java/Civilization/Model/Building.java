@@ -32,142 +32,177 @@ public class Building {
                 this.cost = 80;
                 this.maintenance = 1;
                 this.technologyRequired = new Technology("BronzeWorking");
+                break;
             case "Granary":
                 this.cost = 100;
                 this.maintenance = 1;
                 this.technologyRequired = new Technology("Pottery");
+                break;
             case "Library":
                 this.cost = 80;
                 this.maintenance = 1;
                 this.technologyRequired = new Technology("Writing");
+                break;
             case "Monument":
                 this.cost = 60;
                 this.maintenance = 1;
                 this.technologyRequired = null;
+                break;
             case "Walls":
                 this.cost = 100;
                 this.maintenance = 1;
                 this.technologyRequired = new Technology("Masonry");
+                break;
             case "Water_Mill":
                 this.cost = 120;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("TheWheel");
+                break;
             case "Armory":
                 this.cost = 130;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("IronWorking");
+                break;
             case "Burial_Tomb":
                 this.cost = 120;
                 this.maintenance = 0;
                 this.technologyRequired = new Technology("Philosophy");
+                break;
             case "Circus,":
                 this.cost = 150;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("HorsebackRiding");
+                break;
             case "Colosseum":
                 this.cost = 150;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Construction");
+                break;
             case "Courthouse":
                 this.cost = 200;
                 this.maintenance = 5;
                 this.technologyRequired = new Technology("Mathematics");
+                break;
             case " Stable":
                 this.cost = 100;
                 this.maintenance = 1;
                 this.technologyRequired = new Technology("HorsebackRiding");
+                break;
             case "Temple":
                 this.cost = 120;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("Philosophy");
+                break;
             case "Castle":
                 this.cost = 200;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Chivalry");
+                break;
             case "Forge":
                 this.cost = 150;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("MetalCasting");
+                break;
             case "Garden":
                 this.cost = 120;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("Theology");
+                break;
             case "Market":
                 this.cost = 120;
                 this.maintenance = 0;
                 this.technologyRequired = new Technology("Currency");
+                break;
             case "Mint":
                 this.cost = 120;
                 this.maintenance = 0;
                 this.technologyRequired = new Technology("Currency");
+                break;
             case "Monastery":
                 this.cost = 120;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("Theology");
+                break;
             case "University":
                 this.cost = 200;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Education");
+                break;
             case "Workshop":
                 this.cost = 100;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("MetalCasting");
+                break;
             case "Bank":
                 this.cost = 220;
                 this.maintenance = 0;
                 this.technologyRequired = new Technology("Banking");
+                break;
             case "MilitaryAcademy":
                 this.cost = 350;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("MilitaryScience");
+                break;
             case "Museum":
                 this.cost = 350;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Archaeology");
+                break;
             case "OperaHouse":
                 this.cost = 220;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Acoustics");
+                break;
             case "PublicSchool":
                 this.cost = 350;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("ScientificTheory");
+                break;
             case "SatrapsCourt":
                 this.cost = 220;
                 this.maintenance = 0;
                 this.technologyRequired = new Technology("Banking");
+                break;
             case "Theater":
                 this.cost = 300;
                 this.maintenance = 5;
                 this.technologyRequired = new Technology("PrintingPress");
+                break;
             case "Windmill":
                 this.cost = 180;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("Economics");
+                break;
             case "Arsenal":
                 this.cost = 350;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Railroad");
+                break;
             case "BroadcastTower":
                 this.cost = 600;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("Radio");
+                break;
             case "Factory":
                 this.cost = 300;
                 this.maintenance = 3;
                 this.technologyRequired = new Technology("SteamPower");
+                break;
             case "Hospital":
                 this.cost = 400;
                 this.maintenance = 2;
                 this.technologyRequired = new Technology("Biology");
+                break;
             case "MilitaryBase":
                 this.cost = 450;
                 this.maintenance = 4;
                 this.technologyRequired = new Technology("Telegraph");
+                break;
             case "StockExchange":
                 this.cost = 650;
                 this.maintenance = 0;
                 this.technologyRequired = new Technology("Electricity");
+                break;
             default:
                 break;
         }
