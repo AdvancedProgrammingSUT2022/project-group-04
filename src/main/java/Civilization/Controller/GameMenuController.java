@@ -538,14 +538,19 @@ public class GameMenuController {
     }
 
 
+//    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
+//        Tile tile = GameDatabase.getTileByXAndY(x, y);
+//        if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
+//            if (unitType.equals("Settler")
+//                    || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
+//            else return createCombatUnit(unitType, x, y, civilizationIndex);
+//        }
+//        return false;
+//    }
     public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
-        Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
             if (unitType.equals("Settler")
                     || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
             else return createCombatUnit(unitType, x, y, civilizationIndex);
-        }
-        return false;
     }
 
     public boolean isTileValidForCreatingUnit(int x, int y, int turn) {
@@ -554,11 +559,9 @@ public class GameMenuController {
 
     public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        ArrayList<Unit> soldiers = new ArrayList<>();
-        for (int i=0;i<tile.getUnits().size();i++){
-            if (tile.getUnits().get(i) instanceof Soldier) soldiers.add(tile.getUnits().get(i));
+        if(tile.getCombatUnit() != null) {
+            return false;
         }
-        if (soldiers.size() != 0) return false;
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
         GameDatabase.getTileByXAndY(x, y).addUnit(soldier);
         soldier.setTileOfUnit(GameDatabase.getTileByXAndY(x, y));

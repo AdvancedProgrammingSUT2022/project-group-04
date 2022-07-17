@@ -378,7 +378,7 @@ public class Civilization {
     public void maintenanceOfUnits() {
         for (Tile tile : this.getTiles()) {
             for (Unit unit : tile.getUnits()) {
-                this.gold -= unit.getMaintenance();
+                addGold(unit.getMaintenance()*-1);
             }
         }
     }

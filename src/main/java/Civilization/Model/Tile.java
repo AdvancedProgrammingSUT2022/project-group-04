@@ -85,6 +85,30 @@ public class Tile {
         }
     }
 
+    public Unit getNonCombatUnit() {
+        for (Unit unit : this.units) {
+            if(unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker")) {
+                return unit;
+            }
+        }
+        if(this.settler != null) {
+            return this.settler;
+        }
+        if(this.worker != null) {
+            return this.worker;
+        }
+        return null;
+    }
+
+    public Unit getCombatUnit() {
+        for (Unit unit : this.units) {
+            if(!(unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker"))) {
+                return unit;
+            }
+        }
+        return null;
+    }
+
     public void discoverResource() {
         if (this.baseTerrain.getResources() == null) {
             return;

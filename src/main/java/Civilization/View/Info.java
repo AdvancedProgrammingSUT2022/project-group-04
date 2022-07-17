@@ -232,10 +232,8 @@ public class Info {
     public ArrayList<Unit> getSoldiers(GameMenuController gameMenuController, int turn) {
         ArrayList<Unit> soldiers = new ArrayList<Unit>();
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
-            for (Unit unit : tile.getUnits()) {
-                if (gameMenuController.isUnitSoldier(unit)) {
-                    soldiers.add(unit);
-                }
+            if(tile.getCombatUnit() != null) {
+                soldiers.add(tile.getCombatUnit());
             }
         }
         return soldiers;
