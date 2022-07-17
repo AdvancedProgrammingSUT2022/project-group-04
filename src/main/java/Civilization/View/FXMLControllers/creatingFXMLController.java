@@ -49,6 +49,10 @@ public class creatingFXMLController {
         int i = 0;
 
         for (String building : GlobalVariables.BUILDINGS) {
+            boolean buyingValid = true;
+            if((new Building(building)).getCost() > GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getGold()) {
+                buyingValid = false;
+            }
             VBox vBox = new VBox();
             vBox.setSpacing(10);
             Circle circle = new Circle(80);
@@ -66,7 +70,7 @@ public class creatingFXMLController {
             build.setFill(new ImagePattern(GraphicalBases.BUILD));
             build.setVisible(false);
 
-            Text text = new Text(building);
+            Text text = new Text(new Building(building).getInformation());
 
             if(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getCities().size() == 0
                 || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity() == null
@@ -78,13 +82,14 @@ public class creatingFXMLController {
             }
 
             int finalI = i;
+            boolean finalBuyingValid = buyingValid;
             circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     selectedBuilding = new Building(building);
                     setDisableAll(hBox, finalI);
                     build.setVisible(true);
-                    buy.setVisible(true);
+                    buy.setVisible(finalBuyingValid);
                 }
             });
 
