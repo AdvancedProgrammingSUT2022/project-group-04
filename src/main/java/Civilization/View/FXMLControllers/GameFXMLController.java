@@ -82,10 +82,6 @@ public class GameFXMLController {
         setTerminal();
         GameModel.isGame = true;
 
-        for (Civilization civilization : GameDatabase.players) {
-            System.out.println(civilization.getClearTiles().size());
-        }
-
     }
 
     class TileFX extends Polygon {
@@ -175,12 +171,10 @@ public class GameFXMLController {
                 if(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit() != null) {
                     showNonCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit(), tile);
 
-                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit().getUnitType());
 
                 } else if(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
                     showCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit(), tile);
 
-                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getUnitType());
 
                 }
 
@@ -397,6 +391,9 @@ public class GameFXMLController {
     }
 
     private void createUnit(){
+        if(selectedTile == null) {
+            return;
+        }
         if(selectedTile.soldiers.getValue() == null) {
             return;
         }

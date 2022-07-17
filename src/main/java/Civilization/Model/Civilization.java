@@ -4,6 +4,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Civilization {
     private String username;
@@ -376,10 +377,8 @@ public class Civilization {
     }
 
     public void maintenanceOfUnits() {
-        for (Tile tile : this.getTiles()) {
-            for (Unit unit : tile.getUnits()) {
-                addGold(unit.getMaintenance()*-1);
-            }
+        for (Unit combatUnit : getCombatUnits()) {
+            addGold(combatUnit.getCost()*-1);
         }
     }
 
@@ -527,5 +526,17 @@ public class Civilization {
             }
         }
         this.gold += ruin.getGold();
+    }
+
+    public ArrayList<Unit> getCombatUnits() {
+        ArrayList<Unit> soldiers = new ArrayList<>();
+        for (Tile tile : GameDatabase.map) {
+            for (Unit unit : tile.units) {
+                if(unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(this.getNickname())) {
+                    soldiers.add(unit);
+                }
+            }
+        }
+        return soldiers;
     }
 }
