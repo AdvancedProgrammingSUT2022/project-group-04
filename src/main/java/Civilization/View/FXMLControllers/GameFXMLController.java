@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
@@ -105,6 +104,10 @@ public class GameFXMLController {
         Circle combatUnit;
         Circle nonCombatUnit;
 
+       //Features and resources :::::::::::::::::::;
+        Rectangle feature = new Rectangle();
+        Rectangle resource = new Rectangle();
+
     }
 
 
@@ -164,12 +167,14 @@ public class GameFXMLController {
                 updateMapForOneTile(tile);
                 mapPane.getChildren().add(tile.polygon);
                 mapPane.getChildren().add(tile.nameOfOwner);
+                mapPane.getChildren().add(tile.feature);
                 for (Polygon side : tile.sides) {
                     mapPane.getChildren().add(side);
                 }
                 mainAnchorPane.getChildren().add(tile.informationOfTile);
                 tile.informationOfTile.toFront();
                 tile.nameOfOwner.toFront();
+                tile.feature.toFront();
 
             }
         }
@@ -218,6 +223,16 @@ public class GameFXMLController {
                     tile.nameOfOwner.setFill(Color.BLACK);
                 }
             }
+
+            if(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getFeature() != null) {
+                tile.feature.setFill(Color.BLUE);
+            } else {
+                tile.feature.setFill(Color.BLACK);
+            }
+            tile.feature.setLayoutX(tile.polygon.getPoints().get(0) + 10);
+            tile.feature.setLayoutY(tile.polygon.getPoints().get(1) + 20);
+            tile.feature.prefWidth(60);
+            tile.feature.prefHeight(60);
 
             // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             tile.informationOfTile.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
@@ -299,6 +314,12 @@ public class GameFXMLController {
                 if(tile.nonCombatUnit != null) {
                     tile.nonCombatUnit.setVisible(false);
                 }
+                if(tile.feature != null) {
+                    tile.feature.setVisible(false);
+                }
+                if(tile.resource != null) {
+                    tile.resource.setVisible(false);
+                }
             } else {
                 tile.nameOfOwner.setVisible(true);
                 tile.hBox.setVisible(true);
@@ -308,6 +329,12 @@ public class GameFXMLController {
                 }
                 if(tile.nonCombatUnit != null) {
                     tile.nonCombatUnit.setVisible(true);
+                }
+                if(tile.feature != null) {
+                    tile.feature.setVisible(true);
+                }
+                if(tile.resource != null) {
+                    tile.resource.setVisible(true);
                 }
             }
 
