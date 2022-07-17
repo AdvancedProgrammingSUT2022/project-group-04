@@ -200,7 +200,7 @@ public class CombatControllerTest {
     }
 
     @Test
-    public void checkTerrainBonusTest(){
+    public void checkTerrainBonusTest() throws IOException {
         Soldier soldier = mock(Soldier.class);
         Tile tile1 = mock(Tile.class);
         Tile tile2 = mock(Tile.class);

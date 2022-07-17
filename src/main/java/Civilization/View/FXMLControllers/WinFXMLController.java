@@ -15,6 +15,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 public class WinFXMLController {
 
     @FXML
@@ -23,7 +25,7 @@ public class WinFXMLController {
     private Civilization winner;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         winner = GameDatabase.checkIfWin();
         setBackground();
         setOKButton();

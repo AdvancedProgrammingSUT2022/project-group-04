@@ -444,7 +444,11 @@ public class GameFXMLController {
         nextTurn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                checkIfWin();
+                try {
+                    checkIfWin();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(GameModel.autoSave && GameDatabase.getTurn()%50 == 49) {
                     try {
                         autoSave();
@@ -476,7 +480,7 @@ public class GameFXMLController {
         GameDatabase.saveGame();
     }
 
-    private void checkIfWin() {
+    private void checkIfWin() throws IOException {
         if(GameDatabase.checkIfWin() == null) {
             return;
         }

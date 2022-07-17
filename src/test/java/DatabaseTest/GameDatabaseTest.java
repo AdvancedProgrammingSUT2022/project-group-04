@@ -159,7 +159,7 @@ public class GameDatabaseTest {
     }
 
     @Test
-    public void isTileInCivilization_True() {
+    public void isTileInCivilization_True() throws IOException {
         Tile tile = GameDatabase.players.get(1).getTiles().get(1);
         assertTrue(GameDatabase.isTileInCivilization(tile, GameDatabase.players.get(1)));
     }

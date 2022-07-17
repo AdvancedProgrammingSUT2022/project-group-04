@@ -226,8 +226,13 @@ public class GameDatabase {
         return turn;
     }
 
-    public static Civilization getCivilizationByTurn(int turn) {
-        return GameDatabase.players.get(turn);
+    public static Civilization getCivilizationByTurn(int turn) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getCivilizationByTurn");
+        input.put("turn",turn);
+        JSONObject serverResponse = sendToServer();
+        return (Civilization) serverResponse.get("civilization");
     }
 
 //    public static Tile findTileBySettler(Settler settler) {
@@ -269,11 +274,14 @@ public class GameDatabase {
         return GameDatabase.players;
     }
 
-    public static boolean isTileInCivilization(Tile tile, Civilization civilization) {
-        if (civilization.isTileInCivilization(tile.getX(), tile.getY())) {
-            return true;
-        }
-        return false;
+    public static boolean isTileInCivilization(Tile tile, Civilization civilization) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("citizen",civilization);
+        input.put("tile",tile);
+        input.put("action", "isTileInCivilization");
+        JSONObject serverResponse = sendToServer();
+        return (boolean) serverResponse.get("return value");
     }
 
     public static void setTurn(int newTurn) {
@@ -297,23 +305,12 @@ public class GameDatabase {
 //        writer.close();
 //    }
 
-    public static Civilization checkIfWin() {
-        if (GameDatabase.year >= 2050) {
-            return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
-        }
-        if (GameDatabase.cheated && GameDatabase.cheatedCivilization != null) {
-            return cheatedCivilization;
-        }
-        if (players.size() == 1) {
-            return players.get(0);
-        } else {
-            for (Civilization civilization : players) {
-                if (civilization.getTechnologies().size() == GlobalVariables.TECHNOLOGIES.length) {
-                    return civilization;
-                }
-            }
-        }
-        return null;
+    public static Civilization checkIfWin() throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "checkIfWin");
+        JSONObject serverResponse = sendToServer();
+        return (Civilization) serverResponse.get("civilization");
     }
 
 

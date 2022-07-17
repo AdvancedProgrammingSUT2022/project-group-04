@@ -548,7 +548,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitDeleteTest(){
+    public void unitDeleteTest() throws IOException {
         Soldier soldier = mock(Soldier.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = soldier;

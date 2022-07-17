@@ -813,7 +813,7 @@ public class GameMenu extends Menu {
     }
 
 
-    public String unitDelete() {
+    public String unitDelete() throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else {
