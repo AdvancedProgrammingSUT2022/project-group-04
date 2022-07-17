@@ -31,7 +31,6 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
         Client.setupSocketConnectionRegister();
-        Client.setupSocketConnectionLogin();
         launch(args);
     }
 

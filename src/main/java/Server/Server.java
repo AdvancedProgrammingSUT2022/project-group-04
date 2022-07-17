@@ -14,7 +14,7 @@ import java.net.Socket;
 public class Server {
     private ServerSocket serverSocket1;
     private ServerSocket serverSocket2;
-    private GameMenuServer game;
+//    private GameMenuServer game;
 
 
     public Server() {
@@ -78,9 +78,9 @@ public class Server {
     }
 
     private void processGameMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
-        JSONObject response = game.processGameMenuReqs(clientCommandJ,dataOutputStream);
-        dataOutputStream.writeUTF(response.toString());
-        dataOutputStream.flush();
+//        JSONObject response = game.processGameMenuReqs(clientCommandJ,dataOutputStream);
+//        dataOutputStream.writeUTF(response.toString());
+//        dataOutputStream.flush();
     }
 
     private void processProfileMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
