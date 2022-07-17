@@ -69,7 +69,7 @@ public class GameFXMLController {
 
     int NUMBER_OF_TILES_IN_COLUMN = 25;
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         turn = GameDatabase.getTurn();
         setMap();
         setStatusBar();
@@ -111,7 +111,7 @@ public class GameFXMLController {
     }
 
 
-    private void setMap(){
+    private void setMap() throws IOException {
         map = new ScrollPane();
         map.setLayoutX(150);
         map.setLayoutY(40);
@@ -127,7 +127,7 @@ public class GameFXMLController {
         mainAnchorPane.getChildren().add(map);
     }
 
-    private void updateFirstMap() {
+    private void updateFirstMap() throws IOException {
         for (int i = 0; i < GameDatabase.length; i++){
             for (int j = 0; j < GameDatabase.width; j++) {
                 double a = j * 200;
@@ -180,7 +180,7 @@ public class GameFXMLController {
         }
     }
 
-    private void updateMapForOneTile(TileFX tile) {
+    private void updateMapForOneTile(TileFX tile) throws IOException {
         for (Tile tileMap : GameDatabase.map){
             if (tileMap.getX() == tile.x && tileMap.getY() == tile.y){
                 if (tileMap.getBaseTerrainType().equals("Desert")){
@@ -342,7 +342,7 @@ public class GameFXMLController {
 
     }
 
-    private void updateMap() {
+    private void updateMap() throws IOException {
         for (TileFX tileFX : tileFXES) {
             if(needToUpdate(tileFX)) {
                 updateMapForOneTile(tileFX);
@@ -351,7 +351,7 @@ public class GameFXMLController {
         }
     }
 
-    private boolean needToUpdate(TileFX tileFX) {
+    private boolean needToUpdate(TileFX tileFX) throws IOException {
         Civilization civilization = GameDatabase.getLastCivilization();
         if(civilization == null) {
             return true;
@@ -452,13 +452,21 @@ public class GameFXMLController {
                         e.printStackTrace();
                     }
                 }
-                GameDatabase.nextTurn();
+                try {
+                    GameDatabase.nextTurn();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(isTerminalOn) {
                     endTerminal();
                 }
                 updateStatusBar();
                 updateInfoPanel();
-                updateMap();
+                try {
+                    updateMap();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         mainAnchorPane.getChildren().add(nextTurn);
@@ -722,7 +730,11 @@ public class GameFXMLController {
                         isResult = true;
                         String command = commandFounder();
                         cheater = new Cheater(turn);
-                        addResult(cheater.run(command));
+                        try {
+                            addResult(cheater.run(command));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         updateStatusBar();
                     }
                 }

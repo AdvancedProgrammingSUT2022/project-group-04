@@ -76,7 +76,7 @@ public class City extends Tile {
     }
 
     // This constructor is just for Unit Test
-    public City(String cityName) {
+    public City(String cityName) throws IOException {
         super("clear", "Hill", 0, 0);
         this.name = cityName;
         this.tiles = new ArrayList<>();
@@ -306,7 +306,7 @@ public class City extends Tile {
         this.production += amount;
     }
 
-    public void costFood() {
+    public void costFood() throws IOException {
         //adding Food is already handled
         int count = leftoverFood;
         //sub citizens food
@@ -348,7 +348,7 @@ public class City extends Tile {
         this.isCapital = true;
     }
 
-    private int citizensDyingForHunger(int count) {
+    private int citizensDyingForHunger(int count) throws IOException {
         while (count > 0) {
             if (citizens.size() > 0) {
                 GameDatabase.findTileByCitizen(citizens.get(0)).removeCitizen(citizens.get(0));
@@ -441,14 +441,14 @@ public class City extends Tile {
         return citizens;
     }
 
-    public void attackUnit(Unit unit){
+    public void attackUnit(Unit unit) throws IOException {
         if (isTileInRangeOfUnit(unit.getTileOfUnit())){
             unit.setHP(unit.getHP() - this.longRangePower);
         }
     }
 
 
-    public boolean isTileInRangeOfUnit(Tile tile) {
+    public boolean isTileInRangeOfUnit(Tile tile) throws IOException {
         for (int i = 1; i < 100; i++) {
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
                 if (i <= 2){

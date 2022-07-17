@@ -119,32 +119,32 @@ public class GameDatabaseTest {
     }
 
     @Test
-    public void getCivilizationByTile_notNull() {
+    public void getCivilizationByTile_notNull() throws IOException {
         Tile tile = GameDatabase.players.get(0).getTiles().get(0);
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         assertEquals(civilization.getNickname(), "n1");
     }
 
     @Test
-    public void getCivilizationIndex() {
+    public void getCivilizationIndex() throws IOException {
         assertEquals(GameDatabase.getCivilizationIndex("n2"), 1);
         assertEquals(GameDatabase.getCivilizationIndex("n3"), -1);
     }
 
     @Test
-    public void getCivilizationForCity_notNull() {
+    public void getCivilizationForCity_notNull() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationForCity("City1");
         assertEquals(civilization.getNickname(), "n1");
     }
 
     @Test
-    public void getCivilizationForCity_null() {
+    public void getCivilizationForCity_null() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationForCity("City2");
         assertNull(civilization);
     }
 
     @Test
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         GameDatabase.nextTurn();
     }
 

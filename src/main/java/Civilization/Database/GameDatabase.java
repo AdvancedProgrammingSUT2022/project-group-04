@@ -200,25 +200,26 @@ public class GameDatabase {
     public static Civilization getCivilizationForCity(String cityName) throws IOException {
         input = new JSONObject();
         input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationIndex");
+        input.put("action", "getCivilizationForCity");
         input.put("city name",cityName);
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
 
     public static void nextTurn() throws IOException {
-        setTurn(calculateNextTurn());
-        for (Civilization player : GameDatabase.players) {
-            player.nextTurn();
-        }
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "nextTurn");
+        JSONObject serverResponse = sendToServer();
+        return ;
     }
 
-    private static int calculateNextTurn() {
-        if (turn != GameDatabase.players.size() - 1) {
-            return turn + 1;
-        }
-        year++;
-        return 0;
+    private static int calculateNextTurn() throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "calculateNextTurn");
+        JSONObject serverResponse = sendToServer();
+        return (int) serverResponse.get("turn");
     }
 
     public static int getTurn() {
@@ -229,38 +230,39 @@ public class GameDatabase {
         return GameDatabase.players.get(turn);
     }
 
-    public static Tile findTileBySettler(Settler settler) {
-        for (Tile tile : map) {
-            ArrayList<Unit> soldiers = tile.getUnits();
-            for (Unit soldier : soldiers) {
-                if (soldier.getUnitType().equals("Settler")
-                        && settler == soldier) {
-                    return tile;
-                }
-            }
-        }
-        return null;
-    }
+//    public static Tile findTileBySettler(Settler settler) {
+//        for (Tile tile : map) {
+//            ArrayList<Unit> soldiers = tile.getUnits();
+//            for (Unit soldier : soldiers) {
+//                if (soldier.getUnitType().equals("Settler")
+//                        && settler == soldier) {
+//                    return tile;
+//                }
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public static Tile findTileByWorker(Worker worker) {
+//        for (Tile tile : map) {
+//            ArrayList<Unit> soldiers = tile.getUnits();
+//            for (Unit soldier : soldiers) {
+//                if (soldier.getUnitType().equals("worker")
+//                        && worker == soldier) {
+//                    return tile;
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
-    public static Tile findTileByWorker(Worker worker) {
-        for (Tile tile : map) {
-            ArrayList<Unit> soldiers = tile.getUnits();
-            for (Unit soldier : soldiers) {
-                if (soldier.getUnitType().equals("worker")
-                        && worker == soldier) {
-                    return tile;
-                }
-            }
-        }
-        return null;
-    }
-
-    public static Tile findTileByCitizen(Citizen citizen) {
-        for (Tile tile : map) {
-            ArrayList<Citizen> citizens = tile.getCitizens();
-            if (citizens.contains(citizen)) return tile;
-        }
-        return null;
+    public static Tile findTileByCitizen(Citizen citizen) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("citizen",citizen);
+        input.put("action", "findTileByCitizen");
+        JSONObject serverResponse = sendToServer();
+        return (Tile) serverResponse.get("Tile");
     }
 
     public static ArrayList<Civilization> getPlayers() {
@@ -323,11 +325,11 @@ public class GameDatabase {
 //        SavingGame.saveGame(copy);
     }
 
-    public static Civilization getLastCivilization() {
-        int turn = GameDatabase.getTurn();
-        if (turn == 0) {
-            return GameDatabase.getCivilizationByTurn(GameDatabase.players.size() - 1);
-        }
-        return GameDatabase.getCivilizationByTurn(turn - 1);
+    public static Civilization getLastCivilization() throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getLastCivilization");
+        JSONObject serverResponse = sendToServer();
+        return (Civilization) serverResponse.get("civilization");
     }
 }
