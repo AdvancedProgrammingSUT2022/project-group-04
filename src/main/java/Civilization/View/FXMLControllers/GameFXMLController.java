@@ -82,10 +82,6 @@ public class GameFXMLController {
         setTerminal();
         GameModel.isGame = true;
 
-        for (Civilization civilization : GameDatabase.players) {
-            System.out.println(civilization.getClearTiles().size());
-        }
-
     }
 
     class TileFX extends Polygon {
@@ -175,12 +171,10 @@ public class GameFXMLController {
                 if(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit() != null) {
                     showNonCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit(), tile);
 
-                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit().getUnitType());
 
                 } else if(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
                     showCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit(), tile);
 
-                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getUnitType());
 
                 }
 
@@ -397,6 +391,9 @@ public class GameFXMLController {
     }
 
     private void createUnit(){
+        if(selectedTile == null) {
+            return;
+        }
         if(selectedTile.soldiers.getValue() == null) {
             return;
         }
@@ -404,8 +401,10 @@ public class GameFXMLController {
         if(selectedTile.soldiers.getValue().equals("Settler")
             || selectedTile.soldiers.getValue().equals("worker")) {
             createNonCombat();
+            GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit());
         } else {
             createCombat();
+            GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getCombatUnit());
         }
 
     }
@@ -420,6 +419,16 @@ public class GameFXMLController {
         selectedTile.nonCombatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
         selectedTile.nonCombatUnit.prefHeight(100);
         selectedTile.nonCombatUnit.prefWidth(100);
+
+        selectedTile.nonCombatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(selectedTile != null) {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit());
+                }
+            }
+        });
+
         mapPane.getChildren().add(selectedTile.nonCombatUnit);
         selectedTile.nonCombatUnit.toFront();
         addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
@@ -433,6 +442,14 @@ public class GameFXMLController {
         tileFX.nonCombatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
         tileFX.nonCombatUnit.prefHeight(100);
         tileFX.nonCombatUnit.prefWidth(100);
+
+        tileFX.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getNonCombatUnit());
+            }
+        });
+
         mapPane.getChildren().add(tileFX.nonCombatUnit);
         tileFX.nonCombatUnit.toFront();
     }
@@ -444,6 +461,14 @@ public class GameFXMLController {
         tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
         tileFX.combatUnit.prefHeight(100);
         tileFX.combatUnit.prefWidth(100);
+
+        tileFX.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getCombatUnit());
+            }
+        });
+
         mapPane.getChildren().add(tileFX.combatUnit);
         tileFX.combatUnit.toFront();
     }
@@ -458,6 +483,16 @@ public class GameFXMLController {
         selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
         selectedTile.combatUnit.prefHeight(100);
         selectedTile.combatUnit.prefWidth(100);
+        
+        selectedTile.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(selectedTile != null) {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getCombatUnit());
+                }
+            }
+        });
+
         mapPane.getChildren().add(selectedTile.combatUnit);
         selectedTile.combatUnit.toFront();
     }
