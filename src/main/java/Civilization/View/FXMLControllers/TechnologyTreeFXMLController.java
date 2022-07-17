@@ -2,6 +2,7 @@ package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
+import Civilization.Model.GameModel;
 import Civilization.Model.Technology;
 import Civilization.View.GraphicalBases;
 import javafx.event.EventHandler;
@@ -41,6 +42,7 @@ public class TechnologyTreeFXMLController {
         setBackButton();
         setTextArea();
         setTree();
+        GameModel.isGame = true;
     }
 
     private void setTextArea() {

@@ -49,6 +49,7 @@ public class PanelListFXMLController {
         setNoUnitText();
         setUnitInformation();
         setUnitsList();
+        GameModel.isGame = true;
     }
 
     private void setUnitsList() {

@@ -2,6 +2,7 @@ package Civilization.View.FXMLControllers;
 
 import Civilization.Controller.ProfileMenuController;
 import Civilization.Database.UserDatabase;
+import Civilization.Model.GameModel;
 import Civilization.Model.ProfileMenuModel;
 import Civilization.Model.User;
 import Civilization.View.Components.Account;
@@ -78,6 +79,7 @@ public class ProfileMenuFXMLController {
         setCursorTransitions();
         setUsername();
         setAvatars();
+        GameModel.isGame = false;
     }
 
     private void setCursorTransitions() {

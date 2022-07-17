@@ -1,6 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
+import Civilization.Model.GameModel;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Info;
 import javafx.event.EventHandler;
@@ -33,6 +34,7 @@ public class OverviewsFXMLController {
         setMilitaryOverview();
         setDemographyOverview();
         mainAnchorPane.getChildren().add(mainHBox);
+        GameModel.isGame = true;
 
     }
 

@@ -1,5 +1,6 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Model.GameModel;
 import Civilization.Model.User;
 import Civilization.View.GraphicalBases;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ public class MainMenuFXMLController {
     public void initialize() {
         setBackground();
         setNameLabel();
+        GameModel.isGame = false;
     }
 
     private void setNameLabel() {

@@ -3,6 +3,7 @@ package Civilization.View.FXMLControllers;
 import Civilization.Database.UserDatabase;
 import Civilization.Main;
 import Civilization.Model.Civilization;
+import Civilization.Model.GameModel;
 import Civilization.Model.User;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
@@ -89,6 +90,7 @@ public class LeaderBoardFXMLController {
 
     @FXML
     public void initialize() {
+        GameModel.isGame = false;
         setScores();
     }
 

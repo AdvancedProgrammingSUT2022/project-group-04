@@ -609,7 +609,10 @@ public class GameDatabase {
 
 
     public static void saveGame() {
-        CopyOfGameDatabase copy = new CopyOfGameDatabase(players,map,length,width,turn,year,cheated,cheatedCivilization);
-        SavingGame.saveGame(copy);
+        for (int i = 0; i < 10; i++) {
+            System.err.println("Saving game code has been commented by Sepehr Mizanian. Please uncomment it in GameDatabase.saveGame() function.");
+        }
+//        CopyOfGameDatabase copy = new CopyOfGameDatabase(players,map,length,width,turn,year,cheated,cheatedCivilization);
+//        SavingGame.saveGame(copy);
     }
 }

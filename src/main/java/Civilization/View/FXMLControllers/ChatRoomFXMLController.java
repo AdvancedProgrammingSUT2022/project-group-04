@@ -1,6 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Database.UserDatabase;
+import Civilization.Model.GameModel;
 import Civilization.Model.User;
 import Civilization.View.GraphicalBases;
 import javafx.collections.FXCollections;
@@ -35,6 +36,7 @@ public class ChatRoomFXMLController {
 
     @FXML
     public void initialize(){
+        GameModel.isGame = false;
         setChoices();
     }
 

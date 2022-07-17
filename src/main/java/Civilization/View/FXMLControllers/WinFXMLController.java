@@ -2,6 +2,7 @@ package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
 import Civilization.Model.Civilization;
+import Civilization.Model.GameModel;
 import Civilization.View.GraphicalBases;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,6 +28,7 @@ public class WinFXMLController {
         setBackground();
         setOKButton();
         setWinnerInformation();
+        GameModel.isGame = false;
     }
 
     private void setWinnerInformation() {

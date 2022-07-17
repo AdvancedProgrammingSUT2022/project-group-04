@@ -3,6 +3,7 @@ package Civilization.View.FXMLControllers;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.Building;
+import Civilization.Model.GameModel;
 import Civilization.View.GraphicalBases;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +35,7 @@ public class creatingFXMLController {
     public void initialize() {
         setBackground();
         setValidBuildings();
+        GameModel.isGame = true;
     }
 
     private void setValidBuildings() {
