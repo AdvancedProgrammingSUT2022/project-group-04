@@ -615,4 +615,12 @@ public class GameDatabase {
 //        CopyOfGameDatabase copy = new CopyOfGameDatabase(players,map,length,width,turn,year,cheated,cheatedCivilization);
 //        SavingGame.saveGame(copy);
     }
+
+    public static Civilization getLastCivilization() {
+        int turn = GameDatabase.getTurn();
+        if(turn == 0) {
+            return GameDatabase.getCivilizationByTurn(GameDatabase.players.size() - 1);
+        }
+        return GameDatabase.getCivilizationByTurn(turn - 1);
+    }
 }
