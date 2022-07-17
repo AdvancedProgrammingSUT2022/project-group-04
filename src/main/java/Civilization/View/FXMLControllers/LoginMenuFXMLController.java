@@ -117,6 +117,8 @@ public class LoginMenuFXMLController {
         String password = this.password.getText();
         String nickname = this.nickname.getText();
         JSONObject input = new JSONObject();
+        input.put("menu type","Login");
+        input.put("action","Register");
         input.put("username", username);
         input.put("password", password);
         input.put("nickname", nickname);
@@ -178,11 +180,13 @@ public class LoginMenuFXMLController {
         String username = this.username.getText();
         String password = this.password.getText();
         JSONObject input = new JSONObject();
+        input.put("menu type","Login");
+        input.put("action","Login");
         input.put("username", username);
         input.put("password", password);
-        Client.dataOutputStream2.writeUTF(input.toString());
-        Client.dataOutputStream2.flush();
-        String message = Client.dataInputStream2.readUTF();
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
         if (message.equals("Username and password didn't match")){
             setError("Username and password didn't match");
             return;
