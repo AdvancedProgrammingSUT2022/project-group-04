@@ -344,8 +344,30 @@ public class Civilization {
         return clearTiles;
     }
 
+    public ArrayList<Tile> getNotFogOfWarTiles() {
+        ArrayList<Tile> clearTiles = new ArrayList<>();
+        clearTiles.addAll(tiles);
+        for (Tile tile : tiles) {
+            for (Tile neighbor : tile.getNeighbors()) {
+                if(neighbor != null && isTileNew(clearTiles, neighbor)) {
+                    clearTiles.add(neighbor);
+                }
+            }
+        }
+        return clearTiles;
+    }
+
+    private boolean isTileNew(ArrayList<Tile> clearTiles, Tile neighbor) {
+        for (Tile clearTile : clearTiles) {
+            if(clearTile.getY() == neighbor.getY() && clearTile.getX() == neighbor.getX()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isThisTileFogOfWar(Tile tile) {
-        for (Tile clearTile : getClearTiles()) {
+        for (Tile clearTile : getNotFogOfWarTiles()) {
             if(tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
                 return false;
             }
