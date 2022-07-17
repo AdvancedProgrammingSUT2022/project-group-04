@@ -3,6 +3,7 @@ package Civilization.Model;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Civilization {
@@ -260,7 +261,7 @@ public class Civilization {
         return false;
     }
 
-    public ArrayList<Unit> getAllUnitsOfCivilization() {
+    public ArrayList<Unit> getAllUnitsOfCivilization() throws IOException {
 
         ArrayList<Unit> allUnits = new ArrayList<>();
         for (Tile tile : getClearTiles()) {
@@ -270,7 +271,7 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> tilesOnBorder() {
+    public ArrayList<Tile> tilesOnBorder() throws IOException {
         ArrayList<Tile> tilesOnBorder = new ArrayList<>();
         for (Tile tile : tiles) {
             boolean isBorderTile = false;
@@ -287,7 +288,7 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> firstClassAdjacentTiles() {
+    public ArrayList<Tile> firstClassAdjacentTiles() throws IOException {
 
         ArrayList<Tile> firstClassAdjacentTiles = new ArrayList<>();
         for (Tile tile : tilesOnBorder()) {
@@ -314,7 +315,7 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> secondClassAdjacentTiles() {
+    public ArrayList<Tile> secondClassAdjacentTiles() throws IOException {
 
         ArrayList<Tile> secondClassAdjacentTiles = new ArrayList<>();
         for (Tile tile : firstClassAdjacentTiles()) {
@@ -335,7 +336,7 @@ public class Civilization {
         return secondClassAdjacentTiles;
     }
 
-    public ArrayList<Tile> getClearTiles() {
+    public ArrayList<Tile> getClearTiles() throws IOException {
         ArrayList<Tile> clearTiles = new ArrayList<>();
         clearTiles.addAll(tiles);
         clearTiles.addAll(firstClassAdjacentTiles());
@@ -344,7 +345,7 @@ public class Civilization {
         return clearTiles;
     }
 
-    public boolean isThisTileFogOfWar(Tile tile) {
+    public boolean isThisTileFogOfWar(Tile tile) throws IOException {
         for (Tile clearTile : getClearTiles()) {
             if(tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
                 return false;
@@ -361,7 +362,7 @@ public class Civilization {
         }
     }
 
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         this.turn++;
         happiness += happinessCalculator();
         for (City city : this.cities) {
@@ -389,7 +390,7 @@ public class Civilization {
         return null;
     }
 
-    public void changeCapital(String cityName) {
+    public void changeCapital(String cityName) throws IOException {
         if (getCapital() != null) {
             getCapital().removeCapital();
         }

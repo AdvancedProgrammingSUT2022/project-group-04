@@ -3,6 +3,7 @@ package Civilization.Controller;
 import Civilization.Database.GameDatabase;
 import Civilization.Model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CombatController {
@@ -28,7 +29,7 @@ public class CombatController {
         }
     }
 
-    public boolean UnitAttackPosition(Unit unit1, int x, int y) {
+    public boolean UnitAttackPosition(Unit unit1, int x, int y) throws IOException {
         City cityOfPosition = GameDatabase.getCityByXAndY(x, y);
         if (unit1 instanceof Soldier) {
             Soldier soldier1 = (Soldier) unit1;
@@ -62,7 +63,7 @@ public class CombatController {
         }
     }
 
-    public void checkTerrainBonus(Unit unit, int x, int y) {
+    public void checkTerrainBonus(Unit unit, int x, int y) throws IOException {
         Tile tile1 = unit.getTileOfUnit();
         Tile tile2 = GameDatabase.getTileByXAndY(x, y);
         City city = tile2.getCity();
@@ -89,7 +90,7 @@ public class CombatController {
         }
     }
 
-    public void healUnit(Unit unit) {
+    public void healUnit(Unit unit) throws IOException {
         Tile currentTile = GameDatabase.getTileByXAndY(unit.getX(), unit.getY());
         Civilization currentCivilization = GameDatabase.getCivilizationByTile(currentTile);
         if (currentCivilization != null && currentCivilization.getAllUnitsOfCivilization().contains(unit)) {

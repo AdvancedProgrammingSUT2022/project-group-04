@@ -6,6 +6,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.UserDatabase;
 import Civilization.View.GameMenu;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class GameModel {
     public static boolean autoSave = false;
     public static boolean isGame = false;
 
-    public void startGame(ArrayList<String> users) {
+    public void startGame(ArrayList<String> users) throws IOException {
 
         ArrayList<Civilization> players = new ArrayList<Civilization>();
         for (String user : users) {

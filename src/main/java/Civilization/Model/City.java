@@ -2,6 +2,7 @@ package Civilization.Model;
 
 import Civilization.Database.GameDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class City extends Tile {
@@ -34,7 +35,7 @@ public class City extends Tile {
     private int production;
     private boolean isGettingWorkedOn;
 
-    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y, Tile capital) {
+    public City(String name, int power, int foodGeneratingRate, int goldGeneratingRate, int scienceGenerating, int productionGenerating, int timeToExtendBorders, int timeTopPopulate, String civilizationName, boolean isCapital, String type, String baseTerrainType, int x, int y, Tile capital) throws IOException {
         super(type, baseTerrainType, x, y);
         this.name = name;
         this.power = power;
@@ -61,7 +62,7 @@ public class City extends Tile {
         capitalCalculator();
     }
 
-    private void capitalCalculator() {
+    private void capitalCalculator() throws IOException {
         if(GameDatabase.getCivilizationByNickname(this.civilizationName).getCities().size() == 0) {
             this.isCapital = true;
             return;
@@ -189,7 +190,7 @@ public class City extends Tile {
         return isCapital;
     }
 
-    public void generate() {
+    public void generate() throws IOException {
         generateGold();
     }
 
@@ -211,7 +212,7 @@ public class City extends Tile {
         return false;
     }
 
-    private void generateGold() {
+    private void generateGold() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByNickname(this.civilizationName);
         if (civilization != null) {
             civilization.addGold(this.goldGeneratingRate);
@@ -231,7 +232,7 @@ public class City extends Tile {
         return result;
     }
 
-    public void buildBuilding(Building building, boolean build) {
+    public void buildBuilding(Building building, boolean build) throws IOException {
         building.setCityName(this.name);
         building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
@@ -254,7 +255,7 @@ public class City extends Tile {
     }
 
     @Override
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         int addingFood = 0;
         this.production += this.productionGenerating;
         addingFood += this.foodGeneratingRate;
@@ -358,7 +359,7 @@ public class City extends Tile {
         return count;
     }
 
-    public void createSettler(int x, int y) {
+    public void createSettler(int x, int y) throws IOException {
         if (citizens.size() > 1 && settler == null) {
             this.settler = new Settler(x, y, 0);
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
@@ -366,7 +367,7 @@ public class City extends Tile {
         }
     }
 
-    public void createWorker(int x, int y) {
+    public void createWorker(int x, int y) throws IOException {
         Worker newWorker = new Worker(x, y, GameDatabase.getCivilizationIndex(civilizationName));
         this.worker = newWorker;
         GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
@@ -392,7 +393,7 @@ public class City extends Tile {
         return capital;
     }
 
-    private ArrayList<Tile> addFirstTiles() {
+    private ArrayList<Tile> addFirstTiles() throws IOException {
         ArrayList<Tile> firstTiles = new ArrayList<Tile>();
         firstTiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
         ArrayList<Tile> nearTiles = getAdjacentTiles();

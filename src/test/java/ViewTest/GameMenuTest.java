@@ -13,6 +13,7 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import static org.mockito.Mockito.*;
@@ -75,7 +76,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void runTest() {
+    public void runTest() throws IOException {
         gameDatabase.when(() -> GameDatabase.getPlayers()).thenReturn(civilizations);
         when(civilizations.get(0)).thenReturn(civilization);
         when(civilizations.get(gameMenu.getTurn())).thenReturn(civilization);
@@ -85,7 +86,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void buyTileWithCoordinate() {
+    public void buyTileWithCoordinate() throws IOException {
         int turn = 0;
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -101,7 +102,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void lockCitizen() {
+    public void lockCitizen() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
@@ -113,7 +114,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void changeCapital() {
+    public void changeCapital() throws IOException {
         int turn = 0;
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(true);
@@ -126,7 +127,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitStopWork() {
+    public void unitStopWork() throws IOException {
         int turn = 0;
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -141,7 +142,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitBuild() {
+    public void unitBuild() throws IOException {
         int turn = 0;
         when(matcher.group("improvement")).thenReturn("Quarry");
         when(matcher.group("x")).thenReturn("1");
@@ -163,7 +164,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitRemoveFeature() {
+    public void unitRemoveFeature() throws IOException {
         int turn = 0;
         when(matcher.group("improvement")).thenReturn("Prairie");
         when(matcher.group("x")).thenReturn("1");
@@ -184,7 +185,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitRepair() {
+    public void unitRepair() throws IOException {
         int turn = 0;
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -201,7 +202,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void dryUp(){
+    public void dryUp() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         gameDatabase.when(() -> GameDatabase.getTileByXAndY(1, 1)).thenReturn(tile);
@@ -229,21 +230,21 @@ public class GameMenuTest {
     }
 
     @Test
-    public void mapShowCity_invalid() {
+    public void mapShowCity_invalid() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(false);
         assertEquals(gameMenu.mapShowCity(matcher), "selected city is not valid");
     }
 
     @Test
-    public void mapShowCity_valid() {
+    public void mapShowCity_valid() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(true);
         assertNull(gameMenu.mapShowCity(matcher));
     }
 
     @Test
-    public void selectCombat_invalidPosition() {
+    public void selectCombat_invalidPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
@@ -251,7 +252,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void selectCombat_nonCombat() {
+    public void selectCombat_nonCombat() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
@@ -260,7 +261,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void selectCombat() {
+    public void selectCombat() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
@@ -270,7 +271,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void selectNonCombat_invalidPosition() {
+    public void selectNonCombat_invalidPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(false);
@@ -278,7 +279,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void selectNonCombat_Combat() {
+    public void selectNonCombat_Combat() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
@@ -287,7 +288,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void selectNonCombat() {
+    public void selectNonCombat() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1, 1)).thenReturn(true);
@@ -395,7 +396,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitHealTest(){
+    public void unitHealTest() throws IOException {
         Unit unit = mock(Unit.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = unit;
@@ -454,7 +455,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitAttackTest(){
+    public void unitAttackTest() throws IOException {
         gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -471,7 +472,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitAttackTest2(){
+    public void unitAttackTest2() throws IOException {
         gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -487,7 +488,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitAttackTes3(){
+    public void unitAttackTes3() throws IOException {
         gameDatabase.when(()->GameDatabase.getTileByXAndY(1,1)).thenReturn(tile);
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -573,14 +574,14 @@ public class GameMenuTest {
     }
 
     @Test
-    public void changeTurn_invalidCivilization() {
+    public void changeTurn_invalidCivilization() throws IOException {
         when(matcher.group("civilizationName")).thenReturn("n1");
         when(gameMenuController.isCivilizationValid("n1")).thenReturn(false);
         assertEquals(gameMenu.changeTurn(matcher), "there is no player with nickname n1");
     }
 
     @Test
-    public void changeTurn_notCheat() {
+    public void changeTurn_notCheat() throws IOException {
         when(matcher.group("civilizationName")).thenReturn("n1");
         when(gameMenuController.isCivilizationValid("n1")).thenReturn(true);
         when(gameMenuController.isCheatForTurn("n1", gameMenu.getTurn())).thenReturn(false);
@@ -588,7 +589,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void changeTurn() {
+    public void changeTurn() throws IOException {
         when(matcher.group("civilizationName")).thenReturn("n1");
         when(gameMenuController.isCivilizationValid("n1")).thenReturn(true);
         when(gameMenuController.isCheatForTurn("n1", gameMenu.getTurn())).thenReturn(true);
@@ -649,7 +650,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPUnit_invalidAmount() {
+    public void addHPUnit_invalidAmount() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(matcher.group("amount")).thenReturn("5");
@@ -658,7 +659,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPUnit_aLotAmount() {
+    public void addHPUnit_aLotAmount() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(matcher.group("amount")).thenReturn("5");
@@ -668,7 +669,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPUnit_invalidPosition() {
+    public void addHPUnit_invalidPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(matcher.group("amount")).thenReturn("5");
@@ -679,7 +680,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPUnit_notCombatPosition() {
+    public void addHPUnit_notCombatPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(matcher.group("amount")).thenReturn("5");
@@ -691,7 +692,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPUnit_unitIsNotForYou() {
+    public void addHPUnit_unitIsNotForYou() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(matcher.group("amount")).thenReturn("5");
@@ -705,7 +706,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPUnit() {
+    public void addHPUnit() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(matcher.group("amount")).thenReturn("5");
@@ -720,7 +721,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPCity_invalidAmount() {
+    public void addHPCity_invalidAmount() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(matcher.group("amount")).thenReturn("5");
         when(gameMenuController.isAmountValidForHP(5)).thenReturn(false);
@@ -728,7 +729,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPCity_aLotAmount() {
+    public void addHPCity_aLotAmount() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(matcher.group("amount")).thenReturn("5");
         when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
@@ -737,7 +738,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPCity_invalidCity() {
+    public void addHPCity_invalidCity() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(matcher.group("amount")).thenReturn("5");
         when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
@@ -748,7 +749,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPCity_cityIsNotForYou() {
+    public void addHPCity_cityIsNotForYou() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(matcher.group("amount")).thenReturn("5");
         when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
@@ -760,7 +761,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addHPCity() {
+    public void addHPCity() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(matcher.group("amount")).thenReturn("5");
         when(gameMenuController.isAmountValidForHP(5)).thenReturn(true);
@@ -773,21 +774,21 @@ public class GameMenuTest {
     }
 
     @Test
-    public void selectCityByName_null() {
+    public void selectCityByName_null() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(true);
         assertNull(gameMenu.citySelectByName(matcher));
     }
 
     @Test
-    public void selectCityByName() {
+    public void selectCityByName() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(gameMenuController.isCityValid("tehran")).thenReturn(false);
         assertEquals(gameMenu.citySelectByName(matcher), "invalid city");
     }
 
     @Test
-    public void citySelectByPosition_invalidPosition() {
+    public void citySelectByPosition_invalidPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1,1)).thenReturn(false);
@@ -795,7 +796,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void citySelectByPosition_invalidCityPosition() {
+    public void citySelectByPosition_invalidCityPosition() throws IOException {
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
         when(gameMenuController.isPositionValid(1,1)).thenReturn(true);
@@ -814,7 +815,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void getAddTileToCity(){
+    public void getAddTileToCity() throws IOException {
         when(matcher.group("cityName")).thenReturn("tehran");
         when(matcher.group("x")).thenReturn("1");
         when(matcher.group("y")).thenReturn("1");
@@ -827,7 +828,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void addProduction(){
+    public void addProduction() throws IOException {
         int amount = 10;
         String cityName = "tehran";
         when(matcher.group("cityName")).thenReturn(cityName);
@@ -851,7 +852,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void buildCity(){
+    public void buildCity() throws IOException {
         int x = 1;
         int y = 1;
         when(matcher.group("x")).thenReturn(Integer.toString(x));
@@ -867,7 +868,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void changeTurnByNumber(){
+    public void changeTurnByNumber() throws IOException {
         int amount = 0;
         when(matcher.group("amount")).thenReturn(Integer.toString(amount));
         when(gameMenuController.isAmountValidForTurn(amount)).thenReturn(true);
@@ -878,7 +879,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void sendMessage(){
+    public void sendMessage() throws IOException {
         String nickname = "Amiri";
         String text = "I love nojoom";
         when(matcher.group("Text")).thenReturn(text);

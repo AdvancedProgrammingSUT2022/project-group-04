@@ -3,6 +3,7 @@ package Civilization.Model;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Technology {
@@ -353,7 +354,7 @@ public class Technology {
         return result;
     }
 
-    public void nextTurn(String civilizationName) {
+    public void nextTurn(String civilizationName) throws IOException {
         if (!wasReached() && !isStopped) {
             this.turnsNeedToResearch--;
             if (wasReached()) {
@@ -362,7 +363,7 @@ public class Technology {
         }
     }
 
-    private void sendNotificationInCLI(String civilizationName) {
+    private void sendNotificationInCLI(String civilizationName) throws IOException {
         String source = GlobalVariables.SYSTEM_NAME;
         String text = "you reached " + this.name + " technology";
         String destination = GameDatabase.getCivilizationByNickname(civilizationName).getNickname();
@@ -370,7 +371,7 @@ public class Technology {
         Notification.addNotification(notification);
     }
 
-    private void sendNotification(String civilizationName) {
+    private void sendNotification(String civilizationName) throws IOException {
 
         Civilization civilization = GameDatabase.getCivilizationByNickname(civilizationName);
         String message = GlobalVariables.SYSTEM_NAME + " notification:\n";

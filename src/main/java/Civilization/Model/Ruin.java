@@ -3,6 +3,7 @@ package Civilization.Model;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,7 +37,7 @@ public class Ruin{
         }
     }
 
-    public void arrive(Unit unit) {
+    public void arrive(Unit unit) throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByUnit(unit);
         if(civilization == null) {
             return;

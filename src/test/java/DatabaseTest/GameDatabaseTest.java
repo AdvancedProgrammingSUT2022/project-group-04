@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.mockStatic;
@@ -25,7 +26,7 @@ public class GameDatabaseTest {
 
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         GameDatabase.players.add(new Civilization("u1", "n1"));
         GameDatabase.players.add(new Civilization("u2", "n2"));
         GameDatabase.generateMap(2);
@@ -34,7 +35,7 @@ public class GameDatabaseTest {
     }
 
     @Test
-    public void setPlayers() {
+    public void setPlayers() throws IOException {
         ArrayList<Civilization> players = GameDatabase.players;
         Civilization civilization = new Civilization("u3", "n3");
         players.add(civilization);
@@ -44,50 +45,50 @@ public class GameDatabaseTest {
     }
 
     @Test
-    public void getCivilizationByUsername_notNull() {
+    public void getCivilizationByUsername_notNull() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByUsername("u2");
         assertEquals(civilization.getUsername(), "u2");
     }
 
     @Test
-    public void getCivilizationByUsername_null() {
+    public void getCivilizationByUsername_null() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByUsername("u3");
         assertNull(civilization);
     }
 
     @Test
-    public void getCivilizationByNickname_notNull() {
+    public void getCivilizationByNickname_notNull() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByNickname("n2");
         assertEquals(civilization.getNickname(), "n2");
     }
 
     @Test
-    public void getCivilizationByNickname_null() {
+    public void getCivilizationByNickname_null() throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByNickname("n3");
         assertNull(civilization);
     }
 
     @Test
-    public void getCityByCityName_notNull() {
+    public void getCityByCityName_notNull() throws IOException {
         City city = GameDatabase.getCityByName("City1");
         assertEquals(city.getName(), "City1");
     }
 
     @Test
-    public void getCityByCityName_null() {
+    public void getCityByCityName_null() throws IOException {
         City city = GameDatabase.getCityByName("City2");
         assertNull(city);
     }
 
     @Test
-    public void getCityByCityXAndY_notNull() {
+    public void getCityByCityXAndY_notNull() throws IOException {
         City city = GameDatabase.getCityByXAndY(0, 0);
         assertEquals(city.getX(), 0);
         assertEquals(city.getY(), 0);
     }
 
     @Test
-    public void getCityByCityXAndY_null() {
+    public void getCityByCityXAndY_null() throws IOException {
         City city = GameDatabase.getCityByXAndY(0, 1);
         assertNull(city);
     }
@@ -99,20 +100,20 @@ public class GameDatabaseTest {
     }
 
     @Test
-    public void getTileByXAndY_notNull() {
+    public void getTileByXAndY_notNull() throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(0, 0);
         assertEquals(tile.getX(), 0);
         assertEquals(tile.getY(), 0);
     }
 
     @Test
-    public void getTileByXAndY_null() {
+    public void getTileByXAndY_null() throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(70, 0);
         assertNull(tile);
     }
 
     @Test
-    public void isTileForACity_True() {
+    public void isTileForACity_True() throws IOException {
         Tile tile = GameDatabase.map.get(0);
         assertTrue(GameDatabase.isTileForACity(tile));
     }

@@ -8,6 +8,7 @@ import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -170,7 +171,7 @@ public class GameDatabaseServer {
         return -1;
     }
 
-    public static void generateMap(int numberOfPlayers) {
+    public static void generateMap(int numberOfPlayers) throws IOException {
         Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};

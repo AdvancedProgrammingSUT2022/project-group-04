@@ -11,6 +11,7 @@ import Civilization.Model.GameModel;
 import Civilization.Model.ProfileMenuModel;
 import Civilization.Model.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,7 +26,7 @@ public class MainMenu extends Menu {
         this.mainMenuController = mainMenuController;
     }
 
-    public void run(Scanner scanner, User loggedinUser) {
+    public void run(Scanner scanner, User loggedinUser) throws IOException {
         String command;
         while (true) {
             Matcher matcher;
@@ -119,7 +120,7 @@ public class MainMenu extends Menu {
      * @param scanner
      * @param matcher
      */
-    public void enterGameMenu(Scanner scanner, Matcher matcher) {
+    public void enterGameMenu(Scanner scanner, Matcher matcher) throws IOException {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
         if (splitCommand.length == 1) {

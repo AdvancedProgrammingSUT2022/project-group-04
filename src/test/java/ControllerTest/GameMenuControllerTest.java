@@ -17,6 +17,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -146,7 +147,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isCombatUnitInThisPosition_True(){
+    public void isCombatUnitInThisPosition_True() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -159,7 +160,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isCombatUnitInThisPosition_False(){
+    public void isCombatUnitInThisPosition_False() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -168,7 +169,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isNonCombatUnitInThisPosition_True(){
+    public void isNonCombatUnitInThisPosition_True() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -180,7 +181,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isNonCombatUnitInThisPosition_False(){
+    public void isNonCombatUnitInThisPosition_False() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -189,7 +190,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void selectCombatUnit_Exists(){
+    public void selectCombatUnit_Exists() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -202,7 +203,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void selectCombatUnit_DoesntExist(){
+    public void selectCombatUnit_DoesntExist() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -215,7 +216,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void selectNonCombatUnit_Exists(){
+    public void selectNonCombatUnit_Exists() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -226,7 +227,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void selectNonCombatUnit_DoesntExist(){
+    public void selectNonCombatUnit_DoesntExist() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -263,7 +264,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void addHPCoordinate(){
+    public void addHPCoordinate() throws IOException {
         int x = 10;
         int y = 10;
         int amount = 9;
@@ -274,7 +275,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void addHPCityName(){
+    public void addHPCityName() throws IOException {
         int amount = 10;
         String cityName = "Amol";
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -294,7 +295,7 @@ public class GameMenuControllerTest {
         verify(civilization).happy();
     }
     @Test
-    public void dryUp(){
+    public void dryUp() throws IOException {
         int x = 1;
         int y = 2;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -340,7 +341,7 @@ public class GameMenuControllerTest {
 
 
     @Test
-    public void isCityPositionValid_Equals(){
+    public void isCityPositionValid_Equals() throws IOException {
         int x = 10;
         int y = 20;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -349,7 +350,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isCityValid(){
+    public void isCityValid() throws IOException {
         String cityName = "gotham";
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
@@ -358,7 +359,7 @@ public class GameMenuControllerTest {
 
 
     @Test
-    public void isDestinationOKForMove_False1(){
+    public void isDestinationOKForMove_False1() throws IOException {
         int x = 19;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -368,7 +369,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isDestinationOKForMove_False2(){
+    public void isDestinationOKForMove_False2() throws IOException {
         int x = 19;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -383,7 +384,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isDestinationOKForMove_True2(){
+    public void isDestinationOKForMove_True2() throws IOException {
         int x = 19;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -395,7 +396,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isDestinationOKForMove_True(){
+    public void isDestinationOKForMove_True() throws IOException {
         int x = 19;
         int y = 20;
         GameMenuController gameMenuController = Mockito.spy(new GameMenuController(gameModel));
@@ -413,7 +414,7 @@ public class GameMenuControllerTest {
 
 
     @Test
-    public void isCityCapital(){
+    public void isCityCapital() throws IOException {
         String cityName = "";
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getCityByName(cityName)).thenReturn(city);
@@ -464,14 +465,14 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isCivilizationValid_True(){
+    public void isCivilizationValid_True() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getCivilizationByNickname("")).thenReturn(civilization);
         Assertions.assertTrue(gameMenuController.isCivilizationValid(""));
     }
 
     @Test
-    public void isCivilizationValid_False(){
+    public void isCivilizationValid_False() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(()->GameDatabase.getCivilizationByNickname("")).thenReturn(null);
         Assertions.assertFalse(gameMenuController.isCivilizationValid(""));
@@ -562,7 +563,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isAdjacent_False(){
+    public void isAdjacent_False() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Tile tile1 = mock(Tile.class);
         when(tile0.getAdjacentTiles()).thenReturn(tiles);
@@ -574,7 +575,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isAdjacent_True(){
+    public void isAdjacent_True() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Tile tile1 = mock(Tile.class);
         when(tile0.getAdjacentTiles()).thenReturn(tiles);
@@ -586,7 +587,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isOperable_False(){
+    public void isOperable_False() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Tile tile1 = mock(Tile.class);
         when(tile0.getAdjacentTiles()).thenReturn(tiles);
@@ -598,7 +599,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isOperable_True(){
+    public void isOperable_True() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Tile tile1 = mock(Tile.class);
         when(tile0.getAdjacentTiles()).thenReturn(tiles);
@@ -611,7 +612,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void addProduction(){
+    public void addProduction() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         String cityName = "gotham";
         int amount = 10;
@@ -648,7 +649,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void garrisonUnitToCity_notNullCity() {
+    public void garrisonUnitToCity_notNullCity() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         when(unit.getTileOfUnit()).thenReturn(tile);
         when(tile.getX()).thenReturn(0);
@@ -658,7 +659,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void garrisonUnitToCity_NullCity() {
+    public void garrisonUnitToCity_NullCity() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         when(unit.getTileOfUnit()).thenReturn(tile);
         when(tile.getX()).thenReturn(0);
@@ -703,7 +704,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileAdjacentToCivilization_true() {
+    public void isTileAdjacentToCivilization_true() throws IOException {
         when(civilization.getTiles()).thenReturn(tiles);
         when(tiles.size()).thenReturn(1);
         when(tiles.get(0)).thenReturn(tile);
@@ -714,7 +715,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileAdjacentToCivilization_false() {
+    public void isTileAdjacentToCivilization_false() throws IOException {
         when(civilization.getTiles()).thenReturn(tiles);
         when(tiles.size()).thenReturn(1);
         when(tiles.get(0)).thenReturn(tile);
@@ -725,28 +726,28 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createNonCombatUnit_nullTile() {
+    public void createNonCombatUnit_nullTile() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(null);
         assertFalse(gameMenuController.createNonCombatUnit("Spearman", 0, 0, 0));
     }
 
     @Test
-    public void createNonCombatUnit_settler() {
+    public void createNonCombatUnit_settler() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
         assertTrue(gameMenuController.createNonCombatUnit("Settler", 0, 0, 0));
     }
 
     @Test
-    public void createNonCombatUnit_worker() {
+    public void createNonCombatUnit_worker() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
         assertTrue(gameMenuController.createNonCombatUnit("worker", 0, 0, 0));
     }
 
     @Test
-    public void createNonCombatUnit_notCitizen() {
+    public void createNonCombatUnit_notCitizen() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCityByXAndY(0, 0)).thenReturn(city);
         assertFalse(gameMenuController.createNonCombatUnit("Spearman", 0, 0, 0));
@@ -754,7 +755,7 @@ public class GameMenuControllerTest {
 
 
     @Test
-    public void isTileValidForCreatingUnit() {
+    public void isTileValidForCreatingUnit() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
         when(civilization.getClearTiles()).thenReturn(tiles);
@@ -763,7 +764,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createUnit_1() {
+    public void createUnit_1() throws IOException {
         int x = 0;
         int y = 0;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -775,7 +776,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createUnit_2() {
+    public void createUnit_2() throws IOException {
         int x = 0;
         int y = 0;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -803,7 +804,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRoad() {
+    public void makeRoad() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         when(worker.getX()).thenReturn(0);
         when(worker.getY()).thenReturn(0);
@@ -870,7 +871,7 @@ public class GameMenuControllerTest {
 
 
     @Test
-    public void removeRailroadTest(){
+    public void removeRailroadTest() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Tile tile = mock(Tile.class);
         when(tile.hasRailroad()).thenReturn(true);
@@ -890,7 +891,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void removeRoadTest(){
+    public void removeRoadTest() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Tile tile = mock(Tile.class);
         when(tile.hasRoad()).thenReturn(true);
@@ -910,7 +911,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void pauseProjectTest(){
+    public void pauseProjectTest() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         when(worker.isAssigned()).thenReturn(true);
         when(worker.isMoving()).thenReturn(false);
@@ -952,7 +953,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRainRoad_True(){
+    public void makeRainRoad_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -966,7 +967,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRailRoad_False(){
+    public void makeRailRoad_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -979,7 +980,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRoad_False(){
+    public void makeRoad_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -992,7 +993,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRoad_True(){
+    public void makeRoad_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1007,7 +1008,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeMine_True(){
+    public void makeMine_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1027,7 +1028,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeMine_False(){
+    public void makeMine_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1046,7 +1047,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeFarm_True(){
+    public void makeFarm_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1066,7 +1067,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeFarm_False(){
+    public void makeFarm_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1080,7 +1081,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRepair_True(){
+    public void makeRepair_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1094,7 +1095,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeRepair_False(){
+    public void makeRepair_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1108,7 +1109,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeImprovement_True(){
+    public void makeImprovement_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1124,7 +1125,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void makeImprovement_False(){
+    public void makeImprovement_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1142,7 +1143,7 @@ public class GameMenuControllerTest {
 
 
     @Test
-    public void assignNewProjectTest(){
+    public void assignNewProjectTest() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Worker worker = mock(Worker.class);
         when(worker.getX()).thenReturn(1);
@@ -1159,7 +1160,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void assignNewProjectTest1(){
+    public void assignNewProjectTest1() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         Worker worker = mock(Worker.class);
         workerstatic = mockStatic(Worker.class);
@@ -1248,7 +1249,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void removeFeature_True(){
+    public void removeFeature_True() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1265,7 +1266,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void removeFeature_False(){
+    public void removeFeature_False() throws IOException {
         int x = 10;
         int y = 1;
         GameMenuController gameMenuController = new GameMenuController(gameModel);
@@ -1282,7 +1283,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createCombatUnit(){
+    public void createCombatUnit() throws IOException {
         int x = 10;
         int y = 10;
         database.when(()->GameDatabase.getTileByXAndY(x, y)).thenReturn(tile);
@@ -1294,7 +1295,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createNonCombatUnit_True(){
+    public void createNonCombatUnit_True() throws IOException {
         int x = 10;
         int y = 10;
         database.when(()->GameDatabase.getCityByXAndY(x, y)).thenReturn(city);
@@ -1303,7 +1304,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createNonCombatUnit_False(){
+    public void createNonCombatUnit_False() throws IOException {
         int x = 10;
         int y = 10;
         database.when(()->GameDatabase.getCityByXAndY(x, y)).thenReturn(null);
@@ -1312,7 +1313,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void moveUnitAlongPath_worker() {
+    public void moveUnitAlongPath_worker() throws IOException {
         when(worker.getRoute()).thenReturn(tiles);
         when(tiles.size()).thenReturn(2);
         when(worker.getTileOfUnit()).thenReturn(tile);
@@ -1323,7 +1324,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void moveUnitAlongPath_settler() {
+    public void moveUnitAlongPath_settler() throws IOException {
         when(settler.getRoute()).thenReturn(tiles);
         when(tiles.size()).thenReturn(2);
         when(settler.getTileOfUnit()).thenReturn(tile);
@@ -1334,7 +1335,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void moveUnitAlongPath_soldier() {
+    public void moveUnitAlongPath_soldier() throws IOException {
         when(soldier.getRoute()).thenReturn(tiles);
         when(tiles.size()).thenReturn(2);
         when(soldier.getTileOfUnit()).thenReturn(tile);

@@ -6,6 +6,7 @@ import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
+import Client.Client;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -13,11 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.lang.reflect.Array;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,8 +38,20 @@ public class GameDatabase {
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
 
-    public static void setStaticFields(ArrayList<Civilization> civilizations,ArrayList<Tile> tiles,int tool,int arz,int nobat
-            ,int sal, boolean taghalobKarde,Civilization civilizationtaghalob){
+    public static Socket socket1;
+    public static DataInputStream dataInputStream1;
+    public static DataOutputStream dataOutputStream1;
+
+    public static JSONObject input;
+
+    public void setSocket(Socket socket, DataOutputStream dataOutputStream, DataInputStream dataInputStream) {
+        socket1 = socket;
+        dataInputStream1 = dataInputStream;
+        dataOutputStream1 = dataOutputStream;
+    }
+
+    public static void setStaticFields(ArrayList<Civilization> civilizations, ArrayList<Tile> tiles, int tool, int arz, int nobat
+            , int sal, boolean taghalobKarde, Civilization civilizationtaghalob) {
         players = civilizations;
         map = tiles;
         length = tool;
@@ -51,166 +62,30 @@ public class GameDatabase {
         cheatedCivilization = civilizationtaghalob;
     }
 
-//    public static class SavingData {
-//        private int length;
-//        private int width;
-//        private int turn;
-//        private int year;
-//        private ArrayList<String> mapData;
-//        private ArrayList<String> civilizationData;
-//
-//        public SavingData(int length, int width, int turn, int year, ArrayList<Civilization> players, ArrayList<Tile> map) {
-//            this.length = length;
-//            this.width = width;
-//            this.turn = turn;
-//            this.year = year;
-//            mapData = new ArrayList<>();
-//            civilizationData = new ArrayList<>();
-//            setMapData(players, map);
-//            setCivilizationData(players);
-//        }
-//
-//        public void retrieveGameFromSavingData() {
-//            Matcher mapMatcher;
-//            for (int i = 0; i < mapData.size(); i++) {
-//                String tile = mapData.get(i);
-//                mapMatcher = Pattern.compile("type \u003d (?<type>.+)\nX \u003d (?<x>\\d+) Y \u003d (?<y>\\d+)").matcher(tile);
-//                map = new ArrayList<>();
-//                if (mapMatcher.matches()) {
-//
-//                    Tile newTile = new Tile("fogOfWar", mapMatcher.group("type")
-//                            , Integer.parseInt(mapMatcher.group("x"))
-//                            , Integer.parseInt(mapMatcher.group("y")));
-//                    map.add(newTile);
-//                } else {
-//                    mapMatcher = Pattern.compile("type \u003d (?<type>.+)\nX \u003d (?<x>\\d+) Y \u003d (?<y>\\d+) (?<civilName>\\S+)").matcher(tile);
-//                    if (mapMatcher.matches()){
-//                        String civilName = mapMatcher.group("civilName");
-//                        Civilization civilization = GameDatabase.getCivilizationByNickname(civilName);
-//                        if (civilization == null){
-//                            civilization = new Civilization(UserDatabase.getUserByNickname(civilName).getUsername(),civilName);
-//                            players.add(civilization);
-//                        }
-//                        Tile newTile = new Tile("fogOfWar", mapMatcher.group("type")
-//                                , Integer.parseInt(mapMatcher.group("x"))
-//                                , Integer.parseInt(mapMatcher.group("y")));
-//                        map.add(newTile);
-//                        civilization.addTile(newTile);
-//                    }
-//                    else {
-//                        mapMatcher = Pattern.compile("type \u003d (?<type>.+)\nX \u003d (?<x>\\d+) Y \u003d (?<y>\\d+) (?<civilName>\\S+) (?<cityName>\\S+)").matcher(tile);
-//                        if (mapMatcher.matches()){
-//                            String civilName = mapMatcher.group("civilName");
-//                            Civilization civilization = GameDatabase.getCivilizationByNickname(civilName);
-//                            City city = GameDatabase.getCityByName(mapMatcher.group("cityName"));
-//                            if (civilization == null){
-//                                civilization = new Civilization(UserDatabase.getUserByNickname(civilName).getUsername(),civilName);
-//                                players.add(civilization);
-//                            }
-//                            if (city == null){
-//                                city = new City(mapMatcher.group("cityName"),0,0,);
-//                            }
-//                            Tile newTile = new Tile("fogOfWar", mapMatcher.group("type")
-//                                    , Integer.parseInt(mapMatcher.group("x"))
-//                                    , Integer.parseInt(mapMatcher.group("y")));
-//                            map.add(newTile);
-//                            civilization.addTile(newTile);
-//                        }
-//                        else {
-//                            System.out.println("dude the fuck?!");
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        public void writeMapOnTheFile() throws FileNotFoundException {
-//
-//            try {
-//                Object obj = new JSONParser().parse(new FileReader("c:\\file.json"));
-//
-//                JSONObject jsonObject = (JSONObject) obj;
-//
-//                turn = (int) jsonObject.get("turn");
-//                width = (int) jsonObject.get("width");
-//                length = (int) jsonObject.get("length");
-//                year = (int) jsonObject.get("year");
-//                mapData = new ArrayList<>();
-//                JSONArray jsonArray = (JSONArray) jsonObject.get("mapData");
-//                if (jsonArray != null) {
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        mapData.add(jsonArray.getString(i));
-//                    }
-//                }
-//                civilizationData = new ArrayList<>();
-//                jsonArray = (JSONArray) jsonObject.get("civilizationData");
-//                if (jsonArray != null) {
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        civilizationData.add(jsonArray.getString(i));
-//                    }
-//                }
-//
-//
-//            } catch (Exception ex) {
-//                System.out.println("kose nanat!");
-//            }
-//            // generate players
-//            // generate tiles
-//            // assign tiles --> players
-//            //
-//        }
-//
-//
-//        private void setCivilizationData(ArrayList<Civilization> players) {
-//            for (Civilization civilization : players) {
-//                civilizationData.add(civilization.toString());
-//            }
-//        }
-//
-//        private void setMapData(ArrayList<Civilization> players, ArrayList<Tile> map) {
-//            for (Tile tile : map) {
-//                String tileData = tile.toString();
-//                if (GameDatabase.getCivilizationByTile(tile) != null) {
-//                    tileData += " " + Objects.requireNonNull(GameDatabase.getCivilizationByTile(tile)).getNickname();
-//                }
-//                if (GameDatabase.getCityByXAndY(tile.getX(), tile.getY()) != null) {
-//                    tileData += " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getName() +
-//                            " " + Objects.requireNonNull(GameDatabase.getCityByXAndY(tile.getX(), tile.getY())).getCivilizationName();
-//                }
-//                mapData.add(tileData);
-//            }
-//
-//        }
-//
-//        public int getLength() {
-//            return length;
-//        }
-//
-//        public int getWidth() {
-//            return width;
-//        }
-//
-//        public int getTurn() {
-//            return turn;
-//        }
-//
-//    }
-    public static Civilization getCivilizationByUnit(Unit unit) {
-        GameMenuController gameMenuController = new GameMenuController(new GameModel());
-        for (Civilization player : players) {
-            if(gameMenuController.isUnitForThisCivilization(getCivilizationIndex(player.getNickname()), unit)) {
-                return player;
-            }
-        }
-        return null;
+    public static Civilization getCivilizationByUnit(Unit unit) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getCivilizationByUnit");
+        input.put("unit", unit);
+        JSONObject serverResponse = sendToServer();
+        return (Civilization) serverResponse.get("civilization");
+    }
+
+    private static JSONObject sendToServer() throws IOException {
+        dataOutputStream1.writeUTF(input.toString());
+        dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        return new JSONObject(message);
+        // TODO update data here based on message
+
     }
 
     public static void generateRuin() {
         Random random = new Random();
         for (Tile tile : GameDatabase.map) {
-            if(getCivilizationByTile(tile) == null) {
+            if (getCivilizationByTile(tile) == null) {
                 int ruin = random.nextInt(500);
-                if(ruin == 12) {
+                if (ruin == 12) {
                     tile.setRuin(new Ruin());
                 }
             }
@@ -218,68 +93,65 @@ public class GameDatabase {
     }
 
 
-    public static void setPlayers(ArrayList<Civilization> players) {
-        GameDatabase.turn = 0;
-        GameDatabase.year = 0;
-        GameDatabase.cheated = false;
-        GameDatabase.cheatedCivilization = null;
-        GameDatabase.players = players;
-        TransitionDatabase.restart();
-        for (Civilization civilization : players) {
-            civilization.setHappiness(GlobalVariables.firstHappiness * GameDatabase.players.size());
-            if (civilization.getNickname().equals(User.loggedInUser.getNickname())) {
-                civilization.getMessages().add("It's your game, Good luck ;)");
-            } else {
-                civilization.getMessages().add("You have an invitation from " + User.loggedInUser.getNickname());
-            }
-
-        }
+    public static void setPlayers(ArrayList<Civilization> players) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "setPlayers");
+        input.put("players", players);
+        JSONObject serverResponse = sendToServer();
+        //TODO SYSout??
+        return;
     }
 
     /**
      * @param civilizationName
      * @return selected civilization
      */
-    public static Civilization getCivilizationByUsername(String civilizationName) {
-        for (int i = 0; i < GameDatabase.players.size(); i++) {
-            if (GameDatabase.players.get(i).getUsername().equals(civilizationName)) {
-                return GameDatabase.players.get(i);
-            }
-        }
-        return null;
+    public static Civilization getCivilizationByUsername(String civilizationName) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getCivilizationByUsername");
+        input.put("civilization name",civilizationName);
+        JSONObject serverResponse = sendToServer();
+        return (Civilization) serverResponse.get("civilization");
     }
 
-    public static Civilization getCivilizationByNickname(String civilizationName) {
-        for (int i = 0; i < GameDatabase.players.size(); i++) {
-            if (GameDatabase.players.get(i).getNickname().equals(civilizationName)) {
-                return GameDatabase.players.get(i);
-            }
-        }
-        return null;
+    public static Civilization getCivilizationByNickname(String civilizationName) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getCivilizationByNickname");
+        input.put("civilization name",civilizationName);
+        JSONObject serverResponse = sendToServer();
+        return (Civilization) serverResponse.get("civilization");
     }
 
 
-    public static City getCityByName(String cityName) {
-        for (int i = 0; i < GameDatabase.players.size(); i++) {
-            for (int j = 0; j < GameDatabase.players.get(i).getCities().size(); j++) {
-                if (GameDatabase.players.get(i).getCities().get(j).getName().equals(cityName)) {
-                    return GameDatabase.players.get(i).getCities().get(j);
-                }
-            }
-        }
-        return null;
+    public static City getCityByName(String cityName) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getCityByName");
+        input.put("city name",cityName);
+        JSONObject serverResponse = sendToServer();
+        return (City) serverResponse.get("city");
     }
 
-    public static City getCityByXAndY(int x, int y) {
-        for (Civilization player : GameDatabase.players) {
-            for (City city : player.getCities()) {
-                if (city.getX() == x
-                        && city.getY() == y) {
-                    return city;
-                }
-            }
-        }
-        return null;
+    public static City getCityByXAndY(int x, int y) throws IOException {
+//        for (Civilization player : GameDatabase.players) {
+//            for (City city : player.getCities()) {
+//                if (city.getX() == x
+//                        && city.getY() == y) {
+//                    return city;
+//                }
+//            }
+//        }
+//        return null;
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getCityByXAndY");
+        input.put("x",x);
+        input.put("y",y);
+        JSONObject serverResponse = sendToServer();
+        return (City) serverResponse.get("city");
     }
 
     public static ArrayList<Tile> getMap() {
@@ -287,24 +159,28 @@ public class GameDatabase {
     }
 
 
-    public static Tile getTileByXAndY(int x, int y) {
+    public static Tile getTileByXAndY(int x, int y) throws IOException {
 
-        for (Tile tile : map) {
-            if (tile.getX() == x && tile.getY() == y) return tile;
-        }
-        return null;
-
+//        for (Tile tile : map) {
+//            if (tile.getX() == x && tile.getY() == y) return tile;
+//        }
+//        return null;
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "getTileByXAndY");
+        input.put("x",x);
+        input.put("y",y);
+        JSONObject serverResponse = sendToServer();
+        return (Tile) serverResponse.get("tile");
     }
 
-    public static boolean isTileForACity(Tile tile) {
-        for (Civilization civilization : GameDatabase.players) {
-            for (City city : civilization.getCities()) {
-                if (city.isTileForThisCity(tile)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+    public static boolean isTileForACity(Tile tile) throws IOException {
+        input = new JSONObject();
+        input.put("menu type", "Game Database");
+        input.put("action", "isTileForACity");
+        input.put("Tile",tile);
+        JSONObject serverResponse = sendToServer();
+        return (boolean) serverResponse.get("isIt?");
     }
 
     public static Civilization getCivilizationByTile(Tile tile) {
@@ -333,7 +209,7 @@ public class GameDatabase {
 
     }
 
-    public static void generateMap(int numberOfPlayers) {
+    public static void generateMap(int numberOfPlayers) throws IOException {
         Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
@@ -498,7 +374,7 @@ public class GameDatabase {
         return null;
     }
 
-    public static void nextTurn() {
+    public static void nextTurn() throws IOException {
         setTurn(calculateNextTurn());
         for (Civilization player : GameDatabase.players) {
             player.nextTurn();
@@ -571,7 +447,7 @@ public class GameDatabase {
         GameFXMLController.turn = turn;
     }
 
-    public static User getUserForCivilization(String civilizationName) {
+    public static User getUserForCivilization(String civilizationName) throws IOException {
         String username = Objects.requireNonNull(getCivilizationByNickname(civilizationName)).getUsername();
         return UserDatabase.getUserByUsername(username);
     }
@@ -607,7 +483,6 @@ public class GameDatabase {
     }
 
 
-
     public static void saveGame() {
         for (int i = 0; i < 10; i++) {
             System.err.println("Saving game code has been commented by Sepehr Mizanian. Please uncomment it in GameDatabase.saveGame() function.");
@@ -618,7 +493,7 @@ public class GameDatabase {
 
     public static Civilization getLastCivilization() {
         int turn = GameDatabase.getTurn();
-        if(turn == 0) {
+        if (turn == 0) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.players.size() - 1);
         }
         return GameDatabase.getCivilizationByTurn(turn - 1);

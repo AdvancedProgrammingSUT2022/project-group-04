@@ -12,6 +12,7 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.annotations.Ignore;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -140,7 +141,7 @@ public class MainMenuTest {
      * Test of enterGameMenu function
      */
     @Test
-    public void enterGameMenu() {
+    public void enterGameMenu() throws IOException {
         database = mockStatic(UserDatabase.class);
         MainMenu mainMenu = new MainMenu(mainMenuController);
         when(matcher.group("command")).thenReturn(" -p1 sepehr -p2 alirezaRM");

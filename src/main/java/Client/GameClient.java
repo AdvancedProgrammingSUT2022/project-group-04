@@ -10,6 +10,7 @@ import Civilization.View.Transitions.TransitionDatabase;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -193,7 +194,7 @@ public class GameClient {
 
     }
 
-    public static void generateMap(int numberOfPlayers) {
+    public static void generateMap(int numberOfPlayers) throws IOException {
         Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};

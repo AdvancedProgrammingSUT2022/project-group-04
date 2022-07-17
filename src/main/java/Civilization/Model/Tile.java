@@ -2,6 +2,7 @@ package Civilization.Model;
 
 import Civilization.Database.GameDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Tile {
@@ -46,7 +47,7 @@ public class Tile {
     Tile prev;
 
 
-    public Tile(String type, String baseTerrainType, int x, int y) {
+    public Tile(String type, String baseTerrainType, int x, int y) throws IOException {
         this.type = type;
         this.hasRoad = false;
         this.baseTerrain = new BaseTerrain(baseTerrainType);
@@ -94,7 +95,7 @@ public class Tile {
         this.baseTerrain.discoverResource();
     }
 
-    public boolean isTileValidForAddingToCity() {
+    public boolean isTileValidForAddingToCity() throws IOException {
         return GameDatabase.isTileForACity(this);
     }
 
@@ -312,7 +313,7 @@ public class Tile {
         return edge >= 0 && edge < this.isRiver.length;
     }
 
-    private void dryInNeighbors() {
+    private void dryInNeighbors() throws IOException {
         for (Tile tile : getAdjacentTiles()) {
             if (tile != null) {
                 int edge = tile.getTileEdge(GameDatabase.getTileByXAndY(this.x, this.y));
@@ -371,14 +372,14 @@ public class Tile {
         return -1;
     }
 
-    public void dryUp() {
+    public void dryUp() throws IOException {
         for (int i = 0; i < this.isRiver.length; i++) {
             dryUpByEdge(i);
         }
         dryInNeighbors();
     }
 
-    public ArrayList<Tile> getAdjacentTiles() {
+    public ArrayList<Tile> getAdjacentTiles() throws IOException {
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (this.y % 2 == 0) {
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
@@ -410,7 +411,7 @@ public class Tile {
         return false;
     }
 
-    public ArrayList<Tile> getAdjacentTilesByLayer(int n) {
+    public ArrayList<Tile> getAdjacentTilesByLayer(int n) throws IOException {
 
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (n == 1) {
@@ -454,7 +455,7 @@ public class Tile {
         return this.getBaseTerrain().getFeature().getType().equals(featureName);
     }
 
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
 
     }
 
@@ -544,7 +545,7 @@ public class Tile {
         return isRaided;
     }
 
-    public void arriveRuin(Unit unit) {
+    public void arriveRuin(Unit unit) throws IOException {
         ruin.arrive(unit);
         ruin = null;
     }

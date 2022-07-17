@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static Civilization.Database.GameDatabase.getCityByXAndY;
@@ -78,7 +79,7 @@ public class CombatControllerTest {
     @Mock
     GameDatabase gameDatabase;
     @Test
-    public void unitAttackPositionTest(){
+    public void unitAttackPositionTest() throws IOException {
         City city = mock(City.class);
         Soldier soldier1 = mock(Soldier.class);
         Soldier soldier2 = mock(Soldier.class);
@@ -121,7 +122,7 @@ public class CombatControllerTest {
     }
 
     @Test
-    public void healUnitTest_1(){
+    public void healUnitTest_1() throws IOException {
         Civilization civilization = mock(Civilization.class);
         Tile tile = mock(Tile.class);
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
@@ -136,7 +137,7 @@ public class CombatControllerTest {
     }
 
     @Test
-    public void healUnitTest_2(){
+    public void healUnitTest_2() throws IOException {
         Civilization civilization = mock(Civilization.class);
         Tile tile = mock(Tile.class);
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
@@ -158,7 +159,7 @@ public class CombatControllerTest {
     }
 
     @Test
-    public void killUnitTest(){
+    public void killUnitTest() throws IOException {
         Unit unit = new Unit(1,1,"blah", 10, 0, 0);
         Tile tile = new Tile("Clear", "Plain", 1,1);
         unit.setTileOfUnit(tile);
