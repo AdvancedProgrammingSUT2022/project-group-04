@@ -7,9 +7,11 @@ import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
 import Client.Client;
+import Server.RequestPlayers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import com.thoughtworks.xstream.XStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -80,6 +82,14 @@ public class GameDatabase {
 
     }
 
+    private static Object sendToServer(String s, String functionName) throws IOException {
+        dataOutputStream1.writeUTF("!!!" + functionName + s);
+        dataOutputStream1.flush();
+        return dataInputStream1.readUTF();
+        // TODO update data here based on message
+
+    }
+
     public static void generateRuin() throws IOException {
         input = new JSONObject();
         input.put("menu type", "Game Database");
@@ -90,14 +100,18 @@ public class GameDatabase {
 
 
     public static void setPlayers(ArrayList<Civilization> players) throws IOException {
+
+        XStream xStream = new XStream();
         input = new JSONObject();
         TransitionDatabase.restart();
         input.put("menu type", "Game Database");
         input.put("action", "setPlayers");
-        for (int i=0;i<players.size();i++) {
+        for (int i = 0; i < players.size(); i++) {
             input.put("player" + i, players.get(i));
         }
-        JSONObject serverResponse = sendToServer();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.players = players;
+        Object sth = sendToServer(xStream.toXML(requestPlayers), "setPlayers");
         GameDatabase.players = players;
         //TODO SYSout??
         return;
@@ -111,7 +125,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCivilizationByUsername");
-        input.put("civilization name",civilizationName);
+        input.put("civilization name", civilizationName);
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
@@ -120,7 +134,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCivilizationByNickname");
-        input.put("civilization name",civilizationName);
+        input.put("civilization name", civilizationName);
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
@@ -130,7 +144,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCityByName");
-        input.put("city name",cityName);
+        input.put("city name", cityName);
         JSONObject serverResponse = sendToServer();
         return (City) serverResponse.get("city");
     }
@@ -139,8 +153,8 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCityByXAndY");
-        input.put("x",x);
-        input.put("y",y);
+        input.put("x", x);
+        input.put("y", y);
         JSONObject serverResponse = sendToServer();
         return (City) serverResponse.get("city");
     }
@@ -154,8 +168,8 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getTileByXAndY");
-        input.put("x",x);
-        input.put("y",y);
+        input.put("x", x);
+        input.put("y", y);
         JSONObject serverResponse = sendToServer();
         return (Tile) serverResponse.get("tile");
     }
@@ -164,7 +178,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "isTileForACity");
-        input.put("Tile",tile);
+        input.put("Tile", tile);
         JSONObject serverResponse = sendToServer();
         return (boolean) serverResponse.get("isIt?");
     }
@@ -173,7 +187,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCivilizationByTile");
-        input.put("Tile",tile);
+        input.put("Tile", tile);
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
@@ -182,7 +196,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCivilizationIndex");
-        input.put("civilization name",civilizationName);
+        input.put("civilization name", civilizationName);
         JSONObject serverResponse = sendToServer();
         return (int) serverResponse.get("index");
     }
@@ -191,7 +205,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "generate map");
-        input.put("number of players",numberOfPlayers);
+        input.put("number of players", numberOfPlayers);
         JSONObject serverResponse = sendToServer();
         players = (ArrayList<Civilization>) serverResponse.get("players");
         map = (ArrayList<Tile>) serverResponse.get("tiles");
@@ -201,7 +215,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCivilizationForCity");
-        input.put("city name",cityName);
+        input.put("city name", cityName);
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
@@ -211,7 +225,7 @@ public class GameDatabase {
         input.put("menu type", "Game Database");
         input.put("action", "nextTurn");
         JSONObject serverResponse = sendToServer();
-        return ;
+        return;
     }
 
     private static int calculateNextTurn() throws IOException {
@@ -230,7 +244,7 @@ public class GameDatabase {
         input = new JSONObject();
         input.put("menu type", "Game Database");
         input.put("action", "getCivilizationByTurn");
-        input.put("turn",turn);
+        input.put("turn", turn);
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
@@ -264,7 +278,7 @@ public class GameDatabase {
     public static Tile findTileByCitizen(Citizen citizen) throws IOException {
         input = new JSONObject();
         input.put("menu type", "Game Database");
-        input.put("citizen",citizen);
+        input.put("citizen", citizen);
         input.put("action", "findTileByCitizen");
         JSONObject serverResponse = sendToServer();
         return (Tile) serverResponse.get("Tile");
@@ -277,8 +291,8 @@ public class GameDatabase {
     public static boolean isTileInCivilization(Tile tile, Civilization civilization) throws IOException {
         input = new JSONObject();
         input.put("menu type", "Game Database");
-        input.put("civilization",civilization);
-        input.put("tile",tile);
+        input.put("civilization", civilization);
+        input.put("tile", tile);
         input.put("action", "isTileInCivilization");
         JSONObject serverResponse = sendToServer();
         return (boolean) serverResponse.get("return value");

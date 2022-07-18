@@ -7,6 +7,7 @@ import Civilization.Database.UserDatabase;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
+import com.thoughtworks.xstream.XStream;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -469,7 +470,6 @@ public class GameDatabaseServer {
 
 
     public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {
-        System.out.println("blah blah blah");
         JSONObject response = new JSONObject();
         switch ((String) clientCommandJ.get("action")) {
             case "getCivilizationByUnit":
@@ -483,9 +483,9 @@ public class GameDatabaseServer {
             case "setPlayers":
                 ArrayList<Civilization> player = new ArrayList<>();
                 Iterator<String> iterator = clientCommandJ.keys();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     String key = iterator.next();
-                    if (key.startsWith("player")){
+                    if (key.startsWith("player")) {
                         player.add((Civilization) clientCommandJ.get(key));
                     }
                 }
@@ -546,6 +546,17 @@ public class GameDatabaseServer {
                 break;
             default:
                 break;
+        }
+        return response;
+    }
+
+    public static String processReq(String s) {
+        XStream xStream = new XStream();
+        String response = new String();
+        if (s.startsWith("setPlayers")) {
+            s = s.substring(10);
+            System.out.println("aya khub hastin?");
+            setPlayers(((RequestPlayers) xStream.fromXML(s)).players);
         }
         return response;
     }

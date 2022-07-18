@@ -56,17 +56,24 @@ public class Server {
         while (true) {
             try {
                 String clientCommand = dataInputStream.readUTF();
-                JSONObject clientCommandJ = new JSONObject(clientCommand);
-                if (clientCommandJ.get("menu type").equals("Login")) {
-                    processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected);
-                } else if (clientCommandJ.get("menu type").equals("Profile")) {
-                    processProfileMenuReqs(clientCommandJ, dataOutputStream);
-                } else if (clientCommandJ.get("menu type").equals("Game Database")) {
-                    processGameMenuReqs(clientCommandJ, dataOutputStream);
-                } else if (clientCommandJ.get("menu type").equals("Main")) {
-                    processMainMenuReqs(clientCommandJ, dataOutputStream);
-                } else if (clientCommandJ.get("menu type").equals("")) {
+                JSONObject clientCommandJ;
+                if (!clientCommand.startsWith("!!!")) {
+                    clientCommandJ = new JSONObject(clientCommand);
+                    if (clientCommandJ.get("menu type").equals("Login")) {
+                        processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected);
+                    } else if (clientCommandJ.get("menu type").equals("Profile")) {
+                        processProfileMenuReqs(clientCommandJ, dataOutputStream);
+                    } else if (clientCommandJ.get("menu type").equals("Game Database")) {
+                        processGameMenuReqs(clientCommandJ, dataOutputStream);
+                    } else if (clientCommandJ.get("menu type").equals("Main")) {
+                        processMainMenuReqs(clientCommandJ, dataOutputStream);
+                    } else if (clientCommandJ.get("menu type").equals("")) {
 
+                    }
+                }
+                else {
+                    clientCommand = clientCommand.substring(3);
+                    processGameUsingXML(clientCommand,dataOutputStream);
                 }
             } catch (Exception ex) {
 //                System.out.println("Client disconnected");
@@ -74,6 +81,12 @@ public class Server {
 
             }
         }
+    }
+
+    private void processGameUsingXML(String s,DataOutputStream dataOutputStream) throws IOException {
+        String response = GameDatabaseServer.processReq(s);
+        dataOutputStream.writeUTF(response);
+        dataOutputStream.flush();
     }
 
     private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {

@@ -11,6 +11,9 @@
      exports Civilization.Database to xstream;
      opens Civilization.Database to com.google.gson, xstream;
 
+     exports Server to xstream;
+     opens Server to xstream;
+
      exports Civilization.Model to xstream;
      opens Civilization.Model to com.google.gson,xstream;
      opens Civilization.View.Components to com.google.gson,xstream;
