@@ -113,9 +113,11 @@ public class Tile {
         if (this.baseTerrain.getResources() == null) {
             return;
         }
-        addResource(this.baseTerrain.getResources());
-        this.baseTerrain.getResources().discover(this);
-        this.baseTerrain.discoverResource();
+        if(Resources.isResourceOnTileValidForDiscovering(this)) {
+            addResource(this.baseTerrain.getResources());
+            this.baseTerrain.getResources().discover(this);
+            this.baseTerrain.discoverResource();
+        }
     }
 
     public boolean isTileValidForAddingToCity() {

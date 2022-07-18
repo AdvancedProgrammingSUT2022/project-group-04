@@ -197,6 +197,7 @@ public class Unit {
         if(isOnTile.getRuin() != null) {
             isOnTile.arriveRuin(this);
         }
+        isOnTile.discoverResource();
     }
 
     public Tile getTileOfUnit() {
