@@ -211,10 +211,13 @@ public class PanelListFXMLController {
     private Unit findUnit() {
         Pattern pattern = Pattern.compile("(?<name>\\S+) in X: (?<x>\\d+) and Y: (?<y>\\d+)");
         Matcher matcher = pattern.matcher(units.getValue());
-        System.out.println(units.getValue());
-        System.out.println(matcher.matches());
-        System.out.println(matcher.group("x"));
-        System.out.println(matcher.group("y"));
+        if(!matcher.matches()) {
+            return null;
+        }
+//        System.out.println(units.getValue());
+//        System.out.println(matcher.matches());
+//        System.out.println(matcher.group("x"));
+//        System.out.println(matcher.group("y"));
         return GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getCombatUnit();
     }
 
