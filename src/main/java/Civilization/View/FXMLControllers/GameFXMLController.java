@@ -248,9 +248,9 @@ public class GameFXMLController {
             }
 
             if(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getFeature() != null) {
-                tile.feature.setFill(Color.BLUE);
+                tile.feature.setFill(new ImagePattern(GraphicalBases.FEATURES.get(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getFeature().getType())));
             } else {
-                tile.feature.setFill(Color.BLACK);
+                //tile.feature.setFill(Color.BLACK);
                 tile.feature.setVisible(false);
             }
 
@@ -360,7 +360,7 @@ public class GameFXMLController {
                 if(tile.nonCombatUnit != null) {
                     tile.nonCombatUnit.setVisible(true);
                 }
-                if(tile.feature != null) {
+                if(tile.feature != null && !tile.feature.getFill().equals(Color.BLACK)) {
                     tile.feature.setVisible(true);
                 }
                 if(tile.resource != null) {

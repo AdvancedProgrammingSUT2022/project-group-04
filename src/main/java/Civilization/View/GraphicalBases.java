@@ -57,6 +57,7 @@ public class GraphicalBases {
     public static final HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
     public static final HashMap<String, Image> UNITS = new HashMap<>();
     public static final HashMap<String, Image> BUILDINGS = new HashMap<>();
+    public static final HashMap<String, Image> FEATURES = new HashMap<>();
     public static final Image BUILD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/build.png")).toExternalForm());
     public static final Image RUINS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Ruins.jpg")).toExternalForm());
     public static final Image FOG_OF_WAR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/FogOfWar.png")).toExternalForm());
@@ -82,6 +83,9 @@ public class GraphicalBases {
         }
         for (String buildingName : GlobalVariables.BUILDINGS) {
             BUILDINGS.put(buildingName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/" + buildingName + ".png")).toExternalForm()));
+        }
+        for (String featureName : GlobalVariables.TERRAIN_FEATURES) {
+            FEATURES.put(featureName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Features/" + featureName + ".jpg")).toExternalForm()));
         }
     }
 
