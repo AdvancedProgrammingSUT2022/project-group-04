@@ -48,22 +48,22 @@ public class GameFXMLController {
     private VBox infoPanelVBox;
     private Rectangle technologyUnderSearch;
     private Rectangle unitSelected;
-    Button sleepWake ;
-    Button alert;
-    Button garrison;
-    Button rangeAttackSetup;
-    Button rangeAttack;
-    Button meleeAttack;
-    Button pillage;
-    Button delete;
-    Button sleepWakeNonCombat;
+
     VBox boxOfCommands;
     Pane combatUnitCommands = new Pane();
-
-    Button foundCity;
-    Button deleteNonCombat;
     VBox boxOfCommandsNonCombat;
     Pane nonCombatUnitCommands = new Pane();
+    Button sleepWake = new Button("Sleep/Wake");
+    Button sleepWakeNonCombat = new Button("Sleep/Wake");
+    Button alert = new Button("Alert/unAlert");
+    Button garrison = new Button("Garrison");
+    Button rangeAttackSetup = new Button("Setup Range");
+    Button rangeAttack = new Button("Range Attack");
+    Button meleeAttack = new Button("Melee Attack");
+    Button foundCity = new Button("Found City");
+    Button delete = new Button("Delete");
+    Button deleteNonCombat = new Button("Delete");
+    Button pillage = new Button("Pillage");
 
 
     // Terminal
@@ -965,16 +965,7 @@ public class GameFXMLController {
         setPanelLists();
         //setUnitCreating();
 
-        sleepWake = new Button("Sleep/Wake");
-        sleepWakeNonCombat = new Button("Sleep/Wake");
-        alert = new Button("Alert/unAlert");
-        garrison = new Button("Garrison");
-        rangeAttackSetup = new Button("Setup Range");
-        rangeAttack = new Button("Range Attack");
-        meleeAttack = new Button("Melee Attack");
-        foundCity = new Button("Found City");
-        delete = new Button("Delete");
-        deleteNonCombat = new Button("Delete");
+
         boxOfCommands = new VBox(sleepWake, alert, garrison, rangeAttackSetup, rangeAttack, meleeAttack, delete);
         boxOfCommands.setAlignment(Pos.CENTER);
         boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, foundCity, deleteNonCombat);
