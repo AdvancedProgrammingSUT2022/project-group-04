@@ -109,7 +109,7 @@ public class GameFXMLController {
        //Features and resources :::::::::::::::::::;
 
         Polygon feature = new Polygon();
-        Rectangle resource = new Rectangle();
+        Polygon resource = new Polygon();
 
     }
 
@@ -176,7 +176,7 @@ public class GameFXMLController {
                 }
                 if(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
                     showCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit(), tile);
-                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
+                    //System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
 
 
                 }
@@ -185,6 +185,7 @@ public class GameFXMLController {
                 mapPane.getChildren().add(tile.polygon);
                 mapPane.getChildren().add(tile.nameOfOwner);
                 mapPane.getChildren().add(tile.feature);
+                mapPane.getChildren().add(tile.resource);
                 for (Polygon side : tile.sides) {
                     mapPane.getChildren().add(side);
                 }
@@ -192,6 +193,7 @@ public class GameFXMLController {
                 tile.informationOfTile.toFront();
                 tile.nameOfOwner.toFront();
                 tile.feature.toFront();
+                tile.resource.toFront();
                 if(tile.nonCombatUnit != null) {
                     tile.nonCombatUnit.toFront();
                 }
@@ -254,6 +256,14 @@ public class GameFXMLController {
                 tile.feature.setVisible(false);
             }
 
+            if(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getResources() != null
+                   &&  GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getResources().isResourceVisibleForThisCivilization(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()))) {
+                tile.resource.setFill(new ImagePattern(GraphicalBases.RESOURCES.get(GameDatabase.getTileByXAndY(tile.x, tile.y).getBaseTerrain().getResources().getName())));
+            } else {
+                //tile.resource.setFill(Color.BLACK);
+                tile.resource.setVisible(false);
+            }
+
             tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
@@ -262,6 +272,15 @@ public class GameFXMLController {
             tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
             tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 120);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 120);
 
 
             // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -363,7 +382,7 @@ public class GameFXMLController {
                 if(tile.feature != null && !tile.feature.getFill().equals(Color.BLACK)) {
                     tile.feature.setVisible(true);
                 }
-                if(tile.resource != null) {
+                if(tile.resource != null && !tile.resource.getFill().equals(Color.BLACK)) {
                     tile.resource.setVisible(true);
                 }
             }
