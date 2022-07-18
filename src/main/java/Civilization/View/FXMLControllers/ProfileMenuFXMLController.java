@@ -8,6 +8,7 @@ import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
+import Client.Client;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -26,6 +27,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -290,33 +292,45 @@ public class ProfileMenuFXMLController {
 
     public void changeNickname(MouseEvent mouseEvent) throws IOException {
         String nickname = this.changeNicknameTextField.getText();
-        if(!profileMenuController.isNicknameUnique(nickname)) {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Profile");
+        input.put("action","change nickname");
+        input.put("nickname", nickname);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        System.out.println(message);
+        if(message.equals("Nickname is not unique")) {
             setNicknameError("Nickname is not unique");
             return;
         }
-        if(!profileMenuController.isNicknameValid(nickname)) {
+        if(message.equals("Please enter a new nickname")) {
             setNicknameError("Please enter a new nickname");
             return;
         }
-        profileMenuController.changeNickname(User.loggedInUser, nickname);
-        UserDatabase.writeInFile("UserDatabase.json");
         resetProfileMenu();
     }
 
     public void changePassword(MouseEvent mouseEvent) throws IOException {
         String password = this.currentPasswordTextField.getText();
         String newPassword = this.newPasswordTextField.getText();
-        if(!profileMenuController.isPasswordCorrect(User.loggedInUser.getUsername(), password)) {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Profile");
+        input.put("action","change nickname");
+        input.put("password", password);
+        input.put("new password",newPassword);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        System.out.println(message);
+        if(message.equals("current password is invalid")) {
             setPasswordError("current password is invalid");
             return;
         }
-        if(!profileMenuController.isNewPasswordDifferent(password, newPassword)
-            || !profileMenuController.isPasswordValid(newPassword)) {
+        if(message.equals("Please enter a new password")) {
             setPasswordError("Please enter a new password");
             return;
         }
-        profileMenuController.changePassword(User.loggedInUser, newPassword);
-        UserDatabase.writeInFile("UserDatabase.json");
         resetProfileMenu();
     }
 

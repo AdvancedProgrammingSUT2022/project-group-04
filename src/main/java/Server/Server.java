@@ -1,11 +1,12 @@
 package Server;
 
 import Civilization.Controller.LoginMenuController;
-import Civilization.Database.GameDatabase;
+import Civilization.Controller.ProfileMenuController;
 import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
+import Civilization.Model.ProfileMenuModel;
+import Civilization.Model.User;
 import Civilization.View.Components.Account;
-import com.google.gson.JsonObject;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -33,6 +34,7 @@ public class Server {
         UserDatabase.readFromFile("UserDatabase.json");
         Account.readAccounts("AccountURLs.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
+        ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
             while (true) {
                 Socket socket = serverSocket1.accept();
@@ -40,7 +42,7 @@ public class Server {
                     try {
                         DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                         DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController);
+                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -51,7 +53,7 @@ public class Server {
         }
     }
 
-    private void processSocketRequest(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController) throws IOException {
+    private void processSocketRequest(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController, ProfileMenuController profileMenuController) throws IOException {
         boolean disconnected = true;
         while (true) {
             try {
@@ -62,7 +64,7 @@ public class Server {
                     if (clientCommandJ.get("menu type").equals("Login")) {
                         processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected);
                     } else if (clientCommandJ.get("menu type").equals("Profile")) {
-                        processProfileMenuReqs(clientCommandJ, dataOutputStream);
+                        processProfileMenuReqs(clientCommandJ, dataOutputStream, profileMenuController, disconnected);
                     } else if (clientCommandJ.get("menu type").equals("Game Database")) {
                         processGameMenuReqs(clientCommandJ, dataOutputStream);
                     } else if (clientCommandJ.get("menu type").equals("Main")) {
@@ -70,10 +72,9 @@ public class Server {
                     } else if (clientCommandJ.get("menu type").equals("")) {
 
                     }
-                }
-                else {
+                } else {
                     clientCommand = clientCommand.substring(3);
-                    processGameUsingXML(clientCommand,dataOutputStream);
+                    processGameUsingXML(clientCommand, dataOutputStream);
                 }
             } catch (Exception ex) {
 //                System.out.println("Client disconnected");
@@ -83,7 +84,7 @@ public class Server {
         }
     }
 
-    private void processGameUsingXML(String s,DataOutputStream dataOutputStream) throws IOException {
+    private void processGameUsingXML(String s, DataOutputStream dataOutputStream) throws IOException {
         String response = GameDatabaseServer.processReq(s);
         dataOutputStream.writeUTF(response);
         dataOutputStream.flush();
@@ -102,7 +103,47 @@ public class Server {
         dataOutputStream.flush();
     }
 
-    private void processProfileMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
+    private void processProfileMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream, ProfileMenuController profileMenuController, boolean disconnected) {
+        try {
+            if (clientCommandJ.get("action").equals("change password")) {
+                String password = clientCommandJ.get("password").toString();
+                String newPassword = clientCommandJ.get("new password").toString();
+                if (!profileMenuController.isPasswordCorrect(User.loggedInUser.getUsername(), password)) {
+                    dataOutputStream.writeUTF("current password is invalid");
+                    dataOutputStream.flush();
+                    return;
+                }
+                if (!profileMenuController.isNewPasswordDifferent(password, newPassword)
+                        || !profileMenuController.isPasswordValid(newPassword)) {
+                    dataOutputStream.writeUTF("Please enter a new password");
+                    dataOutputStream.flush();
+                    return;
+                }
+                profileMenuController.changePassword(User.loggedInUser, newPassword);
+                UserDatabase.writeInFile("UserDatabase.json");
+            } else if (clientCommandJ.get("action").equals("change nickname")) {
+                String nickname = clientCommandJ.get("nickname").toString();
+                if (!profileMenuController.isNicknameUnique(nickname)) {
+                    dataOutputStream.writeUTF("Nickname is not unique");
+                    dataOutputStream.flush();
+                    return;
+                }
+                if (!profileMenuController.isNicknameValid(nickname)) {
+                    dataOutputStream.writeUTF("Please enter a new nickname");
+                    dataOutputStream.flush();
+                    return;
+                }
+                profileMenuController.changeNickname(User.loggedInUser, nickname);
+                UserDatabase.writeInFile("UserDatabase.json");
+                dataOutputStream.writeUTF("nickname changed successfully");
+                dataOutputStream.flush();
+            }
+        } catch (Exception e) {
+            if (disconnected) {
+                System.out.println("Please try again");
+                disconnected = false;
+            }
+        }
     }
 
     private void processLoginMenuReqs(JSONObject clientCommandJ, LoginMenuController loginMenuController, DataOutputStream dataOutputStream, boolean disconnected) throws IOException {
