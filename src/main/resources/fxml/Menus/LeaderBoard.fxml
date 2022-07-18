@@ -9,6 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.shape.Circle?>
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../../css/LeaderBoardStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Civilization.View.FXMLControllers.LeaderBoardFXMLController">
    <children>
       <Text layoutX="40.0" layoutY="70.0" stroke="#555564" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="5.0" styleClass="tile" text="Leaderboard" wrappingWidth="273.8224792480469" />
@@ -16,6 +17,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player1Avatar" radius="20"/>
                   <Text fx:id="player1Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player1Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player1LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -23,6 +25,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player2Avatar" radius="20"/>
                   <Text fx:id="player2Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player2Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player2LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -30,6 +33,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player3Avatar" radius="20"/>
                   <Text fx:id="player3Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player3Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player3LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -37,6 +41,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player4Avatar" radius="20"/>
                   <Text fx:id="player4Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player4Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player4LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -44,6 +49,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="404.0" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player5Avatar" radius="20"/>
                   <Text fx:id="player5Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player5Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player5LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -51,6 +57,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="458.0" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player6Avatar" radius="20"/>
                   <Text fx:id="player6Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player6Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player6LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -58,6 +65,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="488.0" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player7Avatar" radius="20"/>
                   <Text fx:id="player7Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player7Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player7LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -65,6 +73,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="502.0" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player8Avatar" radius="20"/>
                   <Text fx:id="player8Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player8Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player8LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -72,6 +81,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="512.0" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player9Avatar" radius="20"/>
                   <Text fx:id="player9Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player9Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player9LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -79,6 +89,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="520.0" prefHeight="100.0" prefWidth="488.0" spacing="100.0" styleClass="startGame">
                <children>
+                  <Circle fx:id="player10Avatar" radius="20"/>
                   <Text fx:id="player10Name" fill="#f5f4f4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nameAndScores" text="Player1" wrappingWidth="70.673828125" />
                   <Label fx:id="player10Score" alignment="CENTER" prefHeight="50.0" prefWidth="98.0" styleClass="nameAndScores" text="Label" />
                   <Text fx:id="Player10LoginTime" layoutX="121.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lastLogin" text="Text" wrappingWidth="90.51171875" />
@@ -86,8 +97,9 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutX="34.0" layoutY="88.0" prefHeight="43.0" prefWidth="483.0" spacing="100.0">
+      <HBox alignment="CENTER" layoutX="34.0" layoutY="88.0" prefHeight="43.0" prefWidth="483.0" spacing="50.0">
          <children>
+            <Text stroke="#555564" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" styleClass="miniTile" text="Avatar" />
             <Text stroke="#555564" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" styleClass="miniTile" text="User" />
             <Text stroke="#555564" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" styleClass="miniTile" text="Score" />
             <Text stroke="#555564" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" styleClass="miniTile" text="Last Login" />
