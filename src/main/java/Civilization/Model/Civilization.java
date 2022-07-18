@@ -39,7 +39,7 @@ public class Civilization {
 
     public ArrayList<Building> getValidBuildings() {
         ArrayList<Building> validBuildings = new ArrayList<>();
-        if(selectedCity == null) {
+        if (selectedCity == null) {
             return validBuildings;
         }
         for (String buildingName : GlobalVariables.BUILDINGS) {
@@ -65,10 +65,10 @@ public class Civilization {
         result += "\n\t Gold = " + this.gold;
         result += "\n\t Population = " + getPopulation();
         result += "\n\t Size = " + this.tiles.size();
-        if(technologies.size() != 0) {
+        if (technologies.size() != 0) {
             result += "\n\t Technologies = \n";
             for (Technology technology : technologies) {
-                result +=  "\t\t" + technology.getName() + " " + technology.wasReached() + "\n";
+                result += "\t\t" + technology.getName() + " " + technology.wasReached() + "\n";
             }
         }
         result += "\n\t Total Score = " + getFinalScore();
@@ -345,9 +345,31 @@ public class Civilization {
         return clearTiles;
     }
 
+    public ArrayList<Tile> getNotFogOfWarTiles() throws IOException {
+        ArrayList<Tile> clearTiles = new ArrayList<>();
+        clearTiles.addAll(tiles);
+        for (Tile tile : tiles) {
+            for (Tile neighbor : tile.getAdjacentTiles()) {
+                if (neighbor != null && isTileNew(clearTiles, neighbor)) {
+                    clearTiles.add(neighbor);
+                }
+            }
+        }
+        return clearTiles;
+    }
+
+    private boolean isTileNew(ArrayList<Tile> clearTiles, Tile neighbor) {
+        for (Tile clearTile : clearTiles) {
+            if (clearTile.getY() == neighbor.getY() && clearTile.getX() == neighbor.getX()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isThisTileFogOfWar(Tile tile) throws IOException {
-        for (Tile clearTile : getClearTiles()) {
-            if(tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
+        for (Tile clearTile : getNotFogOfWarTiles()) {
+            if (tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
                 return false;
             }
         }
@@ -357,7 +379,7 @@ public class Civilization {
     public void maintenanceOfUnits() {
         for (Tile tile : this.getTiles()) {
             for (Unit unit : tile.getUnits()) {
-                this.gold -= unit.getMaintenance();
+                addGold(unit.getMaintenance() * -1);
             }
         }
     }
@@ -472,9 +494,9 @@ public class Civilization {
         return true;
     }
 
-    public Technology getTechnologyUnderResearch(){
+    public Technology getTechnologyUnderResearch() {
         for (Technology technology : technologies) {
-            if(!technology.wasReached()) {
+            if (!technology.wasReached()) {
                 return technology;
             }
         }
@@ -501,7 +523,7 @@ public class Civilization {
 
     public void getPrize(Ruin ruin) {
         for (Technology technology : ruin.getTechnologies()) {
-            if(!isTechnologyForThisCivilization(technology)) {
+            if (!isTechnologyForThisCivilization(technology)) {
                 technologies.add(technology);
             }
         }

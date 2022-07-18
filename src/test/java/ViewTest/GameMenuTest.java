@@ -408,7 +408,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitFoundCityTest1(){
+    public void unitFoundCityTest1() throws IOException {
         Unit unit = mock(Unit.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = unit;
@@ -420,7 +420,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitFoundCityTest2(){
+    public void unitFoundCityTest2() throws IOException {
         Settler settler = mock(Settler.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = settler;
@@ -432,7 +432,7 @@ public class GameMenuTest {
     }
 
     @Test
-    public void unitPillageCurrentTileTest(){
+    public void unitPillageCurrentTileTest() throws IOException {
         Unit unit = mock(Unit.class);
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
         gameMenu.unitSelected = unit;

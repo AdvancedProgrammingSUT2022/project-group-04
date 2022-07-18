@@ -86,7 +86,32 @@ public class Tile {
         }
     }
 
+    public Unit getNonCombatUnit() {
+        for (Unit unit : this.units) {
+            if (unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker")) {
+                return unit;
+            }
+        }
+        if (this.settler != null) {
+            return this.settler;
+        }
+        if (this.worker != null) {
+            return this.worker;
+        }
+        return null;
+    }
+
+    public Unit getCombatUnit() {
+        for (Unit unit : this.units) {
+            if (!(unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker"))) {
+                return unit;
+            }
+        }
+        return null;
+    }
+
     public void discoverResource() throws IOException {
+
         if (this.baseTerrain.getResources() == null) {
             return;
         }
@@ -275,7 +300,7 @@ public class Tile {
 
     public String getInformation() {
         String result = this.toString();
-        if(city == null) {
+        if (city == null) {
             result += "\n Food = 0";
         } else {
             result += "\n Food = " + Integer.toString(city.getFood());
@@ -284,7 +309,7 @@ public class Tile {
         result += "\n Gold = " + baseTerrain.getGold();
         result += "\n Combat Modification = 0";
         result += "\n Movement Point = " + baseTerrain.getMovementPrice();
-        if(baseTerrain.getFeature() != null) {
+        if (baseTerrain.getFeature() != null) {
             result += addFeatureData();
         }
         return result;
@@ -519,7 +544,8 @@ public class Tile {
     public void addWorker(Worker worker) {
         this.worker = worker;
     }
-    public void removeWorker(Worker worker){
+
+    public void removeWorker(Worker worker) {
         if (this.worker.equals(worker))
             this.worker = null;
     }
@@ -528,7 +554,7 @@ public class Tile {
         this.settler = settler;
     }
 
-    public void removeSettler(Settler settler){
+    public void removeSettler(Settler settler) {
         if (settler.equals(this.settler))
             this.settler = null;
     }

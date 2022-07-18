@@ -126,8 +126,16 @@ public class DiscussionFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 // TODO start war
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(false);
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(null);
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 try {
                     sendMessage("Peace accepted");
                 } catch (IOException e) {
@@ -183,7 +191,11 @@ public class DiscussionFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 // TODO start war
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 try {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(GameDatabase.getCivilizationByNickname(selected.getNickname()));
                 } catch (IOException e) {
@@ -267,7 +279,11 @@ public class DiscussionFXMLController {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        GameDatabase.getCityByName(finalCityWithMaxFood).setLeftoverFood(GameDatabase.getCityByName(finalCityWithMaxFood).getFood() - number);
+                        try {
+                            GameDatabase.getCityByName(finalCityWithMaxFood).setLeftoverFood(GameDatabase.getCityByName(finalCityWithMaxFood).getFood() - number);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         for (City city : selected.getCities()) {
                             city.setLeftoverFood(city.getFood() + number);
                             break;

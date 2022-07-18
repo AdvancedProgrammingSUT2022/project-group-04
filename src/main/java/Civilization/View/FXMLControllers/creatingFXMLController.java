@@ -21,6 +21,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 public class creatingFXMLController {
 
     @FXML
@@ -32,13 +34,13 @@ public class creatingFXMLController {
     private boolean buildBool;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         setBackground();
         setValidBuildings();
         GameModel.isGame = true;
     }
 
-    private void setValidBuildings() {
+    private void setValidBuildings() throws IOException {
 
         Text totalText = new Text("Build/Buy buildings. number of valid buildings = " + Integer.toString(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getValidBuildings().size()));
         totalText.setX(50);
@@ -99,14 +101,22 @@ public class creatingFXMLController {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     buildBool = true;
-                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
+                    try {
+                        GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             build.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     buildBool = false;
-                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
+                    try {
+                        GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 

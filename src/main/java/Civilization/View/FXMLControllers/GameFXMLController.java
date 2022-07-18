@@ -1,5 +1,6 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
@@ -80,6 +81,11 @@ public class GameFXMLController {
         setCheatCodesTerminal();
         setTerminal();
         GameModel.isGame = true;
+
+        for (Civilization civilization : GameDatabase.players) {
+            System.out.println(civilization.getClearTiles().size());
+        }
+
     }
 
     class TileFX extends Polygon {
@@ -105,7 +111,8 @@ public class GameFXMLController {
         Circle nonCombatUnit;
 
        //Features and resources :::::::::::::::::::;
-        Rectangle feature = new Rectangle();
+
+        Polygon feature = new Polygon();
         Rectangle resource = new Rectangle();
 
     }
@@ -164,6 +171,19 @@ public class GameFXMLController {
                     tile.sides.add(side5);
                     tile.sides.add(side6);
                 }
+
+                if(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit() != null) {
+                    showNonCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit(), tile);
+
+                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit().getUnitType());
+
+                } else if(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
+                    showCombatByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit(), tile);
+
+                    System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getUnitType());
+
+                }
+
                 updateMapForOneTile(tile);
                 mapPane.getChildren().add(tile.polygon);
                 mapPane.getChildren().add(tile.nameOfOwner);
@@ -175,6 +195,12 @@ public class GameFXMLController {
                 tile.informationOfTile.toFront();
                 tile.nameOfOwner.toFront();
                 tile.feature.toFront();
+                if(tile.nonCombatUnit != null) {
+                    tile.nonCombatUnit.toFront();
+                }
+                if(tile.combatUnit != null) {
+                    tile.combatUnit.toFront();
+                }
 
             }
         }
@@ -229,10 +255,16 @@ public class GameFXMLController {
             } else {
                 tile.feature.setFill(Color.BLACK);
             }
-            tile.feature.setLayoutX(tile.polygon.getPoints().get(0) + 10);
-            tile.feature.setLayoutY(tile.polygon.getPoints().get(1) + 20);
-            tile.feature.prefWidth(60);
-            tile.feature.prefHeight(60);
+
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+
 
             // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             tile.informationOfTile.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
@@ -294,7 +326,11 @@ public class GameFXMLController {
             tile.createUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    createUnit();
+                    try {
+                        createUnit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -364,17 +400,81 @@ public class GameFXMLController {
                 GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isThisTileFogOfWar(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y));
     }
 
-    private void createUnit(){
+    private void createUnit() throws IOException {
+        if(selectedTile.soldiers.getValue() == null) {
+            return;
+        }
         System.out.println(selectedTile.soldiers.getValue().toString());
-        selectedTile.combatUnit = new Circle(10, Color.BLACK);
+        if(selectedTile.soldiers.getValue().equals("Settler")
+            || selectedTile.soldiers.getValue().equals("worker")) {
+            createNonCombat();
+        } else {
+            createCombat();
+        }
+
+    }
+
+    private void createNonCombat() throws IOException {
+        if(!addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue())) {
+            return;
+        }
+        selectedTile.nonCombatUnit = new Circle(30, Color.BLACK);
+        selectedTile.nonCombatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
+        selectedTile.nonCombatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 120);
+        selectedTile.nonCombatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
+        selectedTile.nonCombatUnit.prefHeight(100);
+        selectedTile.nonCombatUnit.prefWidth(100);
+        mapPane.getChildren().add(selectedTile.nonCombatUnit);
+        selectedTile.nonCombatUnit.toFront();
+        addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
+
+    }
+
+    private void showNonCombatByUnit(Unit unit, TileFX tileFX) {
+        tileFX.nonCombatUnit = new Circle(30, Color.BLACK);
+        tileFX.nonCombatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
+        tileFX.nonCombatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 120);
+        tileFX.nonCombatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
+        tileFX.nonCombatUnit.prefHeight(100);
+        tileFX.nonCombatUnit.prefWidth(100);
+        mapPane.getChildren().add(tileFX.nonCombatUnit);
+        tileFX.nonCombatUnit.toFront();
+    }
+
+    private void showCombatByUnit(Unit unit, TileFX tileFX) {
+        tileFX.combatUnit = new Circle(30, Color.BLACK);
+        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
+        tileFX.combatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 40);
+        tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
+        tileFX.combatUnit.prefHeight(100);
+        tileFX.combatUnit.prefWidth(100);
+        mapPane.getChildren().add(tileFX.combatUnit);
+        tileFX.combatUnit.toFront();
+    }
+
+    private void createCombat() throws IOException {
+        if(!addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue())) {
+            return;
+        }
+        selectedTile.combatUnit = new Circle(30, Color.BLACK);
         selectedTile.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
-        selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) -20);
-        selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 20);
+        selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 40);
+        selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
         selectedTile.combatUnit.prefHeight(100);
         selectedTile.combatUnit.prefWidth(100);
         mapPane.getChildren().add(selectedTile.combatUnit);
         selectedTile.combatUnit.toFront();
+    }
 
+    private boolean addToTileInReal(Tile tileByXAndY, String value) throws IOException {
+        if(tileByXAndY == null) {
+            return false;
+        }
+        boolean create = new GameMenuController(new GameModel()).createUnit(value, tileByXAndY.getY(), tileByXAndY.getY(), GameDatabase.getTurn());
+        if(!create) {
+            selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n Creating unit is invalid.");
+        }
+        return create;
     }
 
     private void setStopButton() {
@@ -464,8 +564,16 @@ public class GameFXMLController {
                 if(isTerminalOn) {
                     endTerminal();
                 }
-                updateStatusBar();
-                updateInfoPanel();
+                try {
+                    updateStatusBar();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    updateInfoPanel();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 try {
                     updateMap();
                 } catch (IOException e) {
@@ -488,7 +596,7 @@ public class GameFXMLController {
 
     }
 
-    private void setInfoPanel() {
+    private void setInfoPanel() throws IOException {
         infoPanel = new Rectangle();
         infoPanel.setX(0);
         infoPanel.setY(0);
@@ -560,7 +668,7 @@ public class GameFXMLController {
         infoPanelVBox.getChildren().add(button);
     }
 
-    private void updateInfoPanel() {
+    private void updateInfoPanel() throws IOException {
         Technology technology = GameDatabase.getCivilizationByTurn(turn).getTechnologyUnderResearch();
         if(technology == null) {
             technologyUnderSearch.setFill(new ImagePattern(GraphicalBases.NULL));
@@ -576,7 +684,7 @@ public class GameFXMLController {
         }
     }
 
-    private void setStatusBar() {
+    private void setStatusBar() throws IOException {
         statusBar = new Rectangle();
         statusBar.setX(0);
         statusBar.setY(0);
@@ -636,13 +744,21 @@ public class GameFXMLController {
         happiness.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(GameDatabase.getCivilizationByTurn(turn).isHappy()) {
-                    showHappiness.setFill(new ImagePattern(GraphicalBases.HAPPY));
-                } else {
-                    showHappiness.setFill(new ImagePattern(GraphicalBases.UNHAPPY));
+                try {
+                    if(GameDatabase.getCivilizationByTurn(turn).isHappy()) {
+                        showHappiness.setFill(new ImagePattern(GraphicalBases.HAPPY));
+                    } else {
+                        showHappiness.setFill(new ImagePattern(GraphicalBases.UNHAPPY));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                showHappinessText.setText("Happiness: " + GameDatabase.getCivilizationByTurn(turn).getHappiness() +
-                        "\n Unhappiness: " + (GameDatabase.getCivilizationByTurn(turn).getHappiness()*-1));
+                try {
+                    showHappinessText.setText("Happiness: " + GameDatabase.getCivilizationByTurn(turn).getHappiness() +
+                            "\n Unhappiness: " + (GameDatabase.getCivilizationByTurn(turn).getHappiness()*-1));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 showHappinessText.setVisible(true);
                 showHappiness.setVisible(true);
             }
@@ -660,7 +776,7 @@ public class GameFXMLController {
         statusBarHBox.getChildren().add(happinessVBox);
     }
 
-    private void updateStatusBar() {
+    private void updateStatusBar() throws IOException {
         coinText.setText("   " + Integer.toString(GameDatabase.getPlayers().get(turn).getGold()) + "   ");
         happinessText.setText("   " + Integer.toString(GameDatabase.getPlayers().get(turn).getHappiness()) + "   ");
         scienceText.setText("   " + Integer.toString(GameDatabase.players.get(turn).getScience()) + "   ");
@@ -684,7 +800,11 @@ public class GameFXMLController {
             public void handle(KeyEvent keyEvent) {
                 boolean shallStartTerminal = keyEvent.getText().equals("c") && keyEvent.isShiftDown() && keyEvent.isControlDown();
                 if(shallStartTerminal && !isTerminalOn) {
-                    startTerminal();
+                    try {
+                        startTerminal();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     boolean shallEndTerminal = keyEvent.getText().equals("e") && keyEvent.isShiftDown() && keyEvent.isControlDown();
                     if(shallEndTerminal && isTerminalOn) {
@@ -692,7 +812,11 @@ public class GameFXMLController {
                     } else {
                         boolean shallRestartTerminal = keyEvent.getText().equals("r") && keyEvent.isShiftDown() && keyEvent.isControlDown();
                         if(shallRestartTerminal && isTerminalOn) {
-                            restartTerminal();
+                            try {
+                                restartTerminal();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -705,7 +829,7 @@ public class GameFXMLController {
         mainAnchorPane.getChildren().remove(terminal);
     }
 
-    private void startTerminal() {
+    private void startTerminal() throws IOException {
         isTerminalOn = true;
         terminal.setEditable(true);
         terminalDefault = terminalDefaultStart + GameDatabase.getCivilizationByTurn(turn).getNickname() + terminalDefaultEnd;
@@ -729,7 +853,11 @@ public class GameFXMLController {
                     terminal.positionCaret(terminalDefault.length());
                 } else if(isCharEnter(keyEvent)) {
                     if(shallRestart()) {
-                        restartTerminal();
+                        try {
+                            restartTerminal();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         isResult = true;
                         String command = commandFounder();
@@ -739,7 +867,11 @@ public class GameFXMLController {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        updateStatusBar();
+                        try {
+                            updateStatusBar();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -775,7 +907,7 @@ public class GameFXMLController {
         mainAnchorPane.getChildren().add(terminal);
     }
 
-    private void restartTerminal() {
+    private void restartTerminal() throws IOException {
         endTerminal();
         startTerminal();
     }

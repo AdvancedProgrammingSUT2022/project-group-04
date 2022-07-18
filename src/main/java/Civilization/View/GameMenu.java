@@ -731,7 +731,7 @@ public class GameMenu extends Menu {
         return "unit fortifyHealed";
     }
 
-    public String unitFoundCity(Matcher matcher) {
+    public String unitFoundCity(Matcher matcher) throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (unitSelected.isCombatUnit()) {return "this is not a settler unit";
@@ -743,7 +743,7 @@ public class GameMenu extends Menu {
 
     }
 
-    public String unitPillageCurrentTile() {
+    public String unitPillageCurrentTile() throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";

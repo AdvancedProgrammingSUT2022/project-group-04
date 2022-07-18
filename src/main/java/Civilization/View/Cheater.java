@@ -131,7 +131,7 @@ public class Cheater extends Menu{
         return "Success! Capital Changed Successfully.";
     }
 
-    public String addHitPointUnit(Matcher matcher) {
+    public String addHitPointUnit(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -211,7 +211,7 @@ public class Cheater extends Menu{
         return "Success! Now it's Your Turn!";
     }
 
-    public String changeTurnByNumber(Matcher matcher) {
+    public String changeTurnByNumber(Matcher matcher) throws IOException {
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForTurn(amount)){
             return "Error: Invalid Turn";

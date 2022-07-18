@@ -22,6 +22,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +39,7 @@ public class PanelListFXMLController {
     private TextArea unitInformation;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         setBackground();
         setBackButton();
 
@@ -105,7 +106,7 @@ public class PanelListFXMLController {
         mainAnchorPane.getChildren().add(cityInformation);
     }
 
-    private void setNoCitiesText() {
+    private void setNoCitiesText() throws IOException {
         Text text = new Text("No Cities yet");
         text.setStyle("-fx-fill: white; -fx-font-size: 70");
         text.setX(70);
@@ -116,7 +117,7 @@ public class PanelListFXMLController {
         mainAnchorPane.getChildren().add(text);
     }
 
-    private void setCitiesList() {
+    private void setCitiesList() throws IOException {
         cities = new ChoiceBox<>();
 
         CityPanelChoosingTransition cityPanelChoosingTransition = new CityPanelChoosingTransition(this);
@@ -171,7 +172,7 @@ public class PanelListFXMLController {
         mainAnchorPane.getChildren().add(sasani);
     }
 
-    public void handleCityChoiceBox() {
+    public void handleCityChoiceBox() throws IOException {
         if(cities.getValue() != null) {
             cityInformation.setText(GameDatabase.getCityByName(cities.getValue()).toString());
             cityInformation.setVisible(true);
@@ -181,11 +182,11 @@ public class PanelListFXMLController {
         }
     }
 
-    private void selectCity(String value) {
+    private void selectCity(String value) throws IOException {
         GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedCity(GameDatabase.getCityByName(value));
     }
 
-    public void handleUnitChoiceBox() {
+    public void handleUnitChoiceBox() throws IOException {
         if(units.getValue() != null) {
             unitInformation.setText(GameDatabase.getCityByName(units.getValue()).toString());
             unitInformation.setVisible(true);
@@ -195,7 +196,7 @@ public class PanelListFXMLController {
         }
     }
 
-    private void selectUnit(String value) {
+    private void selectUnit(String value) throws IOException {
         Pattern pattern = Pattern.compile("(?<name>\\S+) in X: (?<x>\\d+) and Y: (?<y>\\d+)");
         Matcher matcher = pattern.matcher(value);
         GameMenuController gameMenuController = new GameMenuController(new GameModel());

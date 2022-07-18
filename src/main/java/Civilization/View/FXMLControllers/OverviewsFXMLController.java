@@ -14,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.io.IOException;
+
 public class OverviewsFXMLController {
 
     @FXML
@@ -22,7 +24,7 @@ public class OverviewsFXMLController {
     private HBox mainHBox;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         mainHBox = new HBox();
         mainHBox.setSpacing(30);
         mainHBox.setLayoutX(80);
@@ -46,7 +48,7 @@ public class OverviewsFXMLController {
         mainHBox.getChildren().add(textArea);
     }
 
-    private void setMilitaryOverview() {
+    private void setMilitaryOverview() throws IOException {
         TextArea textArea = new TextArea();
         textArea.setText("Military overview of " + Info.getInstance().infoMilitary(GameDatabase.getTurn()));
         textArea.setEditable(false);
@@ -54,7 +56,7 @@ public class OverviewsFXMLController {
         mainHBox.getChildren().add(textArea);
     }
 
-    private void setEconomyOverview() {
+    private void setEconomyOverview() throws IOException {
         TextArea textArea = new TextArea();
         textArea.setText("Economy overview of " + Info.getInstance().infoEconomy(GameDatabase.getTurn()));
         textArea.setEditable(false);

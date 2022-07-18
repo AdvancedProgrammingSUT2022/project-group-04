@@ -4,6 +4,8 @@ import Civilization.View.FXMLControllers.DiscussionFXMLController;
 import javafx.animation.Transition;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
 public class DiscussionUserChoosingTransition extends Transition {
 
     private DiscussionFXMLController discussionFXMLController;
@@ -17,6 +19,10 @@ public class DiscussionUserChoosingTransition extends Transition {
 
     @Override
     protected void interpolate(double v) {
-        discussionFXMLController.handleChoiceBox();
+        try {
+            discussionFXMLController.handleChoiceBox();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

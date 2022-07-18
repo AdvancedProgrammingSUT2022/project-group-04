@@ -44,7 +44,7 @@ public class GameDatabase {
 
     public static JSONObject input;
 
-    public void setSocket(Socket socket, DataOutputStream dataOutputStream, DataInputStream dataInputStream) {
+    public static void setSocket(Socket socket, DataOutputStream dataOutputStream, DataInputStream dataInputStream) {
         socket1 = socket;
         dataInputStream1 = dataInputStream;
         dataOutputStream1 = dataOutputStream;
@@ -74,7 +74,7 @@ public class GameDatabase {
     private static JSONObject sendToServer() throws IOException {
         dataOutputStream1.writeUTF(input.toString());
         dataOutputStream1.flush();
-        String message = Client.dataInputStream1.readUTF();
+        String message = dataInputStream1.readUTF();
         return new JSONObject(message);
         // TODO update data here based on message
 
@@ -91,10 +91,14 @@ public class GameDatabase {
 
     public static void setPlayers(ArrayList<Civilization> players) throws IOException {
         input = new JSONObject();
+        TransitionDatabase.restart();
         input.put("menu type", "Game Database");
         input.put("action", "setPlayers");
-        input.put("players", players);
+        for (int i=0;i<players.size();i++) {
+            input.put("player" + i, players.get(i));
+        }
         JSONObject serverResponse = sendToServer();
+        GameDatabase.players = players;
         //TODO SYSout??
         return;
     }

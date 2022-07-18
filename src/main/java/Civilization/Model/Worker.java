@@ -2,6 +2,7 @@ package Civilization.Model;
 
 import Civilization.Database.GameDatabase;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class Worker extends Citizen {
@@ -63,7 +64,7 @@ public class Worker extends Citizen {
         return false;
     }
 
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         if (isAssigned && !isMoving && isLocked) {
             int roundsTillFinishProject = tile.getRoundsTillFinishProjectByIndex(indexOfProject);
@@ -81,7 +82,7 @@ public class Worker extends Citizen {
         }
     }
 
-    public void lockTheWorker(Tile tile) {
+    public void lockTheWorker(Tile tile) throws IOException {
         isMoving = true;
         moveUnitFromTo(this, GameDatabase.getTileByXAndY(this.x, this.y), tile);
         this.desTile = tile;
@@ -97,7 +98,7 @@ public class Worker extends Citizen {
 //        tile.baseTerrain.removeFeature();
 //    }
 
-    public void finishWork() {
+    public void finishWork() throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         tile.setIsGettingWorkedOn(false);
         switch (indexOfProject) {

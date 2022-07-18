@@ -347,7 +347,7 @@ public class Unit {
         return false;
     }
 
-    public boolean isInItsCivilization() {
+    public boolean isInItsCivilization() throws IOException {
         if (GameDatabase.getCivilizationByTurn(civilizationIndex) == GameDatabase.getCivilizationByTile(this.tileOfUnit)) {
             return true;
         }

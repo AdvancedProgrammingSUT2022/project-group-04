@@ -149,7 +149,7 @@ public class GameDatabaseTest {
     }
 
     @Test
-    public void getCivilizationByTurn() {
+    public void getCivilizationByTurn() throws IOException {
         assertEquals(GameDatabase.getCivilizationByTurn(1).getNickname(), "n2");
     }
 

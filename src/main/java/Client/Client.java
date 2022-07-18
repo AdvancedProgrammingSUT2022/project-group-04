@@ -1,5 +1,7 @@
 package Client;
 
+import Civilization.Database.GameDatabase;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,6 +18,7 @@ public class Client {
             dataInputStream1 = new DataInputStream(socket1.getInputStream());
             dataOutputStream1 = new DataOutputStream(socket1.getOutputStream());
             GameClient.setSocket(socket1,dataOutputStream1,dataInputStream1);
+            GameDatabase.setSocket(socket1,dataOutputStream1,dataInputStream1);
         } catch (IOException e){
             System.out.println("Connection lost");
             System.exit(5);

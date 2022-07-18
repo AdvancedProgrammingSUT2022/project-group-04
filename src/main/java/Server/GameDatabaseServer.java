@@ -10,10 +10,7 @@ import Civilization.View.Transitions.TransitionDatabase;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class GameDatabaseServer {
 
@@ -64,21 +61,28 @@ public class GameDatabaseServer {
 
 
     public static void setPlayers(ArrayList<Civilization> player) {
+        System.out.println("bljjfjfjfj");
         turn = 0;
         year = 0;
         cheated = false;
         cheatedCivilization = null;
         players = player;
-        TransitionDatabase.restart();
+        System.out.println(players.size());
         for (Civilization civilization : players) {
+            System.out.println("kiriririri");
             civilization.setHappiness(GlobalVariables.firstHappiness * players.size());
+            System.out.println("kiriririri1");
             if (civilization.getNickname().equals(User.loggedInUser.getNickname())) {
                 civilization.getMessages().add("It's your game, Good luck ;)");
+                System.out.println("kiriririri2");
             } else {
+                System.out.println("kiriririri3");
                 civilization.getMessages().add("You have an invitation from " + User.loggedInUser.getNickname());
             }
+            System.out.println("kiriririri4");
 
         }
+        System.out.println("kiri");
     }
 
     /**
@@ -173,6 +177,7 @@ public class GameDatabaseServer {
     }
 
     public static void generateMap(int numberOfPlayers) throws IOException {
+        System.out.println("blah");
         Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
@@ -464,6 +469,7 @@ public class GameDatabaseServer {
 
 
     public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {
+        System.out.println("blah blah blah");
         JSONObject response = new JSONObject();
         switch ((String) clientCommandJ.get("action")) {
             case "getCivilizationByUnit":
@@ -475,7 +481,15 @@ public class GameDatabaseServer {
                 generateRuin();
                 break;
             case "setPlayers":
-                setPlayers((ArrayList<Civilization>) clientCommandJ.get("players"));
+                ArrayList<Civilization> player = new ArrayList<>();
+                Iterator<String> iterator = clientCommandJ.keys();
+                while (iterator.hasNext()){
+                    String key = iterator.next();
+                    if (key.startsWith("player")){
+                        player.add((Civilization) clientCommandJ.get(key));
+                    }
+                }
+                setPlayers(player);
                 break;
             case "getCivilizationByUsername":
                 response.put("civilization", getCivilizationByUsername((String) clientCommandJ.get("civilization name")));
@@ -499,7 +513,8 @@ public class GameDatabaseServer {
             case "getCivilizationIndex":
                 response.put("index", getCivilizationIndex((String) clientCommandJ.get("civilization name")));
                 break;
-            case "generateMap":
+            case "generate map":
+                System.out.println("dude the  fuck?");
                 generateMap((int) clientCommandJ.get("number of players"));
                 response.put("players", players);
                 response.put("tiles", map);

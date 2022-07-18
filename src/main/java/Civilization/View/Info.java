@@ -135,7 +135,7 @@ public class Info {
         return result;
     }
 
-    public String infoEconomy(int turn) {
+    public String infoEconomy(int turn) throws IOException {
         String result = GameDatabase.getCivilizationByTurn(turn).getNickname() + "\n";
         result += "Your science is " + Integer.toString(GameDatabase.players.get(turn).getScience()) + "\n";
         result += "Your happiness is " + Integer.toString(GameDatabase.players.get(turn).getHappiness()) + "\n";
@@ -205,7 +205,7 @@ public class Info {
         }
     }
 
-    public String infoMilitary(int turn) {
+    public String infoMilitary(int turn) throws IOException {
         String result = GameDatabase.getCivilizationByTurn(turn).getNickname() + "\n";
         ArrayList<Unit> soldiers = getSoldiers(new GameMenuController(new GameModel()), turn);
         if (soldiers.size() == 0) {
@@ -233,10 +233,8 @@ public class Info {
     public ArrayList<Unit> getSoldiers(GameMenuController gameMenuController, int turn) {
         ArrayList<Unit> soldiers = new ArrayList<Unit>();
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
-            for (Unit unit : tile.getUnits()) {
-                if (gameMenuController.isUnitSoldier(unit)) {
-                    soldiers.add(unit);
-                }
+            if(tile.getCombatUnit() != null) {
+                soldiers.add(tile.getCombatUnit());
             }
         }
         return soldiers;

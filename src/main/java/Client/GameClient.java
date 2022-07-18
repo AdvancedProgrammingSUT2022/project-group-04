@@ -359,7 +359,7 @@ public class GameClient {
         return null;
     }
 
-    public static void nextTurn() {
+    public static void nextTurn() throws IOException {
         setTurn(calculateNextTurn());
         for (Civilization player : GameDatabase.players) {
             player.nextTurn();
@@ -448,7 +448,7 @@ public class GameClient {
 //        writer.close();
 //    }
 
-    public static Civilization checkIfWin() {
+    public static Civilization checkIfWin() throws IOException {
         if (GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
@@ -477,7 +477,7 @@ public class GameClient {
 //        SavingGame.saveGame(copy);
     }
 
-    public static Civilization getLastCivilization() {
+    public static Civilization getLastCivilization() throws IOException {
         int turn = GameDatabase.getTurn();
         if(turn == 0) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.players.size() - 1);

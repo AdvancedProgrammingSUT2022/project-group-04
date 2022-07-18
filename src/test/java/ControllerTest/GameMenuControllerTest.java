@@ -555,7 +555,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void createNewCity(){
+    public void createNewCity() throws IOException {
         String cityName = "something cool and funny that makes you laugh";
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         gameMenuController.createNewCity(settler,cityName);
@@ -797,7 +797,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileInCivilization_nullCivilization() {
+    public void isTileInCivilization_nullCivilization() throws IOException {
         GameMenuController gameMenuController = new GameMenuController(gameModel);
         database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
         assertFalse(gameMenuController.isTileInCivilization(tile, 0));
@@ -1346,7 +1346,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileInAnyCivilization_true() {
+    public void isTileInAnyCivilization_true() throws IOException {
         database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
         when(players.size()).thenReturn(1);
         database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
@@ -1358,7 +1358,7 @@ public class GameMenuControllerTest {
     }
 
     @Test
-    public void isTileInAnyCivilization_false() {
+    public void isTileInAnyCivilization_false() throws IOException {
         database.when(() -> GameDatabase.getPlayers()).thenReturn(players);
         when(players.size()).thenReturn(1);
         database.when(() -> GameDatabase.getCivilizationByTurn(0)).thenReturn(civilization);
