@@ -310,6 +310,12 @@ public class Tile {
         if(baseTerrain.getFeature() != null) {
             result += addFeatureData();
         }
+        if(getNonCombatUnit() != null){
+            result += "\n" +getNonCombatUnit().unitType;
+        }
+        if (getCombatUnit() != null){
+            result += "\n" + getCombatUnit().unitType;
+        }
         return result;
     }
 
