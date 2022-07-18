@@ -560,6 +560,7 @@ public class GameMenuController {
     public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if(tile.getCombatUnit() != null) {
+            //System.out.println(tile.getCombatUnit());
             return false;
         }
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
