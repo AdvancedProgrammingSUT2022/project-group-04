@@ -67,6 +67,11 @@ public class Main extends Application {
         if(GameModel.isGame) {
             GameDatabase.saveGame();
         }
+        try{
+            UserDatabase.writeInFile("UserDatabase.json");
+        } catch (Exception e) {
+
+        }
     }
 
 }
