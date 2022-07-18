@@ -3,9 +3,9 @@
     "username": "sepehr",
     "nickname": "smiz",
     "password": "123456aA",
-    "score": 0,
-    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
-    "lastLoginTime": "Sat*_18^00^43"
+    "score": 2,
+    "timeOfScore": "Mon*19^47^56",
+    "lastLoginTime": "Mon*_19^47^27"
   },
   {
     "username": "alirezaRM",
@@ -19,8 +19,8 @@
     "username": "alirezaAmiri",
     "nickname": "amiri",
     "password": "123456aA",
-    "score": 0,
-    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "score": 2,
+    "timeOfScore": "Mon*19^47^56",
     "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
@@ -43,8 +43,8 @@
     "username": "testAccount",
     "nickname": "testPass",
     "password": "123456aA",
-    "score": 0,
-    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "score": 2,
+    "timeOfScore": "Mon*19^47^56",
     "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
@@ -59,8 +59,8 @@
     "username": "Hasti",
     "nickname": "Hmiz",
     "password": "1234aA",
-    "score": 0,
-    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "score": 2,
+    "timeOfScore": "Mon*19^47^56",
     "lastLoginTime": "Fri*_14^00^53"
   }
 ]

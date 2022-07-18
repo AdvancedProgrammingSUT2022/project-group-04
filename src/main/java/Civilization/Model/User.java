@@ -109,4 +109,8 @@ public class User {
             }
         }
     }
+
+    public void setScore(int amount) {
+        this.score += amount;
+    }
 }

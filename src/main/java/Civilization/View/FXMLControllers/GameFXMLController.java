@@ -1095,6 +1095,7 @@ public class GameFXMLController {
                 return keyEvent.getCharacter().equals("\r");
             }
         });
+        terminal.toFront();
         mainAnchorPane.getChildren().add(terminal);
     }
 
