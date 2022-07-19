@@ -279,7 +279,7 @@ public class Unit {
         }
         if (selectedUnit instanceof Settler || selectedUnit instanceof Worker){
             if (destTile.getSettler() != null || destTile.getWorker() != null){
-                return -1;
+                return -3;
             }
         }
         Graph graph = new Graph();

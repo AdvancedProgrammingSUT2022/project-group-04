@@ -405,14 +405,32 @@ public class GameFXMLController {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                        if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
+                            if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
+                                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
+                                updateInfoPanel();
+                                if (!isClickedOnce) {
+                                    combatUnitCommands.toFront();
+
+                                    combatUnitCommands.setVisible(true);
+                                } else {
+                                    combatUnitCommands.toFront();
+                                    combatUnitCommands.setVisible(false);
+                                }
+
+                            }
+                        } else {
+                            updateInfoPanel();
+                        }
                         Unit selectedUnit = null;
                         if (!isClickedOnce) {
                             isClickedOnce = true;
                             selectedTile = tile;
                             selectedUnit = GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit();
-                            if(selectedUnit == null) {
-                                return;
-                            }
+//                            if(selectedUnit == null) {
+//                                isClickedOnce = false;
+//                                return;
+//                            }
                             GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(selectedUnit);
                         } else if (isClickedOnce) {
                             if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null) {
@@ -426,8 +444,16 @@ public class GameFXMLController {
                                     int b = selectedUnit.moveUnitFromTo(selectedUnit, selectedUnit.getTileOfUnit(), GameDatabase.getTileByXAndY(tile.x, tile.y));
                                     if (b == -1 || b == -2) {
                                         selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
-                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n stacking limitation or dest tile can't be passed");
-                                    } else {
+                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n dest tile can't be passed" + b);
+                                    } else if (b == -3){
+                                        selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
+                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n stacking limitation");
+                                    }
+                                    else if ( tile.combatUnit != null){
+                                        selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
+                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n this tile already has a combat unit");
+                                    }
+                                    else {
                                         for (TileFX tileFX : tileFXES) {
                                             if (selectedTile.x == tileFX.x && selectedTile.y == tileFX.y) {
                                                 if (selectedUnit instanceof Soldier) {
@@ -453,6 +479,7 @@ public class GameFXMLController {
                                         isClickedOnce = false;
                                         System.out.println(selectedUnit.getTileOfUnit().getX() + " " + selectedUnit.getTileOfUnit().getY());
                                         selectedTile = null;
+                                        combatUnitCommands.setVisible(false);
                                     }
 
 
@@ -466,17 +493,23 @@ public class GameFXMLController {
                         }
 
                     } else if (mouseEvent.getButton() == MouseButton.SECONDARY){
+                        System.out.println(nonCombatUnitCommands.getLayoutX() + " " + nonCombatUnitCommands.getWidth() + " "+ nonCombatUnitCommands.getLayoutY() + " " + nonCombatUnitCommands.getHeight());
                         if (GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit() != null) {
                             if (GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
                                 GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit());
                                 updateInfoPanel();
                                 if (!isClickedOnce) {
+                                    nonCombatUnitCommands.toFront();
+
                                     nonCombatUnitCommands.setVisible(true);
                                 } else {
+                                    nonCombatUnitCommands.toFront();
                                     nonCombatUnitCommands.setVisible(false);
                                 }
 
                             }
+                        } else {
+                            updateInfoPanel();
                         }
                         Unit selectedUnit = null;
                         if (!isClickedOnce) {
@@ -496,7 +529,14 @@ public class GameFXMLController {
                                     int b = selectedUnit.moveUnitFromTo(selectedUnit, selectedUnit.getTileOfUnit(), GameDatabase.getTileByXAndY(tile.x, tile.y));
                                     if (b == -1 || b == -2) {
                                         selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
-                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n stacking limitation or dest tile can't be passed");
+                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n dest tile can't be passed" + b);
+                                    } else if (b == -3){
+                                        selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
+                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n stacking limitation");
+                                    }
+                                    else if ( tile.nonCombatUnit != null){
+                                        selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
+                                        selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n this tile already has a noncombat unit");
                                     } else {
                                         for (TileFX tileFX : tileFXES) {
                                             if (selectedTile.x == tileFX.x && selectedTile.y == tileFX.y) {
@@ -581,6 +621,35 @@ public class GameFXMLController {
                     createCityVBox.setVisible(true);
                 }
             });
+
+            sleepWake.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
+            sleepWakeNonCombat.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
+            delete.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
+            deleteNonCombat.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
 
 
 
@@ -1107,7 +1176,13 @@ public class GameFXMLController {
         combatUnitCommands = new Pane(boxOfCommands);
         nonCombatUnitCommands = new Pane(boxOfCommandsNonCombat);
         combatUnitCommands.setPrefHeight(200);
-        combatUnitCommands.setLayoutY(150);
+        combatUnitCommands.setLayoutY(infoPanelVBox.getLayoutY() + infoPanel.getHeight() - 200);
+        combatUnitCommands.setLayoutX(0);
+        combatUnitCommands.setPrefWidth(150);
+        nonCombatUnitCommands.setPrefHeight(200);
+        nonCombatUnitCommands.setLayoutY(infoPanelVBox.getLayoutY() + infoPanel.getHeight() - 200);
+        nonCombatUnitCommands.setLayoutX(0);
+        nonCombatUnitCommands.setPrefWidth(150);
         combatUnitCommands.setVisible(false);
         nonCombatUnitCommands.setVisible(false);
 
@@ -1116,14 +1191,15 @@ public class GameFXMLController {
         unitSelected.setWidth(150);
         unitSelected.setHeight(unitSelected.getWidth());
         infoPanelVBox.getChildren().add(unitSelected);
-        infoPanelVBox.getChildren().add(nonCombatUnitCommands);
-        infoPanelVBox.getChildren().add(combatUnitCommands);
 
+        mainAnchorPane.getChildren().add(nonCombatUnitCommands);
+        mainAnchorPane.getChildren().add(combatUnitCommands);
         mainAnchorPane.getChildren().add(infoPanel);
         mainAnchorPane.getChildren().add(infoPanelVBox);
         //mainAnchorPane.getChildren().add(combatUnitCommands);
         //mainAnchorPane.getChildren().add(nonCombatUnitCommands);
-
+        nonCombatUnitCommands.toFront();
+        combatUnitCommands.toFront();
         updateInfoPanel();
 
     }
