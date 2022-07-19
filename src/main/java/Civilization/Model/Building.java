@@ -246,7 +246,9 @@ public class Building {
     public String getInformation() {
         String result = name + "\n Turns need to build: " + turnsNeedToBuild;
         result += "\n Cost: " + cost;
-        result += "\n Technology Required: " + technologyRequired.getName();
+        if(technologyRequired != null) {
+            result += "\n Technology Required: " + technologyRequired.getName();
+        }
         return result;
 
     }

@@ -80,7 +80,12 @@ public class creatingFXMLController {
                 circle.setDisable(true);
                 circle.setEffect(new DropShadow());
                 circle.setStroke(Color.RED);
-                vBox.setVisible(false);
+                if(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity() != null
+                    && GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().isBuildingInCity(building)) {
+                    circle.setVisible(true);
+                } else {
+                    circle.setVisible(false);
+                }
             }
 
             int finalI = i;
@@ -98,6 +103,7 @@ public class creatingFXMLController {
             build.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    System.out.println("build");
                     buildBool = true;
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
                 }
@@ -105,6 +111,7 @@ public class creatingFXMLController {
             build.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    System.out.println("buy");
                     buildBool = false;
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
                 }
@@ -169,7 +176,7 @@ public class creatingFXMLController {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                GraphicalBases.enterGame("Game");
+                GraphicalBases.enterGame("CityPanel");
             }
         });
         mainAnchorPane.getChildren().add(button);
