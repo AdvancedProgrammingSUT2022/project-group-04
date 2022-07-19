@@ -58,6 +58,7 @@ public class City extends Tile {
         this.citizens = new ArrayList<Citizen>();
         this.attackingUnits = new ArrayList<>();
         this.tiles = new ArrayList<Tile>();
+        tiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
         capitalCalculator();
     }
 
@@ -411,7 +412,7 @@ public class City extends Tile {
 
     public boolean isTileForThisCity(Tile tile) {
         for (Tile cityTile : this.tiles) {
-            if (cityTile.equals(tile)) {
+            if (cityTile.getY() == tile.getY() && cityTile.getX() == tile.getX()) {
                 return true;
             }
         }

@@ -33,6 +33,8 @@ public class CityPanelFXMLController {
     private Text unemployedCitizen;
 
     private ChoiceBox<String> validCitizensForLocking;
+    private ChoiceBox<String> tileForLocking;
+    private ChoiceBox<String> workingCitizens;
 
     @FXML
     public void initialize() {
@@ -42,26 +44,140 @@ public class CityPanelFXMLController {
         setCityInformation();
         setBuildBuildingButton();
         setValidCitizensForLocking();
+        setWorkingCivilization();
         setUnemployedCitizenSection();
         GameModel.isGame = true;
     }
 
-    private void setValidCitizensForLocking() {
-        validCitizensForLocking = new ChoiceBox<>();
+    private void setWorkingCivilization() {
+        workingCitizens = new ChoiceBox<>();
+        updateWorkingChoiceBox();
+        workingCitizens.setLayoutX(50);
+        workingCitizens.setLayoutY(200);
+        mainAnchorPane.getChildren().add(workingCitizens);
+
+        Button ok = new Button("Ok");
+        ok.setLayoutX(150);
+        ok.setLayoutY(200);
+        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(workingCitizens.getValue() == null) {
+                    return;
+                }
+                Citizen citizen = findCitizen(workingCitizens.getValue());
+                if(citizen == null) {
+                    return;
+                }
+                citizen.removeFromWork();
+                updateLockingChoiceBox();
+                updateTilesChoiceBox();
+                updateUnemployedCitizensSection();
+                updateWorkingChoiceBox();
+            }
+        });
+        mainAnchorPane.getChildren().add(ok);
+    }
+
+    private void updateWorkingChoiceBox() {
         ArrayList<String> citizens = new ArrayList<>();
         for (Citizen citizen : city.getCitizens()) {
-            citizens.add(citizen.toString());
+            if(citizen.isAssigned()) {
+                citizens.add(citizen.toString());
+            }
+        }
+        ObservableList<String> validCitizens = FXCollections.observableArrayList(citizens);
+        workingCitizens.setItems(validCitizens);
+    }
+
+    private void setValidCitizensForLocking() {
+        validCitizensForLocking = new ChoiceBox<>();
+        updateLockingChoiceBox();
+        validCitizensForLocking.setLayoutX(50);
+        validCitizensForLocking.setLayoutY(150);
+        mainAnchorPane.getChildren().add(validCitizensForLocking);
+
+        final String[] result = {""};
+
+        tileForLocking = new ChoiceBox<>();
+        updateTilesChoiceBox();
+        tileForLocking.setLayoutX(270);
+        tileForLocking.setLayoutY(150);
+        tileForLocking.setVisible(false);
+        mainAnchorPane.getChildren().add(tileForLocking);
+
+        Button ok = new Button("Ok");
+        ok.setLayoutX(310);
+        ok.setLayoutY(150);
+        ok.setVisible(false);
+        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(result[0].equals("")) {
+                    return;
+                }
+                Citizen citizen = findCitizen(result[0]);
+                if(citizen == null) {
+                    return;
+                }
+                citizen.assign();
+                updateLockingChoiceBox();
+                updateTilesChoiceBox();
+                updateUnemployedCitizensSection();
+                updateWorkingChoiceBox();
+            }
+        });
+        mainAnchorPane.getChildren().add(ok);
+
+        Button button = new Button(" Lock to tile ");
+        button.setPrefWidth(100);
+        button.setLayoutX(150);
+        button.setLayoutY(150);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(validCitizensForLocking.getValue() == null) {
+                    tileForLocking.setVisible(false);
+                    validCitizensForLocking.setDisable(false);
+                    ok.setVisible(false);
+                    result[0] = "";
+                } else {
+                    tileForLocking.setVisible(true);
+                    validCitizensForLocking.setDisable(true);
+                    result[0] = validCitizensForLocking.getValue();
+                    ok.setVisible(true);
+                }
+            }
+        });
+        mainAnchorPane.getChildren().add(button);
+
+
+    }
+
+    private void updateTilesChoiceBox() {
+        ArrayList<String> tiles = new ArrayList<>();
+        for (Tile cityTile : city.getTiles()) {
+            tiles.add("Tile in X: " + cityTile.getX() + " Y: " + cityTile.getY());
+        }
+        ObservableList<String> validTiles = FXCollections.observableArrayList(tiles);
+        tileForLocking.setItems(validTiles);
+    }
+
+    private void updateLockingChoiceBox() {
+        ArrayList<String> citizens = new ArrayList<>();
+        for (Citizen citizen : city.getCitizens()) {
+            if(!citizen.isAssigned()) {
+                citizens.add(citizen.toString());
+            }
         }
         ObservableList<String> validCitizens = FXCollections.observableArrayList(citizens);
         validCitizensForLocking.setItems(validCitizens);
-        validCitizensForLocking.setLayoutX(50);
-        validCitizensForLocking.setLayoutY(150);
     }
 
     private void setUnemployedCitizenSection() {
         unemployedCitizen = new Text();
         unemployedCitizen.setX(50);
-        unemployedCitizen.setY(450);
+        unemployedCitizen.setY(250);
         unemployedCitizen.setStyle("-fx-font-size: 30");
         updateUnemployedCitizensSection();
         mainAnchorPane.getChildren().add(unemployedCitizen);
