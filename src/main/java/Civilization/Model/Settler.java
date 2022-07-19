@@ -42,4 +42,13 @@ public class Settler extends Citizen {
     public boolean isAssigned() {
         return isAssigned;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Settler)) {
+            return false;
+        }
+        return ((Settler) obj).getUnitType().equals("Settler")
+                && ((Settler) obj).getX() == this.x && ((Settler) obj).getY() == this.y;
+    }
 }

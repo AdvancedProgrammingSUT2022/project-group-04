@@ -60,6 +60,7 @@ public class GraphicalBases {
     public static final HashMap<String, Image> RESOURCES = new HashMap<>();
     public static final Image BUILD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/build.png")).toExternalForm());
     public static final Image RUINS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Ruins.jpg")).toExternalForm());
+    public static final Image CITY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/City.jpg")).toExternalForm());
     public static final Image FOG_OF_WAR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/FogOfWar.png")).toExternalForm());
 
     public static void firstLogin() {

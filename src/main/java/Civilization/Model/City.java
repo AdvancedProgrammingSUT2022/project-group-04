@@ -359,10 +359,13 @@ public class City extends Tile {
     }
 
     public void createSettler(int x, int y) {
-        if (citizens.size() > 1 && settler == null) {
-            this.settler = new Settler(x, y, 0);
+        System.out.println("create settler");
+        if (settler == null) {
+            this.settler = new Settler(x, y, GameDatabase.getCivilizationIndex(civilizationName));
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
+            GameDatabase.getTileByXAndY(x, y).addSettler(this.settler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
+            System.out.println("I'm in if");
         }
     }
 
@@ -370,6 +373,7 @@ public class City extends Tile {
         Worker newWorker = new Worker(x, y, GameDatabase.getCivilizationIndex(civilizationName));
         this.worker = newWorker;
         GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
+        GameDatabase.getTileByXAndY(x, y).addWorker(this.worker);
     }
 
     public void removeSettler(Settler settler) {
