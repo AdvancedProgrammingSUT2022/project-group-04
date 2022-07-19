@@ -639,14 +639,46 @@ public class GameFXMLController {
             delete.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        for (TileFX tileFX : tileFXES) {
+                            if (selectedUnit instanceof Soldier) {
+                                if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
+                                    tileFX.combatUnit.setVisible(false);
+                                    tileFX.combatUnit = null;
+                                    GetTileInReal(tileFX).removeUnit(selectedUnit);
+                                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             });
 
             deleteNonCombat.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        for (TileFX tileFX : tileFXES) {
+                            if (!(selectedUnit instanceof Soldier)) {
+                                if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
+                                    tileFX.nonCombatUnit.setVisible(false);
+                                    tileFX.nonCombatUnit = null;
+                                    if (selectedUnit instanceof Settler){
+                                        System.out.println("settler removed");
+                                        GetTileInReal(tileFX).removeSettler((Settler) selectedUnit);
+                                    } else if (selectedUnit instanceof Worker){
+                                        System.out.println("worker removed");
+                                        GetTileInReal(tileFX).removeWorker((Worker) selectedUnit);
+                                    }
+                                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             });
 
@@ -698,6 +730,7 @@ public class GameFXMLController {
         }
 
     }
+
 
     private void updateMap() {
         for (TileFX tileFX : tileFXES) {
