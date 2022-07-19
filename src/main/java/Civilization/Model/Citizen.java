@@ -31,4 +31,20 @@ public class Citizen extends Unit {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "Citizen on X: " + this.x + " Y: " + this.y;
+    }
+
+    public void assign() {
+        this.isAssigned = true;
+    }
+
+    public void removeFromWork() {
+        this.isAssigned = false;
+    }
+
+    public boolean isAssigned() {
+        return isAssigned;
+    }
 }
