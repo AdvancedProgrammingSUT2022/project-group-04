@@ -574,14 +574,14 @@ public class GameMenuController {
     }
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
-        System.out.println("create non combat");
+        //System.out.println("create non combat");
         if (GameDatabase.getCityByXAndY(x, y) != null) {
             if (unitType.equals("Settler")) GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
             else if (unitType.equals("worker")) GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
             else return false;
             return true;
         }
-        System.out.println("city is null");
+        //System.out.println("city is null");
         return false;
     }
 
