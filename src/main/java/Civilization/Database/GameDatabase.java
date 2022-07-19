@@ -7,11 +7,14 @@ import Server.RequestPlayers;
 import Server.User;
 import Server.UserDatabase;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.json.JSONObject;
 
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class GameDatabase {
@@ -52,10 +55,11 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByUnit(Unit unit) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationByUnit");
         input.put("unit", unit);
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.unit = unit;
+        Object sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUnit");
         JSONObject serverResponse = sendToServer();
         return (Civilization) serverResponse.get("civilization");
     }
@@ -69,26 +73,43 @@ public class GameDatabase {
 
     }
 
-    private static Object sendToServer(String s, String functionName) throws IOException {
+    private static RequestPlayers readAndCastResponse(String s) throws IOException {
+        XStream xStream = new XStream();
+        FileWriter fileWriter;
+        if (Files.exists(Paths.get("clientResponse/response.xml")))
+            fileWriter = new FileWriter("clientResponse/response.xml");
+        else{
+            new File("clientResponse").mkdir();
+            fileWriter = new FileWriter("clientResponse/response.xml");
+        }
+        fileWriter.write(s);
+        fileWriter.close();
+        ///
+        String xml = new String(Files.readAllBytes(Paths.get("save/array.xml")));
+        xStream.addPermission(AnyTypePermission.ANY);
+        if(xml.length() != 0){
+            Object obh = xStream.fromXML(xml);
+            RequestPlayers req = (RequestPlayers) obh;
+            return req;
+        }
+        return null;
+    }
+
+    private static RequestPlayers sendToServer(String s, String functionName) throws IOException {
         dataOutputStream1.writeUTF("!!!" + functionName + s);
         dataOutputStream1.flush();
-        return dataInputStream1.readUTF();
-        // TODO update data here based on message
-
+        String response = dataInputStream1.readUTF();
+        return readAndCastResponse(response);
     }
 
     public static void generateRuin() throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "generateRuin");
-        JSONObject serverResponse = sendToServer();
-        //TODO SYSout??
+        sendToServer(null,"generateRuin");
     }
 
 
     public static void setPlayers(ArrayList<Civilization> players) throws IOException {
-        XStream xStream = new XStream();
         TransitionDatabase.restart();
+        XStream xStream = new XStream();
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.players = players;
         Object sth = sendToServer(xStream.toXML(requestPlayers), "setPlayers");
