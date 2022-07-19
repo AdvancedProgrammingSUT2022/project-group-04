@@ -599,4 +599,15 @@ public class Tile {
         }
         return null;
     }
+
+    public City isCityInTile() {
+        for (Civilization player : GameDatabase.players) {
+            for (City playerCity : player.getCities()) {
+                if(playerCity.isTileForThisCity(this)) {
+                    return playerCity;
+                }
+            }
+        }
+        return null;
+    }
 }

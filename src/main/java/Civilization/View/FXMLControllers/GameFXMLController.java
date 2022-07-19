@@ -695,7 +695,8 @@ public class GameFXMLController {
             if(GameDatabase.getTileByXAndY(tile.x, tile.y).ruin != null) {
                 tile.polygon.setFill(new ImagePattern(GraphicalBases.RUINS));
             }
-            if(GameDatabase.getCityByXAndY(tile.x, tile.y) != null) {
+            if(GameDatabase.getCityByXAndY(tile.x, tile.y) != null
+                || GameDatabase.getTileByXAndY(tile.x, tile.y).isCityInTile() != null) {
                 tile.polygon.setFill(new ImagePattern(GraphicalBases.CITY));
             }
 
@@ -1001,6 +1002,8 @@ public class GameFXMLController {
             tileFX.combatUnit.prefWidth(100);
             mapPane.getChildren().add(tileFX.combatUnit);
         }
+//        System.out.println(unit);
+//        System.out.println(unit.getUnitType());
         tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
         tileFX.combatUnit.setVisible(true);
 
