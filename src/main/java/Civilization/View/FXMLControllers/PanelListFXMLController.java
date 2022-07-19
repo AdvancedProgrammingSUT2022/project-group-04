@@ -123,8 +123,7 @@ public class PanelListFXMLController {
         cityPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("go");
-                // TODO
+                GraphicalBases.enterGame("CityPanel");
             }
         });
         mainAnchorPane.getChildren().add(cityPanel);

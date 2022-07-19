@@ -461,4 +461,13 @@ public class City extends Tile {
         }
         return false;
     }
+
+    public boolean isBuildingInCity(String building) {
+        for (Building building1 : this.buildings) {
+            if(building1.getName().equals(building)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

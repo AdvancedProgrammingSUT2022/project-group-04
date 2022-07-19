@@ -532,7 +532,7 @@ public class Civilization {
         ArrayList<Unit> soldiers = new ArrayList<>();
         for (Tile tile : GameDatabase.map) {
             for (Unit unit : tile.units) {
-                if(unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(this.getNickname())) {
+                if(unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(this.getNickname()) && !unit.getUnitType().equals("Citizen")) {
                     soldiers.add(unit);
                 }
             }

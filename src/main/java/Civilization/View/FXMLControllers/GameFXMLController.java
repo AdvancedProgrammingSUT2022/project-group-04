@@ -60,6 +60,7 @@ public class GameFXMLController {
     Button rangeAttack = new Button("Range Attack");
     Button meleeAttack = new Button("Melee Attack");
     Button foundCity = new Button("Found City");
+    Button workerActions = new Button("Worker Actions");
     Button delete = new Button("Delete");
     Button deleteNonCombat = new Button("Delete");
     Button pillage = new Button("Pillage");
@@ -619,6 +620,12 @@ public class GameFXMLController {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     createCityVBox.setVisible(true);
+                }
+            });
+            workerActions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    GraphicalBases.enterGame("WorkerActions");
                 }
             });
 
@@ -1204,7 +1211,7 @@ public class GameFXMLController {
 
         boxOfCommands = new VBox(sleepWake, alert, garrison, rangeAttackSetup, rangeAttack, meleeAttack, delete);
         boxOfCommands.setAlignment(Pos.CENTER);
-        boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, deleteNonCombat, foundCity, createCityVBox);
+        boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, deleteNonCombat, workerActions, foundCity, createCityVBox);
         boxOfCommandsNonCombat.setAlignment(Pos.CENTER);
         combatUnitCommands = new Pane(boxOfCommands);
         nonCombatUnitCommands = new Pane(boxOfCommandsNonCombat);
@@ -1291,6 +1298,7 @@ public class GameFXMLController {
             deleteNonCombat.setVisible(false);
             sleepWakeNonCombat.setVisible(false);
             foundCity.setVisible(false);
+            workerActions.setVisible(false);
         } else {
             unitSelected.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
             if(unit.getUnitType().equals("worker") || unit.getUnitType().equals("Settler")) {
@@ -1299,14 +1307,17 @@ public class GameFXMLController {
                 createCityVBox.setVisible(false);
                 if(unit.getUnitType().equals("Settler") && isFoundCityValid(unit.getX(), unit.getY())) {
                     foundCity.setVisible(true);
+                    workerActions.setVisible(false);
                 } else {
                     foundCity.setVisible(false);
+                    workerActions.setVisible(true);
                 }
             } else {
                 createCityVBox.setVisible(false);
                 deleteNonCombat.setVisible(false);
                 sleepWakeNonCombat.setVisible(false);
                 foundCity.setVisible(false);
+                workerActions.setVisible(false);
             }
         }
     }
