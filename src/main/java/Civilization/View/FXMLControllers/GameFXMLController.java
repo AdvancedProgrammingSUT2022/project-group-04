@@ -717,10 +717,10 @@ public class GameFXMLController {
 
     private void createNonCombat() {
         if(!addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue())) {
-            System.out.println("can't add");
+            //System.out.println("can't add");
             return;
         }
-        System.out.println("add");
+        //System.out.println("add");
         if(selectedTile.nonCombatUnit == null) {
             selectedTile.nonCombatUnit = new Circle(30, Color.BLACK);
             selectedTile.nonCombatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 120);
@@ -735,7 +735,7 @@ public class GameFXMLController {
         selectedTile.nonCombatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("Create Non Combat");
+                //System.out.println("Create Non Combat");
 //                if(selectedTile != null && GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit() != null
 //                        && GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
 //                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit());
@@ -743,31 +743,31 @@ public class GameFXMLController {
 //                    System.out.println("salam");
 //                }
                 if(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit() == null) {
-                    System.out.println("non combat unit is null");
+                    //System.out.println("non combat unit is null");
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
                     return;
                 }
                 if(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
-                    System.out.println("non combat unit is yours");
+                    //System.out.println("non combat unit is yours");
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getNonCombatUnit());
                     updateInfoPanel();
                     if (nonCombatUnitCommands.isVisible()) {
-                        System.out.println("noncombat is not visible");
+                        //System.out.println("noncombat is not visible");
                         nonCombatUnitCommands.setVisible(false);
                     } else {
-                        System.out.println("noncombat is visible");
+                        //System.out.println("noncombat is visible");
                         nonCombatUnitCommands.setVisible(true);
                     }
 
                 } else {
-                    System.out.println("non combat is not yours");
+                    //System.out.println("non combat is not yours");
                 }
             }
         });
 
         //mapPane.getChildren().add(selectedTile.nonCombatUnit);
         selectedTile.nonCombatUnit.toFront();
-        System.out.println("add to tile");
+        //System.out.println("add to tile");
         addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
 
     }
@@ -797,7 +797,7 @@ public class GameFXMLController {
         tileFX.nonCombatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("Create Non Combat In Tile");
+                //System.out.println("Create Non Combat In Tile");
 //                if(tileFX != null && GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getNonCombatUnit() != null
 //                        && GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getNonCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
 //                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getNonCombatUnit());
@@ -853,7 +853,7 @@ public class GameFXMLController {
         tileFX.nonCombatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("Show Non Combat By Tile");
+                //System.out.println("Show Non Combat By Tile");
                 if(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getNonCombatUnit() == null) {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
                     return;
@@ -968,7 +968,7 @@ public class GameFXMLController {
             return false;
         }
         boolean create = new GameMenuController(new GameModel()).createUnit(value, tileByXAndY.getX(), tileByXAndY.getY(), GameDatabase.getTurn());
-        System.out.printf("%s - %s - \n", create, value);
+        //System.out.printf("%s - %s - \n", create, value);
         if(!create) {
             selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n Creating unit is invalid.");
         } else {

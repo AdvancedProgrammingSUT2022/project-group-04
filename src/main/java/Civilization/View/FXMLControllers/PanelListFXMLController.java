@@ -37,6 +37,8 @@ public class PanelListFXMLController {
     private ChoiceBox<String> units;
     private TextArea unitInformation;
 
+    private Button cityPanel;
+
     private UnitPanelChoosingTransition unitPanelChoosingTransition;
     private CityPanelChoosingTransition cityPanelChoosingTransition;
 
@@ -45,13 +47,17 @@ public class PanelListFXMLController {
         setBackground();
         setBackButton();
 
-        setNoCitiesText();
-        setCityInformation();
-        setCitiesList();
+
 
         setNoUnitText();
         setUnitInformation();
         setUnitsList();
+
+        setNoCitiesText();
+        setCityInformation();
+        setCitiesList();
+        setCityPanelButton();
+
         GameModel.isGame = true;
     }
 
@@ -79,8 +85,8 @@ public class PanelListFXMLController {
 
     private void setUnitInformation() {
         unitInformation = new TextArea();
-        unitInformation.setPrefWidth(100);
-        unitInformation.setPrefWidth(100);
+        unitInformation.setPrefWidth(130);
+        unitInformation.setPrefWidth(130);
         unitInformation.setLayoutX(1020);
         unitInformation.setLayoutY(100);
         unitInformation.setEditable(false);
@@ -100,12 +106,28 @@ public class PanelListFXMLController {
 
     private void setCityInformation() {
         cityInformation = new TextArea();
-        cityInformation.setPrefWidth(100);
-        cityInformation.setPrefWidth(100);
+        cityInformation.setPrefWidth(300);
+        cityInformation.setPrefWidth(300);
         cityInformation.setLayoutX(220);
         cityInformation.setLayoutY(100);
         cityInformation.setEditable(false);
         mainAnchorPane.getChildren().add(cityInformation);
+    }
+
+    private void setCityPanelButton() {
+        cityPanel = new Button("Go to City Panel");
+        cityPanel.setPrefWidth(300);
+        cityPanel.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        cityPanel.setLayoutX(220);
+        cityPanel.setLayoutY(400);
+        cityPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("go");
+                // TODO
+            }
+        });
+        mainAnchorPane.getChildren().add(cityPanel);
     }
 
     private void setNoCitiesText() {
@@ -185,11 +207,14 @@ public class PanelListFXMLController {
     }
 
     public void handleCityChoiceBox() {
+        //System.out.println(cities.getValue());
         if(cities.getValue() != null) {
             cityInformation.setText(GameDatabase.getCityByName(cities.getValue()).toString());
+            cityPanel.setVisible(true);
             cityInformation.setVisible(true);
             selectCity(cities.getValue());
         } else {
+            cityPanel.setVisible(false);
             cityInformation.setVisible(false);
         }
     }
@@ -199,6 +224,7 @@ public class PanelListFXMLController {
     }
 
     public void handleUnitChoiceBox() {
+        //System.out.println(units.getValue());
         if(units.getValue() != null) {
             unitInformation.setText(findUnit().toString());
             unitInformation.setVisible(true);

@@ -359,13 +359,13 @@ public class City extends Tile {
     }
 
     public void createSettler(int x, int y) {
-        System.out.println("create settler");
+        //System.out.println("create settler");
         if (settler == null) {
             this.settler = new Settler(x, y, GameDatabase.getCivilizationIndex(civilizationName));
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
             GameDatabase.getTileByXAndY(x, y).addSettler(this.settler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
-            System.out.println("I'm in if");
+            //System.out.println("I'm in if");
         }
     }
 
