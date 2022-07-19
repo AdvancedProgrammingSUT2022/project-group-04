@@ -1,10 +1,10 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Controller.LoginMenuController;
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.GameModel;
 import Civilization.Model.LoginMenuModel;
-import Civilization.Model.User;
+import Server.User;
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;

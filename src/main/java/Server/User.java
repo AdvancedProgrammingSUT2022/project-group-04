@@ -1,4 +1,4 @@
-package Civilization.Model;
+package Server;
 
 import Civilization.View.Components.Account;
 

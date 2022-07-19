@@ -1,12 +1,9 @@
 package Server;
 
 import Civilization.Controller.GameMenuController;
-import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
-import Civilization.Database.UserDatabase;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
-import Civilization.View.Transitions.TransitionDatabase;
 import com.thoughtworks.xstream.XStream;
 import org.json.JSONObject;
 

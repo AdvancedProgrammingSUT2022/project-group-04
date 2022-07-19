@@ -1,4 +1,4 @@
-package Civilization.Database;
+package Server;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import Civilization.Model.User;
+import Server.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

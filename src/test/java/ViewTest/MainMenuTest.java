@@ -1,8 +1,8 @@
 package ViewTest;
 
 import Civilization.Controller.MainMenuController;
-import Civilization.Database.UserDatabase;
-import Civilization.Model.User;
+import Server.UserDatabase;
+import Server.User;
 import Civilization.View.MainMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

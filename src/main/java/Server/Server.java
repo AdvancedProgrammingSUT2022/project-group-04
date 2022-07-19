@@ -2,10 +2,8 @@ package Server;
 
 import Civilization.Controller.LoginMenuController;
 import Civilization.Controller.ProfileMenuController;
-import Civilization.Database.UserDatabase;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.ProfileMenuModel;
-import Civilization.Model.User;
 import Civilization.View.Components.Account;
 import org.json.JSONObject;
 
@@ -15,8 +13,6 @@ import java.net.Socket;
 
 public class Server {
     private ServerSocket serverSocket1;
-    private ServerSocket serverSocket2;
-//    private GameMenuServer game;
 
 
     public Server() {

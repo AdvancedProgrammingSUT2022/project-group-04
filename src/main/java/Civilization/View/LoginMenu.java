@@ -1,12 +1,12 @@
 package Civilization.View;
 
 import Civilization.Controller.LoginMenuController;
-import Civilization.Model.User;
+import Server.User;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 
 public class LoginMenu extends Menu {
 

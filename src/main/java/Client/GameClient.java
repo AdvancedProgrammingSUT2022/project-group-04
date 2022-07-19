@@ -3,10 +3,11 @@ package Client;
 import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
+import Server.User;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

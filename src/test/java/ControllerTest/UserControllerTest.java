@@ -1,8 +1,8 @@
 package ControllerTest;
 
-import Civilization.Controller.UserController;
-import Civilization.Database.UserDatabase;
-import Civilization.Model.User;
+import Server.UserController;
+import Server.UserDatabase;
+import Server.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

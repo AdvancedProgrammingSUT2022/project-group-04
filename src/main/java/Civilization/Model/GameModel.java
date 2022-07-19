@@ -1,16 +1,11 @@
 package Civilization.Model;
 
-import Civilization.Controller.CombatController;
-import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
-import Civilization.View.GameMenu;
+import Server.UserDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
-import java.util.regex.Matcher;
 
 public class GameModel {
 

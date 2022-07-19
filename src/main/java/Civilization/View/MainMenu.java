@@ -5,11 +5,11 @@ import Civilization.Controller.GameMenuController;
 import Civilization.Controller.MainMenuController;
 import Civilization.Controller.ProfileMenuController;
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
 import Civilization.Model.ProfileMenuModel;
-import Civilization.Model.User;
+import Server.User;
 
 import java.io.IOException;
 import java.util.ArrayList;

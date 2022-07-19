@@ -1,6 +1,7 @@
 package Civilization.Model;
 
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
+import Server.User;
 
 public class ProfileMenuModel {
 

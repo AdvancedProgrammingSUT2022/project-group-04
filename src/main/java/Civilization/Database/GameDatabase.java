@@ -1,31 +1,18 @@
 package Civilization.Database;
 
-import Civilization.Controller.CopyOfGameDatabase;
-import Civilization.Controller.SavingGame;
-import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
-import Client.Client;
 import Server.RequestPlayers;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
+import Server.User;
+import Server.UserDatabase;
 import com.thoughtworks.xstream.XStream;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class GameDatabase {
 

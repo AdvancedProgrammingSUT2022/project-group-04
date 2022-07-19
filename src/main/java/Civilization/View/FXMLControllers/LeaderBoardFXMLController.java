@@ -1,19 +1,13 @@
 package Civilization.View.FXMLControllers;
 
-import Civilization.Database.UserDatabase;
-import Civilization.Main;
-import Civilization.Model.Civilization;
+import Server.UserDatabase;
 import Civilization.Model.GameModel;
-import Civilization.Model.User;
+import Server.User;
 import Civilization.View.GraphicalBases;
-import Civilization.View.Transitions.CursorTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 

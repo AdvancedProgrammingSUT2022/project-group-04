@@ -2,7 +2,7 @@ package ViewTest;
 
 
 import Civilization.Controller.ProfileMenuController;
-import Civilization.Model.User;
+import Server.User;
 import Civilization.View.ProfileMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package DatabaseTest;
 
 import Civilization.Database.GlobalVariables;
-import Civilization.Database.UserDatabase;
-import Civilization.Model.User;
+import Server.UserDatabase;
+import Server.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;

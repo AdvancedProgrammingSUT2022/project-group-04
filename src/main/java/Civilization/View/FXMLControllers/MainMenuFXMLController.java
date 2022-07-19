@@ -1,7 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Model.GameModel;
-import Civilization.Model.User;
+import Server.User;
 import Civilization.View.GraphicalBases;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

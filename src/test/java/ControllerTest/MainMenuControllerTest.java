@@ -1,9 +1,9 @@
 package ControllerTest;
 
 import Civilization.Controller.MainMenuController;
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.MainMenuModel;
-import Civilization.Model.User;
+import Server.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

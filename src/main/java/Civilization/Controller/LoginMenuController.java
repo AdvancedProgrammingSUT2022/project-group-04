@@ -1,8 +1,9 @@
 package Civilization.Controller;
 
 import Civilization.Model.LoginMenuModel;
-import Civilization.Model.User;
-import Civilization.Database.UserDatabase;
+import Server.User;
+import Server.UserDatabase;
+import Server.UserController;
 
 public class LoginMenuController {
 

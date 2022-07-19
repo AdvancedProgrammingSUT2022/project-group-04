@@ -1,6 +1,5 @@
 package Civilization.View.Components;
 
-import Civilization.Model.User;
 import Civilization.View.GraphicalBases;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
