@@ -87,21 +87,12 @@ public class GameDatabase {
 
 
     public static void setPlayers(ArrayList<Civilization> players) throws IOException {
-
         XStream xStream = new XStream();
-        input = new JSONObject();
         TransitionDatabase.restart();
-        input.put("menu type", "Game Database");
-        input.put("action", "setPlayers");
-        for (int i = 0; i < players.size(); i++) {
-            input.put("player" + i, players.get(i));
-        }
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.players = players;
         Object sth = sendToServer(xStream.toXML(requestPlayers), "setPlayers");
         GameDatabase.players = players;
-        //TODO SYSout??
-        return;
     }
 
     /**

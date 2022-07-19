@@ -1,13 +1,19 @@
 package Server;
 
+import Civilization.Controller.CopyOfGameDatabase;
 import Civilization.Controller.GameMenuController;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class GameDatabaseServer {
@@ -465,96 +471,127 @@ public class GameDatabaseServer {
         return getCivilizationByTurn(turn - 1);
     }
 
-
-    public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {
-        JSONObject response = new JSONObject();
-        switch ((String) clientCommandJ.get("action")) {
-            case "getCivilizationByUnit":
-                Unit unit = (Unit) clientCommandJ.get("unit");
-                Civilization civilization = getCivilizationByUnit(unit);
-                response.put("civilization", civilization);
-                break;
-            case "generateRuin":
-                generateRuin();
-                break;
-            case "setPlayers":
-                ArrayList<Civilization> player = new ArrayList<>();
-                Iterator<String> iterator = clientCommandJ.keys();
-                while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    if (key.startsWith("player")) {
-                        player.add((Civilization) clientCommandJ.get(key));
-                    }
-                }
-                setPlayers(player);
-                break;
-            case "getCivilizationByUsername":
-                response.put("civilization", getCivilizationByUsername((String) clientCommandJ.get("civilization name")));
-                break;
-            case "getCivilizationByNickname":
-                response.put("civilization", getCivilizationByNickname((String) clientCommandJ.get("civilization name")));
-                break;
-            case "getCityByName":
-                response.put("city", getCityByName((String) clientCommandJ.get("city name")));
-                break;
-            case "getTileByXAndY":
-                response.put("tile", getTileByXAndY(Integer.parseInt((String) clientCommandJ.get("x"))
-                        , Integer.parseInt((String) clientCommandJ.get("y"))));
-                break;
-            case "isTileForACity":
-                response.put("isIt?", isTileForACity((Tile) clientCommandJ.get("Tile")));
-                break;
-            case "getCivilizationByTile":
-                response.put("civilization", getCivilizationByTile((Tile) clientCommandJ.get("Tile")));
-                break;
-            case "getCivilizationIndex":
-                response.put("index", getCivilizationIndex((String) clientCommandJ.get("civilization name")));
-                break;
-            case "generate map":
-                System.out.println("dude the  fuck?");
-                generateMap((int) clientCommandJ.get("number of players"));
-                response.put("players", players);
-                response.put("tiles", map);
-                break;
-            case "getCivilizationForCity":
-                response.put("civilization", getCivilizationForCity((String) clientCommandJ.get("city name")));
-                break;
-            case "nextTurn":
-                nextTurn();
-                break;
-            case "calculateNextTurn":
-                response.put("turn", calculateNextTurn());
-                break;
-            case "findTileByCitizen":
-                response.put("Tile", findTileByCitizen((Citizen) clientCommandJ.get("citizen")));
-                break;
-            case "getCivilizationByTurn":
-                response.put("civilization", getCivilizationByTurn((int) clientCommandJ.get("turn")));
-                break;
-            case "isTileInCivilization":
-                response.put("return value", isTileInCivilization((Tile) clientCommandJ.get("tile"),
-                        (Civilization) clientCommandJ.get("civilization")));
-                break;
-            case "checkIfWin":
-                response.put("civilization", checkIfWin());
-                break;
-            case "getLastCivilization":
-                response.put("civilization", getLastCivilization());
-                break;
-            default:
-                break;
+    public static RequestPlayers readAndCastRequest(String s) throws IOException {
+        XStream xStream = new XStream();
+        FileWriter fileWriter;
+        if (Files.exists(Paths.get("save/array.xml")))
+            fileWriter = new FileWriter("save/array.xml");
+        else{
+            new File("save").mkdir();
+            fileWriter = new FileWriter("save/array.xml");
         }
+        fileWriter.write(s);
+        fileWriter.close();
+        ///
+        String xml = new String(Files.readAllBytes(Paths.get("save/array.xml")));
+        xStream.addPermission(AnyTypePermission.ANY);
+        if(xml.length() != 0){
+            Object obh = xStream.fromXML(xml);
+            RequestPlayers req = (RequestPlayers) obh;
+            return req;
+        }
+        return null;
+    }
+
+    public static String processReq(String s) throws IOException {
+        RequestPlayers returnValue = new RequestPlayers();
+        String response;
+        if (s.startsWith("setPlayers")) {
+            s = s.substring(10);
+            RequestPlayers req = readAndCastRequest(s);
+            ArrayList<Civilization> pl = req.players;
+            setPlayers(pl);
+        }
+        else if (s.startsWith("getCivilizationByUnit")){
+            s = s.substring("getCivilizationByUnit".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            Unit unit = requestPlayers.unit;
+            returnValue.civilization = getCivilizationByUnit(unit);
+        }
+        else if (s.startsWith("generateRuin")){
+            generateRuin();
+        }
+        else if (s.startsWith("getCivilizationByUsername")){
+            s = s.substring("getCivilizationByUsername".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.civilization =  getCivilizationByUsername(requestPlayers.name);
+        }
+        else if (s.startsWith("getCivilizationByNickname")){
+            s = s.substring("getCivilizationByNickname".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.civilization =  getCivilizationByNickname(requestPlayers.name);
+        }
+        else if (s.startsWith("getCityByName")){
+            s = s.substring("getCityByName".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.city = getCityByName(requestPlayers.name);
+        }
+        else if (s.startsWith("getTileByXAndY")){
+            s = s.substring("getTileByXAndY".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.tile = getTileByXAndY(requestPlayers.x, requestPlayers.y);
+        }
+        else if (s.startsWith("isTileForACity")){
+            s = s.substring("isTileForACity".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.bool = isTileForACity(requestPlayers.tile);
+        }
+        else if (s.startsWith("getCivilizationByTile")){
+            s = s.substring("getCivilizationByTile".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.civilization =  getCivilizationByTile(requestPlayers.tile);
+        }
+        else if (s.startsWith("getCivilizationIndex")){
+            s = s.substring("getCivilizationIndex".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.x = getCivilizationIndex(requestPlayers.name);
+        }
+        else if (s.startsWith("generateMap")){
+            s = s.substring("generateMap".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            generateMap(requestPlayers.x);
+            returnValue.players =  players;
+            returnValue.tiles = map;
+        }
+        else if (s.startsWith("getCivilizationForCity")){
+            s = s.substring("getCivilizationForCity".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.civilization = getCivilizationForCity(requestPlayers.name);
+        }
+        else if (s.startsWith("nextTurn")){
+            nextTurn();
+        }
+        else if (s.startsWith("calculateNextTurn")){
+            returnValue.x = calculateNextTurn();
+        }
+        else if (s.startsWith("findTileByCitizen")){
+            s = s.substring("findTileByCitizen".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.tile = findTileByCitizen(requestPlayers.citizen);
+        }
+        else if (s.startsWith("getCivilizationByTurn")){
+            s = s.substring("getCivilizationByTurn".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.civilization =  getCivilizationByTurn(requestPlayers.x);
+        }
+        else if (s.startsWith("isTileInCivilization")){
+            s = s.substring("isTileInCivilization".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.bool = isTileInCivilization(requestPlayers.tile,requestPlayers.civilization);
+        }
+        else if (s.startsWith("checkIfWin")){
+            returnValue.civilization = checkIfWin();
+        }
+        else if (s.startsWith("getLastCivilization")){
+            returnValue.civilization = getLastCivilization();
+        }
+        XStream xStream = new XStream();
+        response = xStream.toXML(returnValue);
         return response;
     }
 
-    public static String processReq(String s) {
-        XStream xStream = new XStream();
-        String response = new String();
-        if (s.startsWith("setPlayers")) {
-            s = s.substring(10);
-            System.out.println("aya khub hastin?");
-            setPlayers(((RequestPlayers) xStream.fromXML(s)).players);
-        }
+    public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {
+        JSONObject response = new JSONObject();
         return response;
     }
 }
