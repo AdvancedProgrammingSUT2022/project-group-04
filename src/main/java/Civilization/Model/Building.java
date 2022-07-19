@@ -226,10 +226,12 @@ public class Building {
             this.turnsNeedToBuild = 0;
         } else {
             turns = -turns;
-            this.turnsNeedToBuild = turns / productionGeneratingRate + 1;
+            this.turnsNeedToBuild = turns / (productionGeneratingRate+1) + 1;
         }
+    }
 
-
+    public void setTurnsNeedToBuild(int amount) {
+        this.turnsNeedToBuild = amount;
     }
 
     @Override

@@ -44,7 +44,8 @@ public class Civilization {
         }
         for (String buildingName : GlobalVariables.BUILDINGS) {
             Building building = new Building(buildingName);
-            if (building.isBuildingValidForCivilization(GameDatabase.players.get(GameDatabase.getTurn()), GameDatabase.players.get(GameDatabase.getTurn()).getSelectedCity())) {
+            if (building.isBuildingValidForCivilization(GameDatabase.players.get(GameDatabase.getTurn()), GameDatabase.players.get(GameDatabase.getTurn()).getSelectedCity())
+                && !this.selectedCity.isBuildingInCity(buildingName)) {
                 validBuildings.add(building);
             }
         }

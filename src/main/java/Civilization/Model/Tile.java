@@ -582,4 +582,21 @@ public class Tile {
         ruin.arrive(unit);
         ruin = null;
     }
+
+    public Citizen getCitizen() {
+        for (Unit unit : units) {
+            if(unit.getUnitType().equals("Citizen") && unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(GameDatabase.getCivilizationByTile(this).getNickname())) {
+                return (Citizen) unit;
+            }
+        }
+        City city = GameDatabase.getCityByXAndY(this.x, this.y);
+        if(city != null) {
+            for (Unit unit : city.units) {
+                if(unit.getUnitType().equals("Citizen") && unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(GameDatabase.getCivilizationByTile(this).getNickname())) {
+                    return (Citizen) unit;
+                }
+            }
+        }
+        return null;
+    }
 }

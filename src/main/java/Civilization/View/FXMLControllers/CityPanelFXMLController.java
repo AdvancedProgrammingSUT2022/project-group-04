@@ -1,18 +1,26 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
+import Civilization.Model.Citizen;
 import Civilization.Model.City;
 import Civilization.Model.GameModel;
 import Civilization.Model.Tile;
 import Civilization.View.GraphicalBases;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CityPanelFXMLController {
 
@@ -22,6 +30,10 @@ public class CityPanelFXMLController {
     private City city;
     private Tile tile;
 
+    private Text unemployedCitizen;
+
+    private ChoiceBox<String> validCitizensForLocking;
+
     @FXML
     public void initialize() {
         setFirstVariables();
@@ -29,7 +41,40 @@ public class CityPanelFXMLController {
         setBackButton();
         setCityInformation();
         setBuildBuildingButton();
+        setValidCitizensForLocking();
+        setUnemployedCitizenSection();
         GameModel.isGame = true;
+    }
+
+    private void setValidCitizensForLocking() {
+        validCitizensForLocking = new ChoiceBox<>();
+        ArrayList<String> citizens = new ArrayList<>();
+        for (Citizen citizen : city.getCitizens()) {
+            citizens.add(citizen.toString());
+        }
+        ObservableList<String> validCitizens = FXCollections.observableArrayList(citizens);
+        validCitizensForLocking.setItems(validCitizens);
+        validCitizensForLocking.setLayoutX(50);
+        validCitizensForLocking.setLayoutY(150);
+    }
+
+    private void setUnemployedCitizenSection() {
+        unemployedCitizen = new Text();
+        unemployedCitizen.setX(50);
+        unemployedCitizen.setY(450);
+        unemployedCitizen.setStyle("-fx-font-size: 30");
+        updateUnemployedCitizensSection();
+        mainAnchorPane.getChildren().add(unemployedCitizen);
+    }
+
+    private void updateUnemployedCitizensSection() {
+        String text = "Unemployed Citizens Section: ";
+        for (Citizen citizen : city.getCitizens()) {
+            if(!citizen.isAssigned()) {
+                text += "\n\t" + citizen.toString();
+            }
+        }
+        unemployedCitizen.setText(text);
     }
 
     private void setBuildBuildingButton() {
@@ -84,5 +129,14 @@ public class CityPanelFXMLController {
         back.setFill(new ImagePattern(GraphicalBases.CITY_PANEL));
         mainAnchorPane.getChildren().add(back);
 
+    }
+
+    private Citizen findCitizen(String input) {
+        Pattern pattern = Pattern.compile("Citizen on X: (?<x>\\d+) Y: (?<y>\\d+)");
+        Matcher matcher = pattern.matcher(input);
+        if(!matcher.matches()) {
+            return null;
+        }
+        return GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("x"))).getCitizen();
     }
 }

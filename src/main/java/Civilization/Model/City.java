@@ -236,6 +236,7 @@ public class City extends Tile {
         building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
         if (!build) {
+            building.setTurnsNeedToBuild(1);
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
         }
     }

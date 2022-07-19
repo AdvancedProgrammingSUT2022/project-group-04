@@ -76,15 +76,16 @@ public class creatingFXMLController {
 
             if(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getCities().size() == 0
                 || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity() == null
-                || !(new Building(building).isBuildingValidForCivilization(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity()))) {
+                || !(new Building(building).isBuildingValidForCivilization(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity()))
+                || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().isBuildingInCity(building)) {
                 circle.setDisable(true);
                 circle.setEffect(new DropShadow());
                 circle.setStroke(Color.RED);
                 if(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity() != null
                     && GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().isBuildingInCity(building)) {
-                    circle.setVisible(true);
+                    vBox.setVisible(true);
                 } else {
-                    circle.setVisible(false);
+                    vBox.setVisible(false);
                 }
             }
 
@@ -108,7 +109,7 @@ public class creatingFXMLController {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
                 }
             });
-            build.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            buy.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     System.out.println("buy");
