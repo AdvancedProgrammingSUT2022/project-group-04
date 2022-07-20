@@ -303,6 +303,7 @@ public class GameFXMLController {
 
         for (Tile tileMap : GameDatabase.map){
             if (tileMap.getX() == tile.x && tileMap.getY() == tile.y){
+                tile.polygon.setFill(null);
                 if (tileMap.getBaseTerrainType().equals("Desert")){
                     tile.polygon.setFill(Color.TAN);
                 } else if (tileMap.getBaseTerrainType().equals("Meadow")){
@@ -485,6 +486,7 @@ public class GameFXMLController {
                                         System.out.println(selectedUnit.getTileOfUnit().getX() + " " + selectedUnit.getTileOfUnit().getY());
                                         selectedTile = null;
                                         combatUnitCommands.setVisible(false);
+                                        updateMap();
                                     }
 
 
@@ -570,6 +572,7 @@ public class GameFXMLController {
                                         System.out.println(selectedUnit.getTileOfUnit().getX() + " " + selectedUnit.getTileOfUnit().getY());
                                         selectedTile = null;
                                         nonCombatUnitCommands.setVisible(false);
+                                        updateMap();
                                     }
 
 

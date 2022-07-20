@@ -31,7 +31,7 @@ public class GameDatabase {
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
 
-    public static int length = 50;
+    public static int length = 25;
     public static int width = 10;
 
     public static int turn = 0;

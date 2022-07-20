@@ -321,7 +321,7 @@ public class GameMenuFXMLController {
 
 
     private void setNumberOfTilesInformation() {
-        numberOfTilesInformation = new Text("Number of Tiles in a Column");
+        numberOfTilesInformation = new Text("Number of Tiles in a Row");
         numberOfTilesInformation.setStyle("-fx-fill: white; -fx-font-size: 20");
         numberOfTilesInformation.setLayoutY(numberOfTiles.getLayoutY());
         numberOfTilesInformation.setLayoutX(numberOfTiles.getLayoutX() - 100);
@@ -532,7 +532,7 @@ public class GameMenuFXMLController {
                     numberOfTiles.setStyle("-fx-border-color: red");
                 } else {
                     int number = Integer.parseInt(text);
-                    if(number <= User.users.size() || number > User.users.size() + 20) {
+                    if(number <= 10 || number > 20) {
                         numberOfTiles.setText("");
                         numberOfTiles.setStyle("-fx-border-color: red");
                     } else {
