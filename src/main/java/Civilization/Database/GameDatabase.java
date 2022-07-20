@@ -349,4 +349,8 @@ public class GameDatabase {
     public static int getWidth() {
         return GameDatabase.width;
     }
+
+    public static int getYear() {
+        return GameDatabase.year;
+    }
 }

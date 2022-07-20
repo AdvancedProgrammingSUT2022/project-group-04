@@ -5,6 +5,7 @@ import Civilization.Database.GlobalVariables;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Civilization {
     private String username;
@@ -44,7 +45,8 @@ public class Civilization {
         }
         for (String buildingName : GlobalVariables.BUILDINGS) {
             Building building = new Building(buildingName);
-            if (building.isBuildingValidForCivilization(GameDatabase.players.get(GameDatabase.getTurn()), GameDatabase.players.get(GameDatabase.getTurn()).getSelectedCity())) {
+            if (building.isBuildingValidForCivilization(GameDatabase.players.get(GameDatabase.getTurn()), GameDatabase.players.get(GameDatabase.getTurn()).getSelectedCity())
+                && !this.selectedCity.isBuildingInCity(buildingName)) {
                 validBuildings.add(building);
             }
         }
@@ -376,11 +378,14 @@ public class Civilization {
         return true;
     }
 
-    public void maintenanceOfUnits() {
+    public void maintenanceOfUnits() throws IOException {
         for (Tile tile : this.getTiles()) {
             for (Unit unit : tile.getUnits()) {
                 addGold(unit.getMaintenance() * -1);
             }
+        }
+        for (Unit combatUnit : getCombatUnits()) {
+            addGold(combatUnit.getCost()*-1);
         }
     }
 
@@ -394,6 +399,11 @@ public class Civilization {
                     (city.getSettler() != null ? 1 : 0) + city.getCitizens().size();
             if (city.isCapital()) {
                 science += 3;
+            }
+        }
+        for (Tile tile : this.tiles) {
+            if(GameDatabase.getCityByXAndY(tile.x, tile.y) == null) {
+                tile.nextTurn();
             }
         }
         for (Technology technology : this.technologies) {
@@ -528,5 +538,17 @@ public class Civilization {
             }
         }
         this.gold += ruin.getGold();
+    }
+
+    public ArrayList<Unit> getCombatUnits() throws IOException {
+        ArrayList<Unit> soldiers = new ArrayList<>();
+        for (Tile tile : GameDatabase.map) {
+            for (Unit unit : tile.units) {
+                if(unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(this.getNickname()) && !unit.getUnitType().equals("Citizen")) {
+                    soldiers.add(unit);
+                }
+            }
+        }
+        return soldiers;
     }
 }

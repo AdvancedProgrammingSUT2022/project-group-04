@@ -17,7 +17,7 @@ public class GlobalVariables {
     public static final String[] RESOURCES = new String[]{"Banana", "Cow", "Gazelle", "Sheep", "Wheat", "Cotton", "Color", "Fur", "Gemstone",
             "Gold", "Incense", "Ivory", "Marble", "Silk", "Silver", "Sugar", "Coal", "Horse", "Iron"};
 
-    public static final String[] TERRAIN_FEATURES = new String[]{"Prairie", "Jungle", "Ice", "DenseJungle", "Swamp", "Oasis"};
+    public static final String[] TERRAIN_FEATURES = new String[]{"Prairie", "Jungle", "Ice", "Dense_Jungle", "Swamp", "Oasis"};
 
     public static final String[] IMPROVEMENTS = new String[]{"Camp", "Farm", "LumberMill", "Mine", "Pasture", "Plantation", "Quarry",
             "TradingPost", "Factory"};

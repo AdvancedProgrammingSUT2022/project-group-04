@@ -59,6 +59,7 @@ public class City extends Tile {
         this.citizens = new ArrayList<Citizen>();
         this.attackingUnits = new ArrayList<>();
         this.tiles = new ArrayList<Tile>();
+        tiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
         capitalCalculator();
     }
 
@@ -237,6 +238,7 @@ public class City extends Tile {
         building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
         if (!build) {
+            building.setTurnsNeedToBuild(1);
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
         }
     }
@@ -360,10 +362,13 @@ public class City extends Tile {
     }
 
     public void createSettler(int x, int y) throws IOException {
-        if (citizens.size() > 1 && settler == null) {
-            this.settler = new Settler(x, y, 0);
+        //System.out.println("create settler");
+        if (settler == null) {
+            this.settler = new Settler(x, y, GameDatabase.getCivilizationIndex(civilizationName));
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
+            GameDatabase.getTileByXAndY(x, y).addSettler(this.settler);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
+            //System.out.println("I'm in if");
         }
     }
 
@@ -371,6 +376,7 @@ public class City extends Tile {
         Worker newWorker = new Worker(x, y, GameDatabase.getCivilizationIndex(civilizationName));
         this.worker = newWorker;
         GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
+        GameDatabase.getTileByXAndY(x, y).addWorker(this.worker);
     }
 
     public void removeSettler(Settler settler) {
@@ -406,8 +412,11 @@ public class City extends Tile {
     }
 
     public boolean isTileForThisCity(Tile tile) {
+        if(tile == null) {
+            return false;
+        }
         for (Tile cityTile : this.tiles) {
-            if (cityTile.equals(tile)) {
+            if (cityTile.getY() == tile.getY() && cityTile.getX() == tile.getX()) {
                 return true;
             }
         }
@@ -457,5 +466,46 @@ public class City extends Tile {
             }
         }
         return false;
+    }
+
+    public boolean isBuildingInCity(String building) {
+        for (Building building1 : this.buildings) {
+            if(building1.getName().equals(building)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Tile> getValidTilesForBuying() {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (Tile tile : getTiles()) {
+            for (Tile adjacentTile : tile.getAdjacentTiles()) {
+                if(!isTileForThisCity(adjacentTile) && isTileNewInArray(adjacentTile, tiles)) {
+                    if(GameDatabase.getCivilizationByNickname(this.civilizationName).getGold() > 10) {
+                        tiles.add(adjacentTile);
+                    }
+                }
+            }
+        }
+        return tiles;
+    }
+
+    private boolean isTileNewInArray(Tile adjacentTile, ArrayList<Tile> tiles) {
+        if(adjacentTile == null) {
+            return false;
+        }
+        for (Tile tile : tiles) {
+            if(adjacentTile.getX() == tile.getX() && adjacentTile.getY() == tile.getY()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void buyTile(Tile tile) {
+        this.tiles.add(tile);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addTile(tile);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-10);
     }
 }

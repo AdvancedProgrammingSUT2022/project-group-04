@@ -660,7 +660,7 @@ public class GameMenu extends Menu {
             int success = unitSelected.moveUnitFromTo(unitSelected, unitSelected.getTileOfUnit(), GameDatabase.getTileByXAndY(x, y));
             if (success == 0) {
                 return "unit moved to " + Integer.toString(x) + " and " + Integer.toString(y);
-            } else if (success == -1) {
+            } else if (success == -1 || success == -3) {
                 return "invalid destination";
             } else {
                 return "not enough movementpoints";

@@ -1,7 +1,6 @@
 package Civilization.View;
 
 import Civilization.Database.GlobalVariables;
-import Civilization.Model.Unit;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,6 +36,8 @@ public class GraphicalBases {
     public static final Image TREE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Tree.jpg")).toExternalForm());
     public static final Image INDIA = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/india.jpg")).toExternalForm());
     public static final Image WHITE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/white.jpg")).toExternalForm());
+    public static final Image WORKER = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/worker.jpg")).toExternalForm());
+    public static final Image CITY_PANEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/cityPanel.jpg")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;
@@ -57,9 +58,14 @@ public class GraphicalBases {
     public static final HashMap<String, Image> TECHNOLOGIES = new HashMap<>();
     public static final HashMap<String, Image> UNITS = new HashMap<>();
     public static final HashMap<String, Image> BUILDINGS = new HashMap<>();
+    public static final HashMap<String, Image> FEATURES = new HashMap<>();
+    public static final HashMap<String, Image> RESOURCES = new HashMap<>();
     public static final Image BUILD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/build.png")).toExternalForm());
     public static final Image RUINS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Ruins.jpg")).toExternalForm());
+    public static final Image CITY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/City.jpg")).toExternalForm());
     public static final Image FOG_OF_WAR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/FogOfWar.png")).toExternalForm());
+    public static final Image ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/road.jpg")).toExternalForm());
+    public static final Image RAIL_ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/railroad.png")).toExternalForm());
 
     public static void firstLogin() {
         GraphicalBases.start();
@@ -82,6 +88,12 @@ public class GraphicalBases {
         }
         for (String buildingName : GlobalVariables.BUILDINGS) {
             BUILDINGS.put(buildingName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/" + buildingName + ".png")).toExternalForm()));
+        }
+        for (String featureName : GlobalVariables.TERRAIN_FEATURES) {
+            FEATURES.put(featureName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Features/" + featureName + ".jpg")).toExternalForm()));
+        }
+        for (String resourceName : GlobalVariables.RESOURCES) {
+            RESOURCES.put(resourceName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Resources/" + resourceName + ".png")).toExternalForm()));
         }
     }
 

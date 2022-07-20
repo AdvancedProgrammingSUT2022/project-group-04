@@ -4,7 +4,7 @@ AnchorPane{
 
 .tile{
      -fx-fill: white;
-     -fx-font-size: 50;
+     -fx-font-size: 45;
 }
 
 .miniTile{

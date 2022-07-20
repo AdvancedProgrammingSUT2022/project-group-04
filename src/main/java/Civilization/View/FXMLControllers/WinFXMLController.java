@@ -4,6 +4,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
 import Civilization.View.GraphicalBases;
+import Server.UserDatabase;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,6 +28,7 @@ public class WinFXMLController {
     @FXML
     public void initialize() throws IOException {
         winner = GameDatabase.checkIfWin();
+        UserDatabase.setUserScores(GameDatabase.players);
         setBackground();
         setOKButton();
         setWinnerInformation();

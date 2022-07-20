@@ -1,8 +1,10 @@
 package Civilization.View.Components;
 
 import Civilization.View.GraphicalBases;
+import Server.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -76,4 +78,32 @@ public class Account {
         gsonBuilder.toJson(Account.accounts, writer);
         writer.close();
     }
+
+    public static Image getAvatarImage(User user) {
+        int index = findAvatarIndex(user.getAvatarURL()) - 1;
+        if(index == -1) {
+            return loadSelectedAvatar(user);
+        } else {
+            return loadDefaultAvatar(index);
+        }
+    }
+
+    private static Image loadSelectedAvatar(User user) {
+        return new Image(user.getAvatarURL());
+    }
+
+    public static int findAvatarIndex(String avatarURL) {
+        String prefix = "/pics/Avatars/";
+        String suffix = ".png";
+        int index = 0;
+        if(avatarURL.matches("\\/pics\\/Avatars\\/\\d+.png")) {
+            index = Integer.parseInt(avatarURL.substring(prefix.length(), avatarURL.length() - suffix.length()));
+        }
+        return index;
+    }
+
+    public static Image loadDefaultAvatar(int index) {
+        return GraphicalBases.AVATARS[index];
+    }
+
 }

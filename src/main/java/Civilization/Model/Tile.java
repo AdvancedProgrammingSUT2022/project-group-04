@@ -125,9 +125,11 @@ public class Tile {
         if (this.baseTerrain.getResources() == null) {
             return;
         }
-        addResource(this.baseTerrain.getResources());
-        this.baseTerrain.getResources().discover(this);
-        this.baseTerrain.discoverResource();
+        if(Resources.isResourceOnTileValidForDiscovering(this)) {
+            addResource(this.baseTerrain.getResources());
+            this.baseTerrain.getResources().discover(this);
+            this.baseTerrain.discoverResource();
+        }
     }
 
     public boolean isTileValidForAddingToCity() throws IOException {
@@ -322,6 +324,12 @@ public class Tile {
         if (baseTerrain.getFeature() != null) {
             result += addFeatureData();
         }
+        if(getNonCombatUnit() != null){
+            result += "\n" +getNonCombatUnit().unitType;
+        }
+        if (getCombatUnit() != null){
+            result += "\n" + getCombatUnit().unitType;
+        }
         return result;
     }
 
@@ -491,6 +499,12 @@ public class Tile {
     }
 
     public void nextTurn() throws IOException {
+        if(worker != null) {
+            worker.nextTurn();
+        }
+        if(settler != null) {
+            settler.nextTurn();
+        }
 
     }
 
@@ -564,9 +578,12 @@ public class Tile {
         this.settler = settler;
     }
 
-    public void removeSettler(Settler settler) {
-        if (settler.equals(this.settler))
+
+    public void removeSettler(Settler settler) throws IOException {
+        if (settler.equals(this.settler)) {
+            GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
             this.settler = null;
+        }
     }
 
     public void fixBrokens() {
@@ -584,5 +601,33 @@ public class Tile {
     public void arriveRuin(Unit unit) throws IOException {
         ruin.arrive(unit);
         ruin = null;
+    }
+
+    public Citizen getCitizen() throws IOException {
+        for (Unit unit : units) {
+            if(unit.getUnitType().equals("Citizen") && unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(GameDatabase.getCivilizationByTile(this).getNickname())) {
+                return (Citizen) unit;
+            }
+        }
+        City city = GameDatabase.getCityByXAndY(this.x, this.y);
+        if(city != null) {
+            for (Unit unit : city.units) {
+                if(unit.getUnitType().equals("Citizen") && unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(GameDatabase.getCivilizationByTile(this).getNickname())) {
+                    return (Citizen) unit;
+                }
+            }
+        }
+        return null;
+    }
+
+    public City isCityInTile() {
+        for (Civilization player : GameDatabase.players) {
+            for (City playerCity : player.getCities()) {
+                if(playerCity.isTileForThisCity(this)) {
+                    return playerCity;
+                }
+            }
+        }
+        return null;
     }
 }

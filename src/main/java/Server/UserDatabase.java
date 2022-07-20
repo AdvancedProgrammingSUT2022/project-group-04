@@ -6,9 +6,12 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import Server.User;
+import Civilization.Database.GameDatabase;
+import Civilization.Model.Civilization;
+import Civilization.Model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,7 +56,7 @@ public class UserDatabase {
     /**
      * @return all of users in database
      */
-    public static ArrayList<User> getAllUsers() {
+    public static ArrayList<Server.User> getAllUsers() {
         return User.users;
     }
 
@@ -90,5 +93,13 @@ public class UserDatabase {
         Writer writer = Files.newBufferedWriter(userPath);
         gsonBuilder.toJson(User.users, writer);
         writer.close();
+    }
+
+    public static void setUserScores(ArrayList<Civilization> players) throws IOException {
+        for (Civilization civilization : players) {
+            User user = GameDatabase.getUserForCivilization(civilization.getNickname());
+            user.setScore(user.getScore() + civilization.getFinalScore());
+            user.setTimeOfScore(LocalDateTime.now());
+        }
     }
 }

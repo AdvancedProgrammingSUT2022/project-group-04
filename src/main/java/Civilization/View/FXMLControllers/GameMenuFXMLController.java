@@ -685,8 +685,8 @@ public class GameMenuFXMLController {
             return false;
         } else if (tileCount == 0) {
             return false;
-        } else if (autoSaveSwitchButton.getState() && autoSaveRate.getText().length() == 0) {
-            return false;
+//        } else if (autoSaveSwitchButton.getState() && autoSaveRate.getText().length() == 0) {
+//            return false;
         }
         return true;
     }

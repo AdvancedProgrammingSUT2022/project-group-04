@@ -329,7 +329,16 @@ public class GameMenuController {
     public void pauseProject(Worker worker, int x, int y) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x, y);
-        if (worker.isAssigned()
+        if(city == null
+        && worker.isAssigned()
+                && !worker.isMoving()
+                && worker.isLocked()
+                && tile != null) {
+            worker.setIsAssigned(false);
+            tile.setIsGettingWorkedOn(false);;
+        }
+        if (city != null
+                && worker.isAssigned()
                 && !worker.isMoving()
                 && worker.isLocked()
                 && tile != null
@@ -343,11 +352,14 @@ public class GameMenuController {
     public boolean assignNewProject(Worker worker, String type) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         City city = GameDatabase.getCityByXAndY(worker.getX(), worker.getY());
+        worker.lockTheWorker(tile);
         if (!worker.isAssigned() && !tile.getIsGettingWorkedOn()) {
             boolean isPossible = true;
             if (worker.getTypeOfWork().equals(type)) {
                 worker.setIsAssigned(true);
-                city.setIsGettingWorkedOn(true);
+                if(city != null) {
+                    city.setIsGettingWorkedOn(true);
+                }
                 tile.setIsGettingWorkedOn(true);
             } else {
                 if (tile.getRoundsTillFinishProjectByIndex(worker.getIndexOfProject()) != 0)
@@ -396,7 +408,9 @@ public class GameMenuController {
             }
             if (isPossible) {
                 tile.setIsGettingWorkedOn(true);
-                city.setIsGettingWorkedOn(true);
+                if(city != null) {
+                    city.setIsGettingWorkedOn(true);
+                }
                 return true;
             }
         }
@@ -537,6 +551,7 @@ public class GameMenuController {
             worker.setIndexOfProject(Worker.workToIndex.get("Road"));
             worker.setIsAssigned(true);
             worker.setTypeOfWork("Road");
+            //System.out.println("Road2");
             return true;
         }
         worker.setIndexOfProject(-1);
@@ -583,12 +598,14 @@ public class GameMenuController {
     }
 
     public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) throws IOException {
+
         if (GameDatabase.getCityByXAndY(x, y) != null) {
             if (unitType.equals("Settler")) GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
             else if (unitType.equals("worker")) GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
             else return false;
             return true;
         }
+        //System.out.println("city is null");
         return false;
     }
 
@@ -631,7 +648,10 @@ public class GameMenuController {
 
     }
 
-    public void pillageCurrentTile(Unit unit) {
+    public boolean pillageCurrentTile(Unit unit) {
+        if (GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY()) == null){
+            return false;
+        }
         for (Improvement improvement : unit.getTileOfUnit().getImprovements()) {
             improvement.breakImprovement();
         }
@@ -640,6 +660,7 @@ public class GameMenuController {
             unit.getTileOfUnit().setRoadBroken(true);
             unit.getTileOfUnit().setRailroadBroken(true);
         }
+        return true;
     }
 
     public boolean isUnitTypeValid(String unitType) {

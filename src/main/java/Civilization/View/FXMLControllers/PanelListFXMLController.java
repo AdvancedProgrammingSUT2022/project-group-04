@@ -38,35 +38,44 @@ public class PanelListFXMLController {
     private ChoiceBox<String> units;
     private TextArea unitInformation;
 
+    private Button cityPanel;
+
+    private UnitPanelChoosingTransition unitPanelChoosingTransition;
+    private CityPanelChoosingTransition cityPanelChoosingTransition;
+
     @FXML
     public void initialize() throws IOException {
         setBackground();
         setBackButton();
 
-        setNoCitiesText();
-        setCityInformation();
-        setCitiesList();
+
 
         setNoUnitText();
         setUnitInformation();
         setUnitsList();
+
+        setNoCitiesText();
+        setCityInformation();
+        setCitiesList();
+        setCityPanelButton();
+
         GameModel.isGame = true;
     }
 
-    private void setUnitsList() {
+    private void setUnitsList() throws IOException {
         cities = new ChoiceBox<>();
 
-        UnitPanelChoosingTransition unitPanelChoosingTransition = new UnitPanelChoosingTransition(this);
+        unitPanelChoosingTransition = new UnitPanelChoosingTransition(this);
         unitPanelChoosingTransition.play();
 
         units = new ChoiceBox<>();
         ArrayList<String> soldierNames = new ArrayList<>();
-        for (Unit soldier : Info.getInstance().getSoldiers(new GameMenuController(new GameModel()), GameDatabase.getTurn())) {
+        for (Unit soldier : GameDatabase.getCivilizationByTurn(GameDatabase.turn).getCombatUnits()) {
             soldierNames.add(soldier.getUnitType() + " in X: " + Integer.toString(soldier.getX()) + " and Y: " + Integer.toString(soldier.getY()));
         }
         ObservableList<String> usersInput = FXCollections.observableArrayList(soldierNames);
         units.setItems(usersInput);
-        if(Info.getInstance().getSoldiers(new GameMenuController(new GameModel()), GameDatabase.getTurn()).size() == 0) {
+        if(GameDatabase.getCivilizationByTurn(GameDatabase.turn).getCombatUnits().size()  == 0) {
             units.setVisible(false);
         }
 
@@ -77,20 +86,20 @@ public class PanelListFXMLController {
 
     private void setUnitInformation() {
         unitInformation = new TextArea();
-        unitInformation.setPrefWidth(100);
-        unitInformation.setPrefWidth(100);
+        unitInformation.setPrefWidth(130);
+        unitInformation.setPrefWidth(130);
         unitInformation.setLayoutX(1020);
         unitInformation.setLayoutY(100);
         unitInformation.setEditable(false);
         mainAnchorPane.getChildren().add(unitInformation);
     }
 
-    private void setNoUnitText() {
+    private void setNoUnitText() throws IOException {
         Text text = new Text("No Units yet");
         text.setStyle("-fx-fill: white; -fx-font-size: 70");
         text.setX(770);
         text.setY(300);
-        if(Info.getInstance().getSoldiers(new GameMenuController(new GameModel()), GameDatabase.getTurn()).size() != 0) {
+        if(GameDatabase.getCivilizationByTurn(GameDatabase.turn).getCombatUnits().size() != 0) {
             text.setVisible(false);
         }
         mainAnchorPane.getChildren().add(text);
@@ -98,12 +107,27 @@ public class PanelListFXMLController {
 
     private void setCityInformation() {
         cityInformation = new TextArea();
-        cityInformation.setPrefWidth(100);
-        cityInformation.setPrefWidth(100);
+        cityInformation.setPrefWidth(300);
+        cityInformation.setPrefWidth(300);
         cityInformation.setLayoutX(220);
         cityInformation.setLayoutY(100);
         cityInformation.setEditable(false);
         mainAnchorPane.getChildren().add(cityInformation);
+    }
+
+    private void setCityPanelButton() {
+        cityPanel = new Button("Go to City Panel");
+        cityPanel.setPrefWidth(300);
+        cityPanel.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        cityPanel.setLayoutX(220);
+        cityPanel.setLayoutY(400);
+        cityPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.enterGame("CityPanel");
+            }
+        });
+        mainAnchorPane.getChildren().add(cityPanel);
     }
 
     private void setNoCitiesText() throws IOException {
@@ -120,7 +144,7 @@ public class PanelListFXMLController {
     private void setCitiesList() throws IOException {
         cities = new ChoiceBox<>();
 
-        CityPanelChoosingTransition cityPanelChoosingTransition = new CityPanelChoosingTransition(this);
+        cityPanelChoosingTransition = new CityPanelChoosingTransition(this);
         cityPanelChoosingTransition.play();
 
         cities = new ChoiceBox<>();
@@ -148,10 +172,20 @@ public class PanelListFXMLController {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                    restartTransitions();
                     GraphicalBases.enterGame("Game");
                 }
         });
         mainAnchorPane.getChildren().add(button);
+    }
+
+    private void restartTransitions() {
+        if(cityPanelChoosingTransition != null) {
+            cityPanelChoosingTransition.pause();
+        }
+        if(unitPanelChoosingTransition != null) {
+            unitPanelChoosingTransition.pause();
+        }
     }
 
     private void setBackground() {
@@ -175,9 +209,11 @@ public class PanelListFXMLController {
     public void handleCityChoiceBox() throws IOException {
         if(cities.getValue() != null) {
             cityInformation.setText(GameDatabase.getCityByName(cities.getValue()).toString());
+            cityPanel.setVisible(true);
             cityInformation.setVisible(true);
             selectCity(cities.getValue());
         } else {
+            cityPanel.setVisible(false);
             cityInformation.setVisible(false);
         }
     }
@@ -187,8 +223,9 @@ public class PanelListFXMLController {
     }
 
     public void handleUnitChoiceBox() throws IOException {
+
         if(units.getValue() != null) {
-            unitInformation.setText(GameDatabase.getCityByName(units.getValue()).toString());
+            unitInformation.setText(findUnit().toString());
             unitInformation.setVisible(true);
             selectUnit(units.getValue());
         } else {
@@ -196,15 +233,21 @@ public class PanelListFXMLController {
         }
     }
 
-    private void selectUnit(String value) throws IOException {
+    private Unit findUnit() throws IOException {
         Pattern pattern = Pattern.compile("(?<name>\\S+) in X: (?<x>\\d+) and Y: (?<y>\\d+)");
-        Matcher matcher = pattern.matcher(value);
-        GameMenuController gameMenuController = new GameMenuController(new GameModel());
-        for (Unit unit : GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getUnits()) {
-            if(unit.getUnitType().equals(matcher.group("name"))
-                && gameMenuController.isUnitForThisCivilization(GameDatabase.getTurn(), unit)) {
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(unit);
-            }
+        Matcher matcher = pattern.matcher(units.getValue());
+        if(!matcher.matches()) {
+            return null;
         }
+//        System.out.println(units.getValue());
+//        System.out.println(matcher.matches());
+//        System.out.println(matcher.group("x"));
+//        System.out.println(matcher.group("y"));
+        return GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).getCombatUnit();
+    }
+
+    private void selectUnit(String value) throws IOException {
+
+        GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(findUnit());
     }
 }

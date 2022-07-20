@@ -227,10 +227,12 @@ public class Building {
             this.turnsNeedToBuild = 0;
         } else {
             turns = -turns;
-            this.turnsNeedToBuild = turns / productionGeneratingRate + 1;
+            this.turnsNeedToBuild = turns / (productionGeneratingRate+1) + 1;
         }
+    }
 
-
+    public void setTurnsNeedToBuild(int amount) {
+        this.turnsNeedToBuild = amount;
     }
 
     @Override
@@ -247,7 +249,9 @@ public class Building {
     public String getInformation() {
         String result = name + "\n Turns need to build: " + turnsNeedToBuild;
         result += "\n Cost: " + cost;
-        result += "\n Technology Required: " + technologyRequired.getName();
+        if(technologyRequired != null) {
+            result += "\n Technology Required: " + technologyRequired.getName();
+        }
         return result;
 
     }
