@@ -321,7 +321,9 @@ public class GameFXMLController {
                 } else if (tileMap.getBaseTerrainType().equals("Tundra")){
                     tile.polygon.setFill(Color.RED);
                 }
-
+                for (Polygon side : tile.sides) {
+                    side.setFill(null);
+                }
                 if (tileMap.isRiverByNumberOfEdge(0)){
                     tile.sides.get(0).setFill(Color.BLUE);
                 } else if (tileMap.isRiverByNumberOfEdge(1)){
