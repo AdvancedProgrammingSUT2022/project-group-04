@@ -27,7 +27,7 @@ public class Worker extends Citizen {
         workToIndex.put("Plantation", 8);
         workToIndex.put("Quarry", 9);
         workToIndex.put("removeJungle", 10);//forest in the doc
-        workToIndex.put("removeDenseJungle", 11);
+        workToIndex.put("removeDense_Jungle", 11);
         workToIndex.put("removePrairie", 12);
         workToIndex.put("removeRoad", 13);
         workToIndex.put("removeRailroad", 14);
@@ -203,5 +203,9 @@ public class Worker extends Citizen {
 
     public boolean isMoving() {
         return isMoving;
+    }
+
+    public void stopWork() {
+        isAssigned = false;
     }
 }

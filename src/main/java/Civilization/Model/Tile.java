@@ -487,6 +487,12 @@ public class Tile {
     }
 
     public void nextTurn() {
+        if(worker != null) {
+            worker.nextTurn();
+        }
+        if(settler != null) {
+            settler.nextTurn();
+        }
 
     }
 

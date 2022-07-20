@@ -395,6 +395,11 @@ public class Civilization {
                 science += 3;
             }
         }
+        for (Tile tile : this.tiles) {
+            if(GameDatabase.getCityByXAndY(tile.x, tile.y) == null) {
+                tile.nextTurn();
+            }
+        }
         for (Technology technology : this.technologies) {
             technology.nextTurn(this.nickname);
         }
