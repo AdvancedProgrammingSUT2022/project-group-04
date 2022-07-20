@@ -354,8 +354,12 @@ public class Civilization {
                 if(neighbor != null && isTileNew(clearTiles, neighbor)) {
                     clearTiles.add(neighbor);
                 }
+
+
+
             }
         }
+
         return clearTiles;
     }
 
@@ -373,6 +377,17 @@ public class Civilization {
             if(tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
                 return false;
             }
+
+        }
+        for (Tile clearTileUnit : getNotFogOfWarTiles()){
+            if (clearTileUnit.getCombatUnit() != null || clearTileUnit.getNonCombatUnit() != null) {
+                for (Tile neighbour : clearTileUnit.getAdjacentTiles()){
+                    if(tile.getX() == neighbour.getX() && tile.getY() == neighbour.getY()) {
+                        return false;
+                    }
+                }
+            }
+
         }
         return true;
     }
