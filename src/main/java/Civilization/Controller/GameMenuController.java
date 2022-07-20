@@ -648,7 +648,7 @@ public class GameMenuController {
 
     }
 
-    public boolean pillageCurrentTile(Unit unit) {
+    public boolean pillageCurrentTile(Unit unit) throws IOException {
         if (GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY()) == null){
             return false;
         }

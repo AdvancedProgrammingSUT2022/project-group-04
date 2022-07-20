@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import Civilization.Database.GameDatabase;
 import Civilization.Model.Civilization;
-import Civilization.Model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -56,7 +55,7 @@ public class UserDatabase {
     /**
      * @return all of users in database
      */
-    public static ArrayList<Server.User> getAllUsers() {
+    public static ArrayList<User> getAllUsers() {
         return User.users;
     }
 

@@ -477,7 +477,7 @@ public class City extends Tile {
         return false;
     }
 
-    public ArrayList<Tile> getValidTilesForBuying() {
+    public ArrayList<Tile> getValidTilesForBuying() throws IOException {
         ArrayList<Tile> tiles = new ArrayList<>();
         for (Tile tile : getTiles()) {
             for (Tile adjacentTile : tile.getAdjacentTiles()) {
@@ -503,7 +503,7 @@ public class City extends Tile {
         return true;
     }
 
-    public void buyTile(Tile tile) {
+    public void buyTile(Tile tile) throws IOException {
         this.tiles.add(tile);
         GameDatabase.getCivilizationByNickname(this.civilizationName).addTile(tile);
         GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-10);
