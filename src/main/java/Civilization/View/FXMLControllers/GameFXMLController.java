@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyEvent;
@@ -213,13 +214,13 @@ public class GameFXMLController {
     }
 
     private void updateFirstMap() {
-        for (int i = 0; i < GameDatabase.length; i++){
-            for (int j = 0; j < GameDatabase.width; j++) {
+        for (int i = 0; i < GameDatabase.width; i++){
+            for (int j = 0; j < GameDatabase.length; j++) {
                 double a = j * 200;
                 double b = i * 200;
                 TileFX tile;
                 if ( i % 2 == 0) {
-                    tile = new TileFX(i, j);
+                    tile = new TileFX(j, i);
                     tile.polygon = new Polygon(b + 100.0, a + 100, b + 250.0, a + 100, b + 300.0, a + 200.0, b + 250.0, a + 300.0, b + 100.0, a + 300.0, b + 50.0, a + 200.0);
                     Polygon side1 = new Polygon(b + 100, a + 100, b + 250 , a + 100, b + 250 , a + 105, b + 100, a + 105);
                     Polygon side2 = new Polygon(b + 250, a + 100, b + 300, a + 200, b + 300, a + 205, b + 250, a + 105);
@@ -234,7 +235,7 @@ public class GameFXMLController {
                     tile.sides.add(side5);
                     tile.sides.add(side6);
                 } else {
-                    tile = new TileFX(i, j);
+                    tile = new TileFX(j, i);
                     tile.polygon = new Polygon(b + 100.0, a, b + 250.0, a , b + 300.0, a + 100.0, b + 250.0, a + 200.0, b + 100.0, a + 200.0, b + 50.0, a + 100.0);
                     Polygon side1 = new Polygon(b + 100, a , b + 250 , a , b + 250 , a + 5, b + 100, a + 5);
                     Polygon side2 = new Polygon(b + 250, a , b + 300, a + 100, b + 300, a + 105, b + 250, a + 5);
@@ -774,6 +775,83 @@ public class GameFXMLController {
                     }
                 }
             });
+
+
+            garrison.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        boolean b = new GameMenuController(new GameModel()).garrisonUnitToCity(selectedUnit);
+
+                        for (TileFX tileFX : tileFXES) {
+                            if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
+                                if (!b) {
+                                    tileFX.informationText.setText(tileFX.informationText.getText() + "\nThis is not a city");
+                                }
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+            });
+
+
+            rangeAttackSetup.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
+
+            rangeAttack.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
+            meleeAttack.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                }
+            });
+
+            pillage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        boolean b = new GameMenuController(new GameModel()).pillageCurrentTile(selectedUnit);
+                        for (TileFX tileFX : tileFXES) {
+                            if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
+                                if (!b) {
+                                    tileFX.informationText.setText(tileFX.informationText.getText() + "\nThis is not a City");
+                                } else {
+                                    ColorAdjust colorAdjust = new ColorAdjust();
+                                    colorAdjust.setHue(0.3);
+                                    tileFX.polygon.setEffect(colorAdjust);
+                                }
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+            });
+
+
+
+
+
+
+
+
 
 
 
@@ -1337,19 +1415,19 @@ public class GameFXMLController {
         setPanelLists();
         //setUnitCreating();
 
+        boxOfCommands = new VBox(sleepWake, alert, garrison,fortify , pillage, rangeAttackSetup, rangeAttack, meleeAttack, delete);
 
-        boxOfCommands = new VBox(sleepWake, alert, garrison,fortify , rangeAttackSetup, rangeAttack, meleeAttack, delete);
         boxOfCommands.setAlignment(Pos.CENTER);
         boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, deleteNonCombat, workerActions, foundCity, createCityVBox);
         boxOfCommandsNonCombat.setAlignment(Pos.CENTER);
         combatUnitCommands = new Pane(boxOfCommands);
         nonCombatUnitCommands = new Pane(boxOfCommandsNonCombat);
         combatUnitCommands.setPrefHeight(200);
-        combatUnitCommands.setLayoutY(infoPanelVBox.getLayoutY() + infoPanel.getHeight() - 200);
+        combatUnitCommands.setLayoutY(infoPanelVBox.getLayoutY() + infoPanel.getHeight() - 250);
         combatUnitCommands.setLayoutX(0);
         combatUnitCommands.setPrefWidth(150);
         nonCombatUnitCommands.setPrefHeight(200);
-        nonCombatUnitCommands.setLayoutY(infoPanelVBox.getLayoutY() + infoPanel.getHeight() - 200);
+        nonCombatUnitCommands.setLayoutY(infoPanelVBox.getLayoutY() + infoPanel.getHeight() - 250);
         nonCombatUnitCommands.setLayoutX(0);
         nonCombatUnitCommands.setPrefWidth(150);
         combatUnitCommands.setVisible(false);
