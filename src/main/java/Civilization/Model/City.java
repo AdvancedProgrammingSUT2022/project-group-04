@@ -411,6 +411,9 @@ public class City extends Tile {
     }
 
     public boolean isTileForThisCity(Tile tile) {
+        if(tile == null) {
+            return false;
+        }
         for (Tile cityTile : this.tiles) {
             if (cityTile.getY() == tile.getY() && cityTile.getX() == tile.getX()) {
                 return true;
@@ -471,5 +474,37 @@ public class City extends Tile {
             }
         }
         return false;
+    }
+
+    public ArrayList<Tile> getValidTilesForBuying() {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (Tile tile : getTiles()) {
+            for (Tile adjacentTile : tile.getAdjacentTiles()) {
+                if(!isTileForThisCity(adjacentTile) && isTileNewInArray(adjacentTile, tiles)) {
+                    if(GameDatabase.getCivilizationByNickname(this.civilizationName).getGold() > 10) {
+                        tiles.add(adjacentTile);
+                    }
+                }
+            }
+        }
+        return tiles;
+    }
+
+    private boolean isTileNewInArray(Tile adjacentTile, ArrayList<Tile> tiles) {
+        if(adjacentTile == null) {
+            return false;
+        }
+        for (Tile tile : tiles) {
+            if(adjacentTile.getX() == tile.getX() && adjacentTile.getY() == tile.getY()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void buyTile(Tile tile) {
+        this.tiles.add(tile);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addTile(tile);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-10);
     }
 }
