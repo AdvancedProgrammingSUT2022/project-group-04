@@ -119,6 +119,7 @@ public class GameFXMLController {
 
 
     private void setMap() throws IOException {
+        System.err.println("In Set Map");
         map = new ScrollPane();
         map.setLayoutX(150);
         map.setLayoutY(40);
@@ -135,8 +136,9 @@ public class GameFXMLController {
     }
 
     private void updateFirstMap() throws IOException {
-        for (int i = 0; i < GameDatabase.length; i++){
-            for (int j = 0; j < GameDatabase.width; j++) {
+        System.err.println("Update First Map");
+        for (int i = 0; i < GameDatabase.getLength(); i++){
+            for (int j = 0; j < GameDatabase.getWidth(); j++) {
                 double a = j * 200;
                 double b = i * 200;
                 TileFX tile;

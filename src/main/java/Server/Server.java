@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Server {
     private ServerSocket serverSocket1;
@@ -80,9 +82,17 @@ public class Server {
         }
     }
 
+
+
     private void processGameUsingXML(String s, DataOutputStream dataOutputStream) throws IOException {
         String response = GameDatabaseServer.processReq(s);
-        dataOutputStream.writeUTF(response);
+        System.out.println(response);
+
+        byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
+        System.out.println(Arrays.toString(requestToBytes));
+        dataOutputStream.writeInt(requestToBytes.length);
+        dataOutputStream.flush();
+        dataOutputStream.write(requestToBytes);
         dataOutputStream.flush();
     }
 

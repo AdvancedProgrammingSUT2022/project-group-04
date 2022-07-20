@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -55,7 +56,6 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByUnit(Unit unit) throws IOException {
-        input.put("unit", unit);
         XStream xStream = new XStream();
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.unit = unit;
@@ -70,24 +70,24 @@ public class GameDatabase {
         String message = dataInputStream1.readUTF();
         return new JSONObject(message);
         // TODO update data here based on message
-
     }
 
     private static RequestPlayers readAndCastResponse(String s) throws IOException {
         XStream xStream = new XStream();
         FileWriter fileWriter;
+        System.out.println("wot wot?");
         if (Files.exists(Paths.get("clientResponse/response.xml")))
             fileWriter = new FileWriter("clientResponse/response.xml");
-        else{
+        else {
             new File("clientResponse").mkdir();
             fileWriter = new FileWriter("clientResponse/response.xml");
         }
         fileWriter.write(s);
         fileWriter.close();
         ///
-        String xml = new String(Files.readAllBytes(Paths.get("save/array.xml")));
+        String xml = new String(Files.readAllBytes(Paths.get("clientResponse/response.xml")));
         xStream.addPermission(AnyTypePermission.ANY);
-        if(xml.length() != 0){
+        if (xml.length() != 0) {
             Object obh = xStream.fromXML(xml);
             RequestPlayers req = (RequestPlayers) obh;
             return req;
@@ -97,21 +97,34 @@ public class GameDatabase {
 
     private static RequestPlayers sendToServer(String s, String functionName) throws IOException {
         dataOutputStream1.writeUTF("!!!" + functionName + s);
+        System.out.println(4321);
         dataOutputStream1.flush();
-        String response = dataInputStream1.readUTF();
-        return readAndCastResponse(response);
+        System.out.println(43210);
+        byte[] requestToByte = new byte[dataInputStream1.readInt()];
+        dataInputStream1.readFully(requestToByte);
+        String response = new String(requestToByte, StandardCharsets.UTF_8);
+        System.out.println(response);
+        System.out.println(432);
+        RequestPlayers requestPlayers = readAndCastResponse(response);
+        System.out.println(48885);
+        GameDatabase.players = requestPlayers.players;
+        System.out.println(485);
+        GameDatabase.map = requestPlayers.tiles;
+        System.out.println(469);
+        return requestPlayers;
     }
 
     public static void generateRuin() throws IOException {
-        sendToServer(null,"generateRuin");
+        sendToServer(null, "generateRuin");
     }
 
 
-    public static void setPlayers(ArrayList<Civilization> players) throws IOException {
+    public static void setPlayers(ArrayList<Civilization> players, String user) throws IOException {
         TransitionDatabase.restart();
         XStream xStream = new XStream();
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.players = players;
+        requestPlayers.name = user;
         Object sth = sendToServer(xStream.toXML(requestPlayers), "setPlayers");
         GameDatabase.players = players;
     }
@@ -121,41 +134,37 @@ public class GameDatabase {
      * @return selected civilization
      */
     public static Civilization getCivilizationByUsername(String civilizationName) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationByUsername");
-        input.put("civilization name", civilizationName);
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.name = civilizationName;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUsername");
+        return sth.civilization;
     }
 
     public static Civilization getCivilizationByNickname(String civilizationName) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationByNickname");
-        input.put("civilization name", civilizationName);
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.name = civilizationName;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByNickname");
+        return sth.civilization;
     }
 
 
     public static City getCityByName(String cityName) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCityByName");
-        input.put("city name", cityName);
-        JSONObject serverResponse = sendToServer();
-        return (City) serverResponse.get("city");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.name = cityName;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCityByName");
+        return sth.city;
     }
 
     public static City getCityByXAndY(int x, int y) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCityByXAndY");
-        input.put("x", x);
-        input.put("y", y);
-        JSONObject serverResponse = sendToServer();
-        return (City) serverResponse.get("city");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.x = x;
+        requestPlayers.y = y;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCityByXAndY");
+        return sth.city;
     }
 
     public static ArrayList<Tile> getMap() {
@@ -164,67 +173,59 @@ public class GameDatabase {
 
 
     public static Tile getTileByXAndY(int x, int y) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getTileByXAndY");
-        input.put("x", x);
-        input.put("y", y);
-        JSONObject serverResponse = sendToServer();
-        return (Tile) serverResponse.get("tile");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.x = x;
+        requestPlayers.y = y;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getTileByXAndY");
+        return sth.tile;
     }
 
     public static boolean isTileForACity(Tile tile) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "isTileForACity");
-        input.put("Tile", tile);
-        JSONObject serverResponse = sendToServer();
-        return (boolean) serverResponse.get("isIt?");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.tile = tile;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "isTileForACity");
+        return sth.bool;
     }
 
     public static Civilization getCivilizationByTile(Tile tile) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationByTile");
-        input.put("Tile", tile);
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.tile = tile;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByTile");
+        return sth.civilization;
     }
 
     public static int getCivilizationIndex(String civilizationName) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationIndex");
-        input.put("civilization name", civilizationName);
-        JSONObject serverResponse = sendToServer();
-        return (int) serverResponse.get("index");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.name = civilizationName;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationIndex");
+        return sth.x;
     }
 
     public static void generateMap(int numberOfPlayers) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "generate map");
-        input.put("number of players", numberOfPlayers);
-        JSONObject serverResponse = sendToServer();
-        players = (ArrayList<Civilization>) serverResponse.get("players");
-        map = (ArrayList<Tile>) serverResponse.get("tiles");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.x = numberOfPlayers;
+        System.out.println("blahhhh");
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
+        System.out.println("please work");
     }
 
     public static Civilization getCivilizationForCity(String cityName) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationForCity");
-        input.put("city name", cityName);
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.name = cityName;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
+        return sth.civilization;
     }
 
     public static void nextTurn() throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "nextTurn");
-        JSONObject serverResponse = sendToServer();
-        return;
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
     }
 
     private static int calculateNextTurn() throws IOException {
@@ -240,12 +241,11 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByTurn(int turn) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getCivilizationByTurn");
-        input.put("turn", turn);
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.x = turn;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByTurn");
+        return sth.civilization;
     }
 
 //    public static Tile findTileBySettler(Settler settler) {
@@ -275,12 +275,11 @@ public class GameDatabase {
 //    }
 
     public static Tile findTileByCitizen(Citizen citizen) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("citizen", citizen);
-        input.put("action", "findTileByCitizen");
-        JSONObject serverResponse = sendToServer();
-        return (Tile) serverResponse.get("Tile");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.citizen = citizen;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "findTileByCitizen");
+        return sth.tile;
     }
 
     public static ArrayList<Civilization> getPlayers() {
@@ -288,42 +287,35 @@ public class GameDatabase {
     }
 
     public static boolean isTileInCivilization(Tile tile, Civilization civilization) throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("civilization", civilization);
-        input.put("tile", tile);
-        input.put("action", "isTileInCivilization");
-        JSONObject serverResponse = sendToServer();
-        return (boolean) serverResponse.get("return value");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.tile = tile;
+        requestPlayers.civilization = civilization;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "isTileInCivilization");
+        return sth.bool;
     }
 
-    public static void setTurn(int newTurn) {
+    public static void setTurn(int newTurn) throws IOException {
         turn = newTurn;
-        GameFXMLController.turn = turn;
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.x = newTurn;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "setTurn");
     }
 
     public static User getUserForCivilization(String civilizationName) throws IOException {
-        String username = Objects.requireNonNull(getCivilizationByNickname(civilizationName)).getUsername();
-        return UserDatabase.getUserByUsername(username);
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.name = civilizationName;
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getUserForCivilization");
+        return sth.user;
     }
 
-//    public static void saveGame() throws IOException {
-//        SavingData savingData = new SavingData(length, width, turn, year, players, map);
-//
-//        // saving information;
-//        Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
-//        Path userPath = Paths.get("savedMap.json");
-//        Writer writer = Files.newBufferedWriter(userPath);
-//        gsonBuilder.toJson(savingData, writer);
-//        writer.close();
-//    }
-
     public static Civilization checkIfWin() throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "checkIfWin");
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "checkIfWin");
+        return sth.civilization;
     }
 
 
@@ -336,10 +328,25 @@ public class GameDatabase {
     }
 
     public static Civilization getLastCivilization() throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "getLastCivilization");
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getLastCivilization");
+        return requestPlayers.civilization;
+    }
+
+    public static void setWidth(int number) {
+        GameDatabase.width = number;
+    }
+
+    public static void setLength(int number) {
+        GameDatabase.length = number;
+    }
+
+    public static int getLength() {
+        return GameDatabase.length;
+    }
+
+    public static int getWidth() {
+        return GameDatabase.width;
     }
 }

@@ -64,7 +64,7 @@ public class GameDatabaseServer {
     }
 
 
-    public static void setPlayers(ArrayList<Civilization> player) {
+    public static void setPlayers(ArrayList<Civilization> player,String name) {
         System.out.println("bljjfjfjfj");
         turn = 0;
         year = 0;
@@ -76,15 +76,15 @@ public class GameDatabaseServer {
             System.out.println("kiriririri");
             civilization.setHappiness(GlobalVariables.firstHappiness * players.size());
             System.out.println("kiriririri1");
-            if (civilization.getNickname().equals(User.loggedInUser.getNickname())) {
+            System.out.println(civilization.getNickname());
+            if (civilization.getNickname().equals(name)) {
                 civilization.getMessages().add("It's your game, Good luck ;)");
                 System.out.println("kiriririri2");
             } else {
                 System.out.println("kiriririri3");
-                civilization.getMessages().add("You have an invitation from " + User.loggedInUser.getNickname());
+                civilization.getMessages().add("You have an invitation from " + name);
             }
             System.out.println("kiriririri4");
-
         }
         System.out.println("kiri");
     }
@@ -206,6 +206,7 @@ public class GameDatabaseServer {
                 int randomGenerate = random.nextInt(sumOfPossibilities);
                 int counter = 0;
                 int flag = -1;
+                System.out.println("kose nanat bisharaf??????");
                 for (int k = 0; k < possibilities.length; k++) {
                     counter += possibilities[k];
                     if (randomGenerate < counter) {
@@ -213,10 +214,14 @@ public class GameDatabaseServer {
                         break;
                     }
                 }
+                System.out.println(baseTerrains.get(flag));
                 Tile tile = new Tile("fogOfWar", baseTerrains.get(flag), i, j);
+                System.out.println("kose nanat bisharaf!!!!!");
                 map.add(tile);
             }
         }
+
+        System.out.println("kose nanat bisharaf5");
         //random initialize river
         int[] deltaX0 = {-1, 0, 1, 1, 1, 0};
         int[] deltaY0 = {0, 1, 1, 0, -1, -1};
@@ -246,6 +251,7 @@ public class GameDatabaseServer {
                 }
             }
         }
+        System.out.println("kose nanat bisharaf4");
         //random initialize terrainFeature
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
@@ -260,6 +266,7 @@ public class GameDatabaseServer {
                 }
             }
         }
+        System.out.println("kose nanat bisharaf3");
         //random initialize resources
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
@@ -274,6 +281,7 @@ public class GameDatabaseServer {
                 }
             }
         }
+        System.out.println("kose nanat bisharaf2");
         //random set beginning tiles for each player
         int counter = 0;
         while (counter < players.size()) {
@@ -318,6 +326,8 @@ public class GameDatabaseServer {
                 counter++;
             }
         }
+        System.out.println("kose nanat bisharaf");
+        System.out.println(map.size());
     }
 
     public static TerrainFeatures randomInitializeFeature(String type) {
@@ -500,7 +510,7 @@ public class GameDatabaseServer {
             s = s.substring(10);
             RequestPlayers req = readAndCastRequest(s);
             ArrayList<Civilization> pl = req.players;
-            setPlayers(pl);
+            setPlayers(pl,req.name);
         }
         else if (s.startsWith("getCivilizationByUnit")){
             s = s.substring("getCivilizationByUnit".length());
@@ -550,8 +560,6 @@ public class GameDatabaseServer {
             s = s.substring("generateMap".length());
             RequestPlayers requestPlayers = readAndCastRequest(s);
             generateMap(requestPlayers.x);
-            returnValue.players =  players;
-            returnValue.tiles = map;
         }
         else if (s.startsWith("getCivilizationForCity")){
             s = s.substring("getCivilizationForCity".length());
@@ -585,8 +593,21 @@ public class GameDatabaseServer {
         else if (s.startsWith("getLastCivilization")){
             returnValue.civilization = getLastCivilization();
         }
+        else if (s.startsWith("setTurn")){
+            s = s.substring("setTurn".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            setTurn(requestPlayers.x);
+        } else if (s.startsWith("getUserForCivilization")){
+            s = s.substring("getUserForCivilization".length());
+            RequestPlayers requestPlayers = readAndCastRequest(s);
+            returnValue.user = getUserForCivilization(requestPlayers.name);
+        }
         XStream xStream = new XStream();
+        returnValue.players = GameDatabaseServer.players;
+        returnValue.tiles = GameDatabaseServer.map;
+        if (map.size() != 0) returnValue.tile = returnValue.tiles.get(0);
         response = xStream.toXML(returnValue);
+        System.out.println(response);
         return response;
     }
 

@@ -138,7 +138,7 @@ public class MainMenu extends Menu {
         CombatController combatController = new CombatController();
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
 
-        GameDatabase.setPlayers(players);
+        for (int i=0;i< players.size();i++) GameDatabase.setPlayers(players,players.get(i).getNickname());
         GameDatabase.generateMap(splitCommand.length - 1);
 
         for (int i = 0; i < GameDatabase.players.size(); i++) {

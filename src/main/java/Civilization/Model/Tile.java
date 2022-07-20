@@ -48,19 +48,29 @@ public class Tile {
 
 
     public Tile(String type, String baseTerrainType, int x, int y) throws IOException {
+        System.out.println(1);
         this.type = type;
+        System.out.println(2);
         this.hasRoad = false;
+        System.out.println(3);
         this.baseTerrain = new BaseTerrain(baseTerrainType);
         this.x = x;
+        System.out.println(4);
         this.y = y;
+        System.out.println(5);
         this.units = new ArrayList<Unit>();
+        System.out.println(6);
         this.improvements = new ArrayList<Improvement>();
+        System.out.println(7);
         this.discoveredResources = new ArrayList<Resources>();
+        System.out.println(8);
         this.isRiver = new boolean[6];
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
         }
-        setNeighbors(getAdjacentTiles());//set neighbours
+        System.out.println(9);
+        //setNeighbors(getAdjacentTiles());//set neighbours
+        System.out.println(10);
         initializeRoundsTillFinish(-1);
     }
 

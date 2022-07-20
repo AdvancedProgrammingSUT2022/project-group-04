@@ -16,4 +16,5 @@ public class RequestPlayers {
     public boolean bool;
     public Citizen citizen;
     public City city;
+    public User user;
 }

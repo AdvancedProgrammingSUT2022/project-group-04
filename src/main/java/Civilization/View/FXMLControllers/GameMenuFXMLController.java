@@ -535,7 +535,7 @@ public class GameMenuFXMLController {
                     } else {
                         tileCount = number;
                         numberOfTiles.setEditable(false);
-                        GameDatabase.width = number;
+                        GameDatabase.setWidth(number);
                     }
                 }
             }
