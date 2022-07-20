@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -606,6 +607,7 @@ public class GameFXMLController {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     createUnit();
+
                 }
             });
 
@@ -638,7 +640,14 @@ public class GameFXMLController {
                             if (selectedUnit instanceof Soldier) {
                                 if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
 
-                                    tileFX.combatUnit.setOpacity(0.5);
+                                    if (tileFX.combatUnit.getOpacity() != 0.5){
+                                        tileFX.combatUnit.setOpacity(0.5);
+                                        selectedUnit.setSleeping(true);
+                                    } else {
+                                        tileFX.combatUnit.setOpacity(1);
+                                        selectedUnit.setSleeping(false);
+                                    }
+
                                     break;
                                 }
                             }
@@ -656,8 +665,40 @@ public class GameFXMLController {
                         for (TileFX tileFX : tileFXES) {
                             if (!(selectedUnit instanceof Soldier)) {
                                 if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
+                                    if (tileFX.nonCombatUnit.getOpacity() != 0.5 ) {
+                                        tileFX.nonCombatUnit.setOpacity(0.5);
+                                        selectedUnit.setSleeping(true);
+                                    } else {
+                                        tileFX.nonCombatUnit.setOpacity(1);
+                                        selectedUnit.setSleeping(false);
+                                    }
+                                    break;
+                                }
+                            }
 
-                                    tileFX.nonCombatUnit.setOpacity(0.5);
+                        }
+                    }
+                }
+            });
+
+            alert.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        for (TileFX tileFX : tileFXES) {
+                            if (selectedUnit instanceof Soldier) {
+                                if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
+                                    ColorAdjust colorAdjustRed = new ColorAdjust();
+                                    colorAdjustRed.setHue(0.3);
+                                    if (tileFX.combatUnit.getEffect() == null){
+                                        tileFX.combatUnit.setEffect(colorAdjustRed);
+                                        selectedUnit.setReady(true);
+                                    } else {
+                                        tileFX.combatUnit.setEffect(null);
+                                        selectedUnit.setReady(false);
+                                    }
+
                                     break;
                                 }
                             }
@@ -679,6 +720,8 @@ public class GameFXMLController {
                                     tileFX.combatUnit = null;
                                     GetTileInReal(tileFX).removeUnit(selectedUnit);
                                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
+                                    updateInfoPanel();
+                                    updateMap();
                                     break;
                                 }
                             }
@@ -705,6 +748,8 @@ public class GameFXMLController {
                                         GetTileInReal(tileFX).removeWorker((Worker) selectedUnit);
                                     }
                                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
+                                    updateInfoPanel();
+                                    updateMap();
                                     break;
                                 }
                             }
@@ -909,6 +954,7 @@ public class GameFXMLController {
         selectedTile.nonCombatUnit.toFront();
         //System.out.println("add to tile");
         addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
+        updateMap();
 
     }
 
@@ -1053,7 +1099,16 @@ public class GameFXMLController {
                 }
             }
         });
-        tileFX.combatUnit.toFront();
+
+        if (tileFX.combatUnit != null) {
+            if (!mapPane.getChildren().contains(tileFX.combatUnit)) {
+                mapPane.getChildren().add(tileFX.combatUnit);
+            }
+
+            tileFX.combatUnit.toFront();
+        }
+        
+
     }
 
     private void createCombat() {
@@ -1089,6 +1144,7 @@ public class GameFXMLController {
 
         //mapPane.getChildren().add(selectedTile.combatUnit);
         selectedTile.combatUnit.toFront();
+        updateMap();
        // addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
     }
 
