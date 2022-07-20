@@ -351,6 +351,7 @@ public class GameMenuController {
     public boolean assignNewProject(Worker worker, String type) {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         City city = GameDatabase.getCityByXAndY(worker.getX(), worker.getY());
+        worker.lockTheWorker(tile);
         if (!worker.isAssigned() && !tile.getIsGettingWorkedOn()) {
             boolean isPossible = true;
             if (worker.getTypeOfWork().equals(type)) {

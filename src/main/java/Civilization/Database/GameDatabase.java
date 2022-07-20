@@ -623,4 +623,8 @@ public class GameDatabase {
         }
         return GameDatabase.getCivilizationByTurn(turn - 1);
     }
+
+    public static int getYear() {
+        return GameDatabase.year;
+    }
 }

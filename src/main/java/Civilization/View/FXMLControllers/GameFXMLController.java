@@ -1096,7 +1096,10 @@ public class GameFXMLController {
         }
 //        System.out.println(unit);
 //        System.out.println(unit.getUnitType());
-        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
+        ImagePattern imagePattern = new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType()));
+        if(imagePattern != null) {
+            tileFX.combatUnit.setFill(imagePattern);
+        }
         tileFX.combatUnit.setVisible(true);
 
         tileFX.combatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1282,7 +1285,7 @@ public class GameFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 checkIfWin();
-                if(GameModel.autoSave && GameDatabase.getTurn()%50 == 49) {
+                if(GameModel.autoSave && GameDatabase.getYear()%50 == 49) {
                     try {
                         autoSave();
                     } catch (IOException e) {
