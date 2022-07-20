@@ -632,14 +632,38 @@ public class GameFXMLController {
             sleepWake.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        for (TileFX tileFX : tileFXES) {
+                            if (selectedUnit instanceof Soldier) {
+                                if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
 
+                                    tileFX.combatUnit.setOpacity(0.5);
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
                 }
             });
 
             sleepWakeNonCombat.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        for (TileFX tileFX : tileFXES) {
+                            if (!(selectedUnit instanceof Soldier)) {
+                                if (selectedUnit.getTileOfUnit().getX() == tileFX.x && selectedUnit.getTileOfUnit().getY() == tileFX.y) {
 
+                                    tileFX.nonCombatUnit.setOpacity(0.5);
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
                 }
             });
 
