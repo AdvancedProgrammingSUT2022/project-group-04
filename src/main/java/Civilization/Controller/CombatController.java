@@ -100,9 +100,14 @@ public class CombatController {
         }
     }
 
-    public void fortifyUnit(Unit unit) {
-        int a = 3; //todo find the amount to add to the power of unit
-        unit.setCombatStrength(unit.getCombatStrength() + a);
+    public int fortifyUnit(Unit unit) {
+        if (!(unit instanceof Soldier)) {
+            return -1;
+        } else {
+            int a = 3; //todo find the amount to add to the power of unit
+            unit.setCombatStrength(unit.getCombatStrength() + a);
+            return 0;
+        }
     }
 
     public void killUnit(Unit unit) {

@@ -1,5 +1,6 @@
 package Civilization.View.FXMLControllers;
 
+import Civilization.Controller.CombatController;
 import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
@@ -57,6 +58,7 @@ public class GameFXMLController {
     Button sleepWakeNonCombat = new Button("Sleep/Wake");
     Button alert = new Button("Alert/unAlert");
     Button garrison = new Button("Garrison");
+    Button fortify = new Button("Fortify");
     Button rangeAttackSetup = new Button("Setup Range");
     Button rangeAttack = new Button("Range Attack");
     Button meleeAttack = new Button("Melee Attack");
@@ -756,8 +758,22 @@ public class GameFXMLController {
                         }
                     }
                 }
+
+
             });
 
+            fortify.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    Unit selectedUnit = null;
+                    if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null){
+                        CombatController combatController = new CombatController();
+                        combatController.fortifyUnit(selectedUnit);
+                        System.out.println(selectedUnit.getHP());
+
+                    }
+                }
+            });
 
 
 
@@ -1319,7 +1335,7 @@ public class GameFXMLController {
         //setUnitCreating();
 
 
-        boxOfCommands = new VBox(sleepWake, alert, garrison, rangeAttackSetup, rangeAttack, meleeAttack, delete);
+        boxOfCommands = new VBox(sleepWake, alert, garrison,fortify , rangeAttackSetup, rangeAttack, meleeAttack, delete);
         boxOfCommands.setAlignment(Pos.CENTER);
         boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, deleteNonCombat, workerActions, foundCity, createCityVBox);
         boxOfCommandsNonCombat.setAlignment(Pos.CENTER);
