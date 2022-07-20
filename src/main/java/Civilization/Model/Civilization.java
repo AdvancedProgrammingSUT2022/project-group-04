@@ -351,8 +351,10 @@ public class Civilization {
         clearTiles.addAll(tiles);
         for (Tile tile : tiles) {
             for (Tile neighbor : tile.getAdjacentTiles()) {
+                System.out.println(neighbor.getX() + " "+ neighbor.getY() + " " + tile.getX() + " " + tile.getY());
                 if(neighbor != null && isTileNew(clearTiles, neighbor)) {
                     clearTiles.add(neighbor);
+
                 }
             }
         }

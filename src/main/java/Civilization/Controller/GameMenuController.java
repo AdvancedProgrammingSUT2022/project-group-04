@@ -642,7 +642,10 @@ public class GameMenuController {
 
     }
 
-    public void pillageCurrentTile(Unit unit) {
+    public boolean pillageCurrentTile(Unit unit) {
+        if (GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY()) == null){
+            return false;
+        }
         for (Improvement improvement : unit.getTileOfUnit().getImprovements()) {
             improvement.breakImprovement();
         }
@@ -651,6 +654,7 @@ public class GameMenuController {
             unit.getTileOfUnit().setRoadBroken(true);
             unit.getTileOfUnit().setRailroadBroken(true);
         }
+        return true;
     }
 
     public boolean isUnitTypeValid(String unitType) {
