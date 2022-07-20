@@ -59,7 +59,7 @@ public class CityPanelFXMLController {
         mainAnchorPane.getChildren().add(tilesForBuying);
 
         Button ok = new Button("Ok");
-        ok.setLayoutX(700);
+        ok.setLayoutX(770);
         ok.setLayoutY(50);
         ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

@@ -695,6 +695,12 @@ public class GameFXMLController {
             if(GameDatabase.getTileByXAndY(tile.x, tile.y).ruin != null) {
                 tile.polygon.setFill(new ImagePattern(GraphicalBases.RUINS));
             }
+            if(GameDatabase.getTileByXAndY(tile.x, tile.y).hasRoad()) {
+                tile.polygon.setFill(new ImagePattern(GraphicalBases.ROAD));
+            }
+            if(GameDatabase.getTileByXAndY(tile.x, tile.y).hasRailroad()) {
+                tile.polygon.setFill(new ImagePattern(GraphicalBases.RAIL_ROAD));
+            }
             if(GameDatabase.getCityByXAndY(tile.x, tile.y) != null
                 || GameDatabase.getTileByXAndY(tile.x, tile.y).isCityInTile() != null) {
                 tile.polygon.setFill(new ImagePattern(GraphicalBases.CITY));

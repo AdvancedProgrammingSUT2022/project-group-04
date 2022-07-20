@@ -327,7 +327,7 @@ public class GameMenuController {
 
     public void pauseProject(Worker worker, int x, int y) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        City city = GameDatabase.getCityByXAndY(x,y);
+        City city = GameDatabase.getCityByXAndY(x, y);
         if (worker.isAssigned()
                 && !worker.isMoving()
                 && worker.isLocked()
@@ -357,22 +357,40 @@ public class GameMenuController {
                 //if repair then initiate the index of array again
                 if (worker.getIndexOfProject() > 12) tile.initializeRoundsTillFinish(worker.getIndexOfProject());
                 switch (worker.getIndexOfProject()) {
-                    case 0: isPossible = makeRoad(worker); break;
-                    case 1: isPossible = makeRailRoad(worker);break;
-                    case 2: isPossible = makeFarm(worker);break;
-                    case 3: isPossible = makeMine(worker);break;
+                    case 0:
+                        isPossible = makeRoad(worker);
+                        break;
+                    case 1:
+                        isPossible = makeRailRoad(worker);
+                        break;
+                    case 2:
+                        isPossible = makeFarm(worker);
+                        break;
+                    case 3:
+                        isPossible = makeMine(worker);
+                        break;
                     case 4:
                     case 5:
                     case 6:
                     case 7:
                     case 8:
-                    case 9: isPossible = makeImprovement(worker);break;
+                    case 9:
+                        isPossible = makeImprovement(worker);
+                        break;
                     case 10:
                     case 11:
-                    case 12: isPossible = removeFeature(worker);break;
-                    case 13: isPossible = removeRoad(worker);break;
-                    case 14: isPossible = removeRailroad(worker);break;
-                    case 15: isPossible = makeRepair(worker);break;
+                    case 12:
+                        isPossible = removeFeature(worker);
+                        break;
+                    case 13:
+                        isPossible = removeRoad(worker);
+                        break;
+                    case 14:
+                        isPossible = removeRailroad(worker);
+                        break;
+                    case 15:
+                        isPossible = makeRepair(worker);
+                        break;
                 }
             }
             if (isPossible) {
@@ -538,7 +556,7 @@ public class GameMenuController {
     }
 
 
-//    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
+    //    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
 //        Tile tile = GameDatabase.getTileByXAndY(x, y);
 //        if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
 //            if (unitType.equals("Settler")
@@ -548,9 +566,9 @@ public class GameMenuController {
 //        return false;
 //    }
     public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
-            if (unitType.equals("Settler")
-                    || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
-            else return createCombatUnit(unitType, x, y, civilizationIndex);
+        if (unitType.equals("Settler")
+                || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
+        else return createCombatUnit(unitType, x, y, civilizationIndex);
     }
 
     public boolean isTileValidForCreatingUnit(int x, int y, int turn) {
@@ -559,7 +577,7 @@ public class GameMenuController {
 
     public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
-        if(tile.getCombatUnit() != null) {
+        if (tile.getCombatUnit() != null) {
             //System.out.println(tile.getCombatUnit());
             return false;
         }
@@ -670,7 +688,7 @@ public class GameMenuController {
             }
 
         }
-        if (index + 1 == selectedUnit.getRoute().size() - 1){
+        if (index + 1 == selectedUnit.getRoute().size() - 1) {
             selectedUnit.setSpeed(selectedUnit.getOriginialspeed());
             this.movingUnits.remove(selectedUnit);
             return true;
