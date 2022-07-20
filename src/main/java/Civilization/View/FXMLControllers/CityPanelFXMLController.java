@@ -35,6 +35,7 @@ public class CityPanelFXMLController {
     private ChoiceBox<String> validCitizensForLocking;
     private ChoiceBox<String> tileForLocking;
     private ChoiceBox<String> workingCitizens;
+    private ChoiceBox<String> tilesForBuying;
 
     @FXML
     public void initialize() {
@@ -46,7 +47,54 @@ public class CityPanelFXMLController {
         setValidCitizensForLocking();
         setWorkingCivilization();
         setUnemployedCitizenSection();
+        setBuyingTilesSection();
         GameModel.isGame = true;
+    }
+
+    private void setBuyingTilesSection() {
+        tilesForBuying = new ChoiceBox<>();
+        updateTilesForBuyingChoiceBox();
+        tilesForBuying.setLayoutX(650);
+        tilesForBuying.setLayoutY(50);
+        mainAnchorPane.getChildren().add(tilesForBuying);
+
+        Button ok = new Button("Ok");
+        ok.setLayoutX(700);
+        ok.setLayoutY(50);
+        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(tilesForBuying.getValue() == null) {
+                    return;
+                }
+                Tile tile = findTile(tilesForBuying.getValue());
+                if(tile == null) {
+                    return;
+                }
+                city.buyTile(tile);
+                updateTilesForBuyingChoiceBox();
+                updateTilesChoiceBox();
+            }
+        });
+        mainAnchorPane.getChildren().add(ok);
+    }
+
+    private Tile findTile(String value) {
+        Pattern pattern = Pattern.compile("Tile in X: (?<x>\\d+) Y: (?<y>\\d+)");
+        Matcher matcher = pattern.matcher(value);
+        if(!matcher.matches()) {
+            return null;
+        }
+        return GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")),Integer.parseInt(matcher.group("y")));
+    }
+
+    private void updateTilesForBuyingChoiceBox() {
+        ArrayList<String> tiles = new ArrayList<>();
+        for (Tile cityTile : city.getValidTilesForBuying()) {
+            tiles.add("Tile in X: " + cityTile.getX() + " Y: " + cityTile.getY());
+        }
+        ObservableList<String> validTiles = FXCollections.observableArrayList(tiles);
+        tilesForBuying.setItems(validTiles);
     }
 
     private void setWorkingCivilization() {
