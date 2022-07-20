@@ -24,6 +24,7 @@ public class Worker extends Citizen {
         workToIndex.put("LumberMill", 5);
         workToIndex.put("Pasture", 6);
         workToIndex.put("Camp", 7);
+        workToIndex.put("Factory", 7);
         workToIndex.put("Plantation", 8);
         workToIndex.put("Quarry", 9);
         workToIndex.put("removeJungle", 10);//forest in the doc
