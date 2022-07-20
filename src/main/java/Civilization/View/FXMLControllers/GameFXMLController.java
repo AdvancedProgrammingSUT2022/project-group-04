@@ -63,6 +63,7 @@ public class GameFXMLController {
     Button rangeAttack = new Button("Range Attack");
     Button meleeAttack = new Button("Melee Attack");
     Button foundCity = new Button("Found City");
+    Button workerActions = new Button("Worker Actions");
     Button delete = new Button("Delete");
     Button deleteNonCombat = new Button("Delete");
     Button pillage = new Button("Pillage");
@@ -625,6 +626,12 @@ public class GameFXMLController {
                     createCityVBox.setVisible(true);
                 }
             });
+            workerActions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    GraphicalBases.enterGame("WorkerActions");
+                }
+            });
 
             sleepWake.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -773,7 +780,14 @@ public class GameFXMLController {
             if(GameDatabase.getTileByXAndY(tile.x, tile.y).ruin != null) {
                 tile.polygon.setFill(new ImagePattern(GraphicalBases.RUINS));
             }
-            if(GameDatabase.getCityByXAndY(tile.x, tile.y) != null) {
+            if(GameDatabase.getTileByXAndY(tile.x, tile.y).hasRoad()) {
+                tile.polygon.setFill(new ImagePattern(GraphicalBases.ROAD));
+            }
+            if(GameDatabase.getTileByXAndY(tile.x, tile.y).hasRailroad()) {
+                tile.polygon.setFill(new ImagePattern(GraphicalBases.RAIL_ROAD));
+            }
+            if(GameDatabase.getCityByXAndY(tile.x, tile.y) != null
+                || GameDatabase.getTileByXAndY(tile.x, tile.y).isCityInTile() != null) {
                 tile.polygon.setFill(new ImagePattern(GraphicalBases.CITY));
             }
 
@@ -1062,17 +1076,33 @@ public class GameFXMLController {
     }
 
     private void showCombatByUnit(Unit unit, TileFX tileFX) {
-//        tileFX.combatUnit = new Circle(30, Color.BLACK);
-//        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
-//        tileFX.combatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 40);
-//        tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
-//        tileFX.combatUnit.prefHeight(100);
-//        tileFX.combatUnit.prefWidth(100);
+        if(unit == null) {
+            if(tileFX.combatUnit == null) {
+                return;
+            }
+            tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.NULL));
+            tileFX.combatUnit.setVisible(false);
+            //mapPane.getChildren().add(tileFX.nonCombatUnit);
+            tileFX.combatUnit.toFront();
+            return;
+        }
+        if(tileFX.combatUnit == null) {
+            tileFX.combatUnit = new Circle(30, Color.BLACK);
+            tileFX.combatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 40);
+            tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
+            tileFX.combatUnit.prefHeight(100);
+            tileFX.combatUnit.prefWidth(100);
+            mapPane.getChildren().add(tileFX.combatUnit);
+        }
+//        System.out.println(unit);
+//        System.out.println(unit.getUnitType());
+        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
+        tileFX.combatUnit.setVisible(true);
 
-        tileFX.polygon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        tileFX.combatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("showcombat");
+                System.out.println("show combat");
                 if(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getCombatUnit());
                     updateInfoPanel();
@@ -1085,6 +1115,7 @@ public class GameFXMLController {
                 }
             }
         });
+
         if (tileFX.combatUnit != null) {
             if (!mapPane.getChildren().contains(tileFX.combatUnit)) {
                 mapPane.getChildren().add(tileFX.combatUnit);
@@ -1092,6 +1123,8 @@ public class GameFXMLController {
 
             tileFX.combatUnit.toFront();
         }
+        
+
     }
 
     private void createCombat() {
@@ -1099,16 +1132,21 @@ public class GameFXMLController {
         if(!b) {
             return;
         }
-        selectedTile.combatUnit = new Circle(30, Color.BLACK);
-        selectedTile.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue().toString())));
-        selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 40);
-        selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
-        selectedTile.combatUnit.prefHeight(100);
-        selectedTile.combatUnit.prefWidth(100);
+        if(selectedTile.combatUnit == null) {
+            selectedTile.combatUnit = new Circle(30, Color.BLACK);
+            selectedTile.combatUnit.setLayoutX(selectedTile.polygon.getPoints().get(6) - 40);
+            selectedTile.combatUnit.setLayoutY(selectedTile.polygon.getPoints().get(7) - 40);
+            selectedTile.combatUnit.prefHeight(100);
+            selectedTile.combatUnit.prefWidth(100);
+            mapPane.getChildren().add(selectedTile.combatUnit);
+        }
+        selectedTile.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(selectedTile.soldiers.getValue())));
+        selectedTile.combatUnit.setVisible(true);
 
         selectedTile.combatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                System.out.println("Create Combat");
                 if(selectedTile != null && GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getCombatUnit() != null
                     && GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y).getCombatUnit());
@@ -1120,7 +1158,7 @@ public class GameFXMLController {
 
 
 
-        mapPane.getChildren().add(selectedTile.combatUnit);
+        //mapPane.getChildren().add(selectedTile.combatUnit);
         selectedTile.combatUnit.toFront();
         updateMap();
        // addToTileInReal(GameDatabase.getTileByXAndY(selectedTile.x, selectedTile.y), selectedTile.soldiers.getValue());
@@ -1131,16 +1169,21 @@ public class GameFXMLController {
             System.out.println("gaygay gay");
             return;
         }
-        tileFX.combatUnit = new Circle(30, Color.BLACK);
-        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(tileFX.soldiers.getValue().toString())));
-        tileFX.combatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 40);
-        tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
-        tileFX.combatUnit.prefHeight(100);
-        tileFX.combatUnit.prefWidth(100);
+        if(tileFX.combatUnit == null) {
+            tileFX.combatUnit = new Circle(30, Color.BLACK);
+            tileFX.combatUnit.setLayoutX(tileFX.polygon.getPoints().get(6) - 40);
+            tileFX.combatUnit.setLayoutY(tileFX.polygon.getPoints().get(7) - 40);
+            tileFX.combatUnit.prefHeight(100);
+            tileFX.combatUnit.prefWidth(100);
+            mapPane.getChildren().add(tileFX.combatUnit);
+        }
+        tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.UNITS.get(tileFX.soldiers.getValue())));
+        tileFX.combatUnit.setVisible(true);
 
         tileFX.combatUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                System.out.println("Create combat in tile");
                 if(tileFX != null && GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getCombatUnit() != null
                         && GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y).getCombatUnit());
@@ -1151,7 +1194,7 @@ public class GameFXMLController {
 
 
 
-        mapPane.getChildren().add(tileFX.combatUnit);
+        //mapPane.getChildren().add(tileFX.combatUnit);
         tileFX.combatUnit.toFront();
         addToTileInReal(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y), tileFX.soldiers.getValue());
     }
@@ -1294,7 +1337,7 @@ public class GameFXMLController {
 
         boxOfCommands = new VBox(sleepWake, alert, garrison,fortify , rangeAttackSetup, rangeAttack, meleeAttack, delete);
         boxOfCommands.setAlignment(Pos.CENTER);
-        boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, deleteNonCombat, foundCity, createCityVBox);
+        boxOfCommandsNonCombat = new VBox(sleepWakeNonCombat, deleteNonCombat, workerActions, foundCity, createCityVBox);
         boxOfCommandsNonCombat.setAlignment(Pos.CENTER);
         combatUnitCommands = new Pane(boxOfCommands);
         nonCombatUnitCommands = new Pane(boxOfCommandsNonCombat);
@@ -1381,6 +1424,7 @@ public class GameFXMLController {
             deleteNonCombat.setVisible(false);
             sleepWakeNonCombat.setVisible(false);
             foundCity.setVisible(false);
+            workerActions.setVisible(false);
         } else {
             unitSelected.setFill(new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType())));
             if(unit.getUnitType().equals("worker") || unit.getUnitType().equals("Settler")) {
@@ -1389,14 +1433,21 @@ public class GameFXMLController {
                 createCityVBox.setVisible(false);
                 if(unit.getUnitType().equals("Settler") && isFoundCityValid(unit.getX(), unit.getY())) {
                     foundCity.setVisible(true);
+                    workerActions.setVisible(false);
                 } else {
                     foundCity.setVisible(false);
+                    if(unit.getUnitType().equals("worker")) {
+                        workerActions.setVisible(true);
+                    } else {
+                        workerActions.setVisible(false);
+                    }
                 }
             } else {
                 createCityVBox.setVisible(false);
                 deleteNonCombat.setVisible(false);
                 sleepWakeNonCombat.setVisible(false);
                 foundCity.setVisible(false);
+                workerActions.setVisible(false);
             }
         }
     }

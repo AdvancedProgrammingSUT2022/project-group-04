@@ -58,6 +58,7 @@ public class City extends Tile {
         this.citizens = new ArrayList<Citizen>();
         this.attackingUnits = new ArrayList<>();
         this.tiles = new ArrayList<Tile>();
+        tiles.add(GameDatabase.getTileByXAndY(this.x, this.y));
         capitalCalculator();
     }
 
@@ -236,6 +237,7 @@ public class City extends Tile {
         building.setTurnsNeedToBuild(this.production, this.productionGenerating);
         this.buildings.add(building);
         if (!build) {
+            building.setTurnsNeedToBuild(1);
             GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-building.getCost());
         }
     }
@@ -409,8 +411,11 @@ public class City extends Tile {
     }
 
     public boolean isTileForThisCity(Tile tile) {
+        if(tile == null) {
+            return false;
+        }
         for (Tile cityTile : this.tiles) {
-            if (cityTile.equals(tile)) {
+            if (cityTile.getY() == tile.getY() && cityTile.getX() == tile.getX()) {
                 return true;
             }
         }
@@ -460,5 +465,46 @@ public class City extends Tile {
             }
         }
         return false;
+    }
+
+    public boolean isBuildingInCity(String building) {
+        for (Building building1 : this.buildings) {
+            if(building1.getName().equals(building)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Tile> getValidTilesForBuying() {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (Tile tile : getTiles()) {
+            for (Tile adjacentTile : tile.getAdjacentTiles()) {
+                if(!isTileForThisCity(adjacentTile) && isTileNewInArray(adjacentTile, tiles)) {
+                    if(GameDatabase.getCivilizationByNickname(this.civilizationName).getGold() > 10) {
+                        tiles.add(adjacentTile);
+                    }
+                }
+            }
+        }
+        return tiles;
+    }
+
+    private boolean isTileNewInArray(Tile adjacentTile, ArrayList<Tile> tiles) {
+        if(adjacentTile == null) {
+            return false;
+        }
+        for (Tile tile : tiles) {
+            if(adjacentTile.getX() == tile.getX() && adjacentTile.getY() == tile.getY()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void buyTile(Tile tile) {
+        this.tiles.add(tile);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addTile(tile);
+        GameDatabase.getCivilizationByNickname(this.civilizationName).addGold(-10);
     }
 }

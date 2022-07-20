@@ -36,6 +36,8 @@ public class GraphicalBases {
     public static final Image TREE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/Tree.jpg")).toExternalForm());
     public static final Image INDIA = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/india.jpg")).toExternalForm());
     public static final Image WHITE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/white.jpg")).toExternalForm());
+    public static final Image WORKER = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/worker.jpg")).toExternalForm());
+    public static final Image CITY_PANEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/cityPanel.jpg")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;
@@ -62,6 +64,8 @@ public class GraphicalBases {
     public static final Image RUINS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Ruins.jpg")).toExternalForm());
     public static final Image CITY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/City.jpg")).toExternalForm());
     public static final Image FOG_OF_WAR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/FogOfWar.png")).toExternalForm());
+    public static final Image ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/road.jpg")).toExternalForm());
+    public static final Image RAIL_ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/railroad.png")).toExternalForm());
 
     public static void firstLogin() {
         GraphicalBases.start();
