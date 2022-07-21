@@ -4,6 +4,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -97,12 +98,12 @@ public class GameMenuController {
         return !isUnitSoldier(unitSelected);
     }
 
-    public boolean isCityValid(String cityName) {
+    public boolean isCityValid(String cityName) throws IOException {
         City city = GameDatabase.getCityByName(cityName);
         return city != null;
     }
 
-    public boolean isCombatUnitInThisPosition(int x, int y) {
+    public boolean isCombatUnitInThisPosition(int x, int y) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
             if (isUnitSoldier(tile.getUnits().get(i))) {
@@ -112,7 +113,7 @@ public class GameMenuController {
         return false;
     }
 
-    public Unit selectCombatUnit(int x, int y) {
+    public Unit selectCombatUnit(int x, int y) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         for (int i = 0; i < tile.getUnits().size(); i++) {
             if (isUnitSoldier(tile.getUnits().get(i))) {
@@ -132,14 +133,14 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean isNonCombatUnitInThisPosition(int x, int y) {
+    public boolean isNonCombatUnitInThisPosition(int x, int y) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile.getSettler() != null || tile.getWorker() != null)
             return true;
         return false;
     }
 
-    public Unit selectNonCombatUnit(int x, int y) {
+    public Unit selectNonCombatUnit(int x, int y) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile.getSettler() != null)
             return tile.getSettler();
@@ -155,11 +156,11 @@ public class GameMenuController {
         return false;
     }
 
-    public void addHP(int x, int y, int amount) {
+    public void addHP(int x, int y, int amount) throws IOException {
         this.selectCombatUnit(x, y).addHP(amount);
     }
 
-    public void addHP(String cityName, int amount) {
+    public void addHP(String cityName, int amount) throws IOException {
         GameDatabase.getCityByName(cityName).addHP(amount);
     }
 
@@ -167,7 +168,7 @@ public class GameMenuController {
         GameDatabase.getPlayers().get(turn).happy();
     }
 
-    public void dryUp(int x, int y) {
+    public void dryUp(int x, int y) throws IOException {
         GameDatabase.getTileByXAndY(x, y).dryUp();
     }
 
@@ -188,12 +189,12 @@ public class GameMenuController {
         Notification.addNotification(notification);
     }
 
-    public boolean isCityPositionValid(int x, int y) {
+    public boolean isCityPositionValid(int x, int y) throws IOException {
         City city = GameDatabase.getCityByXAndY(x, y);
         return city != null;
     }
 
-    public boolean isDestinationOkForMove(Unit unit, int x, int y) {
+    public boolean isDestinationOkForMove(Unit unit, int x, int y) throws IOException {
         if (!isPositionValid(x, y)) {
             return false;
         }
@@ -208,7 +209,7 @@ public class GameMenuController {
         return true;
     }
 
-    public boolean isCityCapital(String cityName) {
+    public boolean isCityCapital(String cityName) throws IOException {
         return GameDatabase.getCityByName(cityName).isCapital();
     }
 
@@ -216,7 +217,7 @@ public class GameMenuController {
         return isAmountValid(amount);
     }
 
-    public boolean isCivilizationValid(String civilizationName) {
+    public boolean isCivilizationValid(String civilizationName) throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByNickname(civilizationName);
         if (civilization == null) {
             return false;
@@ -224,7 +225,7 @@ public class GameMenuController {
         return true;
     }
 
-    public boolean isCheatForTurn(String civilizationName, int turn) {
+    public boolean isCheatForTurn(String civilizationName, int turn) throws IOException {
         int index = GameDatabase.getCivilizationIndex(civilizationName);
         if (index == -1 || index == turn) {
             return false;
@@ -264,11 +265,11 @@ public class GameMenuController {
         return isAmountValid(amount);
     }
 
-    public void createNewCity(Settler settler, String cityName) {
+    public void createNewCity(Settler settler, String cityName) throws IOException {
         settler.createNewCity(cityName);
     }
 
-    public boolean isAdjacent(Tile tile, City city) {
+    public boolean isAdjacent(Tile tile, City city) throws IOException {
         for (int i = 0; i < city.getTiles().size(); i++) {
             if (tile.getAdjacentTiles().contains(city.getTiles().get(i))) {
                 return true;
@@ -277,13 +278,13 @@ public class GameMenuController {
         return false;
     }
 
-    public void addTileToCity(Tile tile, City city) {
+    public void addTileToCity(Tile tile, City city) throws IOException {
         city.addTile(tile);
         Civilization civilization = GameDatabase.getCivilizationForCity(city.getName());
         addTileToCivilization(tile, civilization);
     }
 
-    public boolean isOperable(Tile tile, City city) {
+    public boolean isOperable(Tile tile, City city) throws IOException {
         for (int i = 0; i < city.getTiles().size(); i++) {
             if (tile.getAdjacentTiles().contains(city.getTiles().get(i))
                     && city.getTiles().get(i).getSettler() != null) {
@@ -297,7 +298,7 @@ public class GameMenuController {
         return isAmountValid(amount);
     }
 
-    public void addProduction(String cityName, int amount) {
+    public void addProduction(String cityName, int amount) throws IOException {
         GameDatabase.getCityByName(cityName).addProduction(amount);
     }
 
@@ -325,7 +326,7 @@ public class GameMenuController {
         return null;
     }
 
-    public void pauseProject(Worker worker, int x, int y) {
+    public void pauseProject(Worker worker, int x, int y) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         City city = GameDatabase.getCityByXAndY(x, y);
         if(city == null
@@ -348,7 +349,7 @@ public class GameMenuController {
         }
     }
 
-    public boolean assignNewProject(Worker worker, String type) {
+    public boolean assignNewProject(Worker worker, String type) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         City city = GameDatabase.getCityByXAndY(worker.getX(), worker.getY());
         worker.lockTheWorker(tile);
@@ -416,7 +417,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean removeFeature(Worker worker) {
+    public boolean removeFeature(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.getBaseTerrain().getFeature() != null
                 && (tile.getBaseTerrain().getFeature().getType().equals("DenseJungle")
@@ -430,7 +431,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean removeRailroad(Worker worker) {
+    public boolean removeRailroad(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRailroad()) {
             return true;
@@ -441,7 +442,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean makeRailRoad(Worker worker) {
+    public boolean makeRailRoad(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("SteamPower")
@@ -460,7 +461,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean removeRoad(Worker worker) {
+    public boolean removeRoad(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (tile.hasRoad()) {
             return true;
@@ -471,7 +472,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean makeImprovement(Worker worker) {
+    public boolean makeImprovement(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         Improvement improvement = new Improvement(worker.getTypeOfWork());
@@ -487,7 +488,7 @@ public class GameMenuController {
         return true;
     }
 
-    public boolean makeRepair(Worker worker) {
+    public boolean makeRepair(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         if (worker.getIndexOfProject() == 15 && tile.isRaided()) {
             return true;
@@ -498,7 +499,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean makeFarm(Worker worker) {
+    public boolean makeFarm(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Agriculture")
@@ -518,7 +519,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean makeMine(Worker worker) {
+    public boolean makeMine(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Mining")
@@ -539,7 +540,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean makeRoad(Worker worker) {
+    public boolean makeRoad(Worker worker) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(worker.getX(), worker.getY());
         Civilization civilization = GameDatabase.getCivilizationByTile(tile);
         if (civilization.isTechnologyInCivilization("Wheel")
@@ -559,41 +560,31 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean isTileInCivilization(Tile tile, int turn) {
+    public boolean isTileInCivilization(Tile tile, int turn) throws IOException {
         Civilization civilization = GameDatabase.getCivilizationByTurn(turn);
         return civilization.isTileInCivilization(tile.getX(), tile.getY());
     }
 
-    public void deleteUnit(Unit unit) {
+    public void deleteUnit(Unit unit) throws IOException {
         int amount = (int) ((double) 1 / 10 * unit.getCost());
         GameDatabase.getCivilizationByTile(unit.getTileOfUnit()).addGold(amount);
         unit.getTileOfUnit().removeUnit(unit);
     }
 
-
-    //    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
-//        Tile tile = GameDatabase.getTileByXAndY(x, y);
-//        if (GameDatabase.getCivilizationByTurn(civilizationIndex).getClearTiles().contains(tile)) {
-//            if (unitType.equals("Settler")
-//                    || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
-//            else return createCombatUnit(unitType, x, y, civilizationIndex);
-//        }
-//        return false;
-//    }
-    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) {
+    public boolean createUnit(String unitType, int x, int y, int civilizationIndex) throws IOException {
+        Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (unitType.equals("Settler")
                 || unitType.equals("worker")) return createNonCombatUnit(unitType, x, y, civilizationIndex);
         else return createCombatUnit(unitType, x, y, civilizationIndex);
     }
 
-    public boolean isTileValidForCreatingUnit(int x, int y, int turn) {
+    public boolean isTileValidForCreatingUnit(int x, int y, int turn) throws IOException {
         return GameDatabase.getCivilizationByTurn(turn).getClearTiles().contains(GameDatabase.getTileByXAndY(x, y));
     }
 
-    public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) {
+    public boolean createCombatUnit(String unitType, int x, int y, int civilizationIndex) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(x, y);
         if (tile.getCombatUnit() != null) {
-            //System.out.println(tile.getCombatUnit());
             return false;
         }
         Soldier soldier = new Soldier(x, y, unitType, civilizationIndex);
@@ -606,8 +597,8 @@ public class GameMenuController {
         return isAmountValid(amount);
     }
 
-    public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) {
-        //System.out.println("create non combat");
+    public boolean createNonCombatUnit(String unitType, int x, int y, int civilizationIndex) throws IOException {
+
         if (GameDatabase.getCityByXAndY(x, y) != null) {
             if (unitType.equals("Settler")) GameDatabase.getCityByXAndY(x, y).createSettler(x, y);
             else if (unitType.equals("worker")) GameDatabase.getCityByXAndY(x, y).createWorker(x, y);
@@ -618,7 +609,7 @@ public class GameMenuController {
         return false;
     }
 
-    public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) {
+    public boolean isTileAdjacentToCivilization(Tile tile, Civilization civilization) throws IOException {
         for (int i = 0; i < civilization.getTiles().size(); i++) {
             if (civilization.getTiles().get(i).getAdjacentTiles().contains(tile)) {
                 return true;
@@ -644,7 +635,7 @@ public class GameMenuController {
         return settlers;
     }
 
-    public boolean garrisonUnitToCity(Unit unit) {
+    public boolean garrisonUnitToCity(Unit unit) throws IOException {
         City city = GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY());
         if (city != null) {
             city.setGarrison(unit);
@@ -657,7 +648,7 @@ public class GameMenuController {
 
     }
 
-    public boolean pillageCurrentTile(Unit unit) {
+    public boolean pillageCurrentTile(Unit unit) throws IOException {
         if (GameDatabase.getCityByXAndY(unit.getTileOfUnit().getX(), unit.getTileOfUnit().getY()) == null){
             return false;
         }
@@ -682,7 +673,7 @@ public class GameMenuController {
     }
 
 
-    public boolean moveUnitAlongPath(Unit selectedUnit) {
+    public boolean moveUnitAlongPath(Unit selectedUnit) throws IOException {
         int index = 0;
         for (int i = 0; i < selectedUnit.getRoute().size(); i++) {
             if (selectedUnit.getTileOfUnit().equals(selectedUnit.getRoute().get(i))) {
@@ -716,7 +707,7 @@ public class GameMenuController {
     }
 
 
-    public boolean isTileInAnyCivilization(Tile tile) {
+    public boolean isTileInAnyCivilization(Tile tile) throws IOException {
         for (int i = 0; i < GameDatabase.getPlayers().size(); i++) {
             if (isTileInCivilization(tile, i)) {
                 return true;

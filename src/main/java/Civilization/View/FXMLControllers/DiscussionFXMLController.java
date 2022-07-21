@@ -23,6 +23,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +63,7 @@ public class DiscussionFXMLController {
     private DiscussionUserChoosingTransition discussionUserChoosingTransition;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         you = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getNickname();
         defaultText = you + " Discussions:\n";
         setBackground();
@@ -73,7 +74,7 @@ public class DiscussionFXMLController {
         GameModel.isGame = true;
     }
 
-    private void setDiplomacy() {
+    private void setDiplomacy() throws IOException {
 
         sendResource = new Button("SEND");
         sendResource.setDisable(true);
@@ -103,7 +104,7 @@ public class DiscussionFXMLController {
         mainVBox.getChildren().add(resourcesHBox);
     }
 
-    private void setDiplomacyVBox() {
+    private void setDiplomacyVBox() throws IOException {
         setGoldHBox();
         setScienceHBox();
         setFoodHBox();
@@ -125,11 +126,31 @@ public class DiscussionFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 // TODO start war
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(false);
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(null);
-                sendMessage("Peace accepted");
-                GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(false);
-                GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(null);
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    sendMessage("Peace accepted");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 isPeace = false;
                 isAccepting = false;
             }
@@ -145,8 +166,16 @@ public class DiscussionFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 // TODO start war
-                sendMessage("Peace with " + selected.getNickname());
-                GameDatabase.getCivilizationByNickname(selected.getNickname()).setAcceptingPeace(true);
+                try {
+                    sendMessage("Peace with " + selected.getNickname());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByNickname(selected.getNickname()).setAcceptingPeace(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 isPeace = false;
                 isAccepting = false;
             }
@@ -162,11 +191,31 @@ public class DiscussionFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 // TODO start war
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
-                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(GameDatabase.getCivilizationByNickname(selected.getNickname()));
-                sendMessage(you + " is Now in WAR with " + selected.getNickname());
-                GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(GameDatabase.getCivilizationByNickname(you));
-                GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(true);
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(GameDatabase.getCivilizationByNickname(selected.getNickname()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    sendMessage(you + " is Now in WAR with " + selected.getNickname());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(GameDatabase.getCivilizationByNickname(you));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 isPeace = true;
             }
         });
@@ -175,7 +224,7 @@ public class DiscussionFXMLController {
         diplomacyVBox.getChildren().add(war);
     }
 
-    private void setFoodHBox() {
+    private void setFoodHBox() throws IOException {
 
         String cityWithMinFood;
         String cityWithMaxFood = null;
@@ -225,8 +274,16 @@ public class DiscussionFXMLController {
                         textField.setText("");
                         textField.setStyle("-fx-border-color: red");
                     } else {
-                        sendMessage(number + " Foods from " + you);
-                        GameDatabase.getCityByName(finalCityWithMaxFood).setLeftoverFood(GameDatabase.getCityByName(finalCityWithMaxFood).getFood() - number);
+                        try {
+                            sendMessage(number + " Foods from " + you);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            GameDatabase.getCityByName(finalCityWithMaxFood).setLeftoverFood(GameDatabase.getCityByName(finalCityWithMaxFood).getFood() - number);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         for (City city : selected.getCities()) {
                             city.setLeftoverFood(city.getFood() + number);
                             break;
@@ -283,16 +340,20 @@ public class DiscussionFXMLController {
                     textField.setStyle("-fx-border-color: red");
                 } else {
                     int number = Integer.parseInt(text);
-                    if(number <= 1 || number > GameDatabase.getCivilizationByNickname(you).getScience()) {
-                        textField.setText("");
-                        textField.setStyle("-fx-border-color: red");
-                    } else {
-                        sendMessage(number + " Science from " + you);
-                        Cheater cheater = new Cheater(GameDatabase.getCivilizationIndex(selected.getNickname()));
-                        cheater.run("add science " + number);
-                        GameDatabase.getCivilizationByNickname(you).setScience(GameDatabase.getCivilizationByNickname(you).getScience() - number);
-                        textField.setText("");
-                        button.setDisable(true);
+                    try {
+                        if(number <= 1 || number > GameDatabase.getCivilizationByNickname(you).getScience()) {
+                            textField.setText("");
+                            textField.setStyle("-fx-border-color: red");
+                        } else {
+                            sendMessage(number + " Science from " + you);
+                            Cheater cheater = new Cheater(GameDatabase.getCivilizationIndex(selected.getNickname()));
+                            cheater.run("add science " + number);
+                            GameDatabase.getCivilizationByNickname(you).setScience(GameDatabase.getCivilizationByNickname(you).getScience() - number);
+                            textField.setText("");
+                            button.setDisable(true);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -343,16 +404,24 @@ public class DiscussionFXMLController {
                     textField.setStyle("-fx-border-color: red");
                 } else {
                     int number = Integer.parseInt(text);
-                    if(number <= 1 || number > GameDatabase.getCivilizationByNickname(you).getGold()) {
-                        textField.setText("");
-                        textField.setStyle("-fx-border-color: red");
-                    } else {
-                        sendMessage(number + " Golds from " + you);
-                        Cheater cheater = new Cheater(GameDatabase.getCivilizationIndex(selected.getNickname()));
-                        cheater.run("gold increase " + number);
-                        GameDatabase.getCivilizationByNickname(you).setGold(GameDatabase.getCivilizationByNickname(you).getGold() - number);
-                        textField.setText("");
-                        button.setDisable(true);
+                    try {
+                        if(number <= 1 || number > GameDatabase.getCivilizationByNickname(you).getGold()) {
+                            textField.setText("");
+                            textField.setStyle("-fx-border-color: red");
+                        } else {
+                            sendMessage(number + " Golds from " + you);
+                            Cheater cheater = new Cheater(GameDatabase.getCivilizationIndex(selected.getNickname()));
+                            cheater.run("gold increase " + number);
+                            try {
+                                GameDatabase.getCivilizationByNickname(you).setGold(GameDatabase.getCivilizationByNickname(you).getGold() - number);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            textField.setText("");
+                            button.setDisable(true);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -384,12 +453,16 @@ public class DiscussionFXMLController {
         sendResource.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                sendMessage(you + " sent resource " + resourceSelected);
+                try {
+                    sendMessage(you + " sent resource " + resourceSelected);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private void setResourcesChoiceBox() {
+    private void setResourcesChoiceBox() throws IOException {
 
         discussionResourceChoosingTransition = new DiscussionResourceChoosingTransition(this);
         discussionResourceChoosingTransition.play();
@@ -425,7 +498,11 @@ public class DiscussionFXMLController {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                sendMessage(message.getText());
+                try {
+                    sendMessage(message.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 message.setText("");
             }
         });
@@ -442,7 +519,7 @@ public class DiscussionFXMLController {
         mainVBox.getChildren().add(sendHBox);
     }
 
-    private void sendMessage(String text) {
+    private void sendMessage(String text) throws IOException {
         String messageToYou = "Message to " + selected.getNickname() + ":\n\t" + text;
         GameDatabase.getCivilizationByNickname(you).getMessages().add(messageToYou);
 
@@ -452,7 +529,7 @@ public class DiscussionFXMLController {
         writeMessages();
     }
 
-    private void setMessagesPart() {
+    private void setMessagesPart() throws IOException {
         messagePart = new TextArea();
         messagePart.setPrefWidth(300);
         messagePart.setPrefHeight(300);
@@ -462,7 +539,7 @@ public class DiscussionFXMLController {
         mainVBox.getChildren().add(messagePart);
     }
 
-    private void writeMessages() {
+    private void writeMessages() throws IOException {
         if(GameDatabase.getCivilizationByNickname(you).getMessages().size() == 1) {
             messagePart.setText(defaultText + GameDatabase.getCivilizationByNickname(you).getMessages().get(0) + "\nNo Messages Yet.");
         } else {
@@ -556,7 +633,7 @@ public class DiscussionFXMLController {
         mainHBox.getChildren().add(backButton);
     }
 
-    public void handleChoiceBox() {
+    public void handleChoiceBox() throws IOException {
         if(usersChoiceBox.getValue() != null) {
             String nickname = usersChoiceBox.getValue();
             selected = GameDatabase.getCivilizationByNickname(nickname);

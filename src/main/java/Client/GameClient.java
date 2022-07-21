@@ -3,13 +3,15 @@ package Client;
 import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
+import Server.User;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -193,7 +195,7 @@ public class GameClient {
 
     }
 
-    public static void generateMap(int numberOfPlayers) {
+    public static void generateMap(int numberOfPlayers) throws IOException {
         Worker.setHashMap();
         Random random = new Random();
         int[] possibilities = {10, 10, 10, 10, 10, 10, 10, 10};
@@ -358,7 +360,7 @@ public class GameClient {
         return null;
     }
 
-    public static void nextTurn() {
+    public static void nextTurn() throws IOException {
         setTurn(calculateNextTurn());
         for (Civilization player : GameDatabase.players) {
             player.nextTurn();
@@ -447,7 +449,7 @@ public class GameClient {
 //        writer.close();
 //    }
 
-    public static Civilization checkIfWin() {
+    public static Civilization checkIfWin() throws IOException {
         if (GameDatabase.year >= 2050) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.getTurn());
         }
@@ -476,7 +478,7 @@ public class GameClient {
 //        SavingGame.saveGame(copy);
     }
 
-    public static Civilization getLastCivilization() {
+    public static Civilization getLastCivilization() throws IOException {
         int turn = GameDatabase.getTurn();
         if(turn == 0) {
             return GameDatabase.getCivilizationByTurn(GameDatabase.players.size() - 1);

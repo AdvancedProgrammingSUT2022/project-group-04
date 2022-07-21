@@ -22,6 +22,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -37,7 +38,7 @@ public class WorkerActionsFXMLController {
     private ChoiceBox<String> improvementsCoiceBox;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         setFirstVariables();
         setBackground();
         setBackButton();
@@ -56,7 +57,7 @@ public class WorkerActionsFXMLController {
         mainAnchorPane.getChildren().add(text);
     }
 
-    private void setWorkerVBox() {
+    private void setWorkerVBox() throws IOException {
         mainWorkerVBox = new VBox();
         mainWorkerVBox.setLayoutX(1000);
         mainWorkerVBox.setLayoutY(50);
@@ -96,7 +97,12 @@ public class WorkerActionsFXMLController {
                     return;
                 }
                 String improvementName = improvementsCoiceBox.getValue();
-                boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, improvementName);
+                boolean bool = false;
+                try {
+                    bool = new GameMenuController(new GameModel()).assignNewProject(worker, improvementName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!bool) {
                     button.setStyle("-fx-border-color: RED");
                 }
@@ -115,14 +121,19 @@ public class WorkerActionsFXMLController {
         improvementsCoiceBox.setItems(validTiles);
     }
 
-    private void setRemoveRailRoad() {
+    private void setRemoveRailRoad() throws IOException {
         Button button = new Button("Remove Railroad");
         button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
         button.setPrefWidth(150);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeRailroad");
+                boolean bool = false;
+                try {
+                    bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeRailroad");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!bool) {
                     button.setStyle("-fx-border-color: RED");
                 }
@@ -136,14 +147,19 @@ public class WorkerActionsFXMLController {
         mainWorkerVBox.getChildren().add(button);
     }
 
-    private void setRemoveRoad() {
+    private void setRemoveRoad() throws IOException {
         Button button = new Button("Remove Road");
         button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
         button.setPrefWidth(150);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeRoad");
+                boolean bool = false;
+                try {
+                    bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeRoad");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!bool) {
                     button.setStyle("-fx-border-color: RED");
                 }
@@ -157,7 +173,7 @@ public class WorkerActionsFXMLController {
         mainWorkerVBox.getChildren().add(button);
     }
 
-    private void setRemoveFeature() {
+    private void setRemoveFeature() throws IOException {
         TerrainFeatures features = GameDatabase.getTileByXAndY(worker.getX(), worker.getY()).getBaseTerrain().getFeature();
         final String[] featureType = {""};
         if(features != null) {
@@ -175,17 +191,32 @@ public class WorkerActionsFXMLController {
                     featureType[0] = "remove" + featureType[0];
                 }
                 if(featureType[0].equals("removeJungle")) {
-                    boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeJungle");
+                    boolean bool = false;
+                    try {
+                        bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeJungle");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if(!bool) {
                         button.setStyle("-fx-border-color: RED");
                     }
                 } else if(featureType[0].equals("removeDense_Jungle")) {
-                    boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeDense_Jungle");
+                    boolean bool = false;
+                    try {
+                        bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removeDense_Jungle");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if(!bool) {
                         button.setStyle("-fx-border-color: RED");
                     }
                 } else if(featureType[0].equals("removePrairie")) {
-                    boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removePrairie");
+                    boolean bool = false;
+                    try {
+                        bool = new GameMenuController(new GameModel()).assignNewProject(worker, "removePrairie");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if(!bool) {
                         button.setStyle("-fx-border-color: RED");
                     }
@@ -212,14 +243,19 @@ public class WorkerActionsFXMLController {
     }
 
 
-    private void setRepairTileButton() {
+    private void setRepairTileButton() throws IOException {
         Button button = new Button("Repair tile");
         button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
         button.setPrefWidth(150);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "repair");
+                boolean bool = false;
+                try {
+                    bool = new GameMenuController(new GameModel()).assignNewProject(worker, "repair");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!bool) {
                     button.setStyle("-fx-border-color: RED");
                 }
@@ -233,14 +269,19 @@ public class WorkerActionsFXMLController {
         mainWorkerVBox.getChildren().add(button);
     }
 
-    private void setCreateRailRoadButton() {
+    private void setCreateRailRoadButton() throws IOException {
         Button button = new Button("Build Railroad");
         button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
         button.setPrefWidth(150);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "Railroad");
+                boolean bool = false;
+                try {
+                    bool = new GameMenuController(new GameModel()).assignNewProject(worker, "Railroad");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!bool) {
                     button.setStyle("-fx-border-color: RED");
                 }
@@ -254,14 +295,19 @@ public class WorkerActionsFXMLController {
         mainWorkerVBox.getChildren().add(button);
     }
 
-    private void setCreateRoadButton() {
+    private void setCreateRoadButton() throws IOException {
         Button button = new Button("Build road");
         button.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
         button.setPrefWidth(150);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                boolean bool = new GameMenuController(new GameModel()).assignNewProject(worker, "Road");
+                boolean bool = false;
+                try {
+                    bool = new GameMenuController(new GameModel()).assignNewProject(worker, "Road");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!bool) {
                     button.setStyle("-fx-border-color: RED");
                 }
@@ -284,7 +330,11 @@ public class WorkerActionsFXMLController {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                new GameMenuController(new GameModel()).pauseProject(worker, worker.getX(), worker.getY());
+                try {
+                    new GameMenuController(new GameModel()).pauseProject(worker, worker.getX(), worker.getY());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         if(worker.isAssigned()) {
@@ -330,7 +380,7 @@ public class WorkerActionsFXMLController {
         mainAnchorPane.getChildren().add(button);
     }
 
-    private void setFirstVariables() {
+    private void setFirstVariables() throws IOException {
         tile = GameDatabase.getTileByXAndY(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit().getX(), GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit().getY());
         worker = tile.getWorker();
     }

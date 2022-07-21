@@ -1,8 +1,8 @@
 package Civilization.Controller;
 
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.MainMenuModel;
-import Civilization.Model.User;
+import Server.User;
 
 public class MainMenuController {
 

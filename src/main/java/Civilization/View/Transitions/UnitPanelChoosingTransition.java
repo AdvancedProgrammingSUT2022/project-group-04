@@ -5,6 +5,8 @@ import Civilization.View.FXMLControllers.PanelListFXMLController;
 import javafx.animation.Transition;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
 public class UnitPanelChoosingTransition extends Transition {
 
     private PanelListFXMLController panelListFXMLController;
@@ -18,6 +20,10 @@ public class UnitPanelChoosingTransition extends Transition {
 
     @Override
     protected void interpolate(double v) {
-        panelListFXMLController.handleUnitChoiceBox();
+        try {
+            panelListFXMLController.handleUnitChoiceBox();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

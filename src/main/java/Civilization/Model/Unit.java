@@ -2,6 +2,7 @@ package Civilization.Model;
 
 import Civilization.Database.GameDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Unit {
@@ -192,7 +193,7 @@ public class Unit {
         this.maintenance = maintenance;
     }
 
-    public void setTileOfUnit(Tile isOnTile) {
+    public void setTileOfUnit(Tile isOnTile) throws IOException {
         this.tileOfUnit = isOnTile;
         if(isOnTile.getRuin() != null) {
             isOnTile.arriveRuin(this);
@@ -273,7 +274,7 @@ public class Unit {
         return result;
     }
 
-    public int moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) {
+    public int moveUnitFromTo(Unit selectedUnit, Tile currentTile, Tile destTile) throws IOException {
         if (!destTile.canBePassed()) {
             return -1;
         }
@@ -347,7 +348,7 @@ public class Unit {
         return false;
     }
 
-    public boolean isInItsCivilization() {
+    public boolean isInItsCivilization() throws IOException {
         if (GameDatabase.getCivilizationByTurn(civilizationIndex) == GameDatabase.getCivilizationByTile(this.tileOfUnit)) {
             return true;
         }

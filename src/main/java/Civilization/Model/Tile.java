@@ -2,6 +2,7 @@ package Civilization.Model;
 
 import Civilization.Database.GameDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Tile {
@@ -46,20 +47,30 @@ public class Tile {
     Tile prev;
 
 
-    public Tile(String type, String baseTerrainType, int x, int y) {
+    public Tile(String type, String baseTerrainType, int x, int y) throws IOException {
+        System.out.println(1);
         this.type = type;
+        System.out.println(2);
         this.hasRoad = false;
+        System.out.println(3);
         this.baseTerrain = new BaseTerrain(baseTerrainType);
         this.x = x;
+        System.out.println(4);
         this.y = y;
+        System.out.println(5);
         this.units = new ArrayList<Unit>();
+        System.out.println(6);
         this.improvements = new ArrayList<Improvement>();
+        System.out.println(7);
         this.discoveredResources = new ArrayList<Resources>();
+        System.out.println(8);
         this.isRiver = new boolean[6];
         for (int i = 0; i < this.isRiver.length; i++) {
             this.isRiver[i] = false;
         }
-        setNeighbors(getAdjacentTiles());//set neighbours
+        System.out.println(9);
+        //setNeighbors(getAdjacentTiles());//set neighbours
+        System.out.println(10);
         initializeRoundsTillFinish(-1);
     }
 
@@ -77,7 +88,7 @@ public class Tile {
     }
 
 
-    public void addResource(Resources resources) {
+    public void addResource(Resources resources) throws IOException {
         discoveredResources.add(resources);
         if (resources.getType().equals("luxury")
                 && GameDatabase.getCivilizationByTile(this).isResourceNew(resources)) {
@@ -87,14 +98,14 @@ public class Tile {
 
     public Unit getNonCombatUnit() {
         for (Unit unit : this.units) {
-            if(unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker")) {
+            if (unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker")) {
                 return unit;
             }
         }
-        if(this.settler != null) {
+        if (this.settler != null) {
             return this.settler;
         }
-        if(this.worker != null) {
+        if (this.worker != null) {
             return this.worker;
         }
         return null;
@@ -102,14 +113,15 @@ public class Tile {
 
     public Unit getCombatUnit() {
         for (Unit unit : this.units) {
-            if(!(unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker"))) {
+            if (!(unit.getUnitType().equals("Settler") || unit.getUnitType().equals("worker"))) {
                 return unit;
             }
         }
         return null;
     }
 
-    public void discoverResource() {
+    public void discoverResource() throws IOException {
+
         if (this.baseTerrain.getResources() == null) {
             return;
         }
@@ -120,7 +132,7 @@ public class Tile {
         }
     }
 
-    public boolean isTileValidForAddingToCity() {
+    public boolean isTileValidForAddingToCity() throws IOException {
         return GameDatabase.isTileForACity(this);
     }
 
@@ -300,7 +312,7 @@ public class Tile {
 
     public String getInformation() {
         String result = this.toString();
-        if(city == null) {
+        if (city == null) {
             result += "\n Food = 0";
         } else {
             result += "\n Food = " + Integer.toString(city.getFood());
@@ -309,7 +321,7 @@ public class Tile {
         result += "\n Gold = " + baseTerrain.getGold();
         result += "\n Combat Modification = 0";
         result += "\n Movement Point = " + baseTerrain.getMovementPrice();
-        if(baseTerrain.getFeature() != null) {
+        if (baseTerrain.getFeature() != null) {
             result += addFeatureData();
         }
         if(getNonCombatUnit() != null){
@@ -344,7 +356,7 @@ public class Tile {
         return edge >= 0 && edge < this.isRiver.length;
     }
 
-    private void dryInNeighbors() {
+    private void dryInNeighbors() throws IOException {
         for (Tile tile : getAdjacentTiles()) {
             if (tile != null) {
                 int edge = tile.getTileEdge(GameDatabase.getTileByXAndY(this.x, this.y));
@@ -403,14 +415,14 @@ public class Tile {
         return -1;
     }
 
-    public void dryUp() {
+    public void dryUp() throws IOException {
         for (int i = 0; i < this.isRiver.length; i++) {
             dryUpByEdge(i);
         }
         dryInNeighbors();
     }
 
-    public ArrayList<Tile> getAdjacentTiles() {
+    public ArrayList<Tile> getAdjacentTiles() throws IOException {
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (this.y % 2 == 0) {
             adjacentTiles.add(GameDatabase.getTileByXAndY(this.x - 1, this.y));
@@ -442,7 +454,7 @@ public class Tile {
         return false;
     }
 
-    public ArrayList<Tile> getAdjacentTilesByLayer(int n) {
+    public ArrayList<Tile> getAdjacentTilesByLayer(int n) throws IOException {
 
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (n == 1) {
@@ -486,7 +498,7 @@ public class Tile {
         return this.getBaseTerrain().getFeature().getType().equals(featureName);
     }
 
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         if(worker != null) {
             worker.nextTurn();
         }
@@ -556,7 +568,8 @@ public class Tile {
     public void addWorker(Worker worker) {
         this.worker = worker;
     }
-    public void removeWorker(Worker worker){
+
+    public void removeWorker(Worker worker) {
         if (this.worker.equals(worker))
             this.worker = null;
     }
@@ -565,7 +578,8 @@ public class Tile {
         this.settler = settler;
     }
 
-    public void removeSettler(Settler settler){
+
+    public void removeSettler(Settler settler) throws IOException {
         if (settler.equals(this.settler)) {
             GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(null);
             this.settler = null;
@@ -584,12 +598,12 @@ public class Tile {
         return isRaided;
     }
 
-    public void arriveRuin(Unit unit) {
+    public void arriveRuin(Unit unit) throws IOException {
         ruin.arrive(unit);
         ruin = null;
     }
 
-    public Citizen getCitizen() {
+    public Citizen getCitizen() throws IOException {
         for (Unit unit : units) {
             if(unit.getUnitType().equals("Citizen") && unit.getCivilizationIndex() == GameDatabase.getCivilizationIndex(GameDatabase.getCivilizationByTile(this).getNickname())) {
                 return (Citizen) unit;

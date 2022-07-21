@@ -1,11 +1,10 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
 import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
-import Civilization.Model.User;
 import Civilization.View.GraphicalBases;
+import Server.UserDatabase;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +16,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 public class WinFXMLController {
 
     @FXML
@@ -25,7 +26,7 @@ public class WinFXMLController {
     private Civilization winner;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         winner = GameDatabase.checkIfWin();
         UserDatabase.setUserScores(GameDatabase.players);
         setBackground();

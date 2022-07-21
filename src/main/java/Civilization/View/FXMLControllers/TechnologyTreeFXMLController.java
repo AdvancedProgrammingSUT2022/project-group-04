@@ -22,6 +22,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class TechnologyTreeFXMLController {
@@ -34,7 +35,7 @@ public class TechnologyTreeFXMLController {
     private boolean hasCity;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
 
         hasCity = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getCities().size() != 0;
 
@@ -54,7 +55,7 @@ public class TechnologyTreeFXMLController {
         mainAnchorPane.getChildren().add(information);
     }
 
-    private void setTree() {
+    private void setTree() throws IOException {
         HBox hBox = drawTree();
         Rectangle rectangle = new Rectangle();
         rectangle.setFill(new ImagePattern(GraphicalBases.TREE));
@@ -71,7 +72,7 @@ public class TechnologyTreeFXMLController {
         mainAnchorPane.getChildren().add(mainScrollPane);
     }
 
-    private HBox drawTree() {
+    private HBox drawTree() throws IOException {
         int x = 60;
         HBox hBox = new HBox();
         hBox.setSpacing(10);
@@ -91,7 +92,11 @@ public class TechnologyTreeFXMLController {
             circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).addTechnology(technology);
+                    try {
+                        GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).addTechnology(technology);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             circle.setDisable(disable);

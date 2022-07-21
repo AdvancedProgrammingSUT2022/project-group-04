@@ -1,16 +1,14 @@
 package Civilization.View.FXMLControllers;
 
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.GameModel;
-import Civilization.Model.User;
+import Server.User;
 import Civilization.View.GraphicalBases;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -1,22 +1,18 @@
 package Civilization.Model;
 
-import Civilization.Controller.CombatController;
-import Civilization.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
-import Civilization.View.GameMenu;
+import Server.UserDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
-import java.util.regex.Matcher;
 
 public class GameModel {
 
     public static boolean autoSave = false;
     public static boolean isGame = false;
 
-    public void startGame(ArrayList<String> users) {
+    public void startGame(ArrayList<String> users) throws IOException {
 
         ArrayList<Civilization> players = new ArrayList<Civilization>();
         for (String user : users) {
@@ -24,9 +20,12 @@ public class GameModel {
             players.add(civilization);
         }
 
-        GameDatabase.setPlayers(players);
+        for (int i=0;i< users.size();i++) GameDatabase.setPlayers(players,users.get(i));
+        System.out.println("worked");
         GameDatabase.generateMap(users.size());
+        System.out.println("haha worked");
         GameDatabase.generateRuin();
+        System.out.println("haha worked");
 
     }
 

@@ -2,10 +2,8 @@ package Civilization.View.FXMLControllers;
 
 import Civilization.Controller.SavingGame;
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
-import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
-import Civilization.Model.User;
+import Server.User;
 import Civilization.View.Components.SwitchButton;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
@@ -19,15 +17,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -538,7 +535,7 @@ public class GameMenuFXMLController {
                     } else {
                         tileCount = number;
                         numberOfTiles.setEditable(false);
-                        GameDatabase.width = number;
+                        GameDatabase.setWidth(number);
                     }
                 }
             }
@@ -705,7 +702,11 @@ public class GameMenuFXMLController {
         OKButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                runGame();
+                try {
+                    runGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 GraphicalBases.enterGame("Game");
             }
         });
@@ -714,7 +715,7 @@ public class GameMenuFXMLController {
         cursorTransition.play();
     }
 
-    private void runGame() {
+    private void runGame() throws IOException {
         ArrayList<String> users = new ArrayList<>(selectedUsers);
         GameModel gameModel = new GameModel();
         gameModel.startGame(users);

@@ -5,12 +5,13 @@ import Civilization.Controller.GameMenuController;
 import Civilization.Controller.MainMenuController;
 import Civilization.Controller.ProfileMenuController;
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.Civilization;
 import Civilization.Model.GameModel;
 import Civilization.Model.ProfileMenuModel;
-import Civilization.Model.User;
+import Server.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,7 +26,7 @@ public class MainMenu extends Menu {
         this.mainMenuController = mainMenuController;
     }
 
-    public void run(Scanner scanner, User loggedinUser) {
+    public void run(Scanner scanner, User loggedinUser) throws IOException {
         String command;
         while (true) {
             Matcher matcher;
@@ -119,7 +120,7 @@ public class MainMenu extends Menu {
      * @param scanner
      * @param matcher
      */
-    public void enterGameMenu(Scanner scanner, Matcher matcher) {
+    public void enterGameMenu(Scanner scanner, Matcher matcher) throws IOException {
 
         String[] splitCommand = matcher.group("command").split(" --player\\d+ ");
         if (splitCommand.length == 1) {
@@ -137,7 +138,7 @@ public class MainMenu extends Menu {
         CombatController combatController = new CombatController();
         GameMenu gameMenu = new GameMenu(gameMenuController, combatController);
 
-        GameDatabase.setPlayers(players);
+        for (int i=0;i< players.size();i++) GameDatabase.setPlayers(players,players.get(i).getNickname());
         GameDatabase.generateMap(splitCommand.length - 1);
 
         for (int i = 0; i < GameDatabase.players.size(); i++) {

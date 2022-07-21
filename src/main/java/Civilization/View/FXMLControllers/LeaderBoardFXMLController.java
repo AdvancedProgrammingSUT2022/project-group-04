@@ -1,8 +1,14 @@
 package Civilization.View.FXMLControllers;
 
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.GameModel;
-import Civilization.Model.User;
+import Server.User;
+import Civilization.View.GraphicalBases;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
+
+
 import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import javafx.fxml.FXML;
@@ -119,7 +125,7 @@ public class LeaderBoardFXMLController {
 
 
     public void setScores(){
-        ArrayList<User> users = sortUsers(UserDatabase.getAllUsers());
+        ArrayList<User> users = sortUsers((ArrayList<User>) UserDatabase.getAllUsers());
         if (users.size() > 0) {
             player1Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(0))));
             player1Score.setText(users.get(0).getScore() + "");

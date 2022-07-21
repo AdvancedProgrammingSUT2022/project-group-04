@@ -3,6 +3,7 @@ package Civilization.Model;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,7 +40,7 @@ public class Civilization {
 
     public ArrayList<Building> getValidBuildings() {
         ArrayList<Building> validBuildings = new ArrayList<>();
-        if(selectedCity == null) {
+        if (selectedCity == null) {
             return validBuildings;
         }
         for (String buildingName : GlobalVariables.BUILDINGS) {
@@ -66,10 +67,10 @@ public class Civilization {
         result += "\n\t Gold = " + this.gold;
         result += "\n\t Population = " + getPopulation();
         result += "\n\t Size = " + this.tiles.size();
-        if(technologies.size() != 0) {
+        if (technologies.size() != 0) {
             result += "\n\t Technologies = \n";
             for (Technology technology : technologies) {
-                result +=  "\t\t" + technology.getName() + " " + technology.wasReached() + "\n";
+                result += "\t\t" + technology.getName() + " " + technology.wasReached() + "\n";
             }
         }
         result += "\n\t Total Score = " + getFinalScore();
@@ -262,7 +263,7 @@ public class Civilization {
         return false;
     }
 
-    public ArrayList<Unit> getAllUnitsOfCivilization() {
+    public ArrayList<Unit> getAllUnitsOfCivilization() throws IOException {
 
         ArrayList<Unit> allUnits = new ArrayList<>();
         for (Tile tile : getClearTiles()) {
@@ -272,7 +273,7 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> tilesOnBorder() {
+    public ArrayList<Tile> tilesOnBorder() throws IOException {
         ArrayList<Tile> tilesOnBorder = new ArrayList<>();
         for (Tile tile : tiles) {
             boolean isBorderTile = false;
@@ -289,7 +290,7 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> firstClassAdjacentTiles() {
+    public ArrayList<Tile> firstClassAdjacentTiles() throws IOException {
 
         ArrayList<Tile> firstClassAdjacentTiles = new ArrayList<>();
         for (Tile tile : tilesOnBorder()) {
@@ -316,7 +317,7 @@ public class Civilization {
 
     }
 
-    public ArrayList<Tile> secondClassAdjacentTiles() {
+    public ArrayList<Tile> secondClassAdjacentTiles() throws IOException {
 
         ArrayList<Tile> secondClassAdjacentTiles = new ArrayList<>();
         for (Tile tile : firstClassAdjacentTiles()) {
@@ -337,7 +338,7 @@ public class Civilization {
         return secondClassAdjacentTiles;
     }
 
-    public ArrayList<Tile> getClearTiles() {
+    public ArrayList<Tile> getClearTiles() throws IOException {
         ArrayList<Tile> clearTiles = new ArrayList<>();
         clearTiles.addAll(tiles);
         clearTiles.addAll(firstClassAdjacentTiles());
@@ -346,12 +347,12 @@ public class Civilization {
         return clearTiles;
     }
 
-    public ArrayList<Tile> getNotFogOfWarTiles() {
+    public ArrayList<Tile> getNotFogOfWarTiles() throws IOException {
         ArrayList<Tile> clearTiles = new ArrayList<>();
         clearTiles.addAll(tiles);
         for (Tile tile : tiles) {
             for (Tile neighbor : tile.getAdjacentTiles()) {
-                if(neighbor != null && isTileNew(clearTiles, neighbor)) {
+                if (neighbor != null && isTileNew(clearTiles, neighbor)) {
                     clearTiles.add(neighbor);
                 }
 
@@ -365,16 +366,16 @@ public class Civilization {
 
     private boolean isTileNew(ArrayList<Tile> clearTiles, Tile neighbor) {
         for (Tile clearTile : clearTiles) {
-            if(clearTile.getY() == neighbor.getY() && clearTile.getX() == neighbor.getX()) {
+            if (clearTile.getY() == neighbor.getY() && clearTile.getX() == neighbor.getX()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isThisTileFogOfWar(Tile tile) {
+    public boolean isThisTileFogOfWar(Tile tile) throws IOException {
         for (Tile clearTile : getNotFogOfWarTiles()) {
-            if(tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
+            if (tile.getX() == clearTile.getX() && tile.getY() == clearTile.getY()) {
                 return false;
             }
 
@@ -395,13 +396,18 @@ public class Civilization {
         return true;
     }
 
-    public void maintenanceOfUnits() {
+    public void maintenanceOfUnits() throws IOException {
+        for (Tile tile : this.getTiles()) {
+            for (Unit unit : tile.getUnits()) {
+                addGold(unit.getMaintenance() * -1);
+            }
+        }
         for (Unit combatUnit : getCombatUnits()) {
             addGold(combatUnit.getCost()*-1);
         }
     }
 
-    public void nextTurn() {
+    public void nextTurn() throws IOException {
         this.turn++;
         happiness += happinessCalculator();
         for (City city : this.cities) {
@@ -434,7 +440,7 @@ public class Civilization {
         return null;
     }
 
-    public void changeCapital(String cityName) {
+    public void changeCapital(String cityName) throws IOException {
         if (getCapital() != null) {
             getCapital().removeCapital();
         }
@@ -516,9 +522,9 @@ public class Civilization {
         return true;
     }
 
-    public Technology getTechnologyUnderResearch(){
+    public Technology getTechnologyUnderResearch() {
         for (Technology technology : technologies) {
-            if(!technology.wasReached()) {
+            if (!technology.wasReached()) {
                 return technology;
             }
         }
@@ -545,14 +551,14 @@ public class Civilization {
 
     public void getPrize(Ruin ruin) {
         for (Technology technology : ruin.getTechnologies()) {
-            if(!isTechnologyForThisCivilization(technology)) {
+            if (!isTechnologyForThisCivilization(technology)) {
                 technologies.add(technology);
             }
         }
         this.gold += ruin.getGold();
     }
 
-    public ArrayList<Unit> getCombatUnits() {
+    public ArrayList<Unit> getCombatUnits() throws IOException {
         ArrayList<Unit> soldiers = new ArrayList<>();
         for (Tile tile : GameDatabase.map) {
             for (Unit unit : tile.units) {

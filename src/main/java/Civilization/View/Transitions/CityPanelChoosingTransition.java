@@ -5,6 +5,8 @@ import Civilization.View.FXMLControllers.PanelListFXMLController;
 import javafx.animation.Transition;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
 public class CityPanelChoosingTransition
         extends Transition {
 
@@ -19,6 +21,10 @@ public class CityPanelChoosingTransition
 
     @Override
     protected void interpolate(double v) {
-        panelListFXMLController.handleCityChoiceBox();
+        try {
+            panelListFXMLController.handleCityChoiceBox();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

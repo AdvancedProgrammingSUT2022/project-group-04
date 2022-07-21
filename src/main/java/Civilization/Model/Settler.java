@@ -2,6 +2,8 @@ package Civilization.Model;
 
 import Civilization.Database.GameDatabase;
 
+import java.io.IOException;
+
 public class Settler extends Citizen {
 
 
@@ -20,7 +22,7 @@ public class Settler extends Citizen {
 
     }
 
-    public void createNewCity(String name) {
+    public void createNewCity(String name) throws IOException {
         Tile tile = GameDatabase.getTileByXAndY(this.x, this.y);
         Civilization civilization = GameDatabase.getCivilizationByTurn(this.getCivilizationIndex());
         //taking only one turn to build a city

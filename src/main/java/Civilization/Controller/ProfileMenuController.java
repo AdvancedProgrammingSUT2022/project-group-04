@@ -1,8 +1,9 @@
 package Civilization.Controller;
 
-import Civilization.Database.UserDatabase;
+import Server.UserDatabase;
 import Civilization.Model.ProfileMenuModel;
-import Civilization.Model.User;
+import Server.User;
+import Server.UserController;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,5 +1,6 @@
 package Civilization.Model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -147,7 +148,7 @@ public class Graph {
         return exists;
     }
 
-    public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) {
+    public ArrayList<Tile> route(Tile start, Tile end, ArrayList<Tile> copyOfMap) throws IOException {
         for (Tile tile : copyOfMap) {
             tile.neighbors.clear();
             tile.setVisited(false);

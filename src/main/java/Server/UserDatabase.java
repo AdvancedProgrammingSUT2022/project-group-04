@@ -1,4 +1,4 @@
-package Civilization.Database;
+package Server;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import Civilization.Database.GameDatabase;
 import Civilization.Model.Civilization;
-import Civilization.Model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -94,7 +94,7 @@ public class UserDatabase {
         writer.close();
     }
 
-    public static void setUserScores(ArrayList<Civilization> players) {
+    public static void setUserScores(ArrayList<Civilization> players) throws IOException {
         for (Civilization civilization : players) {
             User user = GameDatabase.getUserForCivilization(civilization.getNickname());
             user.setScore(user.getScore() + civilization.getFinalScore());

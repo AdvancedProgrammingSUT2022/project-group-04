@@ -6,6 +6,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -100,7 +101,7 @@ public class GameMenu extends Menu {
         this.y = 0;
     }
 
-    public void run(Scanner scanner) {
+    public void run(Scanner scanner) throws IOException {
         System.out.println(GameDatabase.getPlayers().get(0).getNickname());
         String command;
         Info info = Info.getInstance();
@@ -433,7 +434,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    public String buyTileWithCoordinate(Matcher matcher) {
+    public String buyTileWithCoordinate(Matcher matcher) throws IOException {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -466,7 +467,7 @@ public class GameMenu extends Menu {
 
     }
 
-    public String changeCapital(Matcher matcher) {
+    public String changeCapital(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) return "invalid city";
         if (!this.gameMenuController.isCityForThisCivilization(turn, GameDatabase.getCityByName(cityName))) return "selected city is not for your civilization";
@@ -475,7 +476,7 @@ public class GameMenu extends Menu {
         return "capital changed successfully";
     }
 
-    public String lockCitizen(Matcher matcher) {
+    public String lockCitizen(Matcher matcher) throws IOException {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -490,7 +491,7 @@ public class GameMenu extends Menu {
         return "worker started locking process successfully!";
     }
 
-    public String unemployedSection(Matcher matcher, boolean isCoordinate) {
+    public String unemployedSection(Matcher matcher, boolean isCoordinate) throws IOException {
         City city;
         if (isCoordinate) {
             int x = Integer.parseInt(matcher.group("x"));
@@ -518,7 +519,7 @@ public class GameMenu extends Menu {
 //        }
 //    }
 
-    public String unitStopWork(Matcher matcher) {
+    public String unitStopWork(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -556,7 +557,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    public String mapShowCity(Matcher matcher) {
+    public String mapShowCity(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "selected city is not valid";
@@ -564,7 +565,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    public String selectCombat(Matcher matcher) {
+    public String selectCombat(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -577,7 +578,7 @@ public class GameMenu extends Menu {
         return "unit selected";
     }
 
-    public String addHitPointUnit(Matcher matcher) {
+    public String addHitPointUnit(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -600,7 +601,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " hit point added to unit in position " + Integer.toString(x) + " and " + Integer.toString(y);
     }
 
-    public String selectNonCombat(Matcher matcher) {
+    public String selectNonCombat(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -618,7 +619,7 @@ public class GameMenu extends Menu {
         return this.turn;
     }
 
-    public String changeTurn(Matcher matcher) {
+    public String changeTurn(Matcher matcher) throws IOException {
         String civilizationName = matcher.group("civilizationName");
         if (!this.gameMenuController.isCivilizationValid(civilizationName)) {
             return "there is no player with nickname " + civilizationName;
@@ -629,14 +630,14 @@ public class GameMenu extends Menu {
         return "now it's your turn!";
     }
 
-    public String changeTurnByNumber(Matcher matcher) {
+    public String changeTurnByNumber(Matcher matcher) throws IOException {
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForTurn(amount)) return "invalid turn";
         for (int i = 0; i < amount; i++) turn = nextTurn();
         return "now it's " + GameDatabase.getPlayers().get(turn).getNickname() + " turn!";
     }
 
-    public String addProduction(Matcher matcher) {
+    public String addProduction(Matcher matcher) throws IOException {
         int amount = Integer.parseInt(matcher.group("amount"));
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) return "invalid city";
@@ -646,7 +647,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " production added to " + cityName;
     }
 
-    private String unitMoveTo(Matcher matcher) {
+    private String unitMoveTo(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (unitSelected == null) {
@@ -667,7 +668,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private String createUnit(Matcher matcher) {
+    private String createUnit(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         String unitType = matcher.group("unitType");
@@ -721,7 +722,7 @@ public class GameMenu extends Menu {
         return "unit fortified";
     }
 
-    public String unitHeal() {
+    public String unitHeal() throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";
@@ -730,7 +731,7 @@ public class GameMenu extends Menu {
         return "unit fortifyHealed";
     }
 
-    public String unitFoundCity(Matcher matcher) {
+    public String unitFoundCity(Matcher matcher) throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (unitSelected.isCombatUnit()) {return "this is not a settler unit";
@@ -742,7 +743,7 @@ public class GameMenu extends Menu {
 
     }
 
-    public String unitPillageCurrentTile() {
+    public String unitPillageCurrentTile() throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (!unitSelected.isCombatUnit()) {return "this is not a combat unit";
@@ -761,7 +762,7 @@ public class GameMenu extends Menu {
         return "unit awakened";
     }
 
-    public String unitAttack(Matcher matcher) {
+    public String unitAttack(Matcher matcher) throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (!(unitSelected instanceof Soldier)) {return "this unit is not a combat unit";
@@ -797,7 +798,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    public String unitGarrison() {
+    public String unitGarrison() throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else if (!(unitSelected instanceof Soldier)) {return "this unit is not a combat unit";
@@ -812,7 +813,7 @@ public class GameMenu extends Menu {
     }
 
 
-    public String unitDelete() {
+    public String unitDelete() throws IOException {
         if (unitSelected == null) {return "you must select a unit first";
         } else if (!gameMenuController.isUnitForThisCivilization(turn % numberOfPlayers, unitSelected)) {return "this unit is not for you";
         } else {
@@ -829,7 +830,7 @@ public class GameMenu extends Menu {
         return "now your happiness is 0";
     }
 
-    public String unitBuild(Matcher matcher) {
+    public String unitBuild(Matcher matcher) throws IOException {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -851,7 +852,7 @@ public class GameMenu extends Menu {
                 "you don't have the pre-requisite technology";
     }
 
-    public String unitRemoveFeature(Matcher matcher) {
+    public String unitRemoveFeature(Matcher matcher) throws IOException {
         String improvementName = matcher.group("improvement");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -874,7 +875,7 @@ public class GameMenu extends Menu {
         return "you can't do that because this feature is not in this tile";
     }
 
-    public String unitRepair(Matcher matcher) {
+    public String unitRepair(Matcher matcher) throws IOException {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         Tile tile = GameDatabase.getTileByXAndY(x, y);
@@ -910,7 +911,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    public String dryUp(Matcher matcher) {
+    public String dryUp(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) return "invalid position";
@@ -920,7 +921,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    public String addHitPointCity(Matcher matcher) {
+    public String addHitPointCity(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForHP(amount)) {
@@ -939,7 +940,7 @@ public class GameMenu extends Menu {
         return Integer.toString(amount) + " hit point added to city " + cityName;
     }
 
-    public String citySelectByName(Matcher matcher) {
+    public String citySelectByName(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "invalid city";
@@ -947,7 +948,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    public String citySelectByPosition(Matcher matcher) {
+    public String citySelectByPosition(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -985,7 +986,7 @@ public class GameMenu extends Menu {
     }
 
 
-    private String validBuildings(Scanner scanner) {
+    private String validBuildings(Scanner scanner) throws IOException {
         if (citySelected == null) {
             return "you must select a city first";
         }
@@ -1044,7 +1045,7 @@ public class GameMenu extends Menu {
         return null;
     }
 
-    public String buildCity(Matcher matcher) {
+    public String buildCity(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -1063,7 +1064,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    public String sendMessage(Matcher matcher) {
+    public String sendMessage(Matcher matcher) throws IOException {
         String nickname = matcher.group("Nickname");
         String text = matcher.group("Text");
         if (!this.gameMenuController.isCivilizationValid(nickname)) return "there is no civilization with this nickname";
@@ -1088,7 +1089,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private int nextTurn() {
+    private int nextTurn() throws IOException {
         if (gameMenuController.getMovingUnits().size() != 0) {
             System.out.println(gameMenuController.getMovingUnits().get(0) + " kose ammeeee");
             boolean b = gameMenuController.moveUnitAlongPath(gameMenuController.getMovingUnits().get(0));
@@ -1117,7 +1118,7 @@ public class GameMenu extends Menu {
         System.out.println(GameDatabase.players.get(0).getNickname());
     }
 
-    public String getAddTileToCity(Matcher matcher) {
+    public String getAddTileToCity(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -1134,7 +1135,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    public void printMap(int mainX, int mainY) {
+    public void printMap(int mainX, int mainY) throws IOException {
         String[][][] linesOfHexagons = new String[5][6][6];
         for (int i = -2; i < 3; i++) {
             for (int j = -2; j < 4; j++) {

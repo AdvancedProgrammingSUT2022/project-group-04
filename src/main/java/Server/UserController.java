@@ -1,7 +1,4 @@
-package Civilization.Controller;
-
-import Civilization.Model.User;
-import Civilization.Database.UserDatabase;
+package Server;
 
 public class UserController {
 

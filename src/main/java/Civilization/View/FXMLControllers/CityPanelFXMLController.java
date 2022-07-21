@@ -18,6 +18,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +39,7 @@ public class CityPanelFXMLController {
     private ChoiceBox<String> tilesForBuying;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         setFirstVariables();
         setBackground();
         setBackButton();
@@ -51,7 +52,7 @@ public class CityPanelFXMLController {
         GameModel.isGame = true;
     }
 
-    private void setBuyingTilesSection() {
+    private void setBuyingTilesSection() throws IOException {
         tilesForBuying = new ChoiceBox<>();
         updateTilesForBuyingChoiceBox();
         tilesForBuying.setLayoutX(650);
@@ -67,19 +68,32 @@ public class CityPanelFXMLController {
                 if(tilesForBuying.getValue() == null) {
                     return;
                 }
-                Tile tile = findTile(tilesForBuying.getValue());
+                Tile tile = null;
+                try {
+                    tile = findTile(tilesForBuying.getValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(tile == null) {
                     return;
                 }
-                city.buyTile(tile);
-                updateTilesForBuyingChoiceBox();
+                try {
+                    city.buyTile(tile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    updateTilesForBuyingChoiceBox();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 updateTilesChoiceBox();
             }
         });
         mainAnchorPane.getChildren().add(ok);
     }
 
-    private Tile findTile(String value) {
+    private Tile findTile(String value) throws IOException {
         Pattern pattern = Pattern.compile("Tile in X: (?<x>\\d+) Y: (?<y>\\d+)");
         Matcher matcher = pattern.matcher(value);
         if(!matcher.matches()) {
@@ -88,7 +102,7 @@ public class CityPanelFXMLController {
         return GameDatabase.getTileByXAndY(Integer.parseInt(matcher.group("x")),Integer.parseInt(matcher.group("y")));
     }
 
-    private void updateTilesForBuyingChoiceBox() {
+    private void updateTilesForBuyingChoiceBox() throws IOException {
         ArrayList<String> tiles = new ArrayList<>();
         for (Tile cityTile : city.getValidTilesForBuying()) {
             tiles.add("Tile in X: " + cityTile.getX() + " Y: " + cityTile.getY());
@@ -113,7 +127,12 @@ public class CityPanelFXMLController {
                 if(workingCitizens.getValue() == null) {
                     return;
                 }
-                Citizen citizen = findCitizen(workingCitizens.getValue());
+                Citizen citizen = null;
+                try {
+                    citizen = findCitizen(workingCitizens.getValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(citizen == null) {
                     return;
                 }
@@ -164,7 +183,12 @@ public class CityPanelFXMLController {
                 if(result[0].equals("")) {
                     return;
                 }
-                Citizen citizen = findCitizen(result[0]);
+                Citizen citizen = null;
+                try {
+                    citizen = findCitizen(result[0]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(citizen == null) {
                     return;
                 }
@@ -279,7 +303,7 @@ public class CityPanelFXMLController {
         mainAnchorPane.getChildren().add(button);
     }
 
-    private void setFirstVariables() {
+    private void setFirstVariables() throws IOException {
         tile = GameDatabase.getTileByXAndY(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().getX(), GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().getY());
         city = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity();
     }
@@ -295,7 +319,7 @@ public class CityPanelFXMLController {
 
     }
 
-    private Citizen findCitizen(String input) {
+    private Citizen findCitizen(String input) throws IOException {
         Pattern pattern = Pattern.compile("Citizen on X: (?<x>\\d+) Y: (?<y>\\d+)");
         Matcher matcher = pattern.matcher(input);
         if(!matcher.matches()) {

@@ -1,7 +1,7 @@
 package Civilization.View;
 
 import Civilization.Controller.ProfileMenuController;
-import Civilization.Model.User;
+import Server.User;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class User {
+public class UserClient {
 
-    public static User loggedInUser;
+    public static UserClient loggedInUser;
 
-    public static ArrayList<User> users = new ArrayList<User>();
+    public static ArrayList<UserClient> users = new ArrayList<UserClient>();
 
     private String username;
     private String nickname;
@@ -20,7 +20,7 @@ public class User {
     private String timeOfScore;
     private String lastLoginTime;
 
-    public User(String username, String nickname, String password) {
+    public UserClient(String username, String nickname, String password) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;

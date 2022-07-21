@@ -5,6 +5,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Model.GameModel;
 import Civilization.Model.Worker;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
@@ -32,7 +33,7 @@ public class Cheater extends Menu{
         gameMenuController = new GameMenuController(new GameModel());
     }
 
-    public String run(String command) {
+    public String run(String command) throws IOException {
         Matcher matcher;
         if(command.equals(CHEAT_WIN)) {
             GameDatabase.cheated = true;
@@ -74,7 +75,7 @@ public class Cheater extends Menu{
         }
     }
 
-    public String dryUp(Matcher matcher) {
+    public String dryUp(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!this.gameMenuController.isPositionValid(x, y)) {
@@ -99,7 +100,7 @@ public class Cheater extends Menu{
         return "Success! Now You Have " + Integer.toString(GameDatabase.getPlayers().get(turn).getScore()) + " Score.";
     }
 
-    public String addProduction(Matcher matcher) {
+    public String addProduction(Matcher matcher) throws IOException {
         int amount = Integer.parseInt(matcher.group("amount"));
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
@@ -115,7 +116,7 @@ public class Cheater extends Menu{
         return "Success!" + Integer.toString(amount) + " Production Added to " + cityName + ".";
     }
 
-    public String changeCapital(Matcher matcher) {
+    public String changeCapital(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         if (!this.gameMenuController.isCityValid(cityName)) {
             return "Error: Invalid City";
@@ -130,7 +131,7 @@ public class Cheater extends Menu{
         return "Success! Capital Changed Successfully.";
     }
 
-    public String addHitPointUnit(Matcher matcher) {
+    public String addHitPointUnit(Matcher matcher) throws IOException {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -153,7 +154,7 @@ public class Cheater extends Menu{
         return "Success! " + Integer.toString(amount) + " Hit Point Added to Unit in Position " + Integer.toString(x) + " And " + Integer.toString(y) + ".";
     }
 
-    public String addHitPointCity(Matcher matcher) {
+    public String addHitPointCity(Matcher matcher) throws IOException {
         String cityName = matcher.group("cityName");
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForHP(amount)) {
@@ -198,7 +199,7 @@ public class Cheater extends Menu{
         return "Success! Now You Have " + Integer.toString(GameDatabase.getPlayers().get(turn).getGold()) + " Golds.";
     }
 
-    public String changeTurn(Matcher matcher) {
+    public String changeTurn(Matcher matcher) throws IOException {
         String civilizationName = matcher.group("civilizationName");
         if (!this.gameMenuController.isCivilizationValid(civilizationName)) {
             return "Error: There is No Player With Nickname " + civilizationName + ".";
@@ -210,7 +211,7 @@ public class Cheater extends Menu{
         return "Success! Now it's Your Turn!";
     }
 
-    public String changeTurnByNumber(Matcher matcher) {
+    public String changeTurnByNumber(Matcher matcher) throws IOException {
         int amount = Integer.parseInt(matcher.group("amount"));
         if (!this.gameMenuController.isAmountValidForTurn(amount)){
             return "Error: Invalid Turn";

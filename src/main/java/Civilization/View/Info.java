@@ -5,6 +5,7 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class Info {
         return instance;
     }
 
-    public void infoCity(Scanner scanner, int turn) {
+    public void infoCity(Scanner scanner, int turn) throws IOException {
         Civilization civilization = GameDatabase.players.get(turn);
         if (civilization.getCities().size() == 0) {
             System.out.println("NO CITY");
@@ -66,14 +67,14 @@ public class Info {
 
     }
 
-    private void civilizationOutput(City city) {
+    private void civilizationOutput(City city) throws IOException {
         System.out.println("Science rate of this city = " + Integer.toString(city.getScienceGenerating()));
         System.out.println("Gold rate of this city = " + Integer.toString(city.getGoldGeneratingRate()));
         System.out.println("Civilization Happiness = " + Integer.toString(GameDatabase.getCivilizationForCity(city.getName()).getHappiness()));
         printStrategicResourcesOfCity(city);
     }
 
-    public void cityBanner(City city, Scanner scanner) {
+    public void cityBanner(City city, Scanner scanner) throws IOException {
         String command;
         System.out.println(city);
         cityOutput(city);
@@ -134,7 +135,7 @@ public class Info {
         return result;
     }
 
-    public String infoEconomy(int turn) {
+    public String infoEconomy(int turn) throws IOException {
         String result = GameDatabase.getCivilizationByTurn(turn).getNickname() + "\n";
         result += "Your science is " + Integer.toString(GameDatabase.players.get(turn).getScience()) + "\n";
         result += "Your happiness is " + Integer.toString(GameDatabase.players.get(turn).getHappiness()) + "\n";
@@ -143,7 +144,7 @@ public class Info {
         return result;
     }
 
-    public void infoEconomy(int turn, Scanner scanner) {
+    public void infoEconomy(int turn, Scanner scanner) throws IOException {
         System.out.println("Your science is " + Integer.toString(GameDatabase.players.get(turn).getScience()));
         System.out.println("Your happiness is " + Integer.toString(GameDatabase.players.get(turn).getScience()));
         printEconomy(turn);
@@ -163,7 +164,7 @@ public class Info {
         }
     }
 
-    private void goToCityPanel(int turn, Scanner scanner, String command) {
+    private void goToCityPanel(int turn, Scanner scanner, String command) throws IOException {
         int index;
         index = Integer.parseInt(command);
         if (index < 1 || index > GameDatabase.players.get(turn).getCities().size()) {
@@ -204,7 +205,7 @@ public class Info {
         }
     }
 
-    public String infoMilitary(int turn) {
+    public String infoMilitary(int turn) throws IOException {
         String result = GameDatabase.getCivilizationByTurn(turn).getNickname() + "\n";
         ArrayList<Unit> soldiers = getSoldiers(new GameMenuController(new GameModel()), turn);
         if (soldiers.size() == 0) {
@@ -239,7 +240,7 @@ public class Info {
         return soldiers;
     }
 
-    private void printResources(int turn) {
+    private void printResources(int turn) throws IOException {
         System.out.println("Resources:");
         for (Tile tile : GameDatabase.players.get(turn).getTiles()) {
             if (Resources.isResourceOnTileValidForDiscovering(tile)) {
@@ -293,7 +294,7 @@ public class Info {
         return true;
     }
 
-    public boolean infoResearch(int turn, Scanner scanner) {
+    public boolean infoResearch(int turn, Scanner scanner) throws IOException {
         printResources(turn);
         System.out.println("You have " + Integer.toString(GameDatabase.players.get(turn).getScience()) + " Science");
         System.out.println("Technologies:");

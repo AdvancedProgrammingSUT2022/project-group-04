@@ -1,5 +1,7 @@
 package Civilization.Model;
 
+import java.io.IOException;
+
 public class Soldier extends Unit {
     private int range;
     private String combatType;
@@ -356,7 +358,7 @@ public class Soldier extends Unit {
         return true;
     }
 
-    public boolean isTileInRangeOfUnit(Tile tile) {
+    public boolean isTileInRangeOfUnit(Tile tile) throws IOException {
         for (int i = 1; i < 100; i++) {
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
                 if (i < this.getRange()){
