@@ -41,6 +41,7 @@ public class MainMenuFXMLController {
 
     public void logout(MouseEvent mouseEvent) {
         GraphicalBases.login();
+        //TODO send req to server
     }
 
     public void goToProfileMenu(MouseEvent mouseEvent) {

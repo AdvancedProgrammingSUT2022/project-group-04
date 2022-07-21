@@ -26,7 +26,6 @@ public class GameModel {
         System.out.println("haha worked");
         GameDatabase.generateRuin();
         System.out.println("haha worked");
-
     }
 
 }

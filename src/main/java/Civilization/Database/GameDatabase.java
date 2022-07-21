@@ -1,5 +1,6 @@
 package Civilization.Database;
 
+import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
 import Civilization.View.FXMLControllers.GameFXMLController;
 import Civilization.View.Transitions.TransitionDatabase;
@@ -58,12 +59,19 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByUnit(Unit unit) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.unit = unit;
-        Object sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUnit");
-        JSONObject serverResponse = sendToServer();
-        return (Civilization) serverResponse.get("civilization");
+//        XStream xStream = new XStream(); TODO change the protocol
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.unit = unit;
+//        Object sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUnit");
+//        JSONObject serverResponse = sendToServer();
+//        return (Civilization) serverResponse.get("civilization");
+        GameMenuController gameMenuController = new GameMenuController(new GameModel());
+        for (Civilization player : players) {
+            if (gameMenuController.isUnitForThisCivilization(getCivilizationIndex(player.getNickname()), unit)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     private static JSONObject sendToServer() throws IOException {
@@ -117,7 +125,24 @@ public class GameDatabase {
     }
 
     public static void generateRuin() throws IOException {
-        sendToServer(null, "generateRuin");
+//        sendToServer(null, "generateRuin");
+        Random random = new Random();
+        for (Tile tile : map) {
+            if (getCivilizationByTile(tile) == null) {
+                int ruin = random.nextInt(500);
+                if (ruin == 12) {
+                    tile.setRuin(new Ruin());
+                }
+            }
+        }
+    }
+
+    public static void getMapFromServer() throws IOException {
+        byte[] requestToByte = new byte[dataInputStream1.readInt()];
+        dataInputStream1.readFully(requestToByte);
+        String response = new String(requestToByte, StandardCharsets.UTF_8);
+        RequestPlayers requestPlayers = readAndCastResponse(response);
+        GameDatabase.map = requestPlayers.tiles;
     }
 
     public static void setYou() {
@@ -139,38 +164,61 @@ public class GameDatabase {
      * @param civilizationName
      * @return selected civilization
      */
-    public static Civilization getCivilizationByUsername(String civilizationName) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.name = civilizationName;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUsername");
-        return sth.civilization;
-    }
+//    public static Civilization getCivilizationByUsername(String civilizationName) throws IOException {
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.name = civilizationName;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUsername");
+//        return sth.civilization;
+//    }
 
     public static Civilization getCivilizationByNickname(String civilizationName) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.name = civilizationName;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByNickname");
-        return sth.civilization;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.name = civilizationName;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByNickname");
+//        return sth.civilization;
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getNickname().equals(civilizationName)) {
+                return players.get(i);
+            }
+        }
+        return null;
     }
 
 
     public static City getCityByName(String cityName) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.name = cityName;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCityByName");
-        return sth.city;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.name = cityName;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCityByName");
+//        return sth.city;
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < players.get(i).getCities().size(); j++) {
+                if (players.get(i).getCities().get(j).getName().equals(cityName)) {
+                    return players.get(i).getCities().get(j);
+                }
+            }
+        }
+        return null;
     }
 
     public static City getCityByXAndY(int x, int y) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.x = x;
-        requestPlayers.y = y;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCityByXAndY");
-        return sth.city;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.x = x;
+//        requestPlayers.y = y;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCityByXAndY");
+//        return sth.city;
+        for (Civilization player : players) {
+            for (City city : player.getCities()) {
+                if (city.getX() == x
+                        && city.getY() == y) {
+                    return city;
+                }
+            }
+        }
+        return null;
     }
 
     public static ArrayList<Tile> getMap() {
@@ -179,59 +227,97 @@ public class GameDatabase {
 
 
     public static Tile getTileByXAndY(int x, int y) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.x = x;
-        requestPlayers.y = y;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getTileByXAndY");
-        return sth.tile;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.x = x;
+//        requestPlayers.y = y;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getTileByXAndY");
+//        return sth.tile;
+        for (Tile tile : map) {
+            if (tile.getX() == x && tile.getY() == y) return tile;
+        }
+        return null;
     }
 
     public static boolean isTileForACity(Tile tile) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.tile = tile;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "isTileForACity");
-        return sth.bool;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.tile = tile;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "isTileForACity");
+//        return sth.bool;
+        for (Civilization civilization : players) {
+            for (City city : civilization.getCities()) {
+                if (city.isTileForThisCity(tile)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static Civilization getCivilizationByTile(Tile tile) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.tile = tile;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByTile");
-        return sth.civilization;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.tile = tile;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByTile");
+//        return sth.civilization;
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < players.get(i).getTiles().size(); j++) {
+                if (players.get(i).getTiles().get(j).equals(tile)) {
+                    return players.get(i);
+                }
+            }
+        }
+        return null;
     }
 
     public static int getCivilizationIndex(String civilizationName) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.name = civilizationName;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationIndex");
-        return sth.x;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.name = civilizationName;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationIndex");
+//        return sth.x;
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getNickname().equals(civilizationName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static void generateMap(int numberOfPlayers) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.x = numberOfPlayers;
-        System.out.println("blahhhh");
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
-        System.out.println("please work");
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.x = numberOfPlayers;
+//        System.out.println("blahhhh");
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
+//        System.out.println("please work");
+
     }
 
     public static Civilization getCivilizationForCity(String cityName) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.name = cityName;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
-        return sth.civilization;
-    }
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.name = cityName;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
+//        return sth.civilization;
+        for (Civilization player : players) {
+            for (City city : player.getCities()) {
+                if (city.getName().equals(cityName)) {
+                    return player;
+                }
+            }
+        }
+        return null;    }
 
     public static void nextTurn() throws IOException {
         XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+        //send data to database!
         RequestPlayers requestPlayers = new RequestPlayers();
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+        requestPlayers.tiles = GameDatabase.map;
+        sendToServer(xStream.toXML(requestPlayers), "nextTurn");
     }
 
     private static int calculateNextTurn() throws IOException {
@@ -247,11 +333,12 @@ public class GameDatabase {
     }
 
     public static Civilization getCivilizationByTurn(int turn) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.x = turn;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByTurn");
-        return sth.civilization;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.x = turn;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByTurn");
+//        return sth.civilization;
+        return players.get(turn);
     }
 
 //    public static Tile findTileBySettler(Settler settler) {
@@ -281,11 +368,16 @@ public class GameDatabase {
 //    }
 
     public static Tile findTileByCitizen(Citizen citizen) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.citizen = citizen;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "findTileByCitizen");
-        return sth.tile;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.citizen = citizen;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "findTileByCitizen");
+//        return sth.tile;
+        for (Tile tile : map) {
+            ArrayList<Citizen> citizens = tile.getCitizens();
+            if (citizens.contains(citizen)) return tile;
+        }
+        return null;
     }
 
     public static ArrayList<Civilization> getPlayers() {
@@ -293,35 +385,58 @@ public class GameDatabase {
     }
 
     public static boolean isTileInCivilization(Tile tile, Civilization civilization) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.tile = tile;
-        requestPlayers.civilization = civilization;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "isTileInCivilization");
-        return sth.bool;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.tile = tile;
+//        requestPlayers.civilization = civilization;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "isTileInCivilization");
+//        return sth.bool;
+        if (civilization.isTileInCivilization(tile.getX(), tile.getY())) {
+            return true;
+        }
+        return false;
     }
 
     public static void setTurn(int newTurn) throws IOException {
-        turn = newTurn;
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.x = newTurn;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "setTurn");
+//        turn = newTurn;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.x = newTurn;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "setTurn");
+
     }
 
     public static User getUserForCivilization(String civilizationName) throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.name = civilizationName;
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getUserForCivilization");
-        return sth.user;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        requestPlayers.name = civilizationName;
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getUserForCivilization");
+//        return sth.user;
+        String username = Objects.requireNonNull(getCivilizationByNickname(civilizationName)).getUsername();
+        return UserDatabase.getUserByUsername(username);
     }
 
     public static Civilization checkIfWin() throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "checkIfWin");
-        return sth.civilization;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "checkIfWin");
+//        return sth.civilization;
+        if (year >= 2050) {
+            return getCivilizationByTurn(getTurn());
+        }
+        if (cheated && cheatedCivilization != null) {
+            return cheatedCivilization;
+        }
+        if (players.size() == 1) {
+            return players.get(0);
+        } else {
+            for (Civilization civilization : players) {
+                if (civilization.getTechnologies().size() == GlobalVariables.TECHNOLOGIES.length) {
+                    return civilization;
+                }
+            }
+        }
+        return null;
     }
 
 
@@ -334,10 +449,15 @@ public class GameDatabase {
     }
 
     public static Civilization getLastCivilization() throws IOException {
-        XStream xStream = new XStream();
-        RequestPlayers requestPlayers = new RequestPlayers();
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getLastCivilization");
-        return requestPlayers.civilization;
+//        XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getLastCivilization");
+//        return requestPlayers.civilization;
+        int turn = getTurn();
+        if (turn == 0) {
+            return getCivilizationByTurn(players.size() - 1);
+        }
+        return getCivilizationByTurn(turn - 1);
     }
 
     public static void setWidth(int number) {
