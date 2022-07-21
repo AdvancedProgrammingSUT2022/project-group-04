@@ -43,7 +43,7 @@ public class Main extends Application {
 //            mainMenu.run(scanner, User.loggedInUser);
 //        }
 
-        UserDatabase.writeInFile("UserDatabase.json");
+        //UserDatabase.writeInFile("UserDatabase.json");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Main extends Application {
             GameDatabase.saveGame();
         }
         try{
-            UserDatabase.writeInFile("UserDatabase.json");
+            //UserDatabase.writeInFile("UserDatabase.json");
         } catch (Exception e) {
 
         }
