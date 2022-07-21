@@ -5,6 +5,8 @@ import Civilization.Controller.ProfileMenuController;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.ProfileMenuModel;
 import Civilization.View.Components.Account;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -205,8 +207,11 @@ public class Server {
                     dataOutputStream.writeUTF("Nickname is not unique");
                     dataOutputStream.flush();
                 } else {
+                    System.out.println(User.users.size());
                     loginMenuController.userCreate(username, nickname, password);
+                    System.out.println(User.users.size());
                     createAccount(username);
+                    UserDatabase.writeInFile("UserDatabase.json");
                     dataOutputStream.writeUTF("Registered successfully");
                     dataOutputStream.flush();
                 }
@@ -222,6 +227,14 @@ public class Server {
                     dataOutputStream.writeUTF("success");
                     dataOutputStream.flush();
                 }
+            } else if (clientCommandJ.get("action").equals("Exit")) {
+                UserDatabase.writeInFile("UserDatabase.json");
+            } else if (clientCommandJ.get("action").equals("user")) {
+                String username = clientCommandJ.get("username").toString();
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                String toJson = gson.toJson(UserDatabase.getUserByUsername(username));
+                dataOutputStream.writeUTF(toJson);
+                dataOutputStream.flush();
             }
         } catch (Exception e) {
             if (disconnected) {

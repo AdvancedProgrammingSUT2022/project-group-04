@@ -89,6 +89,8 @@ public class UserDatabase {
      * @throws IOException
      */
     public static void writeInFile(String fileName) throws IOException {
+        System.out.println("In WriteInFile");
+        System.out.println(User.users.size());
         Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
         Path userPath = Paths.get(fileName);
         Writer writer = Files.newBufferedWriter(userPath);
