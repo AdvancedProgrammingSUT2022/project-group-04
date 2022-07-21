@@ -382,6 +382,9 @@ public class Civilization {
         for (Tile clearTileUnit : getNotFogOfWarTiles()){
             if (clearTileUnit.getCombatUnit() != null || clearTileUnit.getNonCombatUnit() != null) {
                 for (Tile neighbour : clearTileUnit.getAdjacentTiles()){
+                    if(neighbour == null) {
+                        continue;
+                    }
                     if(tile.getX() == neighbour.getX() && tile.getY() == neighbour.getY()) {
                         return false;
                     }
