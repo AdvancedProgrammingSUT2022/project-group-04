@@ -94,6 +94,13 @@ public class GameFXMLController {
     TileFX selectedTile = null;
     public ArrayList<Unit> movingUnits = new ArrayList<>();
 
+
+    // Combat
+    boolean meleeIsClicked = false;
+    boolean rangeAttackIsClicked = false;
+    boolean rangeAttackSetupIsClicked = false;
+
+
     // Map
     private ScrollPane map;
 
@@ -365,24 +372,27 @@ public class GameFXMLController {
                 //tile.resource.setFill(Color.BLACK);
                 tile.resource.setVisible(false);
             }
+            if (tile.feature.getPoints().isEmpty()) {
 
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
-            tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
-
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 10);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 80);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 80);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 80);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 80);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 120);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 10);
-            tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 120);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 40);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+                tile.feature.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+            }
+            if (tile.resource.getPoints().isEmpty()) {
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 80);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 80);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 120);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(0) + 10);
+                tile.resource.getPoints().add(tile.polygon.getPoints().get(1) + 120);
+            }
 
 
             // SEPEHR INJA BEZAN :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -409,6 +419,7 @@ public class GameFXMLController {
             //////////////
             isClickedOnce = false;
             isClickedTwice = false;
+
             tile.polygon.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -441,6 +452,9 @@ public class GameFXMLController {
 //                            }
                             GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(selectedUnit);
                         } else if (isClickedOnce) {
+                            if (meleeIsClicked){
+
+                            }
                             if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null) {
                                 if (tile.x == selectedUnit.getTileOfUnit().getX() && tile.y == selectedUnit.getTileOfUnit().getY()) {
                                     //isClickedTwice = true;
@@ -807,7 +821,15 @@ public class GameFXMLController {
             rangeAttackSetup.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-
+                    if (!rangeAttackSetupIsClicked){
+                        rangeAttackSetupIsClicked = true;
+                        ColorAdjust colorAdjust = new ColorAdjust();
+                        colorAdjust.setHue(0.3);
+                        rangeAttackSetup.setEffect(colorAdjust);
+                    } else {
+                        rangeAttackSetupIsClicked = false;
+                        rangeAttackSetup.setEffect(null);
+                    }
                 }
             });
 
@@ -815,14 +837,30 @@ public class GameFXMLController {
             rangeAttack.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-
+                    if (!rangeAttackIsClicked){
+                        rangeAttackIsClicked = true;
+                        ColorAdjust colorAdjust = new ColorAdjust();
+                        colorAdjust.setHue(0.3);
+                        rangeAttack.setEffect(colorAdjust);
+                    } else {
+                        rangeAttackIsClicked = false;
+                        rangeAttack.setEffect(null);
+                    }
                 }
             });
 
             meleeAttack.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-
+                    if (!meleeIsClicked){
+                        meleeIsClicked = true;
+                        ColorAdjust colorAdjust = new ColorAdjust();
+                        colorAdjust.setHue(0.3);
+                        meleeAttack.setEffect(colorAdjust);
+                    } else {
+                        meleeIsClicked = false;
+                        meleeAttack.setEffect(null);
+                    }
                 }
             });
 
