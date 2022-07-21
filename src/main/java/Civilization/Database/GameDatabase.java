@@ -224,8 +224,12 @@ public class GameDatabase {
 
     public static void nextTurn() throws IOException {
         XStream xStream = new XStream();
+//        RequestPlayers requestPlayers = new RequestPlayers();
+//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+        //send data to database!
         RequestPlayers requestPlayers = new RequestPlayers();
-        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+        requestPlayers.tiles = GameDatabase.map;
+        sendToServer(xStream.toXML(requestPlayers), "nextTurn");
     }
 
     private static int calculateNextTurn() throws IOException {
