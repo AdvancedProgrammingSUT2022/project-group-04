@@ -110,6 +110,7 @@ public class GameFXMLController {
         setCheatCodesTerminal();
         setTerminal();
         setCreateCityVBox();
+        GraphicalBases.playGameMusic();
         GameModel.isGame = true;
 
     }
@@ -1312,6 +1313,7 @@ public class GameFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 GameDatabase.saveGame();
+                GraphicalBases.PlayMenuMusic();
                 GraphicalBases.changeMenu("GameMenu");
             }
         });
@@ -1354,6 +1356,7 @@ public class GameFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 GameDatabase.saveGame();
+                GraphicalBases.PlayMenuMusic();
                 GraphicalBases.userLoggedIn();
             }
         });

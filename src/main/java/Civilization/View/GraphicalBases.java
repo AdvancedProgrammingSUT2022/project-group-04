@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -66,6 +68,10 @@ public class GraphicalBases {
     public static final Image FOG_OF_WAR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/FogOfWar.png")).toExternalForm());
     public static final Image ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/road.jpg")).toExternalForm());
     public static final Image RAIL_ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/railroad.png")).toExternalForm());
+
+    // Music
+    public static final MediaPlayer MENU = new MediaPlayer(new Media(Objects.requireNonNull(GraphicalBases.class.getResource("/music/Menus.mp3")).toExternalForm()));
+    public static final MediaPlayer GAME = new MediaPlayer(new Media(Objects.requireNonNull(GraphicalBases.class.getResource("/music/Game.mp3")).toExternalForm()));
 
     public static void firstLogin() {
         GraphicalBases.start();
@@ -143,5 +149,15 @@ public class GraphicalBases {
             exception.printStackTrace();
         }
         return null;
+    }
+
+    public static void PlayMenuMusic() {
+        GAME.pause();
+        MENU.play();
+    }
+
+    public static void playGameMusic() {
+        MENU.pause();
+        GAME.play();
     }
 }
