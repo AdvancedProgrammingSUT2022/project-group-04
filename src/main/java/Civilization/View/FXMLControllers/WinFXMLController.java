@@ -73,6 +73,7 @@ public class WinFXMLController {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                GraphicalBases.PlayMenuMusic();
                 GraphicalBases.userLoggedIn();
             }
         });

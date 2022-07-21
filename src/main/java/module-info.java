@@ -2,6 +2,7 @@
      requires javafx.controls;
      requires javafx.fxml;
      requires javafx.graphics;
+     requires javafx.media;
      requires com.google.gson;
      requires java.sql;
      requires java.desktop;
@@ -24,7 +25,7 @@
      opens Civilization.View.Transitions to javafx.fxml,java.desktop;
 
       exports Civilization.View;
-     opens Civilization.View to javafx.fxml;
+     opens Civilization.View to javafx.fxml, javafx.media;
 
      exports Civilization;
      opens Civilization to javafx.fxml,xstream;

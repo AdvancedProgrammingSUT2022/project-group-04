@@ -67,6 +67,7 @@ public class LoginMenuFXMLController {
         setBackground();
         setRegister();
         setCursor();
+        GraphicalBases.PlayMenuMusic();
         GameModel.isGame = false;
     }
 
