@@ -1,5 +1,7 @@
 package Civilization.View.FXMLControllers;
 
+import Client.Client;
+import Server.CheckOnlineTransition;
 import Server.UserDatabase;
 import Civilization.Model.GameModel;
 import Server.User;
@@ -18,7 +20,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -113,24 +117,105 @@ public class LeaderBoardFXMLController {
 
 
 
-
+    private ArrayList<User> users;
+    private CheckOnlineTransition checkOnlineTransition;
 
 
     @FXML
     public void initialize() {
         GameModel.isGame = false;
-        setScores();
+        users = sortUsers((ArrayList<User>) UserDatabase.getAllUsers());
+        try{
+            setScores();
+            setOnline();
+            checkOnlineTransition = new CheckOnlineTransition(this);
+            checkOnlineTransition.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setOnline() throws IOException {
+        if(users.size() > 0) {
+            if(isUserOnline(users.get(0))) {
+                player1Avatar.setStroke(Color.GREEN);
+            } else {
+                player1Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 1) {
+            if(isUserOnline(users.get(1))) {
+                player2Avatar.setStroke(Color.GREEN);
+            } else {
+                player2Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 2) {
+            if(isUserOnline(users.get(2))) {
+                player3Avatar.setStroke(Color.GREEN);
+            } else {
+                player3Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 3) {
+            if(isUserOnline(users.get(3))) {
+                player4Avatar.setStroke(Color.GREEN);
+            } else {
+                player4Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 4) {
+            if(isUserOnline(users.get(4))) {
+                player5Avatar.setStroke(Color.GREEN);
+            } else {
+                player5Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 5) {
+            if(isUserOnline(users.get(5))) {
+                player6Avatar.setStroke(Color.GREEN);
+            } else {
+                player6Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 6) {
+            if(isUserOnline(users.get(6))) {
+                player7Avatar.setStroke(Color.GREEN);
+            } else {
+                player7Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 7) {
+            if(isUserOnline(users.get(7))) {
+                player8Avatar.setStroke(Color.GREEN);
+            } else {
+                player8Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 8) {
+            if(isUserOnline(users.get(8))) {
+                player9Avatar.setStroke(Color.GREEN);
+            } else {
+                player9Avatar.setStroke(Color.RED);
+            }
+        }
+        if(users.size() > 9) {
+            if(isUserOnline(users.get(9))) {
+                player10Avatar.setStroke(Color.GREEN);
+            } else {
+                player10Avatar.setStroke(Color.RED);
+            }
+        }
     }
 
 
+    public void setScores() throws IOException {
 
-    public void setScores(){
-        ArrayList<User> users = sortUsers((ArrayList<User>) UserDatabase.getAllUsers());
         if (users.size() > 0) {
             player1Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(0))));
-            player1Score.setText(users.get(0).getScore() + "");
+            player1Score.setText(getUserScore(users.get(0)) + "");
             player1Name.setText(users.get(0).getNickname());
-            Player1LoginTime.setText(users.get(0).getLastLoginTime());
+            Player1LoginTime.setText(getUserLastLoginTime(users.get(0)));
             if (User.loggedInUser.getUsername().equals(users.get(0).getUsername())){
                 player1Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -143,9 +228,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 1) {
             player2Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(1))));
-            player2Score.setText(users.get(1).getScore() + "");
+            player2Score.setText(getUserScore(users.get(1)) + "");
             player2Name.setText(users.get(1).getNickname());
-            Player2LoginTime.setText(users.get(1).getLastLoginTime());
+            Player2LoginTime.setText(getUserLastLoginTime(users.get(1)));
             if (User.loggedInUser.getUsername().equals(users.get(1).getUsername())){
                 player2Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -158,9 +243,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 2) {
             player3Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(2))));
-            player3Score.setText(users.get(2).getScore() + "");
+            player3Score.setText(getUserScore(users.get(2)) + "");
             player3Name.setText(users.get(2).getNickname());
-            Player3LoginTime.setText(users.get(2).getLastLoginTime());
+            Player3LoginTime.setText(getUserLastLoginTime(users.get(2)));
             if (User.loggedInUser.getUsername().equals(users.get(2).getUsername())){
                 player3Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -174,9 +259,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 3) {
             player4Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(3))));
-            player4Score.setText(users.get(3).getScore() + "");
+            player4Score.setText(getUserScore(users.get(3)) + "");
             player4Name.setText(users.get(3).getNickname());
-            Player4LoginTime.setText(users.get(3).getLastLoginTime());
+            Player4LoginTime.setText(getUserLastLoginTime(users.get(3)));
             if (User.loggedInUser.getUsername().equals(users.get(3).getUsername())){
                 player4Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -190,9 +275,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 4) {
             player5Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(4))));
-            player5Score.setText(users.get(4).getScore() + "");
+            player5Score.setText(getUserScore(users.get(4)) + "");
             player5Name.setText(users.get(4).getNickname());
-            Player5LoginTime.setText(users.get(4).getLastLoginTime());
+            Player5LoginTime.setText(getUserLastLoginTime(users.get(4)));
             if (User.loggedInUser.getUsername().equals(users.get(4).getUsername())){
                 player5Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -206,9 +291,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 5) {
             player6Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(5))));
-            player6Score.setText(users.get(5).getScore() + "");
+            player6Score.setText(getUserScore(users.get(5)) + "");
             player6Name.setText(users.get(5).getNickname());
-            Player6LoginTime.setText(users.get(5).getLastLoginTime());
+            Player6LoginTime.setText(getUserLastLoginTime(users.get(5)));
             if (User.loggedInUser.getUsername().equals(users.get(5).getUsername())){
                 player6Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -222,9 +307,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 6) {
             player7Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(6))));
-            player7Score.setText(users.get(6).getScore() + "");
+            player7Score.setText(getUserScore(users.get(6)) + "");
             player7Name.setText(users.get(6).getNickname());
-            Player7LoginTime.setText(users.get(6).getLastLoginTime());
+            Player7LoginTime.setText(getUserLastLoginTime(users.get(6)));
             if (User.loggedInUser.getUsername().equals(users.get(6).getUsername())){
                 player7Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -239,8 +324,8 @@ public class LeaderBoardFXMLController {
         if (users.size() > 7) {
             player8Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(7))));
             player8Name.setText(users.get(7).getNickname());
-            player8Score.setText(users.get(7).getScore() + "");
-            Player8LoginTime.setText(users.get(7).getLastLoginTime());
+            player8Score.setText(getUserScore(users.get(7)) + "");
+            Player8LoginTime.setText(getUserLastLoginTime(users.get(7)));
             if (User.loggedInUser.getUsername().equals(users.get(7).getUsername())){
                 player8Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -254,9 +339,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 8) {
             player9Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(8))));
-            player9Score.setText(users.get(8).getScore() + "");
+            player9Score.setText(getUserScore(users.get(8)) + "");
             player9Name.setText(users.get(8).getNickname());
-            Player9LoginTime.setText(users.get(8).getLastLoginTime());
+            Player9LoginTime.setText(getUserLastLoginTime(users.get(8)));
             if (User.loggedInUser.getUsername().equals(users.get(8).getUsername())){
                 player9Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -270,9 +355,9 @@ public class LeaderBoardFXMLController {
         }
         if (users.size() > 9) {
             player10Avatar.setFill(new ImagePattern(Account.getAvatarImage(users.get(9))));
-            player10Score.setText(users.get(9).getScore() + "");
+            player10Score.setText(getUserScore(users.get(9)) + "");
             player10Name.setText(users.get(9).getNickname());
-            Player10LoginTime.setText(users.get(9).getLastLoginTime());
+            Player10LoginTime.setText(getUserLastLoginTime(users.get(9)));
             if (User.loggedInUser.getUsername().equals(users.get(9).getUsername())){
                 player10Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
@@ -340,8 +425,44 @@ public class LeaderBoardFXMLController {
     }
 
     public void backToMain(){
+        checkOnlineTransition.pause();
         GraphicalBases.changeMenu("MainMenu");
     }
+
+    public boolean isUserOnline(User user) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Leaderboard");
+        input.put("action","isOnline");
+        input.put("username", user.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        return Boolean.parseBoolean(message);
+    }
+
+    private int getUserScore(User user) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Leaderboard");
+        input.put("action","getScore");
+        input.put("username", user.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        return Integer.parseInt(message);
+    }
+
+
+    private String getUserLastLoginTime(User user) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Leaderboard");
+        input.put("action","getLastLoginTime");
+        input.put("username", user.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        return message;
+    }
+
 
 
 }

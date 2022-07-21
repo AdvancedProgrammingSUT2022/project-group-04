@@ -716,6 +716,7 @@ public class GameMenuFXMLController {
     }
 
     private void runGame() throws IOException {
+        GameDatabase.setYou();
         ArrayList<String> users = new ArrayList<>(selectedUsers);
         GameModel gameModel = new GameModel();
         gameModel.startGame(users);

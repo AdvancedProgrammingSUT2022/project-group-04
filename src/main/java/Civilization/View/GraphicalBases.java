@@ -152,12 +152,14 @@ public class GraphicalBases {
     }
 
     public static void PlayMenuMusic() {
-        GAME.pause();
-        MENU.play();
+        System.err.println("music code is commented");
+//        GAME.pause();
+//        MENU.play();
     }
 
     public static void playGameMusic() {
-        MENU.pause();
-        GAME.play();
+        System.err.println("music code is commented");
+//        MENU.pause();
+//        GAME.play();
     }
 }
