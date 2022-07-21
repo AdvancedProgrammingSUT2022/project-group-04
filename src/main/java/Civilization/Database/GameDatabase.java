@@ -26,6 +26,8 @@ public class GameDatabase {
     public static int length = 25;
     public static int width = 10;
 
+    public static User you;
+
     public static int turn = 0;
     public static int year = 0;
     public static boolean cheated = false;
@@ -116,6 +118,10 @@ public class GameDatabase {
 
     public static void generateRuin() throws IOException {
         sendToServer(null, "generateRuin");
+    }
+
+    public static void setYou() {
+        you = User.loggedInUser;
     }
 
 

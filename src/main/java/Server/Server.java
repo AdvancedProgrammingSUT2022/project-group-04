@@ -36,23 +36,26 @@ public class Server {
         try {
             while (true) {
                 Socket socket = serverSocket1.accept();
-                new Thread(() -> {
+                ClientThread clientThread = new ClientThread();
+                Thread thread = new Thread(() -> {
                     try {
                         DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                         DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController);
+                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }).start();
+                });
+                thread.start();
+                clientThread.setThread(thread);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void processSocketRequest(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController, ProfileMenuController profileMenuController) throws IOException {
-        boolean disconnected = true;
+    private void processSocketRequest(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController, ProfileMenuController profileMenuController, int id) throws IOException {
+        boolean disconnected = false;
         while (true) {
             try {
                 String clientCommand = dataInputStream.readUTF();
@@ -60,28 +63,57 @@ public class Server {
                 if (!clientCommand.startsWith("!!!")) {
                     clientCommandJ = new JSONObject(clientCommand);
                     if (clientCommandJ.get("menu type").equals("Login")) {
-                        processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected);
+                        processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected, id);
                     } else if (clientCommandJ.get("menu type").equals("Profile")) {
                         processProfileMenuReqs(clientCommandJ, dataOutputStream, profileMenuController, disconnected);
                     } else if (clientCommandJ.get("menu type").equals("Game Database")) {
                         processGameMenuReqs(clientCommandJ, dataOutputStream);
                     } else if (clientCommandJ.get("menu type").equals("Main")) {
-                        processMainMenuReqs(clientCommandJ, dataOutputStream);
-                    } else if (clientCommandJ.get("menu type").equals("")) {
-
+                        processMainMenuReqs(clientCommandJ, dataOutputStream, id);
+                    } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
+                        processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
                     }
                 } else {
                     clientCommand = clientCommand.substring(3);
                     processGameUsingXML(clientCommand, dataOutputStream);
                 }
             } catch (Exception ex) {
-//                System.out.println("Client disconnected");
+                if(!disconnected) {
+                    System.out.println("Client " + id + " disconnected");
+                    ClientThread clientThread = ClientThread.getThreadID(id);
+                    if(clientThread != null && clientThread.getUsername() != null) {
+                        UserDatabase.disconnectUser(clientThread.getUsername());
+                    }
+                    disconnected = true;
+                }
 //                break;
 
             }
         }
     }
 
+    private void processLeaderBoardMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
+        try{
+            if(clientCommandJ.get("action").equals("isOnline")) {
+                String username = clientCommandJ.get("username").toString();
+                String result = Boolean.toString(UserDatabase.isUserOnline(username));
+                dataOutputStream.writeUTF(result);
+                dataOutputStream.flush();
+            } else if (clientCommandJ.get("action").equals("getScore")) {
+                String username = clientCommandJ.get("username").toString();
+                String result = Integer.toString(UserDatabase.getUserByUsername(username).getScore());
+                dataOutputStream.writeUTF(result);
+                dataOutputStream.flush();
+            } else if (clientCommandJ.get("action").equals("getLastLoginTime")) {
+                String username = clientCommandJ.get("username").toString();
+                String result = UserDatabase.getUserByUsername(username).getLastLoginTime();
+                dataOutputStream.writeUTF(result);
+                dataOutputStream.flush();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void processGameUsingXML(String s, DataOutputStream dataOutputStream) throws IOException {
@@ -96,8 +128,13 @@ public class Server {
         dataOutputStream.flush();
     }
 
-    private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
-
+    private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream, int id) {
+        if(clientCommandJ.get("action").equals("logout")) {
+            ClientThread clientThread = ClientThread.getThreadID(id);
+            if(clientThread != null && clientThread.getUsername() != null) {
+                UserDatabase.disconnectUser(clientThread.getUsername());
+            }
+        }
     }
 
     private void processGameMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
@@ -146,13 +183,14 @@ public class Server {
             }
         } catch (Exception e) {
             if (disconnected) {
+            //    e.printStackTrace();
                 System.out.println("Please try again");
                 disconnected = false;
             }
         }
     }
 
-    private void processLoginMenuReqs(JSONObject clientCommandJ, LoginMenuController loginMenuController, DataOutputStream dataOutputStream, boolean disconnected) throws IOException {
+    private void processLoginMenuReqs(JSONObject clientCommandJ, LoginMenuController loginMenuController, DataOutputStream dataOutputStream, boolean disconnected, int id) throws IOException {
         try {
             if (clientCommandJ.get("action").equals("Register")) {
                 String username = clientCommandJ.get("username").toString();
@@ -179,6 +217,8 @@ public class Server {
                     dataOutputStream.writeUTF("Username and password didn't match");
                     dataOutputStream.flush();
                 } else {
+                    ClientThread.setUsernames(username, id);
+                    UserDatabase.onlineUsers.add(username);
                     dataOutputStream.writeUTF("success");
                     dataOutputStream.flush();
                 }

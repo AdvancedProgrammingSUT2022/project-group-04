@@ -1,6 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Controller.LoginMenuController;
+import Server.ClientThread;
 import Server.UserDatabase;
 import Civilization.Model.GameModel;
 import Civilization.Model.LoginMenuModel;
@@ -64,6 +65,7 @@ public class LoginMenuFXMLController {
 
     @FXML
     public void initialize() {
+        System.out.println(ClientThread.clientThreads.size());
         setBackground();
         setRegister();
         setCursor();

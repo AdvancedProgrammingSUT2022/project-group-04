@@ -16,6 +16,8 @@ import com.google.gson.GsonBuilder;
 
 public class UserDatabase {
 
+    public static ArrayList<String> onlineUsers = new ArrayList<>();
+
 
     /**
      * @param username
@@ -99,6 +101,24 @@ public class UserDatabase {
             User user = GameDatabase.getUserForCivilization(civilization.getNickname());
             user.setScore(user.getScore() + civilization.getFinalScore());
             user.setTimeOfScore(LocalDateTime.now());
+        }
+    }
+
+    public static boolean isUserOnline(String username) {
+        for (String onlineUser : onlineUsers) {
+            if(onlineUser.equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void disconnectUser(String username) {
+        for (int i = 0; i < onlineUsers.size(); i++) {
+            if(onlineUsers.get(i).equals(username)) {
+                onlineUsers.remove(i);
+                break;
+            }
         }
     }
 }
