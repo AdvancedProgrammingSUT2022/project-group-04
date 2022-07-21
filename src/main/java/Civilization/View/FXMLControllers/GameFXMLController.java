@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -109,6 +110,7 @@ public class GameFXMLController {
         setCheatCodesTerminal();
         setTerminal();
         setCreateCityVBox();
+        GraphicalBases.playGameMusic();
         GameModel.isGame = true;
 
     }
@@ -1179,9 +1181,12 @@ public class GameFXMLController {
         }
 //        System.out.println(unit);
 //        System.out.println(unit.getUnitType());
-        ImagePattern imagePattern = new ImagePattern(GraphicalBases.UNITS.get(unit.getUnitType()));
-        if(imagePattern != null) {
-            tileFX.combatUnit.setFill(imagePattern);
+        Image image = GraphicalBases.UNITS.get(unit.getUnitType());
+        if(image != null) {
+            tileFX.combatUnit.setFill(new ImagePattern(image));
+        } else {
+            tileFX.combatUnit.setFill(new ImagePattern(GraphicalBases.NULL));
+            tileFX.combatUnit.setVisible(false);
         }
         tileFX.combatUnit.setVisible(true);
 
@@ -1310,6 +1315,7 @@ public class GameFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 GameDatabase.saveGame();
+                GraphicalBases.PlayMenuMusic();
                 GraphicalBases.changeMenu("GameMenu");
             }
         });
@@ -1352,6 +1358,7 @@ public class GameFXMLController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 GameDatabase.saveGame();
+                GraphicalBases.PlayMenuMusic();
                 GraphicalBases.userLoggedIn();
             }
         });
