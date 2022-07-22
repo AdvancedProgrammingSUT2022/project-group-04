@@ -22,6 +22,15 @@ public class Account {
     private String username;
     private String avatarURL;
 
+    public static Account getUserAccount(User user) {
+        for (Account account : accounts) {
+            if(account.getUsername().equals(user.getUsername())) {
+                return account;
+            }
+        }
+        return null;
+    }
+
     public String getUsername() {
         return username;
     }

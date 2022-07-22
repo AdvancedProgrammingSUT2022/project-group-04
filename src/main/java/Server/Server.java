@@ -130,12 +130,16 @@ public class Server {
         dataOutputStream.flush();
     }
 
-    private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream, int id) {
+    private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream, int id) throws IOException {
         if(clientCommandJ.get("action").equals("logout")) {
             ClientThread clientThread = ClientThread.getThreadID(id);
             if(clientThread != null && clientThread.getUsername() != null) {
                 UserDatabase.disconnectUser(clientThread.getUsername());
             }
+            UserDatabase.writeInFile("UserDatabase.json");
+        } else if (clientCommandJ.get("action").equals("profile")) {
+            UserDatabase.readFromFile("UserDatabase.json");
+            Account.readAccounts("AccountURLs.json");
         }
     }
 
@@ -182,6 +186,15 @@ public class Server {
                 UserDatabase.writeInFile("UserDatabase.json");
                 dataOutputStream.writeUTF("nickname changed successfully");
                 dataOutputStream.flush();
+            } else if (clientCommandJ.get("action").equals("avatarURL")) {
+                User user = UserDatabase.getUserByUsername(clientCommandJ.get("username").toString());
+                //System.out.printf("User %s \n", user);
+                Account account = Account.getUserAccount(user);
+                //System.out.printf("Account %s \n", account);
+                //System.out.printf("AvatarURL %s \n", account.getAvatarURL());
+                dataOutputStream.writeUTF(account.getAvatarURL());
+                dataOutputStream.flush();
+
             }
         } catch (Exception e) {
             if (disconnected) {
@@ -207,9 +220,9 @@ public class Server {
                     dataOutputStream.writeUTF("Nickname is not unique");
                     dataOutputStream.flush();
                 } else {
-                    System.out.println(User.users.size());
+                    //System.out.println(User.users.size());
                     loginMenuController.userCreate(username, nickname, password);
-                    System.out.println(User.users.size());
+                    //System.out.println(User.users.size());
                     createAccount(username);
                     UserDatabase.writeInFile("UserDatabase.json");
                     dataOutputStream.writeUTF("Registered successfully");

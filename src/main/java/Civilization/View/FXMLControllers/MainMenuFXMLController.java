@@ -1,6 +1,7 @@
 package Civilization.View.FXMLControllers;
 
 import Civilization.Model.GameModel;
+import Client.Client;
 import Server.User;
 import Civilization.View.GraphicalBases;
 import javafx.fxml.FXML;
@@ -10,6 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class MainMenuFXMLController {
 
@@ -39,12 +43,21 @@ public class MainMenuFXMLController {
         this.background.setFill(backgroundImagePattern);
     }
 
-    public void logout(MouseEvent mouseEvent) {
+    public void logout(MouseEvent mouseEvent) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","logout");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
         GraphicalBases.login();
-        //TODO send req to server
     }
 
-    public void goToProfileMenu(MouseEvent mouseEvent) {
+    public void goToProfileMenu(MouseEvent mouseEvent) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","profile");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
         GraphicalBases.changeMenu("ProfileMenu");
     }
 
