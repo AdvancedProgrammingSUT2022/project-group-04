@@ -85,7 +85,9 @@ public class User {
     }
 
     public void changeNickname(String nickname) {
+        //System.out.println(this.nickname);
         this.nickname = nickname;
+        //System.out.println(this.nickname);
     }
 
     public void changePassword(String password) {
@@ -94,10 +96,12 @@ public class User {
 
     public String getAvatarURL() {
         for (Account account : Account.accounts) {
+            //System.out.println(account.getUsername());
             if(account.getUsername().equals(this.username)) {
                 return account.getAvatarURL();
             }
         }
+        //System.out.println("I'm null");
         return null;
     }
 

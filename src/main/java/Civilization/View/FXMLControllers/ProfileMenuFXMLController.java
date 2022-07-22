@@ -79,7 +79,11 @@ public class ProfileMenuFXMLController {
         setBackground();
         setCursorTransitions();
         setUsername();
-        setAvatars();
+        try {
+            setAvatars();
+        } catch (Exception e) {
+
+        }
         GameModel.isGame = false;
     }
 
@@ -101,16 +105,29 @@ public class ProfileMenuFXMLController {
         this.userLabel.setText(User.loggedInUser.getUsername());
     }
 
-    private void setAvatars() {
+    private void setAvatars() throws IOException {
         this.userAvatar = new Circle(75);
         avatarVBox.getChildren().add(userAvatar);
-        int index = findAvatarIndex(User.loggedInUser.getAvatarURL()) - 1;
+        String avatarURL = getAvatarURL(User.loggedInUser.getUsername());
+        int index = findAvatarIndex(avatarURL) - 1;
         if(index == -1) {
             loadSelectedAvatar();
         } else {
             loadDefaultAvatar(index);
         }
         setAvatarSettings();
+    }
+
+    private String getAvatarURL(String username) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Profile");
+        input.put("action","avatarURL");
+        input.put("username", username);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        System.out.println(message);
+        return message;
     }
 
     private void setAvatarSettings() {
@@ -295,8 +312,11 @@ public class ProfileMenuFXMLController {
         input.put("menu type","Profile");
         input.put("action","change nickname");
         input.put("nickname", nickname);
+        input.put("username", User.loggedInUser.getUsername());
+        //System.out.println("I'm writing");
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
+        //System.out.println("wrote");
         String message = Client.dataInputStream1.readUTF();
         System.out.println(message);
         if(message.equals("Nickname is not unique")) {
@@ -315,9 +335,10 @@ public class ProfileMenuFXMLController {
         String newPassword = this.newPasswordTextField.getText();
         JSONObject input = new JSONObject();
         input.put("menu type","Profile");
-        input.put("action","change nickname");
+        input.put("action","change password");
         input.put("password", password);
         input.put("new password",newPassword);
+        input.put("username", User.loggedInUser.getUsername());
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
         String message = Client.dataInputStream1.readUTF();
