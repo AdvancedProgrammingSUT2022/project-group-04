@@ -453,7 +453,11 @@ public class GameFXMLController {
                             GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(selectedUnit);
                         } else if (isClickedOnce) {
                             if (meleeIsClicked){
-
+                                meleeAttackFunction(selectedUnit, tile);
+                            } else if (rangeAttackIsClicked){
+                                rangeAttackFunction(selectedUnit, tile, selectedTile);
+                            } else if (rangeAttackSetupIsClicked){
+                                rangeAttackSetupFunction();
                             }
                             if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null) {
                                 if (tile.x == selectedUnit.getTileOfUnit().getX() && tile.y == selectedUnit.getTileOfUnit().getY()) {
@@ -464,7 +468,7 @@ public class GameFXMLController {
                                 } else {
                                     System.out.println(tile.x + " " + tile.y);
                                     int b = selectedUnit.moveUnitFromTo(selectedUnit, selectedUnit.getTileOfUnit(), GameDatabase.getTileByXAndY(tile.x, tile.y));
-                                    if (b == -1 || b == -2) {
+                                    if (b == -1 || b == -2 || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isThisTileFogOfWar(GameDatabase.getTileByXAndY(tile.x, tile.y))) {
                                         selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
                                         selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n dest tile can't be passed" + b);
                                     } else if (b == -3){
@@ -516,7 +520,7 @@ public class GameFXMLController {
                         }
 
                     } else if (mouseEvent.getButton() == MouseButton.SECONDARY){
-                        System.out.println(nonCombatUnitCommands.getLayoutX() + " " + nonCombatUnitCommands.getWidth() + " "+ nonCombatUnitCommands.getLayoutY() + " " + nonCombatUnitCommands.getHeight());
+                        //System.out.println(nonCombatUnitCommands.getLayoutX() + " " + nonCombatUnitCommands.getWidth() + " "+ nonCombatUnitCommands.getLayoutY() + " " + nonCombatUnitCommands.getHeight());
                         if (GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit() != null) {
                             if (GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
                                 GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getNonCombatUnit());
@@ -550,7 +554,7 @@ public class GameFXMLController {
                                 } else {
                                     System.out.println(tile.x + " " + tile.y);
                                     int b = selectedUnit.moveUnitFromTo(selectedUnit, selectedUnit.getTileOfUnit(), GameDatabase.getTileByXAndY(tile.x, tile.y));
-                                    if (b == -1 || b == -2) {
+                                    if (b == -1 || b == -2 || GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isThisTileFogOfWar(GameDatabase.getTileByXAndY(tile.x, tile.y))) {
                                         selectedTile.informationText.setText(GetTileInReal(selectedTile).getInformation());
                                         selectedTile.informationText.setText(selectedTile.informationText.getText() + "\n dest tile can't be passed" + b);
                                     } else if (b == -3){
@@ -842,9 +846,11 @@ public class GameFXMLController {
                         ColorAdjust colorAdjust = new ColorAdjust();
                         colorAdjust.setHue(0.3);
                         rangeAttack.setEffect(colorAdjust);
+                        rangeAttack.setTextFill(Color.RED);
                     } else {
                         rangeAttackIsClicked = false;
                         rangeAttack.setEffect(null);
+                        rangeAttack.setTextFill(Color.BLACK);
                     }
                 }
             });
@@ -857,9 +863,11 @@ public class GameFXMLController {
                         ColorAdjust colorAdjust = new ColorAdjust();
                         colorAdjust.setHue(0.3);
                         meleeAttack.setEffect(colorAdjust);
+                        meleeAttack.setTextFill(Color.RED);
                     } else {
                         meleeIsClicked = false;
                         meleeAttack.setEffect(null);
+                        meleeAttack.setTextFill(Color.BLACK);
                     }
                 }
             });
@@ -973,6 +981,67 @@ public class GameFXMLController {
         return true;
 //        return civilization.isThisTileFogOfWar(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y)) ||
 //                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isThisTileFogOfWar(GameDatabase.getTileByXAndY(tileFX.x, tileFX.y));
+    }
+
+    public void meleeAttackFunction(Unit selectedUnit, TileFX tile){
+
+        if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null
+                || GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null){
+            System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
+            ((Soldier) selectedUnit).attackUnitMelee(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
+            if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP() <= 0){
+                tile.combatUnit.setVisible(false);
+                tile.combatUnit = null;
+                System.out.println(tile.combatUnit);
+                GetTileInReal(tile).removeUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
+                updateInfoPanel();
+                updateMap();
+            }
+            System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
+            meleeIsClicked = false;
+            meleeAttack.setEffect(null);
+            meleeAttack.setTextFill(Color.BLACK);
+
+        } else {
+            System.out.println("no unit was selected");
+            isClickedOnce = false;
+            selectedTile = null;
+            meleeIsClicked = false;
+            meleeAttack.setEffect(null);
+            meleeAttack.setTextFill(Color.BLACK);
+
+        }
+
+    }
+
+    public void rangeAttackFunction(Unit selectedUnit, TileFX tile, TileFX selectedTile){
+        if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null
+                || GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null){
+            System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
+            boolean b = ((Soldier) selectedUnit).attackUnitRanged(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
+            System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
+
+            if (!b){
+                selectedTile.informationText.setText(selectedTile.informationText.getText() + "\nTile is not in range of unit");
+            }
+
+            meleeIsClicked = false;
+            meleeAttack.setEffect(null);
+            meleeAttack.setTextFill(Color.BLACK);
+
+        } else {
+            System.out.println("no unit was selected");
+            isClickedOnce = false;
+            selectedTile = null;
+            meleeIsClicked = false;
+            meleeAttack.setEffect(null);
+            meleeAttack.setTextFill(Color.BLACK);
+
+        }
+    }
+
+    public void rangeAttackSetupFunction(){
+
     }
 
     public boolean moveUnitAlongPath(Unit selectedUnit) {

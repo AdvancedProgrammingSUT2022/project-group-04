@@ -310,24 +310,30 @@ public class Soldier extends Unit {
 
     public void attackUnitMelee(Unit unit) {
         int amount = 0;
-        for (double i = 1; i < 10; i++) {
+        for (double i = 1; i <= 10; i++) {
             if (this.HP == i) {
                 amount += this.combatStrength - ((10 - i) / 20) * this.combatStrength;
                 break;
             }
         }
-        unit.setHP(unit.getHP() - amount + unit.getCombatStrength());
+        System.out.println(amount);
+        unit.setHP(unit.getHP() - amount );
     }
 
-    public void attackUnitRanged(Unit unit) {
-        int amount = 0;
-        for (double i = 1; i < 10; i++) {
-            if (this.HP == i) {
-                amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
-                break;
+    public boolean attackUnitRanged(Unit unit) {
+        if (isTileInRangeOfUnit(unit.getTileOfUnit())) {
+            int amount = 0;
+            for (double i = 1; i < 10; i++) {
+                if (this.HP == i) {
+                    amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
+                    break;
+                }
             }
+            unit.setHP(unit.getHP() - amount);
+            return true;
+        } else {
+            return false;
         }
-        unit.setHP(unit.getHP() - amount + unit.getCombatStrength());
     }
 
     public void attackCityMelee(City city) {
@@ -338,7 +344,7 @@ public class Soldier extends Unit {
                 break;
             }
         }
-        city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
+        city.setHP(city.getHP() - amount ); //not sure about this :/
     }
 
     public void attackCityRanged(City city) {
@@ -349,7 +355,7 @@ public class Soldier extends Unit {
                 break;
             }
         }
-        city.setHP(city.getHP() - amount + city.getPower()); //not sure about this :/
+        city.setHP(city.getHP() - amount); //not sure about this :/
     }
 
     public boolean isCombatUnit() {
