@@ -157,33 +157,49 @@ public class Server {
             if (clientCommandJ.get("action").equals("change password")) {
                 String password = clientCommandJ.get("password").toString();
                 String newPassword = clientCommandJ.get("new password").toString();
-                if (!profileMenuController.isPasswordCorrect(User.loggedInUser.getUsername(), password)) {
+                String username = clientCommandJ.get("username").toString();
+                //System.out.println(username);
+                if (!profileMenuController.isPasswordCorrect(UserDatabase.getUserByUsername(username).getUsername(), password)) {
+                    //System.out.println("invalid");
                     dataOutputStream.writeUTF("current password is invalid");
                     dataOutputStream.flush();
                     return;
                 }
                 if (!profileMenuController.isNewPasswordDifferent(password, newPassword)
                         || !profileMenuController.isPasswordValid(newPassword)) {
+                    //System.out.println("need new");
                     dataOutputStream.writeUTF("Please enter a new password");
                     dataOutputStream.flush();
                     return;
                 }
-                profileMenuController.changePassword(User.loggedInUser, newPassword);
+                //System.out.println("username");
+                profileMenuController.changePassword(UserDatabase.getUserByUsername(username), newPassword);
                 UserDatabase.writeInFile("UserDatabase.json");
+                dataOutputStream.writeUTF("password changed successfully");
+                dataOutputStream.flush();
             } else if (clientCommandJ.get("action").equals("change nickname")) {
+                //System.out.println("changing nickname");
                 String nickname = clientCommandJ.get("nickname").toString();
+                //System.out.println(nickname);
                 if (!profileMenuController.isNicknameUnique(nickname)) {
+                    //System.out.println("not unique");
                     dataOutputStream.writeUTF("Nickname is not unique");
                     dataOutputStream.flush();
                     return;
                 }
                 if (!profileMenuController.isNicknameValid(nickname)) {
+                    //System.out.println("invalid");
                     dataOutputStream.writeUTF("Please enter a new nickname");
                     dataOutputStream.flush();
                     return;
                 }
-                profileMenuController.changeNickname(User.loggedInUser, nickname);
+                //System.out.println("start");
+                String username = clientCommandJ.get("username").toString();
+                //System.out.println(username);
+                profileMenuController.changeNickname(username, nickname);
+                //System.out.println("changed");
                 UserDatabase.writeInFile("UserDatabase.json");
+                //System.out.println("writing");
                 dataOutputStream.writeUTF("nickname changed successfully");
                 dataOutputStream.flush();
             } else if (clientCommandJ.get("action").equals("avatarURL")) {

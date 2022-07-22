@@ -312,8 +312,11 @@ public class ProfileMenuFXMLController {
         input.put("menu type","Profile");
         input.put("action","change nickname");
         input.put("nickname", nickname);
+        input.put("username", User.loggedInUser.getUsername());
+        //System.out.println("I'm writing");
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
+        //System.out.println("wrote");
         String message = Client.dataInputStream1.readUTF();
         System.out.println(message);
         if(message.equals("Nickname is not unique")) {
@@ -332,9 +335,10 @@ public class ProfileMenuFXMLController {
         String newPassword = this.newPasswordTextField.getText();
         JSONObject input = new JSONObject();
         input.put("menu type","Profile");
-        input.put("action","change nickname");
+        input.put("action","change password");
         input.put("password", password);
         input.put("new password",newPassword);
+        input.put("username", User.loggedInUser.getUsername());
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
         String message = Client.dataInputStream1.readUTF();

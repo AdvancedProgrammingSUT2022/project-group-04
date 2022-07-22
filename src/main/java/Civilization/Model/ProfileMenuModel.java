@@ -20,8 +20,14 @@ public class ProfileMenuModel {
      * @param nickname
      */
     public void changeNickname(User loggedInUser, String nickname) {
+        //System.out.println("in model");
+        //System.out.println(loggedInUser);
         String username = loggedInUser.getUsername();
-        UserDatabase.getUserByUsername(username).changeNickname(nickname);
+        //System.out.println(loggedInUser);
+        //System.out.println(username);
+        User user = UserDatabase.getUserByUsername(username);
+        //System.out.println(user);
+        user.changeNickname(nickname);
     }
 
     /**

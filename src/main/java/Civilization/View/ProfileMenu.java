@@ -83,7 +83,7 @@ public class ProfileMenu extends Menu {
         if (!this.profileMenuController.isNicknameUnique(nickname)) {
             return "user with nickname " + nickname + " already exists";
         }
-        this.profileMenuController.changeNickname(loggedInUser, nickname);
+        this.profileMenuController.changeNickname(loggedInUser.getUsername(), nickname);
         return "nickname changed successfully!";
     }
 

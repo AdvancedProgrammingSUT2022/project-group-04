@@ -85,7 +85,9 @@ public class User {
     }
 
     public void changeNickname(String nickname) {
+        //System.out.println(this.nickname);
         this.nickname = nickname;
+        //System.out.println(this.nickname);
     }
 
     public void changePassword(String password) {

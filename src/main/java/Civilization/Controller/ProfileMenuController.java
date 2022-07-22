@@ -70,11 +70,12 @@ public class ProfileMenuController {
     }
 
     /**
-     * @param loggedInUser
+     * @param username
      * @param nickname
      */
-    public void changeNickname(User loggedInUser, String nickname) {
-        this.profileMenuModel.changeNickname(loggedInUser, nickname);
+    public void changeNickname(String username, String nickname) {
+        //System.out.println("in game menu controller");
+        this.profileMenuModel.changeNickname(UserDatabase.getUserByUsername(username), nickname);
     }
 
     /**
