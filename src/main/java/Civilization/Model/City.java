@@ -452,19 +452,17 @@ public class City extends Tile {
     }
 
     public void attackUnit(Unit unit){
-        //if (isTileInRangeOfUnit(unit.getTileOfUnit())){
-        unit.setHP(unit.getHP() - this.longRangePower);
+        if (isTileInRangeOfCity(unit.getTileOfUnit())){
+            unit.setHP(unit.getHP() - this.longRangePower);
 
-        //}
+        }
     }
 
 
-    public boolean isTileInRangeOfUnit(Tile tile) {
-        for (int i = 1; i < 100; i++) {
+    public boolean isTileInRangeOfCity(Tile tile) {
+        for (int i = 1; i <= 2; i++) {
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
-                if (i <= 2){
-                    return true;
-                }
+                return true;
             }
         }
         return false;

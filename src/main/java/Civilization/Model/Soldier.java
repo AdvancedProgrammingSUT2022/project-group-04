@@ -323,7 +323,7 @@ public class Soldier extends Unit {
     public boolean attackUnitRanged(Unit unit) {
         //if (isTileInRangeOfUnit(unit.getTileOfUnit())) {
             int amount = 0;
-            for (double i = 1; i < 10; i++) {
+            for (double i = 1; i <= 10; i++) {
                 if (this.HP == i) {
                     amount += this.rangedCombatStrength - ((10 - i) / 20) * this.rangedCombatStrength;
                     break;
@@ -363,7 +363,7 @@ public class Soldier extends Unit {
     }
 
     public boolean isTileInRangeOfUnit(Tile tile) {
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= 2; i++) {
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
                 if (i < this.getRange()){
                     return true;
