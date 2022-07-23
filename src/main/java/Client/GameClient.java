@@ -5,8 +5,8 @@ import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Server.UserDatabase;
 import Civilization.Model.*;
-import Civilization.View.FXMLControllers.GameFXMLController;
-import Civilization.View.Transitions.TransitionDatabase;
+import Client.View.FXMLControllers.GameFXMLController;
+import Client.View.Transitions.TransitionDatabase;
 import Server.User;
 
 import java.io.DataInputStream;

@@ -1,6 +1,6 @@
 package Server;
 
-import Civilization.View.FXMLControllers.LeaderBoardFXMLController;
+import Client.View.FXMLControllers.LeaderBoardFXMLController;
 import javafx.animation.Transition;
 import javafx.util.Duration;
 
