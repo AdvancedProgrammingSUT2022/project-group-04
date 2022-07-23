@@ -103,6 +103,10 @@ public class GameFXMLController {
     Button yes = new Button("yes");
     Button no = new Button("no");
     VBox LabelAndButton = new VBox(warCheck, yes, no);
+    Label putCityInYourKoon = new Label("What do you want to do with this city step bro?!");
+    Button zamime = new Button("zamime");
+    Button destroy = new Button("destory it like your ass");
+    VBox cityDecision = new VBox(putCityInYourKoon, zamime, destroy);
 
 
     // Map
@@ -135,6 +139,15 @@ public class GameFXMLController {
         LabelAndButton.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
         mainAnchorPane.getChildren().add(LabelAndButton);
         LabelAndButton.setVisible(false);
+
+        putCityInYourKoon.setTextFill(Color.WHITE);
+        cityDecision.setLayoutX((1280 - 200)/2);
+        cityDecision.setLayoutY((720 - 100)/2);
+        cityDecision.setAlignment(Pos.CENTER);
+        cityDecision.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3; -fx-padding: 50; -fx-start-margin: 10");
+        mainAnchorPane.getChildren().add(cityDecision);
+        cityDecision.setVisible(false);
+
     }
 
     private void setCreateCityVBox() {
@@ -439,25 +452,26 @@ public class GameFXMLController {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                        if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
-                            if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
-                                GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
-                                updateInfoPanel();
-                                if (!isClickedOnce) {
-                                    combatUnitCommands.toFront();
 
-                                    combatUnitCommands.setVisible(true);
-                                } else {
-                                    combatUnitCommands.toFront();
-                                    combatUnitCommands.setVisible(false);
-                                }
-
-                            }
-                        } else {
-                            updateInfoPanel();
-                        }
                         Unit selectedUnit = null;
                         if (!isClickedOnce) {
+                            if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
+                                if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getCivilizationIndex() == GameDatabase.getTurn()) {
+                                    GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setSelectedUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
+                                    updateInfoPanel();
+                                    if (!isClickedOnce) {
+                                        combatUnitCommands.toFront();
+
+                                        combatUnitCommands.setVisible(true);
+                                    } else {
+                                        combatUnitCommands.toFront();
+                                        combatUnitCommands.setVisible(false);
+                                    }
+
+                                }
+                            } else {
+                                updateInfoPanel();
+                            }
                             isClickedOnce = true;
                             selectedTile = tile;
                             selectedUnit = GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit();
@@ -470,11 +484,11 @@ public class GameFXMLController {
                             if (meleeIsClicked){
                                 meleeAttackFunction(selectedUnit, tile);
                             } else if (rangeAttackIsClicked){
-                                rangeAttackFunction(selectedUnit, tile, selectedTile);
+                                rangeAttackFunction(selectedUnit, tile);
                             } else if (rangeAttackSetupIsClicked){
                                 rangeAttackSetupFunction();
                             }
-                            if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null) {
+                            else if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null) {
                                 if (tile.x == selectedUnit.getTileOfUnit().getX() && tile.y == selectedUnit.getTileOfUnit().getY()) {
                                     //isClickedTwice = true;
                                     isClickedOnce = false;
@@ -999,53 +1013,124 @@ public class GameFXMLController {
     }
 
     public void meleeAttackFunction(Unit selectedUnit, TileFX tile){
-        if (!new CombatController().areInWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(tile.x, tile.y)))){
-            LabelAndButton.setVisible(true);
+        Civilization civ2 = null;
+        if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
+            System.out.println("unit is not null");
+            if (!new CombatController().areInWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), civ2 = GameDatabase.getCivilizationByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit()))) {
+                LabelAndButton.setVisible(true);
+                Civilization finalCiv = civ2;
+                yes.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        LabelAndButton.setVisible(false);
+                        new CombatController().declareWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), finalCiv);
+                    }
+                });
 
-            yes.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    LabelAndButton.setVisible(false);
-                    new CombatController().declareWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(tile.x, tile.y)));
-                }
-            });
-
-            no.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    System.out.println("canceles");
-                    isClickedOnce = false;
-                    selectedTile = null;
-                    meleeIsClicked = false;
-                    meleeAttack.setEffect(null);
-                    meleeAttack.setTextFill(Color.BLACK);
-                    LabelAndButton.setVisible(false);
-                }
-            });
+                no.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        System.out.println("canceled");
+                        isClickedOnce = false;
+                        selectedTile = null;
+                        meleeIsClicked = false;
+                        meleeAttack.setEffect(null);
+                        meleeAttack.setTextFill(Color.BLACK);
+                        LabelAndButton.setVisible(false);
+                    }
+                });
 
 
+            }
+        } else {
+            if (GameDatabase.getCivilizationForCity(GameDatabase.getCityByXAndY(tile.x, tile.y).getName()) != null &&  !new CombatController().areInWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), civ2 = GameDatabase.getCivilizationForCity(GameDatabase.getCityByXAndY(tile.x, tile.y).getName()))) {
+                System.out.println("city is not gay");
+                LabelAndButton.setVisible(true);
+                Civilization finalCiv = civ2;
+                yes.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        LabelAndButton.setVisible(false);
+                        new CombatController().declareWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), finalCiv);
+                    }
+                });
+
+                no.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        System.out.println("canceled");
+                        isClickedOnce = false;
+                        selectedTile = null;
+                        meleeIsClicked = false;
+                        meleeAttack.setEffect(null);
+                        meleeAttack.setTextFill(Color.BLACK);
+                        LabelAndButton.setVisible(false);
+                    }
+                });
 
 
+            }
         }
+        //Unit Attack
         if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null
-                || GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null){
+                && GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null){
             System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
             ((Soldier) selectedUnit).attackUnitMelee(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
             if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP() <= 0){
                 tile.combatUnit.setVisible(false);
                 tile.combatUnit = null;
-                System.out.println(tile.combatUnit);
+               // System.out.println(tile.combatUnit);
                 GetTileInReal(tile).removeUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
                 updateInfoPanel();
                 updateMap();
             }
-            System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
+            //System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
             meleeIsClicked = false;
             meleeAttack.setEffect(null);
             meleeAttack.setTextFill(Color.BLACK);
 
         } else {
             System.out.println("no unit was selected");
+            isClickedOnce = false;
+            selectedTile = null;
+            meleeIsClicked = false;
+            meleeAttack.setEffect(null);
+            meleeAttack.setTextFill(Color.BLACK);
+
+        }
+        System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCity());
+        //City Attack
+        if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null
+                && GameDatabase.getCityByXAndY(tile.x, tile.y) != null){
+            System.out.println("before : " + GameDatabase.getCityByXAndY(tile.x, tile.y).getHP() + "unit : " + selectedUnit.getHP());
+            ((Soldier) selectedUnit).attackCityMelee(GameDatabase.getCityByXAndY(tile.x, tile.y));
+            GameDatabase.getCityByXAndY(tile.x, tile.y).attackUnit(selectedUnit);
+            System.out.println("after : " + GameDatabase.getCityByXAndY(tile.x, tile.y).getHP() + "unit : " + selectedUnit.getHP());
+            if (GameDatabase.getCityByXAndY(tile.x, tile.y).getHP() <= 0){
+                cityDecision.setVisible(true);
+
+                destroy.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        cityDecision.setVisible(false);
+                    }
+                });
+
+                zamime.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        cityDecision.setVisible(false);
+                    }
+                });
+
+                GameDatabase.getCityByXAndY(tile.x, tile.y).setRailroadBroken(true);
+                GameDatabase.getCityByXAndY(tile.x, tile.y).setRoadBroken(true);
+                //ToDo insert popup for destroy city, zamime
+                updateInfoPanel();
+                updateMap();
+            }
+        } else {
+
             isClickedOnce = false;
             selectedTile = null;
             meleeIsClicked = false;
@@ -1056,9 +1141,68 @@ public class GameFXMLController {
 
     }
 
-    public void rangeAttackFunction(Unit selectedUnit, TileFX tile, TileFX selectedTile){
+    public void rangeAttackFunction(Unit selectedUnit, TileFX tile){
+        Civilization civ2 = null;
+        if (GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null) {
+            System.out.println("unit is not null");
+            if (!new CombatController().areInWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), civ2 = GameDatabase.getCivilizationByUnit(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit()))) {
+                LabelAndButton.setVisible(true);
+                Civilization finalCiv = civ2;
+                yes.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        LabelAndButton.setVisible(false);
+                        new CombatController().declareWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), finalCiv);
+                    }
+                });
+
+                no.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        System.out.println("canceled");
+                        isClickedOnce = false;
+                        selectedTile = null;
+                        rangeAttackIsClicked = false;
+                        rangeAttack.setEffect(null);
+                        rangeAttack.setTextFill(Color.BLACK);
+                        LabelAndButton.setVisible(false);
+                    }
+                });
+
+
+            }
+        } else {
+            if (GameDatabase.getCivilizationForCity(GameDatabase.getCityByXAndY(tile.x, tile.y).getName()) != null &&  !new CombatController().areInWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), civ2 = GameDatabase.getCivilizationForCity(GameDatabase.getCityByXAndY(tile.x, tile.y).getName()))) {
+                System.out.println("city is not gay");
+                LabelAndButton.setVisible(true);
+                Civilization finalCiv = civ2;
+                yes.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        LabelAndButton.setVisible(false);
+                        new CombatController().declareWar(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()), finalCiv);
+                    }
+                });
+
+                no.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        System.out.println("canceled");
+                        isClickedOnce = false;
+                        selectedTile = null;
+                        rangeAttackIsClicked = false;
+                        rangeAttack.setEffect(null);
+                        rangeAttack.setTextFill(Color.BLACK);
+                        LabelAndButton.setVisible(false);
+                    }
+                });
+
+
+            }
+        }
+        //Unit Attack
         if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null
-                || GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null){
+                && GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit() != null){
             System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
             boolean b = ((Soldier) selectedUnit).attackUnitRanged(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit());
             System.out.println(GameDatabase.getTileByXAndY(tile.x, tile.y).getCombatUnit().getHP());
@@ -1067,19 +1211,61 @@ public class GameFXMLController {
                 selectedTile.informationText.setText(selectedTile.informationText.getText() + "\nTile is not in range of unit");
             }
 
-            meleeIsClicked = false;
-            meleeAttack.setEffect(null);
-            meleeAttack.setTextFill(Color.BLACK);
+            rangeAttackIsClicked = false;
+            rangeAttack.setEffect(null);
+            rangeAttack.setTextFill(Color.BLACK);
 
         } else {
             System.out.println("no unit was selected");
             isClickedOnce = false;
             selectedTile = null;
-            meleeIsClicked = false;
-            meleeAttack.setEffect(null);
-            meleeAttack.setTextFill(Color.BLACK);
+            rangeAttackIsClicked = false;
+            rangeAttack.setEffect(null);
+            rangeAttack.setTextFill(Color.BLACK);
 
         }
+
+        //City Attack
+        if ((selectedUnit = GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit()) != null
+                && GameDatabase.getCityByXAndY(tile.x, tile.y) != null){
+            System.out.println("before : " + GameDatabase.getCityByXAndY(tile.x, tile.y).getHP() + "unit : " + selectedUnit.getHP());
+            ((Soldier) selectedUnit).attackCityRanged(GameDatabase.getCityByXAndY(tile.x, tile.y));
+            GameDatabase.getCityByXAndY(tile.x, tile.y).attackUnit(selectedUnit);
+            System.out.println("after : " + GameDatabase.getCityByXAndY(tile.x, tile.y).getHP() + "unit : " + selectedUnit.getHP());
+            if (GameDatabase.getCityByXAndY(tile.x, tile.y).getHP() <= 0){
+                cityDecision.setVisible(true);
+
+                destroy.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        cityDecision.setVisible(false);
+                    }
+                });
+
+                zamime.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        cityDecision.setVisible(false);
+                    }
+                });
+
+                GameDatabase.getCityByXAndY(tile.x, tile.y).setRailroadBroken(true);
+                GameDatabase.getCityByXAndY(tile.x, tile.y).setRoadBroken(true);
+                //ToDo insert popup for destroy city, zamime
+                updateInfoPanel();
+                updateMap();
+            }
+        } else {
+
+            isClickedOnce = false;
+            selectedTile = null;
+            rangeAttackIsClicked = false;
+            rangeAttack.setEffect(null);
+            rangeAttack.setTextFill(Color.BLACK);
+
+        }
+
+
     }
 
     public void rangeAttackSetupFunction(){
