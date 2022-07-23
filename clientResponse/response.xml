@@ -1,0 +1,45 @@
+<Server.RequestPlayers>
+  <players>
+    <Client.Model.Civilization>
+      <username>Alireza</username>
+      <nickname>Alireza</nickname>
+      <score>0</score>
+      <turn>0</turn>
+      <tiles/>
+      <visibleTiles/>
+      <cities/>
+      <gold>0</gold>
+      <technologies/>
+      <happiness>100</happiness>
+      <science>0</science>
+      <isInWar>false</isInWar>
+      <acceptingPeace>false</acceptingPeace>
+      <messages>
+        <string>It&apos;s your game, Good luck ;)</string>
+      </messages>
+    </Client.Model.Civilization>
+    <Client.Model.Civilization>
+      <username>kasra</username>
+      <nickname>kysre</nickname>
+      <score>0</score>
+      <turn>0</turn>
+      <tiles/>
+      <visibleTiles/>
+      <cities/>
+      <gold>0</gold>
+      <technologies/>
+      <happiness>100</happiness>
+      <science>0</science>
+      <isInWar>false</isInWar>
+      <acceptingPeace>false</acceptingPeace>
+      <messages>
+        <string>You have an invitation from Alireza</string>
+      </messages>
+    </Client.Model.Civilization>
+  </players>
+  <tiles/>
+  <civilization reference="../players/Client.Model.Civilization"/>
+  <x>0</x>
+  <y>0</y>
+  <bool>false</bool>
+</Server.RequestPlayers>

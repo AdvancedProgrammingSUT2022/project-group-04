@@ -1,5 +1,40 @@
 <Server.RequestPlayers>
-  <x>2</x>
+  <players>
+    <Client.Model.Civilization>
+      <username>Alireza</username>
+      <nickname>Alireza</nickname>
+      <score>0</score>
+      <turn>0</turn>
+      <tiles/>
+      <visibleTiles/>
+      <cities/>
+      <gold>0</gold>
+      <technologies/>
+      <happiness>0</happiness>
+      <science>0</science>
+      <isInWar>false</isInWar>
+      <acceptingPeace>false</acceptingPeace>
+      <messages/>
+    </Client.Model.Civilization>
+    <Client.Model.Civilization>
+      <username>kasra</username>
+      <nickname>kysre</nickname>
+      <score>0</score>
+      <turn>0</turn>
+      <tiles/>
+      <visibleTiles/>
+      <cities/>
+      <gold>0</gold>
+      <technologies/>
+      <happiness>0</happiness>
+      <science>0</science>
+      <isInWar>false</isInWar>
+      <acceptingPeace>false</acceptingPeace>
+      <messages/>
+    </Client.Model.Civilization>
+  </players>
+  <x>0</x>
   <y>0</y>
+  <name>Alireza</name>
   <bool>false</bool>
 </Server.RequestPlayers>

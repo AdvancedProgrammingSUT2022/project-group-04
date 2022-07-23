@@ -1,19 +1,19 @@
 [
   {
     "firstUsername": "sepehr",
-    "secondUsername": "alirezaAmiri",
-    "isAccepted": false,
-    "isDenied": false
-  },
-  {
-    "firstUsername": "sepehr",
-    "secondUsername": "Alireza",
-    "isAccepted": false,
+    "secondUsername": "alirezaRM",
+    "isAccepted": true,
     "isDenied": false
   },
   {
     "firstUsername": "sepehr",
     "secondUsername": "yahya",
+    "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "Alireza",
     "isAccepted": false,
     "isDenied": false
   }

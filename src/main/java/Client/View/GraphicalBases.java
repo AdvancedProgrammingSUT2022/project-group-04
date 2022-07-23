@@ -40,6 +40,7 @@ public class GraphicalBases {
     public static final Image WHITE = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/white.jpg")).toExternalForm());
     public static final Image WORKER = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/worker.jpg")).toExternalForm());
     public static final Image CITY_PANEL = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/cityPanel.jpg")).toExternalForm());
+    public static final Image QUEEN_VICTORIA = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Menus/jennaColeman.jpg")).toExternalForm());
 
     // Avatars
     public static final int NUMBER_OF_AVATARS = 4;

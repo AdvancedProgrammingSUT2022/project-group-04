@@ -11,10 +11,7 @@ import Client.Client;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
@@ -33,6 +30,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ProfileMenuFXMLController {
+
+    @FXML
+    private TextArea requests;
+
+    @FXML
+    private TextArea friends;
 
     @FXML
     private Button changePassword;
@@ -81,10 +84,40 @@ public class ProfileMenuFXMLController {
         setUsername();
         try {
             setAvatars();
+            updateRequestsAndFriends();
         } catch (Exception e) {
 
         }
         GameModel.isGame = false;
+    }
+
+    private void updateRequestsAndFriends() throws IOException {
+        updateRequests();
+        updateFriends();
+    }
+
+    private void updateFriends() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Profile");
+        input.put("action","getFriends");
+        input.put("username", User.loggedInUser.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        System.out.println(message);
+        friends.setText("Friends:\n" + message);
+    }
+
+    private void updateRequests() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Profile");
+        input.put("action","getRequests");
+        input.put("username", User.loggedInUser.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        System.out.println(message);
+        requests.setText("Not Accepted Friendships:\n" + message);
     }
 
     private void setCursorTransitions() {

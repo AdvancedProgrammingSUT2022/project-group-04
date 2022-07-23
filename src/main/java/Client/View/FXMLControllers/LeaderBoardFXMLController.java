@@ -7,6 +7,7 @@ import Server.UserDatabase;
 import Client.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -134,7 +135,6 @@ public class LeaderBoardFXMLController {
     Text Player10LoginTime;
 
 
-
     private ArrayList<User> users;
     private CheckOnlineTransition checkOnlineTransition;
 
@@ -143,7 +143,7 @@ public class LeaderBoardFXMLController {
     public void initialize() {
         GameModel.isGame = false;
         users = sortUsers((ArrayList<User>) UserDatabase.getAllUsers());
-        try{
+        try {
             setScores();
             setButtons();
             setOnline();
@@ -154,9 +154,10 @@ public class LeaderBoardFXMLController {
         }
     }
 
-    public void setButtons() {
-        if(users.size() > 0) {
-            if(users.get(0).getUsername().equals(User.loggedInUser.getUsername())) {
+    public void setButtons() throws IOException {
+        if (users.size() > 0) {
+            if (users.get(0).getUsername().equals(User.loggedInUser.getUsername())
+                || !isRequestingValid(users.get(0).getUsername())) {
                 player1Button.setVisible(false);
             } else {
                 player1Button.setVisible(true);
@@ -164,8 +165,9 @@ public class LeaderBoardFXMLController {
         } else {
             player1Button.setVisible(false);
         }
-        if(users.size() > 1) {
-            if(users.get(1).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 1) {
+            if (users.get(1).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(1).getUsername())) {
                 player2Button.setVisible(false);
             } else {
                 player2Button.setVisible(true);
@@ -173,32 +175,41 @@ public class LeaderBoardFXMLController {
         } else {
             player2Button.setVisible(false);
         }
-        if(users.size() > 2) {
-            if(users.get(2).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 2) {
+            if (users.get(2).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(2).getUsername())) {
                 player3Button.setVisible(false);
             } else {
                 player3Button.setVisible(true);
-            }        } else {
+            }
+        } else {
             player3Button.setVisible(false);
         }
-        if(users.size() > 3) {
-            if(users.get(3).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 3) {
+            if (users.get(3).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(3).getUsername())) {
                 player4Button.setVisible(false);
             } else {
                 player4Button.setVisible(true);
-            }        } else {
+            }
+        } else {
             player4Button.setVisible(false);
         }
-        if(users.size() > 4) {
-            if(users.get(4).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 4) {
+            if (users.get(4).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(4).getUsername())) {
+
                 player5Button.setVisible(false);
             } else {
                 player5Button.setVisible(true);
-            }        } else {
+            }
+        } else {
             player5Button.setVisible(false);
         }
-        if(users.size() > 5) {
-            if(users.get(5).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 5) {
+            if (users.get(5).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(5).getUsername())) {
+
                 player6Button.setVisible(false);
             } else {
                 player6Button.setVisible(true);
@@ -206,8 +217,10 @@ public class LeaderBoardFXMLController {
         } else {
             player6Button.setVisible(false);
         }
-        if(users.size() > 6) {
-            if(users.get(6).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 6) {
+            if (users.get(6).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(6).getUsername())) {
+
                 player7Button.setVisible(false);
             } else {
                 player7Button.setVisible(true);
@@ -215,98 +228,107 @@ public class LeaderBoardFXMLController {
         } else {
             player7Button.setVisible(false);
         }
-        if(users.size() > 7) {
-            if(users.get(7).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 7) {
+            if (users.get(7).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(7).getUsername())) {
+
                 player8Button.setVisible(false);
             } else {
                 player8Button.setVisible(true);
-            }        } else {
+            }
+        } else {
             player8Button.setVisible(false);
         }
-        if(users.size() > 8) {
-            if(users.get(8).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 8) {
+            if (users.get(8).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(8).getUsername())) {
+
                 player9Button.setVisible(false);
             } else {
                 player9Button.setVisible(true);
-            }        } else {
+            }
+        } else {
             player9Button.setVisible(false);
         }
-        if(users.size() > 9) {
-            if(users.get(9).getUsername().equals(User.loggedInUser.getUsername())) {
+        if (users.size() > 9) {
+            if (users.get(9).getUsername().equals(User.loggedInUser.getUsername())
+                    || !isRequestingValid(users.get(9).getUsername())) {
+
                 player10Button.setVisible(false);
             } else {
                 player10Button.setVisible(true);
-            }        } else {
+            }
+        } else {
             player10Button.setVisible(false);
         }
     }
 
     public void setOnline() throws IOException {
-        if(users.size() > 0) {
-            if(isUserOnline(users.get(0))) {
+        if (users.size() > 0) {
+            if (isUserOnline(users.get(0))) {
                 player1Avatar.setStroke(Color.GREEN);
             } else {
                 player1Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 1) {
-            if(isUserOnline(users.get(1))) {
+        if (users.size() > 1) {
+            if (isUserOnline(users.get(1))) {
                 player2Avatar.setStroke(Color.GREEN);
             } else {
                 player2Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 2) {
-            if(isUserOnline(users.get(2))) {
+        if (users.size() > 2) {
+            if (isUserOnline(users.get(2))) {
                 player3Avatar.setStroke(Color.GREEN);
             } else {
                 player3Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 3) {
-            if(isUserOnline(users.get(3))) {
+        if (users.size() > 3) {
+            if (isUserOnline(users.get(3))) {
                 player4Avatar.setStroke(Color.GREEN);
             } else {
                 player4Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 4) {
-            if(isUserOnline(users.get(4))) {
+        if (users.size() > 4) {
+            if (isUserOnline(users.get(4))) {
                 player5Avatar.setStroke(Color.GREEN);
             } else {
                 player5Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 5) {
-            if(isUserOnline(users.get(5))) {
+        if (users.size() > 5) {
+            if (isUserOnline(users.get(5))) {
                 player6Avatar.setStroke(Color.GREEN);
             } else {
                 player6Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 6) {
-            if(isUserOnline(users.get(6))) {
+        if (users.size() > 6) {
+            if (isUserOnline(users.get(6))) {
                 player7Avatar.setStroke(Color.GREEN);
             } else {
                 player7Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 7) {
-            if(isUserOnline(users.get(7))) {
+        if (users.size() > 7) {
+            if (isUserOnline(users.get(7))) {
                 player8Avatar.setStroke(Color.GREEN);
             } else {
                 player8Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 8) {
-            if(isUserOnline(users.get(8))) {
+        if (users.size() > 8) {
+            if (isUserOnline(users.get(8))) {
                 player9Avatar.setStroke(Color.GREEN);
             } else {
                 player9Avatar.setStroke(Color.RED);
             }
         }
-        if(users.size() > 9) {
-            if(isUserOnline(users.get(9))) {
+        if (users.size() > 9) {
+            if (isUserOnline(users.get(9))) {
                 player10Avatar.setStroke(Color.GREEN);
             } else {
                 player10Avatar.setStroke(Color.RED);
@@ -322,11 +344,10 @@ public class LeaderBoardFXMLController {
             player1Score.setText(getUserScore(users.get(0)) + "");
             player1Name.setText(users.get(0).getNickname());
             Player1LoginTime.setText(getUserLastLoginTime(users.get(0)));
-            if (User.loggedInUser.getUsername().equals(users.get(0).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(0).getUsername())) {
                 player1Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
-        }
-        else {
+        } else {
             player1Avatar.setVisible(false);
             player1Score.setText("");
             player1Name.setText("");
@@ -337,11 +358,10 @@ public class LeaderBoardFXMLController {
             player2Score.setText(getUserScore(users.get(1)) + "");
             player2Name.setText(users.get(1).getNickname());
             Player2LoginTime.setText(getUserLastLoginTime(users.get(1)));
-            if (User.loggedInUser.getUsername().equals(users.get(1).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(1).getUsername())) {
                 player2Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
-        }
-        else {
+        } else {
             player2Avatar.setVisible(false);
             player2Score.setText("");
             player2Name.setText("");
@@ -352,12 +372,11 @@ public class LeaderBoardFXMLController {
             player3Score.setText(getUserScore(users.get(2)) + "");
             player3Name.setText(users.get(2).getNickname());
             Player3LoginTime.setText(getUserLastLoginTime(users.get(2)));
-            if (User.loggedInUser.getUsername().equals(users.get(2).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(2).getUsername())) {
                 player3Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player3Avatar.setVisible(false);
             player3Score.setText("");
             player3Name.setText("");
@@ -368,12 +387,11 @@ public class LeaderBoardFXMLController {
             player4Score.setText(getUserScore(users.get(3)) + "");
             player4Name.setText(users.get(3).getNickname());
             Player4LoginTime.setText(getUserLastLoginTime(users.get(3)));
-            if (User.loggedInUser.getUsername().equals(users.get(3).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(3).getUsername())) {
                 player4Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player4Avatar.setVisible(false);
             player4Score.setText("");
             player4Name.setText("");
@@ -384,12 +402,11 @@ public class LeaderBoardFXMLController {
             player5Score.setText(getUserScore(users.get(4)) + "");
             player5Name.setText(users.get(4).getNickname());
             Player5LoginTime.setText(getUserLastLoginTime(users.get(4)));
-            if (User.loggedInUser.getUsername().equals(users.get(4).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(4).getUsername())) {
                 player5Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player5Avatar.setVisible(false);
             player5Score.setText("");
             player5Name.setText("");
@@ -400,12 +417,11 @@ public class LeaderBoardFXMLController {
             player6Score.setText(getUserScore(users.get(5)) + "");
             player6Name.setText(users.get(5).getNickname());
             Player6LoginTime.setText(getUserLastLoginTime(users.get(5)));
-            if (User.loggedInUser.getUsername().equals(users.get(5).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(5).getUsername())) {
                 player6Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player6Avatar.setVisible(false);
             player6Score.setText("");
             player6Name.setText("");
@@ -416,12 +432,11 @@ public class LeaderBoardFXMLController {
             player7Score.setText(getUserScore(users.get(6)) + "");
             player7Name.setText(users.get(6).getNickname());
             Player7LoginTime.setText(getUserLastLoginTime(users.get(6)));
-            if (User.loggedInUser.getUsername().equals(users.get(6).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(6).getUsername())) {
                 player7Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player7Avatar.setVisible(false);
             player7Score.setText("");
             player7Name.setText("");
@@ -432,12 +447,11 @@ public class LeaderBoardFXMLController {
             player8Name.setText(users.get(7).getNickname());
             player8Score.setText(getUserScore(users.get(7)) + "");
             Player8LoginTime.setText(getUserLastLoginTime(users.get(7)));
-            if (User.loggedInUser.getUsername().equals(users.get(7).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(7).getUsername())) {
                 player8Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player8Avatar.setVisible(false);
             player8Score.setText("");
             player8Name.setText("");
@@ -448,12 +462,11 @@ public class LeaderBoardFXMLController {
             player9Score.setText(getUserScore(users.get(8)) + "");
             player9Name.setText(users.get(8).getNickname());
             Player9LoginTime.setText(getUserLastLoginTime(users.get(8)));
-            if (User.loggedInUser.getUsername().equals(users.get(8).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(8).getUsername())) {
                 player9Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
 
-        }
-        else {
+        } else {
             player9Avatar.setVisible(false);
             player9Score.setText("");
             player9Name.setText("");
@@ -464,11 +477,10 @@ public class LeaderBoardFXMLController {
             player10Score.setText(getUserScore(users.get(9)) + "");
             player10Name.setText(users.get(9).getNickname());
             Player10LoginTime.setText(getUserLastLoginTime(users.get(9)));
-            if (User.loggedInUser.getUsername().equals(users.get(9).getUsername())){
+            if (User.loggedInUser.getUsername().equals(users.get(9).getUsername())) {
                 player10Name.setStyle("-fx-fill: yellow; -fx-text-fill: yellow");
             }
-        }
-        else {
+        } else {
             player10Avatar.setVisible(false);
             player10Score.setText("");
             player10Name.setText("");
@@ -476,12 +488,10 @@ public class LeaderBoardFXMLController {
         }
 
 
-
-
     }
 
 
-    public ArrayList<User> sortUsers(ArrayList<User> temp){
+    public ArrayList<User> sortUsers(ArrayList<User> temp) {
         ArrayList<User> users = new ArrayList<>(temp);
         ArrayList<User> sortedUser = new ArrayList<>();
         while (users.size() != 0) {
@@ -494,12 +504,12 @@ public class LeaderBoardFXMLController {
     }
 
     private void removeMaxUser(User maxUser, ArrayList<User> users) {
-        if(maxUser == null) {
+        if (maxUser == null) {
             return;
         }
         int index = 0;
         for (User user : users) {
-            if(user.getUsername().equals(maxUser.getUsername())) {
+            if (user.getUsername().equals(maxUser.getUsername())) {
                 users.remove(index);
                 break;
             }
@@ -510,17 +520,17 @@ public class LeaderBoardFXMLController {
     private User getMaxUser(ArrayList<User> users) {
         int maxScore = 0;
         String lastLoginTime = LocalDateTime.MAX.format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss"));
-        if(users.size() == 0) {
+        if (users.size() == 0) {
             return null;
         }
         User maxUser = users.get(0);
         for (User user : users) {
-            if(user.getScore() > maxScore) {
+            if (user.getScore() > maxScore) {
                 maxScore = user.getScore();
                 maxUser = user;
             }
-            if(user.getScore() == maxScore) {
-                if(lastLoginTime.compareTo(user.getLastLoginTime()) > 0
+            if (user.getScore() == maxScore) {
+                if (lastLoginTime.compareTo(user.getLastLoginTime()) > 0
                         && !user.getLastLoginTime().equals(LocalDateTime.MAX.format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss")))) {
                     lastLoginTime = user.getLastLoginTime();
                     maxUser = user;
@@ -530,15 +540,15 @@ public class LeaderBoardFXMLController {
         return maxUser;
     }
 
-    public void backToMain(){
+    public void backToMain() {
         checkOnlineTransition.pause();
         GraphicalBases.changeMenu("MainMenu");
     }
 
     public boolean isUserOnline(User user) throws IOException {
         JSONObject input = new JSONObject();
-        input.put("menu type","Leaderboard");
-        input.put("action","isOnline");
+        input.put("menu type", "Leaderboard");
+        input.put("action", "isOnline");
         input.put("username", user.getUsername());
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
@@ -548,8 +558,8 @@ public class LeaderBoardFXMLController {
 
     private int getUserScore(User user) throws IOException {
         JSONObject input = new JSONObject();
-        input.put("menu type","Leaderboard");
-        input.put("action","getScore");
+        input.put("menu type", "Leaderboard");
+        input.put("action", "getScore");
         input.put("username", user.getUsername());
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
@@ -560,8 +570,8 @@ public class LeaderBoardFXMLController {
 
     private String getUserLastLoginTime(User user) throws IOException {
         JSONObject input = new JSONObject();
-        input.put("menu type","Leaderboard");
-        input.put("action","getLastLoginTime");
+        input.put("menu type", "Leaderboard");
+        input.put("action", "getLastLoginTime");
         input.put("username", user.getUsername());
         Client.dataOutputStream1.writeUTF(input.toString());
         Client.dataOutputStream1.flush();
@@ -573,7 +583,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship1(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(0).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -582,8 +592,8 @@ public class LeaderBoardFXMLController {
 
     private void sendFriendship(String firstUsername, String secondUsername) throws IOException {
         JSONObject input = new JSONObject();
-        input.put("menu type","Leaderboard");
-        input.put("action","friendship");
+        input.put("menu type", "Leaderboard");
+        input.put("action", "friendship");
         input.put("firstUsername", firstUsername);
         input.put("secondUsername", secondUsername);
         Client.dataOutputStream1.writeUTF(input.toString());
@@ -593,7 +603,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship2(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(1).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -603,7 +613,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship3(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(2).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -613,7 +623,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship4(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(3).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -623,7 +633,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship5(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(4).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -633,7 +643,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship6(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(5).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -643,7 +653,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship7(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(6).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -653,7 +663,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship8(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(7).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -663,7 +673,7 @@ public class LeaderBoardFXMLController {
     public void sendFriendship9(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(8).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
@@ -673,10 +683,26 @@ public class LeaderBoardFXMLController {
     public void sendFriendship10(MouseEvent mouseEvent) {
         String myUsername = User.loggedInUser.getUsername();
         String secondUsername = users.get(9).getUsername();
-        try{
+        try {
             sendFriendship(myUsername, secondUsername);
         } catch (Exception e) {
 
         }
+    }
+
+    public void goToFriendshipMenu(ActionEvent actionEvent) {
+        GraphicalBases.changeMenu("Friendship");
+    }
+
+    private boolean isRequestingValid(String username) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type", "Leaderboard");
+        input.put("action", "request");
+        input.put("firstUsername", User.loggedInUser.getUsername());
+        input.put("secondUsername", username);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        boolean result = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        return result;
     }
 }
