@@ -285,6 +285,7 @@ public class GameDatabase {
     }
 
     public static void generateMap(int numberOfPlayers) throws IOException {
+        Worker.setHashMap();
         XStream xStream = new XStream();
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.x = numberOfPlayers;
