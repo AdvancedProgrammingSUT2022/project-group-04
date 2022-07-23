@@ -367,6 +367,7 @@ public class City extends Tile {
             this.settler = new Settler(x, y, GameDatabase.getCivilizationIndex(civilizationName));
             GameDatabase.getCityByXAndY(x, y).addSettler(this.settler);
             GameDatabase.getTileByXAndY(x, y).addSettler(this.settler);
+            this.settler.tileOfUnit = GameDatabase.getTileByXAndY(x, y);
             leftoverFood = 0;//damn immigrants why they gotta be eating everything
             //System.out.println("I'm in if");
         }
@@ -377,6 +378,7 @@ public class City extends Tile {
         this.worker = newWorker;
         GameDatabase.getCityByXAndY(x, y).addWorker(this.worker);
         GameDatabase.getTileByXAndY(x, y).addWorker(this.worker);
+        this.worker.tileOfUnit =  GameDatabase.getTileByXAndY(x, y);
     }
 
     public void removeSettler(Settler settler) {
