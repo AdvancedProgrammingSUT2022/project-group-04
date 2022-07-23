@@ -1,10 +1,9 @@
 package Server;
 
-import Civilization.Controller.CopyOfGameDatabase;
 import Civilization.Controller.GameMenuController;
 import Civilization.Database.GlobalVariables;
 import Civilization.Model.*;
-import Civilization.View.FXMLControllers.GameFXMLController;
+import Client.View.FXMLControllers.GameFXMLController;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.json.JSONObject;
@@ -21,8 +20,8 @@ public class GameDatabaseServer {
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
 
-    public static int length = 25;
-    public static int width = 10;
+    public static int length = 12;
+    public static int width = 12;
 
     public static int turn = 0;
     public static int year = 0;
@@ -609,6 +608,11 @@ public class GameDatabaseServer {
         response = xStream.toXML(returnValue);
         System.out.println(response);
         return response;
+    }
+
+    public static void updateMap(String mp) throws IOException {
+        RequestPlayers requestPlayers = readAndCastRequest(mp);
+        GameDatabaseServer.map = requestPlayers.tiles;
     }
 
     public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {

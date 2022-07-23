@@ -1,6 +1,6 @@
 package Server;
 
-import Civilization.View.Components.Account;
+import Client.View.Components.Account;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

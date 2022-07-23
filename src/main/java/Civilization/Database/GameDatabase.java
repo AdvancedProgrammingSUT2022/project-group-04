@@ -2,8 +2,7 @@ package Civilization.Database;
 
 import Civilization.Controller.GameMenuController;
 import Civilization.Model.*;
-import Civilization.View.FXMLControllers.GameFXMLController;
-import Civilization.View.Transitions.TransitionDatabase;
+import Client.View.Transitions.TransitionDatabase;
 import Server.RequestPlayers;
 import Server.User;
 import Server.UserDatabase;
@@ -24,8 +23,8 @@ public class GameDatabase {
     public static ArrayList<Civilization> players = new ArrayList<Civilization>();
     public static ArrayList<Tile> map = new ArrayList<Tile>();
 
-    public static int length = 25;
-    public static int width = 10;
+    public static int length = 12;
+    public static int width = 12;
 
     public static User you;
 
@@ -286,12 +285,12 @@ public class GameDatabase {
     }
 
     public static void generateMap(int numberOfPlayers) throws IOException {
-//        XStream xStream = new XStream();
-//        RequestPlayers requestPlayers = new RequestPlayers();
-//        requestPlayers.x = numberOfPlayers;
-//        System.out.println("blahhhh");
-//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
-//        System.out.println("please work");
+        XStream xStream = new XStream();
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.x = numberOfPlayers;
+        System.out.println("blahhhh");
+        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "generateMap");
+        System.out.println("please work");
 
     }
 

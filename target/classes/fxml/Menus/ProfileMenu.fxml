@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Civilization.View.FXMLControllers.ProfileMenuFXMLController"
+            fx:controller="Client.View.FXMLControllers.ProfileMenuFXMLController"
             prefHeight="720" prefWidth="1280" stylesheets="@../../css/ProfileMenuStyle.css">
 
     <Rectangle fx:id="background" width="1280" height="720"/>

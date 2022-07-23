@@ -7,7 +7,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
              xmlns:fx="http://javafx.com/fxml"
-             fx:controller="Civilization.View.FXMLControllers.GameMenuFXMLController"
+             fx:controller="Client.View.FXMLControllers.GameMenuFXMLController"
              prefHeight="720" prefWidth="1280"
              fx:id="mainAnchorPane">
 

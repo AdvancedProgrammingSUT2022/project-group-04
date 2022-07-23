@@ -5,7 +5,7 @@ import Civilization.Controller.ProfileMenuController;
 import Civilization.Model.Friendship;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.ProfileMenuModel;
-import Civilization.View.Components.Account;
+import Client.View.Components.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONObject;

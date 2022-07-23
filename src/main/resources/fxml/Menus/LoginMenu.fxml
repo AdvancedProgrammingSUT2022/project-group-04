@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Civilization.View.FXMLControllers.LoginMenuFXMLController"
+            fx:controller="Client.View.FXMLControllers.LoginMenuFXMLController"
             prefHeight="720" prefWidth="1280" stylesheets="@../../css/LoginMenuStyle.css">
 
         <Rectangle fx:id="background" width="1280" height="720"/>

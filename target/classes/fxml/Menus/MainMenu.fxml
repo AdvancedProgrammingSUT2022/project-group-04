@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Civilization.View.FXMLControllers.MainMenuFXMLController"
+            fx:controller="Client.View.FXMLControllers.MainMenuFXMLController"
             prefHeight="720" prefWidth="1280" stylesheets="@../../css/MainMenuStyle.css">
     <Rectangle fx:id="background" width="1280" height="720"/>
     <Label text="" fx:id="userLabel" id="label" layoutX="200" layoutY="50"/>

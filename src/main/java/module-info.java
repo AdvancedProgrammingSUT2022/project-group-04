@@ -16,16 +16,16 @@
 
       exports Civilization.Model to xstream;
      opens Civilization.Model to com.google.gson,xstream;
-     opens Civilization.View.Components to com.google.gson,xstream;
+     opens Client.View.Components to com.google.gson,xstream;
 
-     exports Civilization.View.FXMLControllers;
-     opens Civilization.View.FXMLControllers to javafx.fxml;
+     exports Client.View.FXMLControllers;
+     opens Client.View.FXMLControllers to javafx.fxml;
 
-     exports Civilization.View.Transitions;
-     opens Civilization.View.Transitions to javafx.fxml,java.desktop;
+     exports Client.View.Transitions;
+     opens Client.View.Transitions to javafx.fxml,java.desktop;
 
-      exports Civilization.View;
-     opens Civilization.View to javafx.fxml, javafx.media;
+      exports Client.View;
+     opens Client.View to javafx.fxml, javafx.media;
 
      exports Civilization;
      opens Civilization to javafx.fxml,xstream;

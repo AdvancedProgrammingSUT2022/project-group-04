@@ -23,6 +23,7 @@ public class GameModel {
         for (int i=0;i< users.size();i++) GameDatabase.setPlayers(players,users.get(i));
         System.out.println("worked");
         GameDatabase.generateMap(users.size());
+        //GameDatabase.getMapFromServer();
         System.out.println("haha worked");
         GameDatabase.generateRuin();
         System.out.println("haha worked");
