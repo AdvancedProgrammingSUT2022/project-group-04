@@ -137,8 +137,10 @@ public class CombatController {
     }
 
     public void zamimeCity(Civilization civilization, City city){
+        GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(city.getX(), city.getY())).removeCity(city);
         civilization.addCity(city);
-        //Todo niaz be sepehr hast
+        city.setCivilizationName(civilization.getNickname());
+
     }
 
     public void dastneshandeCity(Civilization civilization, City city){
