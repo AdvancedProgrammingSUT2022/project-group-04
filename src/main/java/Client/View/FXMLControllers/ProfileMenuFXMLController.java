@@ -1,8 +1,8 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Controller.ProfileMenuController;
-import Civilization.Model.GameModel;
-import Civilization.Model.ProfileMenuModel;
+import Server.Controller.ProfileMenuController;
+import Client.Model.GameModel;
+import Client.Model.ProfileMenuModel;
 import Server.User;
 import Client.View.Components.Account;
 import Client.View.GraphicalBases;

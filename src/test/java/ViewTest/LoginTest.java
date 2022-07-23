@@ -1,6 +1,6 @@
 //package ViewTest;
 //
-//import Civilization.Controller.LoginMenuController;
+//import LoginMenuController;
 //import LoginMenu;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;

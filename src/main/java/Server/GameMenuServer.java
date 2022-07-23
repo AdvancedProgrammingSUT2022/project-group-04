@@ -1,8 +1,8 @@
 //package Server;
 //
 //
-//import Civilization.Controller.CombatController;
-//import Civilization.Controller.GameMenuController;
+//import CombatController;
+//import GameMenuController;
 //import Civilization.Database.GameDatabase;
 //import Civilization.Database.GlobalVariables;
 //import Civilization.Model.*;

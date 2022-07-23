@@ -1,10 +1,10 @@
 package Client;
 
-import Civilization.Controller.GameMenuController;
+import Client.Model.*;
+import Server.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
 import Server.UserDatabase;
-import Civilization.Model.*;
 import Client.View.FXMLControllers.GameFXMLController;
 import Client.View.Transitions.TransitionDatabase;
 import Server.User;

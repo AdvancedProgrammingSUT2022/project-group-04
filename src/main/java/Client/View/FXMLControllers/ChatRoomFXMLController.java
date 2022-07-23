@@ -1,7 +1,7 @@
 package Client.View.FXMLControllers;
 
 import Server.UserDatabase;
-import Civilization.Model.GameModel;
+import Client.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
 import javafx.collections.FXCollections;

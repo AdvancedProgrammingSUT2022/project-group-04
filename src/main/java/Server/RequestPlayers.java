@@ -1,6 +1,7 @@
 package Server;
 
-import Civilization.Model.*;
+
+import Client.Model.*;
 
 import java.util.ArrayList;
 

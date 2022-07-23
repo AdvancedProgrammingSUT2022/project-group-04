@@ -1,9 +1,9 @@
 //package ControllerTest;
 //
-//import Civilization.Controller.ProfileMenuController;
+//import ProfileMenuController;
 //import Server.UserController;
 //import Server.UserDatabase;
-//import Civilization.Model.ProfileMenuModel;
+//import ProfileMenuModel;
 //import Server.User;
 //import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.BeforeAll;

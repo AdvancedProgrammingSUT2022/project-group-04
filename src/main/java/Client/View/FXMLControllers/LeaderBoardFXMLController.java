@@ -4,7 +4,7 @@ import Client.Client;
 import Client.View.Components.Account;
 import Server.CheckOnlineTransition;
 import Server.UserDatabase;
-import Civilization.Model.GameModel;
+import Client.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
 import javafx.fxml.FXML;

@@ -1,10 +1,10 @@
 package Client.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
-import Civilization.Model.Citizen;
-import Civilization.Model.City;
-import Civilization.Model.GameModel;
-import Civilization.Model.Tile;
+import Client.Model.Citizen;
+import Client.Model.City;
+import Client.Model.GameModel;
+import Client.Model.Tile;
 import Client.View.GraphicalBases;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

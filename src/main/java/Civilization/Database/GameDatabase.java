@@ -1,7 +1,7 @@
 package Civilization.Database;
 
-import Civilization.Controller.GameMenuController;
-import Civilization.Model.*;
+import Client.Model.*;
+import Server.Controller.GameMenuController;
 import Client.View.Transitions.TransitionDatabase;
 import Server.RequestPlayers;
 import Server.User;
@@ -37,7 +37,10 @@ public class GameDatabase {
     public static DataInputStream dataInputStream1;
     public static DataOutputStream dataOutputStream1;
 
+    public static boolean isYourTurn = false;
+
     public static JSONObject input;
+    public static boolean mapTransferStarted = false;
 
     public static void setSocket(Socket socket, DataOutputStream dataOutputStream, DataInputStream dataInputStream) {
         socket1 = socket;
@@ -120,30 +123,47 @@ public class GameDatabase {
         System.out.println(485);
         GameDatabase.map = requestPlayers.tiles;
         System.out.println(469);
-        return requestPlayers;
+        return null;
     }
 
     public static void generateRuin() throws IOException {
-//        sendToServer(null, "generateRuin");
-        Random random = new Random();
-        for (Tile tile : map) {
-            if (getCivilizationByTile(tile) == null) {
-                int ruin = random.nextInt(500);
-                if (ruin == 12) {
-                    tile.setRuin(new Ruin());
-                }
-            }
-        }
+        sendToServer(null, "generateRuin");
+//        Random random = new Random();
+//        for (Tile tile : map) {
+//            if (getCivilizationByTile(tile) == null) {
+//                int ruin = random.nextInt(500);
+//                if (ruin == 12) {
+//                    tile.setRuin(new Ruin());
+//                }
+//            }
+//        }
+//        sendMapToServer();
     }
 
-    public static boolean getMapFromServer() throws IOException {
+    private static void sendMapToServer() throws IOException {
+        System.out.println("entered get Map from server");
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.tiles = GameDatabase.map;
+        requestPlayers.players = GameDatabase.players;
+        requestPlayers.x = GameDatabase.turn;
+        XStream xStream = new XStream();
+        byte[] requestToBytes = xStream.toXML(requestPlayers).getBytes(StandardCharsets.UTF_8);
+        //System.out.println(Arrays.toString(requestToBytes));
+        dataOutputStream1.writeInt(requestToBytes.length);
+        dataOutputStream1.flush();
+        dataOutputStream1.write(requestToBytes);
+        dataOutputStream1.flush();
+    }
+
+    public static void getMapFromServer() throws IOException {
+        System.out.println("entered get Map from server");
         byte[] requestToByte = new byte[dataInputStream1.readInt()];
         dataInputStream1.readFully(requestToByte);
         String response = new String(requestToByte, StandardCharsets.UTF_8);
         RequestPlayers requestPlayers = readAndCastResponse(response);
         GameDatabase.map = requestPlayers.tiles;
-        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) return true;
-        return false;
+        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
+        else isYourTurn = false;
     }
 
     public static void setYou() {
@@ -157,8 +177,8 @@ public class GameDatabase {
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.players = players;
         requestPlayers.name = user;
-        Object sth = sendToServer(xStream.toXML(requestPlayers), "setPlayers");
-        GameDatabase.players = players;
+        sendToServer(xStream.toXML(requestPlayers), "setPlayers");
+        GameDatabase.getMapFromServer();
     }
 
     /**

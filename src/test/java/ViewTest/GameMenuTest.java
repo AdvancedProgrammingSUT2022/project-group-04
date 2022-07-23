@@ -1,7 +1,7 @@
 //package ViewTest;
 //
-//import Civilization.Controller.CombatController;
-//import Civilization.Controller.GameMenuController;
+//import CombatController;
+//import GameMenuController;
 //import Civilization.Database.GameDatabase;
 //
 //import Civilization.Model.*;

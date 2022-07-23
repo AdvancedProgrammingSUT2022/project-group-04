@@ -1,13 +1,13 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Controller.CombatController;
-import Civilization.Controller.GameMenuController;
+import Client.Model.*;
+import Server.Controller.CombatController;
+import Server.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
-import Civilization.Model.*;
-import Client.View.*;
 import Client.View.Cheater;
 import Client.View.GraphicalBases;
+import Client.View.Transitions.NextTurnTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -105,6 +105,7 @@ public class GameFXMLController {
     Button no = new Button("no");
     VBox LabelAndButton = new VBox(warCheck, yes, no);
 
+    NextTurnTransition nextTurnTransition;
 
     // Map
     private ScrollPane map;
@@ -114,6 +115,11 @@ public class GameFXMLController {
     public void initialize() throws IOException {
         turn = GameDatabase.getTurn();
         setMap();
+
+        nextTurnTransition = new NextTurnTransition(this);
+        nextTurnTransition.play();
+
+
         setStatusBar();
         setNextTurnButton();
         setBackButton();
@@ -1742,6 +1748,7 @@ public class GameFXMLController {
         stopButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                nextTurnTransition.pause();
                 GameDatabase.saveGame();
                 GraphicalBases.PlayMenuMusic();
                 GraphicalBases.changeMenu("GameMenu");
@@ -1785,6 +1792,7 @@ public class GameFXMLController {
         backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                nextTurnTransition.pause();
                 GameDatabase.saveGame();
                 GraphicalBases.PlayMenuMusic();
                 GraphicalBases.userLoggedIn();

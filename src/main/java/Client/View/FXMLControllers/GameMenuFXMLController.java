@@ -1,8 +1,8 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Controller.SavingGame;
+import Server.Controller.SavingGame;
 import Civilization.Database.GameDatabase;
-import Civilization.Model.GameModel;
+import Client.Model.GameModel;
 import Server.User;
 import Client.View.Components.SwitchButton;
 import Client.View.GraphicalBases;

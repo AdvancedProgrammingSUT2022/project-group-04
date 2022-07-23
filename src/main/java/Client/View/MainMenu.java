@@ -1,14 +1,14 @@
 package Client.View;
 
-import Civilization.Controller.CombatController;
-import Civilization.Controller.GameMenuController;
-import Civilization.Controller.MainMenuController;
-import Civilization.Controller.ProfileMenuController;
+import Server.Controller.CombatController;
+import Server.Controller.GameMenuController;
+import Server.Controller.MainMenuController;
+import Server.Controller.ProfileMenuController;
 import Civilization.Database.GameDatabase;
 import Server.UserDatabase;
-import Civilization.Model.Civilization;
-import Civilization.Model.GameModel;
-import Civilization.Model.ProfileMenuModel;
+import Client.Model.Civilization;
+import Client.Model.GameModel;
+import Client.Model.ProfileMenuModel;
 import Server.User;
 
 import java.io.IOException;

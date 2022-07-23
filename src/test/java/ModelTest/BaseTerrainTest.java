@@ -1,7 +1,7 @@
 //package ModelTest;
 //
 //import Civilization.Database.GlobalVariables;
-//import Civilization.Model.BaseTerrain;
+//import BaseTerrain;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.junit.jupiter.MockitoExtension;

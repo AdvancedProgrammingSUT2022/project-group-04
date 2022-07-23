@@ -1,10 +1,10 @@
 package Server;
 
-import Civilization.Controller.LoginMenuController;
-import Civilization.Controller.ProfileMenuController;
-import Civilization.Model.Friendship;
-import Civilization.Model.LoginMenuModel;
-import Civilization.Model.ProfileMenuModel;
+import Server.Controller.LoginMenuController;
+import Server.Controller.ProfileMenuController;
+import Client.Model.Friendship;
+import Client.Model.LoginMenuModel;
+import Client.Model.ProfileMenuModel;
 import Client.View.Components.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,10 +14,11 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class Server {
     private ServerSocket serverSocket1;
+
+    public static boolean gameMode = false;
 
 
     public Server() {
@@ -61,25 +62,31 @@ public class Server {
         boolean disconnected = false;
         while (true) {
             try {
-                String clientCommand = dataInputStream.readUTF();
-                JSONObject clientCommandJ;
-                if (!clientCommand.startsWith("!!!")) {
-                    clientCommandJ = new JSONObject(clientCommand);
-                    if (clientCommandJ.get("menu type").equals("Login")) {
-                        processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected, id);
-                    } else if (clientCommandJ.get("menu type").equals("Profile")) {
-                        processProfileMenuReqs(clientCommandJ, dataOutputStream, profileMenuController, disconnected);
-                    } else if (clientCommandJ.get("menu type").equals("Game Database")) {
-                        processGameMenuReqs(clientCommandJ, dataOutputStream);
-                    } else if (clientCommandJ.get("menu type").equals("Main")) {
-                        processMainMenuReqs(clientCommandJ, dataOutputStream, id);
-                    } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
-                        processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
+                if (!gameMode) {
+                    String clientCommand = dataInputStream.readUTF();
+                    JSONObject clientCommandJ;
+                    if (!clientCommand.startsWith("!!!") && !clientCommand.startsWith("getUpdatedMap")) {
+                        clientCommandJ = new JSONObject(clientCommand);
+                        if (clientCommandJ.get("menu type").equals("Login")) {
+                            processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected, id);
+                        } else if (clientCommandJ.get("menu type").equals("Profile")) {
+                            processProfileMenuReqs(clientCommandJ, dataOutputStream, profileMenuController, disconnected);
+                        } else if (clientCommandJ.get("menu type").equals("Game Database")) {
+                            processGameMenuReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Main")) {
+                            processMainMenuReqs(clientCommandJ, dataOutputStream, id);
+                        } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
+                            processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
+                        }
+                    } else {
+                        clientCommand = clientCommand.substring(3);
+                        processGameUsingXML(clientCommand, dataOutputStream);
                     }
-                }
-                else {
-                    clientCommand = clientCommand.substring(3);
-                    processGameUsingXML(clientCommand, dataOutputStream);
+                } else {
+                    byte[] requestToByte = new byte[dataInputStream.readInt()];
+                    dataInputStream.readFully(requestToByte);
+                    String response = new String(requestToByte, StandardCharsets.UTF_8);
+                    GameDatabaseServer.updateMap(response);
                 }
             } catch (Exception ex) {
                 if(!disconnected) {
@@ -132,7 +139,7 @@ public class Server {
         System.out.println(response);
 
         byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
-        System.out.println(Arrays.toString(requestToBytes));
+        //System.out.println(Arrays.toString(requestToBytes));
         dataOutputStream.writeInt(requestToBytes.length);
         dataOutputStream.flush();
         dataOutputStream.write(requestToBytes);
