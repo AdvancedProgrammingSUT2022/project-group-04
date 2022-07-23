@@ -136,12 +136,14 @@ public class GameDatabase {
         }
     }
 
-    public static void getMapFromServer() throws IOException {
+    public static boolean getMapFromServer() throws IOException {
         byte[] requestToByte = new byte[dataInputStream1.readInt()];
         dataInputStream1.readFully(requestToByte);
         String response = new String(requestToByte, StandardCharsets.UTF_8);
         RequestPlayers requestPlayers = readAndCastResponse(response);
         GameDatabase.map = requestPlayers.tiles;
+        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) return true;
+        return false;
     }
 
     public static void setYou() {
@@ -170,7 +172,6 @@ public class GameDatabase {
 //        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "getCivilizationByUsername");
 //        return sth.civilization;
 //    }
-
     public static Civilization getCivilizationByNickname(String civilizationName) throws IOException {
 //        XStream xStream = new XStream();
 //        RequestPlayers requestPlayers = new RequestPlayers();
@@ -307,7 +308,8 @@ public class GameDatabase {
                 }
             }
         }
-        return null;    }
+        return null;
+    }
 
     public static void nextTurn() throws IOException {
         XStream xStream = new XStream();
@@ -316,6 +318,7 @@ public class GameDatabase {
         //send data to database!
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.tiles = GameDatabase.map;
+        requestPlayers.x = GameDatabase.turn;
         sendToServer(xStream.toXML(requestPlayers), "nextTurn");
     }
 

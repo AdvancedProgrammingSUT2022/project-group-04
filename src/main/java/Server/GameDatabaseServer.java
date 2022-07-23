@@ -604,6 +604,7 @@ public class GameDatabaseServer {
         XStream xStream = new XStream();
         returnValue.players = GameDatabaseServer.players;
         returnValue.tiles = GameDatabaseServer.map;
+        returnValue.civilization = GameDatabaseServer.getCivilizationByTurn(turn);
         if (map.size() != 0) returnValue.tile = returnValue.tiles.get(0);
         response = xStream.toXML(returnValue);
         System.out.println(response);

@@ -75,7 +75,8 @@ public class Server {
                     } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
                         processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
                     }
-                } else {
+                }
+                else {
                     clientCommand = clientCommand.substring(3);
                     processGameUsingXML(clientCommand, dataOutputStream);
                 }

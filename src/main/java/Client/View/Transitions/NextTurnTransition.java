@@ -19,7 +19,13 @@ public class NextTurnTransition extends Transition {
     @Override
     protected void interpolate(double v) {
         try {
-            GameDatabase.getMapFromServer();
+            boolean isYourTurn = GameDatabase.getMapFromServer();
+            if (isYourTurn){
+
+            }
+            else {
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
