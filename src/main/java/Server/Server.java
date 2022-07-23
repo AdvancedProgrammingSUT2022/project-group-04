@@ -283,7 +283,14 @@ public class Server {
                 //System.out.printf("AvatarURL %s \n", account.getAvatarURL());
                 dataOutputStream.writeUTF(account.getAvatarURL());
                 dataOutputStream.flush();
-
+            } else if (clientCommandJ.get("action").equals("getRequests")) {
+                String username = clientCommandJ.get("username").toString();
+                dataOutputStream.writeUTF(Friendship.getMyRequestsOrDeniedFriendshipsString(username));
+                dataOutputStream.flush();
+            } else if (clientCommandJ.get("action").equals("getFriends")) {
+                String username = clientCommandJ.get("username").toString();
+                dataOutputStream.writeUTF(Friendship.getMyFriendsString(username));
+                dataOutputStream.flush();
             }
         } catch (Exception e) {
             if (disconnected) {

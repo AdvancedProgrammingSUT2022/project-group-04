@@ -10,5 +10,11 @@
     "secondUsername": "yahya",
     "isAccepted": true,
     "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "Alireza",
+    "isAccepted": false,
+    "isDenied": false
   }
 ]

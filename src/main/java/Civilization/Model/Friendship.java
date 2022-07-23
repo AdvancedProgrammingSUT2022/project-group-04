@@ -155,4 +155,36 @@ public class Friendship {
             return true;
         }
     }
+
+    public static String getMyFriendsString(String myUsername) {
+        ArrayList<String> friends = Friendship.getMyFriends(myUsername);
+        String result = "";
+        for (String friend : friends) {
+            result += friend + "\n";
+        }
+        return result;
+    }
+
+    public static String getMyRequestsOrDeniedFriendshipsString(String myUsername) {
+        String result = "";
+        ArrayList<String> friends = Friendship.getMyRequestsOrDeniedFriendships(myUsername);
+        for (String friend : friends) {
+            result += friend + "\n";
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getMyRequestsOrDeniedFriendships(String myUsername) {
+        ArrayList<String> myRequestsAndDeniedFriendships = new ArrayList<>();
+        for (Friendship friendship : Friendship.friendships) {
+            if(friendship.getFirstUsername().equals(myUsername) && !friendship.isAccepted) {
+                if(friendship.isDenied()) {
+                    myRequestsAndDeniedFriendships.add(friendship.getSecondUsername() + " - Denied");
+                } else {
+                    myRequestsAndDeniedFriendships.add(friendship.getSecondUsername() + " - Requested");
+                }
+            }
+        }
+        return myRequestsAndDeniedFriendships;
+    }
 }
