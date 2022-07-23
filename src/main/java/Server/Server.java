@@ -129,6 +129,7 @@ public class Server {
         dataOutputStream.flush();
         dataOutputStream.write(requestToBytes);
         dataOutputStream.flush();
+        System.out.println("sent to client!!!!");
     }
 
     private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream, int id) throws IOException {
