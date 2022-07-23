@@ -125,6 +125,11 @@
             <Font size="24.0" />
          </font>
       </Button>
+      <Button alignment="CENTER" layoutX="1130.0" layoutY="83.0" mnemonicParsing="false" onAction="#goToFriendshipMenu" prefHeight="43.0" prefWidth="103.0" styleClass="backButton" text="Friendship">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
    </children>
 
 

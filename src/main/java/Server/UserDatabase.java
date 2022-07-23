@@ -121,4 +121,22 @@ public class UserDatabase {
             }
         }
     }
+
+    public static String searchFor(String username, int i) {
+        ArrayList<String> users = new ArrayList<>();
+        int index = 0;
+        for (User user : User.users) {
+            if(user.getUsername().toLowerCase().startsWith(username.toLowerCase())) {
+                if(index < 5) {
+                    users.add(user.getUsername());
+                    index++;
+                }
+            }
+        }
+        String result = "";
+        for (String user : users) {
+            result += user + "\n";
+        }
+        return result;
+    }
 }

@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Server {
@@ -34,6 +35,7 @@ public class Server {
     public void startServer() throws IOException {
         UserDatabase.readFromFile("UserDatabase.json");
         Account.readAccounts("AccountURLs.json");
+        Friendship.readFriendships("friendshipDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
@@ -75,6 +77,8 @@ public class Server {
                         processMainMenuReqs(clientCommandJ, dataOutputStream, id);
                     } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
                         processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
+                    } else if (clientCommandJ.get("menu type").equals("Friendship")) {
+                        processFriendshipMenuReqs(clientCommandJ, dataOutputStream);
                     }
                 } else {
                     clientCommand = clientCommand.substring(3);
@@ -92,6 +96,62 @@ public class Server {
 //                break;
 
             }
+        }
+    }
+
+    private void processFriendshipMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("getUsers")) {
+            String username = clientCommandJ.get("username").toString();
+            String result = UserDatabase.searchFor(username, 5);
+            dataOutputStream.writeUTF(result);
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("information")) {
+            String username = clientCommandJ.get("username").toString();
+            User result = UserDatabase.getUserByUsername(username);
+            if(result == null) {
+                dataOutputStream.writeUTF("");
+                dataOutputStream.flush();
+            } else {
+                dataOutputStream.writeUTF(result.toString());
+                dataOutputStream.flush();
+            }
+        } else if (clientCommandJ.get("action").equals("friendship")) {
+            String firstUsername = clientCommandJ.get("firstUsername").toString();
+            String secondUsername = clientCommandJ.get("secondUsername").toString();
+            Friendship.addFriendship(firstUsername, secondUsername);
+            Friendship.writeFriendships("friendshipDatabase.json");
+        } else if (clientCommandJ.get("action").equals("request")) {
+            String firstUsername = clientCommandJ.get("firstUsername").toString();
+            String secondUsername = clientCommandJ.get("secondUsername").toString();
+            dataOutputStream.writeUTF(Boolean.toString(Friendship.isRequestingValid(firstUsername, secondUsername)));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("accept")) {
+            String firstUsername = clientCommandJ.get("firstUsername").toString();
+            String secondUsername = clientCommandJ.get("secondUsername").toString();
+            Friendship friendship = Friendship.getFriendshipByUsernames(firstUsername, secondUsername);
+            if(friendship != null) {
+                System.out.println("Not null");
+                friendship.accept();
+            }
+            Friendship.writeFriendships("friendshipDatabase.json");
+        } else if (clientCommandJ.get("action").equals("deny")) {
+            String firstUsername = clientCommandJ.get("firstUsername").toString();
+            String secondUsername = clientCommandJ.get("secondUsername").toString();
+            Friendship friendship = Friendship.getFriendshipByUsernames(firstUsername, secondUsername);
+            if (friendship != null) {
+                System.out.println("Not null");
+                friendship.deny();
+            }
+            Friendship.writeFriendships("friendshipDatabase.json");
+        } else if (clientCommandJ.get("action").equals("getRequests")) {
+            String username = clientCommandJ.get("username").toString();
+            ArrayList<String> users = Friendship.getMyRequests(username);
+            String result = "";
+            for (String user : users) {
+                result += user + " ";
+            }
+            dataOutputStream.writeUTF(result);
+            dataOutputStream.flush();
         }
     }
 
@@ -119,6 +179,11 @@ public class Server {
                 Friendship.addFriendship(firstUsername, secondUsername);
                 Friendship.writeFriendships("friendshipDatabase.json");
                 System.out.println("Hiiiiii");
+            } else if (clientCommandJ.get("action").equals("request")) {
+                String firstUsername = clientCommandJ.get("firstUsername").toString();
+                String secondUsername = clientCommandJ.get("secondUsername").toString();
+                dataOutputStream.writeUTF(Boolean.toString(Friendship.isRequestingValid(firstUsername, secondUsername)));
+                dataOutputStream.flush();
             }
         }catch (Exception e) {
             e.printStackTrace();

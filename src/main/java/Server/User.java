@@ -117,4 +117,9 @@ public class User {
     public void setScore(int amount) {
         this.score += amount;
     }
+
+    @Override
+    public String toString() {
+        return this.username + "\n" + "  Nickname = " + this.nickname + "\n  Score = " + this.score;
+    }
 }

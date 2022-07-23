@@ -51,11 +51,13 @@ public class Friendship {
         }
     }
 
-    public static ArrayList<String> getRequests(String myUsername) {
+    public static ArrayList<String> getMyRequests(String myUsername) {
         ArrayList<String> myRequests = new ArrayList<>();
         for (Friendship friendship : friendships) {
-            if(!friendship.isDenied() && !friendship.isAccepted()) {
-                myRequests.add(friendship.getFirstUsername());
+            if(friendship.getSecondUsername().equals(myUsername)) {
+                if(!friendship.isDenied() && !friendship.isAccepted()) {
+                    myRequests.add(friendship.getFirstUsername());
+                }
             }
         }
         return myRequests;
@@ -72,10 +74,15 @@ public class Friendship {
         this.isAccepted = false;
     }
 
+    @Override
+    public String toString() {
+        return firstUsername + " " + secondUsername + " " + isAccepted + " " + isDenied;
+    }
+
     public static ArrayList<String> getMyFriends(String myUsername) {
         ArrayList<String> myFriends = new ArrayList<>();
         for (Friendship friendship : friendships) {
-            if(friendship.getFirstUsername().equals(myUsername) || friendship.secondUsername.equals(myUsername)) {
+            if(friendship.getFirstUsername().equals(myUsername) || friendship.getSecondUsername().equals(myUsername)) {
                 if(friendship.isAccepted() && !friendship.isDenied()) {
                     if(friendship.getFirstUsername().equals(myUsername)) {
                         myFriends.add(friendship.getSecondUsername());
@@ -121,5 +128,31 @@ public class Friendship {
         Writer writer = Files.newBufferedWriter(userPath);
         gsonBuilder.toJson(Friendship.friendships, writer);
         writer.close();
+    }
+
+    public static boolean isMyFriend(String firstUsername, String secondUsername) {
+        Friendship friendship = Friendship.getFriendshipByUsernames(firstUsername, secondUsername);
+        if(friendship != null && friendship.isAccepted) {
+            return true;
+        } else {
+            friendship = Friendship.getFriendshipByUsernames(secondUsername, firstUsername);
+            if(friendship != null && friendship.isAccepted) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public static boolean isRequestingValid(String firstUsername, String secondUsername) {
+        Friendship friendship = Friendship.getFriendshipByUsernames(firstUsername, secondUsername);
+        if(friendship != null) {
+            return false;
+        } else {
+            friendship = Friendship.getFriendshipByUsernames(secondUsername, firstUsername);
+            if(friendship != null) {
+                return false;
+            }
+            return true;
+        }
     }
 }
