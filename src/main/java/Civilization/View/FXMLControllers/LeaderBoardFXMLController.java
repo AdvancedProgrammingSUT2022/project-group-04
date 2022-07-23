@@ -7,7 +7,9 @@ import Civilization.Model.GameModel;
 import Server.User;
 import Civilization.View.GraphicalBases;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 
@@ -28,6 +30,27 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class LeaderBoardFXMLController {
+
+    @FXML
+    private Button player1Button;
+    @FXML
+    private Button player2Button;
+    @FXML
+    private Button player3Button;
+    @FXML
+    private Button player4Button;
+    @FXML
+    private Button player5Button;
+    @FXML
+    private Button player6Button;
+    @FXML
+    private Button player7Button;
+    @FXML
+    private Button player8Button;
+    @FXML
+    private Button player9Button;
+    @FXML
+    private Button player10Button;
 
     @FXML
     Circle player1Avatar;
@@ -127,11 +150,99 @@ public class LeaderBoardFXMLController {
         users = sortUsers((ArrayList<User>) UserDatabase.getAllUsers());
         try{
             setScores();
+            setButtons();
             setOnline();
             checkOnlineTransition = new CheckOnlineTransition(this);
             checkOnlineTransition.play();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setButtons() {
+        if(users.size() > 0) {
+            if(users.get(0).getUsername().equals(User.loggedInUser.getUsername())) {
+                player1Button.setVisible(false);
+            } else {
+                player1Button.setVisible(true);
+            }
+        } else {
+            player1Button.setVisible(false);
+        }
+        if(users.size() > 1) {
+            if(users.get(1).getUsername().equals(User.loggedInUser.getUsername())) {
+                player2Button.setVisible(false);
+            } else {
+                player2Button.setVisible(true);
+            }
+        } else {
+            player2Button.setVisible(false);
+        }
+        if(users.size() > 2) {
+            if(users.get(2).getUsername().equals(User.loggedInUser.getUsername())) {
+                player3Button.setVisible(false);
+            } else {
+                player3Button.setVisible(true);
+            }        } else {
+            player3Button.setVisible(false);
+        }
+        if(users.size() > 3) {
+            if(users.get(3).getUsername().equals(User.loggedInUser.getUsername())) {
+                player4Button.setVisible(false);
+            } else {
+                player4Button.setVisible(true);
+            }        } else {
+            player4Button.setVisible(false);
+        }
+        if(users.size() > 4) {
+            if(users.get(4).getUsername().equals(User.loggedInUser.getUsername())) {
+                player5Button.setVisible(false);
+            } else {
+                player5Button.setVisible(true);
+            }        } else {
+            player5Button.setVisible(false);
+        }
+        if(users.size() > 5) {
+            if(users.get(5).getUsername().equals(User.loggedInUser.getUsername())) {
+                player6Button.setVisible(false);
+            } else {
+                player6Button.setVisible(true);
+            }
+        } else {
+            player6Button.setVisible(false);
+        }
+        if(users.size() > 6) {
+            if(users.get(6).getUsername().equals(User.loggedInUser.getUsername())) {
+                player7Button.setVisible(false);
+            } else {
+                player7Button.setVisible(true);
+            }
+        } else {
+            player7Button.setVisible(false);
+        }
+        if(users.size() > 7) {
+            if(users.get(7).getUsername().equals(User.loggedInUser.getUsername())) {
+                player8Button.setVisible(false);
+            } else {
+                player8Button.setVisible(true);
+            }        } else {
+            player8Button.setVisible(false);
+        }
+        if(users.size() > 8) {
+            if(users.get(8).getUsername().equals(User.loggedInUser.getUsername())) {
+                player9Button.setVisible(false);
+            } else {
+                player9Button.setVisible(true);
+            }        } else {
+            player9Button.setVisible(false);
+        }
+        if(users.size() > 9) {
+            if(users.get(9).getUsername().equals(User.loggedInUser.getUsername())) {
+                player10Button.setVisible(false);
+            } else {
+                player10Button.setVisible(true);
+            }        } else {
+            player10Button.setVisible(false);
         }
     }
 
@@ -464,5 +575,113 @@ public class LeaderBoardFXMLController {
     }
 
 
+    public void sendFriendship1(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(0).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
 
+        }
+    }
+
+    private void sendFriendship(String firstUsername, String secondUsername) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Leaderboard");
+        input.put("action","friendship");
+        input.put("firstUsername", firstUsername);
+        input.put("secondUsername", secondUsername);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+    }
+
+    public void sendFriendship2(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(1).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship3(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(2).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship4(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(3).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship5(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(4).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship6(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(5).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship7(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(6).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship8(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(7).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship9(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(8).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void sendFriendship10(MouseEvent mouseEvent) {
+        String myUsername = User.loggedInUser.getUsername();
+        String secondUsername = users.get(9).getUsername();
+        try{
+            sendFriendship(myUsername, secondUsername);
+        } catch (Exception e) {
+
+        }
+    }
 }

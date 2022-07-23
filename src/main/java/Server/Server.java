@@ -2,6 +2,7 @@ package Server;
 
 import Civilization.Controller.LoginMenuController;
 import Civilization.Controller.ProfileMenuController;
+import Civilization.Model.Friendship;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.ProfileMenuModel;
 import Civilization.View.Components.Account;
@@ -111,6 +112,13 @@ public class Server {
                 String result = UserDatabase.getUserByUsername(username).getLastLoginTime();
                 dataOutputStream.writeUTF(result);
                 dataOutputStream.flush();
+            } else if(clientCommandJ.get("action").equals("friendship")) {
+                System.out.println("Friendship");
+                String firstUsername = clientCommandJ.get("firstUsername").toString();
+                String secondUsername = clientCommandJ.get("secondUsername").toString();
+                Friendship.addFriendship(firstUsername, secondUsername);
+                Friendship.writeFriendships("friendshipDatabase.json");
+                System.out.println("Hiiiiii");
             }
         }catch (Exception e) {
             e.printStackTrace();

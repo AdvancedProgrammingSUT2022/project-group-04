@@ -21,6 +21,7 @@ public class CheckOnlineTransition extends Transition {
             this.leaderBoardFXMLController.setOnline();
             this.leaderBoardFXMLController.sortUsers(UserDatabase.getAllUsers());
             this.leaderBoardFXMLController.setScores();
+            this.leaderBoardFXMLController.setButtons();
         } catch (IOException e) {
             e.printStackTrace();
         }
