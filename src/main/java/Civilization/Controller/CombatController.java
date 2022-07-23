@@ -18,8 +18,7 @@ public class CombatController {
     }
 
     public boolean areInWar(Civilization civilization1, Civilization civilization2) {
-        return civilization1.getIsInWarWith().equals(civilization2)
-                && civilization2.getIsInWarWith().equals(civilization1);
+        return civilization1.getIsInWarWith() != null && civilization1.getIsInWarWith().equals(civilization2);
 
     }
 

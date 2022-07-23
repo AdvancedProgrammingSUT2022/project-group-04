@@ -165,34 +165,36 @@ public class Graph {
             }
             Collections.reverse(route);
             return route;
-        } else { // bfs bath doesn't exist to the point we want
-            ArrayList<Tile> route = new ArrayList<>();
-            int minLength = Integer.MAX_VALUE;
-            outer:
-            for (int i = 1; i < 1000; i++) {
-                boolean found = false;
-                inner:
-                for (Tile adj : end.getAdjacentTilesByLayer(i)) { // trying to find a tile that is reachable
-                    if (bfs(start, adj, copyOfMap)) {
-                        found = true;
-                        Tile tile = end;
-                        ArrayList<Tile> routeTemp = new ArrayList<>();
-                        while (tile != null) {
-                            routeTemp.add(tile);
-                            tile = tile.getPrev();
-                        }
-                        if (routeTemp.size() < minLength) { // trying to find the one with minimum length
-                            minLength = routeTemp.size();
-                            route.addAll(routeTemp);
-                        }
-                    }
-                }
-                if (found) {
-                    break;
-                }
-            }
-            return route;
         }
+        return null;
+//        else { // bfs bath doesn't exist to the point we want
+//            ArrayList<Tile> route = new ArrayList<>();
+//            int minLength = Integer.MAX_VALUE;
+//            outer:
+//            for (int i = 1; i < 1000; i++) {
+//                boolean found = false;
+//                inner:
+//                for (Tile adj : end.getAdjacentTilesByLayer(i)) { // trying to find a tile that is reachable
+//                    if (bfs(start, adj, copyOfMap)) {
+//                        found = true;
+//                        Tile tile = end;
+//                        ArrayList<Tile> routeTemp = new ArrayList<>();
+//                        while (tile != null) {
+//                            routeTemp.add(tile);
+//                            tile = tile.getPrev();
+//                        }
+//                        if (routeTemp.size() < minLength) { // trying to find the one with minimum length
+//                            minLength = routeTemp.size();
+//                            route.addAll(routeTemp);
+//                        }
+//                    }
+//                }
+//                if (found) {
+//                    break;
+//                }
+//            }
+//            return route;
+//        }
 
     }
 
