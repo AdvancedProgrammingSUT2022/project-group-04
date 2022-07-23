@@ -170,6 +170,9 @@ public class City extends Tile {
         return civilizationName;
     }
 
+    public void setCivilizationName(String name){
+        civilizationName = name;
+    }
     public Unit getGarrison() {
         return garrison;
     }
