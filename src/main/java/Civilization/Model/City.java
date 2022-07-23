@@ -452,9 +452,10 @@ public class City extends Tile {
     }
 
     public void attackUnit(Unit unit){
-        if (isTileInRangeOfUnit(unit.getTileOfUnit())){
-            unit.setHP(unit.getHP() - this.longRangePower);
-        }
+        //if (isTileInRangeOfUnit(unit.getTileOfUnit())){
+        unit.setHP(unit.getHP() - this.longRangePower);
+
+        //}
     }
 
 

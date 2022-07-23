@@ -316,10 +316,10 @@ public class Unit {
                     for (Unit unit : player.getAllUnitsOfCivilization()) {
                         if (unit instanceof Soldier) {
                             Soldier soldier = (Soldier) unit;
-                            if (soldier.isTileInRangeOfUnit(path.get(i))) {
+                            //if (soldier.isTileInRangeOfUnit(path.get(i))) {
                                 movementPriceForPath = selectedUnit.getSpeed();
                                 break outer;
-                            }
+                            //}
                         }
                     }
                 }

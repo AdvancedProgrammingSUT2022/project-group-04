@@ -321,7 +321,7 @@ public class Soldier extends Unit {
     }
 
     public boolean attackUnitRanged(Unit unit) {
-        if (isTileInRangeOfUnit(unit.getTileOfUnit())) {
+        //if (isTileInRangeOfUnit(unit.getTileOfUnit())) {
             int amount = 0;
             for (double i = 1; i < 10; i++) {
                 if (this.HP == i) {
@@ -331,9 +331,9 @@ public class Soldier extends Unit {
             }
             unit.setHP(unit.getHP() - amount);
             return true;
-        } else {
-            return false;
-        }
+        //} else {
+        //    return false;
+        //}
     }
 
     public void attackCityMelee(City city) {
@@ -344,7 +344,7 @@ public class Soldier extends Unit {
                 break;
             }
         }
-        city.setHP(city.getHP() - amount ); //not sure about this :/
+        city.setHP(city.getHP() - amount );
     }
 
     public void attackCityRanged(City city) {
@@ -355,7 +355,7 @@ public class Soldier extends Unit {
                 break;
             }
         }
-        city.setHP(city.getHP() - amount); //not sure about this :/
+        city.setHP(city.getHP() - amount);
     }
 
     public boolean isCombatUnit() {
@@ -363,7 +363,7 @@ public class Soldier extends Unit {
     }
 
     public boolean isTileInRangeOfUnit(Tile tile) {
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < 5; i++) {
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
                 if (i < this.getRange()){
                     return true;
