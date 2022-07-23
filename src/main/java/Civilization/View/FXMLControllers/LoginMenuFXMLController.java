@@ -9,6 +9,7 @@ import Civilization.View.Components.Account;
 import Civilization.View.GraphicalBases;
 import Civilization.View.Transitions.CursorTransition;
 import Client.Client;
+import com.google.gson.Gson;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -142,7 +143,7 @@ public class LoginMenuFXMLController {
         this.password.setText("");
         this.nickname.setText("");
         checkAbilityToClickForButtons();
-        UserDatabase.writeInFile("UserDatabase.json");
+        //UserDatabase.writeInFile("UserDatabase.json");
     }
 
     private void createAccount(String username) throws IOException {
@@ -192,8 +193,22 @@ public class LoginMenuFXMLController {
             setError("Username and password didn't match");
             return;
         }
-        User.loggedInUser = UserDatabase.getUserByUsername(username);
+        //User.loggedInUser = UserDatabase.getUserByUsername(username);
+        User.loggedInUser = getUserByUsername(username);
         login();
+    }
+
+    private User getUserByUsername(String username) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Login");
+        input.put("action","user");
+        input.put("username", username);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        String message = Client.dataInputStream1.readUTF();
+        User user = new Gson().fromJson(message, User.class);
+        System.out.println(user.getAvatarURL());
+        return user;
     }
 
     private void login() {
