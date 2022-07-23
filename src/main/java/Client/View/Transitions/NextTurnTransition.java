@@ -24,7 +24,8 @@ public class NextTurnTransition extends Transition {
     protected void interpolate(double v) {
         try {
             System.out.println("are  are areare1");
-            if (!GameDatabase.mapTransferStarted) GameDatabase.getMapFromServer();
+            System.out.println(GameDatabase.mapTransferStarted);
+            if (GameDatabase.mapTransferStarted) GameDatabase.getMapFromServer();
             System.out.println("are  are areare2");
         } catch (IOException e) {
             e.printStackTrace();

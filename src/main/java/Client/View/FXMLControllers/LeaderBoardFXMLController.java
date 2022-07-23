@@ -8,6 +8,7 @@ import Client.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
 import javafx.event.ActionEvent;
+import Client.View.GraphicalBases;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

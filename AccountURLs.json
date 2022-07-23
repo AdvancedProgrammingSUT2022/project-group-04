@@ -65,6 +65,10 @@
   },
   {
     "username": "test8",
+    "avatarURL": "*pics*Avatars*3.png"
+  },
+  {
+    "username": "test9",
     "avatarURL": "*pics*Avatars*2.png"
   }
 ]

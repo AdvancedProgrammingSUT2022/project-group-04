@@ -130,6 +130,7 @@ public class GraphicalBases {
     private static Pane loadFXMLMenus(String name){
         try {
             URL address = new URL(Objects.requireNonNull(GraphicalBases.class.getResource("/fxml/Menus/" + name + ".fxml")).toString());
+            System.out.println(name);
             return FXMLLoader.load(address);
         } catch (IOException exception) {
             exception.printStackTrace();

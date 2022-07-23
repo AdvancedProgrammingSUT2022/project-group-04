@@ -141,7 +141,7 @@ public class GameDatabase {
     }
 
     private static void sendMapToServer() throws IOException {
-        System.out.println("entered get Map from server");
+        System.out.println("entered sent Map to server");
         RequestPlayers requestPlayers = new RequestPlayers();
         requestPlayers.tiles = GameDatabase.map;
         requestPlayers.players = GameDatabase.players;
@@ -158,7 +158,9 @@ public class GameDatabase {
     public static void getMapFromServer() throws IOException {
         System.out.println("entered get Map from server");
         byte[] requestToByte = new byte[dataInputStream1.readInt()];
+        System.out.println(12);
         dataInputStream1.readFully(requestToByte);
+        System.out.println(13);
         String response = new String(requestToByte, StandardCharsets.UTF_8);
         RequestPlayers requestPlayers = readAndCastResponse(response);
         GameDatabase.map = requestPlayers.tiles;
@@ -178,7 +180,7 @@ public class GameDatabase {
         requestPlayers.players = players;
         requestPlayers.name = user;
         sendToServer(xStream.toXML(requestPlayers), "setPlayers");
-        GameDatabase.getMapFromServer();
+        //GameDatabase.getMapFromServer();
     }
 
     /**
@@ -332,6 +334,7 @@ public class GameDatabase {
     }
 
     public static void nextTurn() throws IOException {
+        System.out.println("sar");
         XStream xStream = new XStream();
 //        RequestPlayers requestPlayers = new RequestPlayers();
 //        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
@@ -340,6 +343,7 @@ public class GameDatabase {
         requestPlayers.tiles = GameDatabase.map;
         requestPlayers.x = GameDatabase.turn;
         sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+        System.out.println("tah");
     }
 
     private static int calculateNextTurn() throws IOException {
