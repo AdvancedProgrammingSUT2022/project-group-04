@@ -42,10 +42,15 @@ public class FriendshipFXMLController {
 
     @FXML
     public void initialize() {
+        System.out.println("Hi");
         setBackground();
+        System.out.println("Hi2");
         setBackButton();
+        System.out.println("Hi3");
         setProfile();
+        System.out.println("Hi4");
         setSearchEngine();
+        System.out.println("Hi5");
         try{
             setRequests();
         } catch (Exception e) {
