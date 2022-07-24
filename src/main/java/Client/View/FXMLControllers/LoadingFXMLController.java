@@ -109,6 +109,9 @@ public class LoadingFXMLController {
 
     public void shallGoIn() throws IOException {
         if(isGettingUsersValid()) {
+            if(usersInGame.size() == usersInvited()) {
+                goToGame();
+            }
             return;
         }
         System.out.println(this.usersInGame.size());
@@ -116,10 +119,25 @@ public class LoadingFXMLController {
             this.checkStartGameTransition.pause();
             expireGame();
         } else {
-            this.checkStartGameTransition.pause();
-            runGame();
-            GraphicalBases.enterGame("Game");
+            goToGame();
         }
+    }
+
+    private int usersInvited() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Loading");
+        input.put("action","number");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        int result = Integer.parseInt(Client.dataInputStream1.readUTF());
+        System.out.println(result);
+        return result;
+    }
+
+    private void goToGame() throws IOException {
+        this.checkStartGameTransition.pause();
+        runGame();
+        GraphicalBases.enterGame("Game");
     }
 
     private void expireGame() {

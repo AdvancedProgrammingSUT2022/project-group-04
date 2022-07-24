@@ -79,6 +79,17 @@ public class Invitation {
         return null;
     }
 
+    public static Invitation getInvitationBuUsernames(String username1, String username2) {
+        for (Invitation invitation : Invitation.invitations) {
+            if(invitation.getUsername1().equals(username1) && invitation.getUsername2().equals(username2)) {
+                if(!invitation.isExpired()) {
+                    return invitation;
+                }
+            }
+        }
+        return null;
+    }
+
     private long minuteCalculator(LocalDateTime now) {
         return (now.getDayOfYear()-1)*24*60 + now.getHour()*60 + now.getMinute();
     }
@@ -91,7 +102,7 @@ public class Invitation {
         Invitation.invitations.add(invitation);
     }
 
-    private void accept() {
+    public void accept() {
         if(!isExpired()) {
             this.isAccepted = true;
             this.isDenied = false;
@@ -154,5 +165,10 @@ public class Invitation {
         gsonBuilder.toJson(Invitation.invitations, writer);
         System.out.println("writing ends");
         writer.close();
+    }
+
+    public void deny() {
+        this.isAccepted = false;
+        this.isDenied = true;
     }
 }

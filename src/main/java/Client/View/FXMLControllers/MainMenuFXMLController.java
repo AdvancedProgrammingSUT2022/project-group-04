@@ -28,6 +28,11 @@ public class MainMenuFXMLController {
 
     @FXML
     public void initialize() {
+        try{
+            makeGameModelZero();
+        } catch (Exception e) {
+
+        }
         setBackground();
         setNameLabel();
         GameModel.isGame = false;
@@ -85,6 +90,14 @@ public class MainMenuFXMLController {
         Boolean bool = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
         System.out.println(bool);
         return bool;
+    }
+
+    private void makeGameModelZero() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","firstInit");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
     }
 
     private boolean haveNotAcceptedInvitation() throws IOException {

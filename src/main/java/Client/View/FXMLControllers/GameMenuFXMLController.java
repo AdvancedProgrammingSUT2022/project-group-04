@@ -722,9 +722,9 @@ public class GameMenuFXMLController {
         if(isServerFree()) {
             GameDatabase.setYou();
             ArrayList<String> users = new ArrayList<>(selectedUsers);
-            //sendInvitation(users);
-            GameModel gameModel = new GameModel();
-            gameModel.startGame(users);
+            sendInvitation(users);
+//            GameModel gameModel = new GameModel();
+//            gameModel.startGame(users);
         } else {
             GraphicalBases.userLoggedIn();
         }
