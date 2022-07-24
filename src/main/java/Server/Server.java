@@ -128,6 +128,9 @@ public class Server {
             String users = Invitation.getAcceptedValidInvitationsString();
             dataOutputStream.writeUTF(users);
             dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("number")) {
+            dataOutputStream.writeUTF(Integer.toString(Invitation.getAllNotExpiredInvitations().size()));
+            dataOutputStream.flush();
         }
     }
 
@@ -137,7 +140,6 @@ public class Server {
             String[] users = clientCommandJ.get("users").toString().split("\n");
             Invitation.sendToAll(users, username1);
             System.out.println(Arrays.toString(Invitation.invitations.toArray()));
-            Invitation.writeInvitations("invitationDatabase.json");
             System.out.println("end");
         } else if (clientCommandJ.get("action").equals("getAllInvitations")) {
             boolean bool = false;
@@ -172,7 +174,22 @@ public class Server {
             }
             dataOutputStream.writeUTF(Boolean.toString(bool));
             dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("getUserInvitation")) {
+            ArrayList<Invitation> invitations = Invitation.getMyInvitations(clientCommandJ.get("username").toString());
+            String result = "";
+            if(invitations.size() > 0) {
+                result = invitations.get(0).getUsername1();
+            }
+            dataOutputStream.writeUTF(result);
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("accept")) {
+            Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
+            invitation.accept();
+        } else if (clientCommandJ.get("action").equals("deny")) {
+            Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
+            invitation.deny();
         }
+        Invitation.writeInvitations("invitationDatabase.json");
     }
 
     private void processFriendshipMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
@@ -290,6 +307,9 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("profile")) {
             UserDatabase.readFromFile("UserDatabase.json");
             Account.readAccounts("AccountURLs.json");
+        } else if (clientCommandJ.get("action").equals("firstInit")) {
+            //GameModel.generateMap = true;
+            // TODO
         }
     }
 
