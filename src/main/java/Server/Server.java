@@ -88,10 +88,14 @@ public class Server {
                     else {
                         clientCommand = clientCommand.substring(3);
                         processGameUsingXML(clientCommand,dataOutputStream);
+                        if (gameMode) gameHandling(dataInputStream,dataOutputStream);
                     }
                 } else {
+                    System.out.println("dir");
                     byte[] requestToByte = new byte[dataInputStream.readInt()];
+                    System.out.println(123);
                     dataInputStream.readFully(requestToByte);
+                    System.out.println(34);
                     String response = new String(requestToByte, StandardCharsets.UTF_8);
                     GameDatabaseServer.updateMap(response);
                 }
@@ -107,6 +111,34 @@ public class Server {
 //                break;
 
             }
+        }
+    }
+
+    private static String getMapFromClient(DataInputStream dataInputStream) throws IOException {
+        System.out.println("begir");
+        byte[] requestToByte = new byte[dataInputStream.readInt()];
+        System.out.println(123);
+        dataInputStream.readFully(requestToByte);
+        System.out.println(34);
+        String response = new String(requestToByte, StandardCharsets.UTF_8);
+        return GameDatabaseServer.updateMap(response);
+    }
+
+    private static void sendMapToClients(String response,DataOutputStream dataOutputStream) throws IOException {
+        System.out.println("bede");
+        byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
+        //System.out.println(Arrays.toString(requestToBytes));
+        dataOutputStream.writeInt(requestToBytes.length);
+        dataOutputStream.flush();
+        dataOutputStream.write(requestToBytes);
+        dataOutputStream.flush();
+    }
+
+    private void gameHandling(DataInputStream dataInputStream,DataOutputStream dataOutputStream) throws IOException {
+        while (true){
+            sendMapToClients(GameDatabaseServer.getGameString(),dataOutputStream);
+            /////////
+            getMapFromClient(dataInputStream);
         }
     }
 

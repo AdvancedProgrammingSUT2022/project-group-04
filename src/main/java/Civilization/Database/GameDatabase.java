@@ -128,6 +128,7 @@ public class GameDatabase {
 
     public static void generateRuin() throws IOException {
         sendToServer(null, "generateRuin");
+        GameDatabase.mapTransferStarted = true;
 //        Random random = new Random();
 //        for (Tile tile : map) {
 //            if (getCivilizationByTile(tile) == null) {
@@ -153,9 +154,11 @@ public class GameDatabase {
         dataOutputStream1.flush();
         dataOutputStream1.write(requestToBytes);
         dataOutputStream1.flush();
+        GameDatabase.mapTransferStarted = true;
     }
 
     public static void getMapFromServer() throws IOException {
+        GameDatabase.mapTransferStarted = false;
         System.out.println("entered get Map from server");
         byte[] requestToByte = new byte[dataInputStream1.readInt()];
         System.out.println(12);
@@ -335,23 +338,33 @@ public class GameDatabase {
 
     public static void nextTurn() throws IOException {
         System.out.println("sar");
-        XStream xStream = new XStream();
+        setTurn(calculateNextTurn());
+        for (Civilization player : players) {
+            player.nextTurn();
+        }
+//        XStream xStream = new XStream();
+////        RequestPlayers requestPlayers = new RequestPlayers();
+////        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+//        //send data to database!
 //        RequestPlayers requestPlayers = new RequestPlayers();
-//        RequestPlayers sth = sendToServer(xStream.toXML(requestPlayers), "nextTurn");
-        //send data to database!
-        RequestPlayers requestPlayers = new RequestPlayers();
-        requestPlayers.tiles = GameDatabase.map;
-        requestPlayers.x = GameDatabase.turn;
-        sendToServer(xStream.toXML(requestPlayers), "nextTurn");
+//        requestPlayers.tiles = GameDatabase.map;
+//        requestPlayers.players = GameDatabase.players;
+//        requestPlayers.x = GameDatabase.turn;
+        sendMapToServer();
         System.out.println("tah");
     }
 
     private static int calculateNextTurn() throws IOException {
-        input = new JSONObject();
-        input.put("menu type", "Game Database");
-        input.put("action", "calculateNextTurn");
-        JSONObject serverResponse = sendToServer();
-        return (int) serverResponse.get("turn");
+//        input = new JSONObject();
+//        input.put("menu type", "Game Database");
+//        input.put("action", "calculateNextTurn");
+//        JSONObject serverResponse = sendToServer();
+//        return (int) serverResponse.get("turn");
+        if (turn != players.size() - 1) {
+            return turn + 1;
+        }
+        year++;
+        return 0;
     }
 
     public static int getTurn() {
