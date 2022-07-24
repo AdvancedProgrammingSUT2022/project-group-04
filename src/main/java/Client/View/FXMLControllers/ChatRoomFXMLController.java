@@ -1,12 +1,17 @@
 package Client.View.FXMLControllers;
 
+import Client.Client;
+import Client.Model.Chat;
+import Server.Controller.ChatroomController;
 import Server.UserDatabase;
 import Client.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
+import com.google.gson.JsonObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,7 +21,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -32,10 +40,59 @@ public class ChatRoomFXMLController {
     @FXML
     ChoiceBox<String> users;
 
+
     @FXML
     public void initialize(){
         GameModel.isGame = false;
         setChoices();
+    }
+
+    public void refresh() throws IOException {
+        JSONObject clientCommandJ = new JSONObject();
+        clientCommandJ.put("menu type", "Chatroom");
+        clientCommandJ.put("action", "refresh");
+        Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+        Client.dataOutputStream1.flush();
+        updateChatBox();
+    }
+
+    public void updateChatBox() throws IOException {
+        chatBox.getChildren().clear();
+        ChatroomController.readChats("chatDatabase.json");
+        System.out.println(Chat.chats.size());
+        for (Chat chat:Chat.chats){
+            System.out.println(chat.getTime() + " " + new String(chat.getTime(), StandardCharsets.UTF_8));
+            Text name = new Text(new String(chat.getName(), StandardCharsets.UTF_8));
+            Label label = new Label();
+            label.setText(" " + new String(chat.getMessage(), StandardCharsets.UTF_8) + " ");
+            Text time = new Text(new String(chat.getTime(), StandardCharsets.UTF_8));
+
+            Image avatarImage = new Image(new String(chat.getImageUrl(), StandardCharsets.UTF_8));
+            ImageView avatar = new ImageView(avatarImage);
+
+            avatar.setFitHeight(37);
+            avatar.setFitWidth(37);
+            HBox line = new HBox(avatar, name, label, time);
+            time.setStyle("-fx-font-size: 10; -fx-fill: white; -fx-text-fill: white;");
+            name.setStyle("-fx-fill: white; -fx-font-size: 10");
+            line.setStyle("-fx-alignment: center-left; -fx-spacing: 10; -fx-padding: 10");
+            label.setStyle("-fx-font-size: 15;" +
+                    "    -fx-background-color: black;" +
+                    "    -fx-border-color: #fffde9;" +
+                    "    -fx-text-fill: white;" +
+                    "    -fx-border-width: 1;" +
+                    "    -fx-fill: white;" +
+                    "    -fx-text-alignment: center;" +
+                    "    -fx-tile-alignment: center;" +
+                    "    -fx-border-radius: 2;" +
+                    "-fx-start-margin: 20");
+
+            chatBox.getChildren().add(line);
+            chatBoxPane.setPrefHeight(chatBoxPane.getPrefHeight() + 50);
+            chatBox.setPrefHeight(chatBox.getPrefHeight() + 50);
+        }
+
+
     }
 
     private void setChoices() {
@@ -49,9 +106,12 @@ public class ChatRoomFXMLController {
         users.setItems(availableUsers);
     }
 
-    public void sendMessage(){
+    public void sendMessage() throws IOException {
         //Todo
         if (!messageBox.getText().isBlank()) {
+            JSONObject clientCommandJ = new JSONObject();
+            clientCommandJ.put("menu type", "Chatroom");
+            clientCommandJ.put("action", "send");
             String message = messageBox.getText();
             messageBox.clear();
             Text name = new Text(User.loggedInUser.getNickname());
@@ -64,6 +124,16 @@ public class ChatRoomFXMLController {
             avatar.setFitHeight(37);
             avatar.setFitWidth(37);
             HBox line = new HBox(avatar, name, label, time);
+
+
+            clientCommandJ.put("message", message);
+            clientCommandJ.put("name",User.loggedInUser.getNickname() );
+            clientCommandJ.put("time", LocalDateTime.now().getHour() + ":" + LocalDateTime.now().getMinute() + ":" + LocalDateTime.now().getSecond());
+            clientCommandJ.put("imageUrl", GraphicalBases.class.getResource(User.loggedInUser.getAvatarURL()).toString());
+            Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+
+
+
             name.setStyle("-fx-fill: white; -fx-font-size: 10");
             line.setStyle("-fx-alignment: center-left; -fx-spacing: 10; -fx-padding: 10");
             label.setStyle("-fx-font-size: 15;" +

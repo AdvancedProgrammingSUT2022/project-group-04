@@ -2,6 +2,7 @@ package Server;
 
 
 import Client.Model.*;
+import Server.Controller.ChatroomController;
 import Server.Controller.LoginMenuController;
 import Server.Controller.ProfileMenuController;
 import Client.View.Components.Account;
@@ -87,6 +88,8 @@ public class Server {
                             processInvitationReqs(clientCommandJ, dataOutputStream);
                         } else if (clientCommandJ.get("menu type").equals("Loading")) {
                             processLoadingMenuReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Chatroom")){
+                            processChatroom(clientCommandJ, dataOutputStream);
                         }
                     }
                     else {
@@ -105,7 +108,7 @@ public class Server {
                 }
             } catch (Exception ex) {
                 if(!disconnected) {
-                    //ex.printStackTrace();
+                    ex.printStackTrace();
                     System.out.println("Client " + id + " disconnected");
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if (clientThread != null && clientThread.getUsername() != null) {
@@ -490,6 +493,24 @@ public class Server {
                 System.out.println("Please try again");
                 disconnected = false;
             }
+        }
+    }
+
+    private void processChatroom(JSONObject clientCommandJ, DataOutputStream dataOutputStream ) throws IOException {
+        if (clientCommandJ.get("action").equals("send")){
+            String message = clientCommandJ.getString("message");
+            String name = clientCommandJ.getString("name");
+            String Time = clientCommandJ.getString("time");
+            String imageUrl = clientCommandJ.getString("imageUrl");
+            byte[] byteArrrayTime = Time.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayMessage = message.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayName = name.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayImage = imageUrl.getBytes(StandardCharsets.UTF_8);
+
+            Chat.addChat(byteArrrayMessage, byteArrrayName, byteArrrayTime,byteArrrayImage );
+            ChatroomController.writeChats("chatDatabase.json");
+        } else if (clientCommandJ.get("action").equals("refresh")){
+            ChatroomController.readChats("chatDatabase.json");
         }
     }
 
