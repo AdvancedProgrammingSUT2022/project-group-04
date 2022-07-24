@@ -611,19 +611,29 @@ public class GameDatabaseServer {
         returnValue.civilization = GameDatabaseServer.getCivilizationByTurn(turn);
         if (map.size() != 0) returnValue.tile = returnValue.tiles.get(0);
         response = xStream.toXML(returnValue);
-        System.out.println(response);
+        //System.out.println(response);
         return response;
     }
 
-    public static void updateMap(String mp) throws IOException {
+    public static String updateMap(String mp) throws IOException {
         RequestPlayers requestPlayers = readAndCastRequest(mp);
         GameDatabaseServer.map = requestPlayers.tiles;
         GameDatabaseServer.turn = requestPlayers.x;
         System.out.println("sadistic maniac");
+        return mp;
     }
 
     public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {
         JSONObject response = new JSONObject();
         return response;
+    }
+
+    public static String getGameString() {
+        RequestPlayers requestPlayers = new RequestPlayers();
+        requestPlayers.players = GameDatabaseServer.players;
+        requestPlayers.tiles = GameDatabaseServer.map;
+        requestPlayers.x = GameDatabaseServer.turn;
+        XStream xStream = new XStream();
+        return xStream.toXML(requestPlayers);
     }
 }
