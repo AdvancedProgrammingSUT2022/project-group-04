@@ -3,6 +3,7 @@ package Client.View.FXMLControllers;
 import Civilization.Controller.SavingGame;
 import Civilization.Database.GameDatabase;
 import Civilization.Model.GameModel;
+import Client.Client;
 import Server.User;
 import Client.View.Components.SwitchButton;
 import Client.View.GraphicalBases;
@@ -23,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -707,7 +709,8 @@ public class GameMenuFXMLController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                GraphicalBases.enterGame("Game");
+                //GraphicalBases.enterGame("Game");
+                GraphicalBases.changeMenu("Loading");
             }
         });
         mainAnchorPane.getChildren().add(OKButton);
@@ -718,8 +721,28 @@ public class GameMenuFXMLController {
     private void runGame() throws IOException {
         GameDatabase.setYou();
         ArrayList<String> users = new ArrayList<>(selectedUsers);
-        GameModel gameModel = new GameModel();
-        gameModel.startGame(users);
+        sendInvitation(users);
+//        GameModel gameModel = new GameModel();
+//        gameModel.startGame(users);
+    }
+
+    private void sendInvitation(ArrayList<String> users) throws IOException {
+        String usersString = getUsersString(users);
+        JSONObject input = new JSONObject();
+        input.put("menu type","invitation");
+        input.put("action","invite");
+        input.put("username", User.loggedInUser.getUsername());
+        input.put("users", usersString);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+    }
+
+    private String getUsersString(ArrayList<String> users) {
+        String result = "";
+        for (String user : users) {
+            result += user + "\n";
+        }
+        return result;
     }
 
 

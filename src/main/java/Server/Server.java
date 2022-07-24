@@ -3,6 +3,7 @@ package Server;
 import Civilization.Controller.LoginMenuController;
 import Civilization.Controller.ProfileMenuController;
 import Civilization.Model.Friendship;
+import Civilization.Model.Invitation;
 import Civilization.Model.LoginMenuModel;
 import Civilization.Model.ProfileMenuModel;
 import Client.View.Components.Account;
@@ -37,6 +38,7 @@ public class Server {
         UserDatabase.readFromFile("UserDatabase.json");
         Account.readAccounts("AccountURLs.json");
         Friendship.readFriendships("friendshipDatabase.json");
+        Invitation.readInvitations("invitationDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
@@ -80,6 +82,10 @@ public class Server {
                         processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
                     } else if (clientCommandJ.get("menu type").equals("Friendship")) {
                         processFriendshipMenuReqs(clientCommandJ, dataOutputStream);
+                    } else if (clientCommandJ.get("menu type").equals("invitation")) {
+                        processInvitationReqs(clientCommandJ, dataOutputStream);
+                    } else if (clientCommandJ.get("menu type").equals("Loading")) {
+                        processLoadingMenuReqs(clientCommandJ, dataOutputStream);
                     }
                 } else {
                     clientCommand = clientCommand.substring(3);
@@ -87,6 +93,7 @@ public class Server {
                 }
             } catch (Exception ex) {
                 if(!disconnected) {
+                    //ex.printStackTrace();
                     System.out.println("Client " + id + " disconnected");
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if(clientThread != null && clientThread.getUsername() != null) {
@@ -97,6 +104,33 @@ public class Server {
 //                break;
 
             }
+        }
+    }
+
+    private void processLoadingMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("isGettingUserValid")) {
+            int number = Invitation.getAllNotExpiredInvitations().size();
+            boolean shall = false;
+            if(number > 0) {
+                shall = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(shall));
+            dataOutputStream.flush();
+        } else if(clientCommandJ.get("action").equals("getUsers")) {
+            String users = Invitation.getAcceptedValidInvitationsString();
+            dataOutputStream.writeUTF(users);
+            dataOutputStream.flush();
+        }
+    }
+
+    private void processInvitationReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("invite")) {
+            String username1 = clientCommandJ.get("username").toString();
+            String[] users = clientCommandJ.get("users").toString().split("\n");
+            Invitation.sendToAll(users, username1);
+            System.out.println(Arrays.toString(Invitation.invitations.toArray()));
+            Invitation.writeInvitations("invitationDatabase.json");
+            System.out.println("end");
         }
     }
 
