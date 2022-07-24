@@ -459,16 +459,36 @@ public class Tile {
         ArrayList<Tile> adjacentTiles = new ArrayList<>();
         if (n == 1) {
             return getAdjacentTiles();
-        } else {
-            for (Tile tile : getAdjacentTilesByLayer(n - 1)) {
-                for (Tile adjacent : tile.getAdjacentTiles()) {
-                    if (!getAdjacentTilesByLayer(n - 2).contains(adjacent)
-                            && !getAdjacentTilesByLayer(n - 1).contains(adjacent)
-                            && !adjacentTiles.contains(adjacent)) {
-                        adjacentTiles.add(adjacent);
-                    }
-                }
+        } else if (n == 2){
+            if (this.y % 2 == 0){
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 2, y));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 1, y + 1));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 1, y + 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x , y + 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 1, y + 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 2, y + 1));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 2, y));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 2, y - 1));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 1, y - 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x , y - 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 1, y - 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 1, y - 1));
+            } else {
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 2, y));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 2, y + 1));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 1, y + 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x , y + 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 1, y + 1));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 2, y));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 1, y - 1));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x + 1, y - 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x , y - 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 1, y - 2));
+                adjacentTiles.add(GameDatabase.getTileByXAndY(x - 2, y - 1));
+
             }
+        } else if (n == 3){
+
         }
         return adjacentTiles;
 

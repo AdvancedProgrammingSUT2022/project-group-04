@@ -171,6 +171,9 @@ public class City extends Tile {
         return civilizationName;
     }
 
+    public void setCivilizationName(String name){
+        civilizationName = name;
+    }
     public Unit getGarrison() {
         return garrison;
     }
@@ -455,16 +458,16 @@ public class City extends Tile {
     public void attackUnit(Unit unit) throws IOException {
         if (isTileInRangeOfUnit(unit.getTileOfUnit())){
             unit.setHP(unit.getHP() - this.longRangePower);
+
         }
     }
 
 
     public boolean isTileInRangeOfUnit(Tile tile) throws IOException {
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i <= 2; i++) {
+
             if (tile.getAdjacentTilesByLayer(i).contains(tile)) {
-                if (i <= 2){
-                    return true;
-                }
+                return true;
             }
         }
         return false;

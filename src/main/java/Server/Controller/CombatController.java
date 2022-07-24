@@ -32,9 +32,9 @@ public class CombatController {
         City cityOfPosition = GameDatabase.getCityByXAndY(x, y);
         if (unit1 instanceof Soldier) {
             Soldier soldier1 = (Soldier) unit1;
-            if (!soldier1.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x,y))){
-                return false;
-            }
+           // if (!soldier1.isTileInRangeOfUnit(GameDatabase.getTileByXAndY(x,y))){
+            //    return false;
+            //}
             boolean won = true;
             if (soldier1.getRange() == 0) {
                 //melee attack
@@ -104,7 +104,7 @@ public class CombatController {
         if (!(unit instanceof Soldier)) {
             return -1;
         } else {
-            int a = 3; //todo find the amount to add to the power of unit
+            int a = 3;
             unit.setCombatStrength(unit.getCombatStrength() + a);
             return 0;
         }
@@ -112,7 +112,7 @@ public class CombatController {
 
     public void killUnit(Unit unit) {
         unit.getTileOfUnit().removeUnit(unit);
-        // ToDO think there should be more to this funciton
+
     }
 
     public boolean getSiegeUnitReady(Soldier soldier) {
@@ -137,9 +137,11 @@ public class CombatController {
         }
     }
 
-    public void zamimeCity(Civilization civilization, City city){
+    public void zamimeCity(Civilization civilization, City city) throws IOException {
+        GameDatabase.getCivilizationByTile(GameDatabase.getTileByXAndY(city.getX(), city.getY())).removeCity(city);
         civilization.addCity(city);
-        //Todo niaz be sepehr hast
+        city.setCivilizationName(civilization.getNickname());
+
     }
 
     public void dastneshandeCity(Civilization civilization, City city){
