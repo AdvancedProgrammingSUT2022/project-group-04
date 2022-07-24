@@ -1,7 +1,7 @@
 //package ViewTest;
 //
 //
-//import Civilization.Controller.ProfileMenuController;
+//import ProfileMenuController;
 //import Server.User;
 //import ProfileMenu;
 //import org.junit.jupiter.api.BeforeEach;

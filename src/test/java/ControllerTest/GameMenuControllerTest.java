@@ -1,6 +1,6 @@
 //package ControllerTest;
 //
-//import Civilization.Controller.GameMenuController;
+//import GameMenuController;
 //import Civilization.Database.GameDatabase;
 //import Civilization.Database.GlobalVariables;
 //import Civilization.Model.*;

@@ -1,7 +1,7 @@
 //package ModelTest;
 //
-//import Civilization.Model.Civilization;
-//import Civilization.Model.Notification;
+//import Civilization;
+//import Notification;
 //import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;

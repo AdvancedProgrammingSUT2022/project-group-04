@@ -1,6 +1,6 @@
 package Client.View;
 
-import Civilization.Controller.ProfileMenuController;
+import Server.Controller.ProfileMenuController;
 import Server.User;
 
 import java.util.Scanner;

@@ -1,7 +1,7 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Model.GameModel;
 import Client.Client;
+import Client.Model.GameModel;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.CheckStartGameTransition;
 import javafx.event.EventHandler;

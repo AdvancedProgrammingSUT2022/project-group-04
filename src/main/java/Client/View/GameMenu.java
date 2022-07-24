@@ -1,10 +1,10 @@
 package Client.View;
 
-import Civilization.Controller.CombatController;
-import Civilization.Controller.GameMenuController;
+import Client.Model.*;
+import Server.Controller.CombatController;
+import Server.Controller.GameMenuController;
 import Civilization.Database.GameDatabase;
 import Civilization.Database.GlobalVariables;
-import Civilization.Model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

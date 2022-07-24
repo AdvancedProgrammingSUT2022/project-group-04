@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import Civilization.Database.GameDatabase;
-import Civilization.Model.Civilization;
+import Client.Model.Civilization;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

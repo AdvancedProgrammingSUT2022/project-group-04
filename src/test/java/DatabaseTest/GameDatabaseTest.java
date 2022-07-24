@@ -1,9 +1,9 @@
 //package DatabaseTest;
 //
 //import Civilization.Database.GameDatabase;
-//import Civilization.Model.City;
-//import Civilization.Model.Civilization;
-//import Civilization.Model.Tile;
+//import City;
+//import Civilization;
+//import Tile;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;

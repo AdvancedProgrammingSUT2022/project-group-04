@@ -1,5 +1,5 @@
 //package ControllerTest;
-//import Civilization.Controller.CombatController;
+//import CombatController;
 //import Civilization.Database.GameDatabase;
 //import Civilization.Model.*;
 //import org.junit.jupiter.api.*;

@@ -1,7 +1,10 @@
 package Client.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
-import Civilization.Model.*;
+import Client.Model.City;
+import Client.Model.Civilization;
+import Client.Model.GameModel;
+import Client.Model.Resources;
 import Client.View.Cheater;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.DiscussionResourceChoosingTransition;

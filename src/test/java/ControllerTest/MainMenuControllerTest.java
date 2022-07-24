@@ -1,8 +1,8 @@
 //package ControllerTest;
 //
-//import Civilization.Controller.MainMenuController;
+//import MainMenuController;
 //import Server.UserDatabase;
-//import Civilization.Model.MainMenuModel;
+//import MainMenuModel;
 //import Server.User;
 //import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.BeforeAll;

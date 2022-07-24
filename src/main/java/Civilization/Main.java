@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import Civilization.Database.GameDatabase;
 import Server.UserDatabase;
-import Civilization.Model.GameModel;
+import Client.Model.GameModel;
 import Client.View.Components.Account;
 import Client.View.GraphicalBases;
 import Client.Client;

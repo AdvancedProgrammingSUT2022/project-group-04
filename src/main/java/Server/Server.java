@@ -1,11 +1,12 @@
 package Server;
 
-import Civilization.Controller.LoginMenuController;
-import Civilization.Controller.ProfileMenuController;
-import Civilization.Model.Friendship;
-import Civilization.Model.Invitation;
-import Civilization.Model.LoginMenuModel;
-import Civilization.Model.ProfileMenuModel;
+
+import Client.Model.Invitation;
+import Server.Controller.LoginMenuController;
+import Server.Controller.ProfileMenuController;
+import Client.Model.Friendship;
+import Client.Model.LoginMenuModel;
+import Client.Model.ProfileMenuModel;
 import Client.View.Components.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +22,8 @@ import java.util.Arrays;
 
 public class Server {
     private ServerSocket serverSocket1;
+
+    public static boolean gameMode = false;
 
 
     public Server() {
@@ -66,37 +69,45 @@ public class Server {
         boolean disconnected = false;
         while (true) {
             try {
-                String clientCommand = dataInputStream.readUTF();
-                JSONObject clientCommandJ;
-                if (!clientCommand.startsWith("!!!")) {
-                    clientCommandJ = new JSONObject(clientCommand);
-                    if (clientCommandJ.get("menu type").equals("Login")) {
-                        processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected, id);
-                    } else if (clientCommandJ.get("menu type").equals("Profile")) {
-                        processProfileMenuReqs(clientCommandJ, dataOutputStream, profileMenuController, disconnected);
-                    } else if (clientCommandJ.get("menu type").equals("Game Database")) {
-                        processGameMenuReqs(clientCommandJ, dataOutputStream);
-                    } else if (clientCommandJ.get("menu type").equals("Main")) {
-                        processMainMenuReqs(clientCommandJ, dataOutputStream, id);
-                    } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
-                        processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
-                    } else if (clientCommandJ.get("menu type").equals("Friendship")) {
-                        processFriendshipMenuReqs(clientCommandJ, dataOutputStream);
-                    } else if (clientCommandJ.get("menu type").equals("invitation")) {
-                        processInvitationReqs(clientCommandJ, dataOutputStream);
-                    } else if (clientCommandJ.get("menu type").equals("Loading")) {
-                        processLoadingMenuReqs(clientCommandJ, dataOutputStream);
+                if (!gameMode) {
+                    String clientCommand = dataInputStream.readUTF();
+                    JSONObject clientCommandJ;
+                    if (!clientCommand.startsWith("!!!")) {
+                        clientCommandJ = new JSONObject(clientCommand);
+                        if (clientCommandJ.get("menu type").equals("Login")) {
+                            processLoginMenuReqs(clientCommandJ, loginMenuController, dataOutputStream, disconnected, id);
+                        } else if (clientCommandJ.get("menu type").equals("Profile")) {
+                            processProfileMenuReqs(clientCommandJ, dataOutputStream, profileMenuController, disconnected);
+                        } else if (clientCommandJ.get("menu type").equals("Game Database")) {
+                            processGameMenuReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Main")) {
+                            processMainMenuReqs(clientCommandJ, dataOutputStream, id);
+                        } else if (clientCommandJ.get("menu type").equals("Leaderboard")) {
+                            processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Friendship")) {
+                            processFriendshipMenuReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("invitation")) {
+                            processInvitationReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Loading")) {
+                            processLoadingMenuReqs(clientCommandJ, dataOutputStream);
+                        }
+                    }
+                    else {
+                        clientCommand = clientCommand.substring(3);
+                        processGameUsingXML(clientCommand,dataOutputStream);
                     }
                 } else {
-                    clientCommand = clientCommand.substring(3);
-                    processGameUsingXML(clientCommand, dataOutputStream);
+                    byte[] requestToByte = new byte[dataInputStream.readInt()];
+                    dataInputStream.readFully(requestToByte);
+                    String response = new String(requestToByte, StandardCharsets.UTF_8);
+                    GameDatabaseServer.updateMap(response);
                 }
             } catch (Exception ex) {
                 if(!disconnected) {
                     //ex.printStackTrace();
                     System.out.println("Client " + id + " disconnected");
                     ClientThread clientThread = ClientThread.getThreadID(id);
-                    if(clientThread != null && clientThread.getUsername() != null) {
+                    if (clientThread != null && clientThread.getUsername() != null) {
                         UserDatabase.disconnectUser(clientThread.getUsername());
                     }
                     disconnected = true;
@@ -135,7 +146,7 @@ public class Server {
     }
 
     private void processFriendshipMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
-        if(clientCommandJ.get("action").equals("getUsers")) {
+        if (clientCommandJ.get("action").equals("getUsers")) {
             String username = clientCommandJ.get("username").toString();
             String result = UserDatabase.searchFor(username, 5);
             dataOutputStream.writeUTF(result);
@@ -143,7 +154,7 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("information")) {
             String username = clientCommandJ.get("username").toString();
             User result = UserDatabase.getUserByUsername(username);
-            if(result == null) {
+            if (result == null) {
                 dataOutputStream.writeUTF("");
                 dataOutputStream.flush();
             } else {
@@ -164,7 +175,7 @@ public class Server {
             String firstUsername = clientCommandJ.get("firstUsername").toString();
             String secondUsername = clientCommandJ.get("secondUsername").toString();
             Friendship friendship = Friendship.getFriendshipByUsernames(firstUsername, secondUsername);
-            if(friendship != null) {
+            if (friendship != null) {
                 System.out.println("Not null");
                 friendship.accept();
             }
@@ -191,8 +202,8 @@ public class Server {
     }
 
     private void processLeaderBoardMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
-        try{
-            if(clientCommandJ.get("action").equals("isOnline")) {
+        try {
+            if (clientCommandJ.get("action").equals("isOnline")) {
                 String username = clientCommandJ.get("username").toString();
                 String result = Boolean.toString(UserDatabase.isUserOnline(username));
                 dataOutputStream.writeUTF(result);
@@ -207,7 +218,7 @@ public class Server {
                 String result = UserDatabase.getUserByUsername(username).getLastLoginTime();
                 dataOutputStream.writeUTF(result);
                 dataOutputStream.flush();
-            } else if(clientCommandJ.get("action").equals("friendship")) {
+            } else if (clientCommandJ.get("action").equals("friendship")) {
                 System.out.println("Friendship");
                 String firstUsername = clientCommandJ.get("firstUsername").toString();
                 String secondUsername = clientCommandJ.get("secondUsername").toString();
@@ -220,7 +231,7 @@ public class Server {
                 dataOutputStream.writeUTF(Boolean.toString(Friendship.isRequestingValid(firstUsername, secondUsername)));
                 dataOutputStream.flush();
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -231,17 +242,18 @@ public class Server {
         System.out.println(response);
 
         byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
-        System.out.println(Arrays.toString(requestToBytes));
+        //System.out.println(Arrays.toString(requestToBytes));
         dataOutputStream.writeInt(requestToBytes.length);
         dataOutputStream.flush();
         dataOutputStream.write(requestToBytes);
         dataOutputStream.flush();
+        System.out.println("sent to client!!!!");
     }
 
     private void processMainMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream, int id) throws IOException {
-        if(clientCommandJ.get("action").equals("logout")) {
+        if (clientCommandJ.get("action").equals("logout")) {
             ClientThread clientThread = ClientThread.getThreadID(id);
-            if(clientThread != null && clientThread.getUsername() != null) {
+            if (clientThread != null && clientThread.getUsername() != null) {
                 UserDatabase.disconnectUser(clientThread.getUsername());
             }
             UserDatabase.writeInFile("UserDatabase.json");
@@ -329,7 +341,7 @@ public class Server {
             }
         } catch (Exception e) {
             if (disconnected) {
-            //    e.printStackTrace();
+                //    e.printStackTrace();
                 System.out.println("Please try again");
                 disconnected = false;
             }

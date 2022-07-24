@@ -2,7 +2,7 @@
 //
 //
 //import Civilization.Database.GlobalVariables;
-//import Civilization.Model.Soldier;
+//import Soldier;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;

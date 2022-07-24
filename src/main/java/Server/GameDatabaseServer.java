@@ -1,8 +1,8 @@
 package Server;
 
-import Civilization.Controller.GameMenuController;
+import Client.Model.*;
+import Server.Controller.GameMenuController;
 import Civilization.Database.GlobalVariables;
-import Civilization.Model.*;
 import Client.View.FXMLControllers.GameFXMLController;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
@@ -60,6 +60,7 @@ public class GameDatabaseServer {
                 }
             }
         }
+        Server.gameMode = true;
     }
 
 
@@ -588,6 +589,9 @@ public class GameDatabaseServer {
         }
         else if (s.startsWith("checkIfWin")){
             returnValue.civilization = checkIfWin();
+            if (returnValue.civilization != null){
+                Server.gameMode = false;
+            }
         }
         else if (s.startsWith("getLastCivilization")){
             returnValue.civilization = getLastCivilization();
@@ -604,6 +608,7 @@ public class GameDatabaseServer {
         XStream xStream = new XStream();
         returnValue.players = GameDatabaseServer.players;
         returnValue.tiles = GameDatabaseServer.map;
+        returnValue.civilization = GameDatabaseServer.getCivilizationByTurn(turn);
         if (map.size() != 0) returnValue.tile = returnValue.tiles.get(0);
         response = xStream.toXML(returnValue);
         System.out.println(response);
@@ -613,6 +618,8 @@ public class GameDatabaseServer {
     public static void updateMap(String mp) throws IOException {
         RequestPlayers requestPlayers = readAndCastRequest(mp);
         GameDatabaseServer.map = requestPlayers.tiles;
+        GameDatabaseServer.turn = requestPlayers.x;
+        System.out.println("sadistic maniac");
     }
 
     public static JSONObject processReq(JSONObject clientCommandJ) throws IOException {

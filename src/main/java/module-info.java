@@ -14,8 +14,8 @@
 
      exports Server to xstream;
 
-      exports Civilization.Model to xstream;
-     opens Civilization.Model to com.google.gson,xstream;
+      exports Client.Model to xstream;
+     opens Client.Model to com.google.gson,xstream;
      opens Client.View.Components to com.google.gson,xstream;
 
      exports Client.View.FXMLControllers;
@@ -30,8 +30,8 @@
      exports Civilization;
      opens Civilization to javafx.fxml,xstream;
 
-     exports Civilization.Controller to xstream;
-     opens Civilization.Controller to xstream;
+     exports Server.Controller to xstream;
+     opens Server.Controller to xstream;
       opens Server to com.google.gson, xstream;
 
 

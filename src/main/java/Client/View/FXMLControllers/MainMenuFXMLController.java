@@ -1,6 +1,6 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Model.GameModel;
+import Client.Model.GameModel;
 import Client.Client;
 import Server.User;
 import Client.View.GraphicalBases;
