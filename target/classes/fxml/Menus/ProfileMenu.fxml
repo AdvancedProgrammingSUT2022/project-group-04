@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Civilization.View.FXMLControllers.ProfileMenuFXMLController"
+            fx:controller="Client.View.FXMLControllers.ProfileMenuFXMLController"
             prefHeight="720" prefWidth="1280" stylesheets="@../../css/ProfileMenuStyle.css">
 
     <Rectangle fx:id="background" width="1280" height="720"/>
@@ -32,6 +32,10 @@
             <Button fx:id="passwordOKButton" text="OK" onMouseClicked="#changePassword" visible="false" disable="true" minWidth="100"/>
         </HBox>
         <Text text="" fx:id="passwordError"/>
+        <HBox spacing="20">
+            <TextArea text="" visible="true" fx:id="friends" editable="false" prefHeight="100" prefWidth="200"/>
+            <TextArea text="" visible="true" fx:id="requests" editable="false" prefHeight="100" prefWidth="200"/>
+        </HBox>
     </VBox>
     <Button text="Back" layoutX="200" layoutY="550" minWidth="200" onMouseClicked="#BackToMainMenu"/>
 </AnchorPane>

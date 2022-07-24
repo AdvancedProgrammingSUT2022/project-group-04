@@ -1,30 +1,14 @@
 package Civilization;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.URL;
-import java.util.Objects;
-import java.util.Scanner;
 
-import Civilization.Controller.LoginMenuController;
-import Civilization.Controller.MainMenuController;
 import Civilization.Database.GameDatabase;
-import Civilization.Database.UserDatabase;
-import Civilization.Model.GameModel;
-import Civilization.Model.LoginMenuModel;
-import Civilization.Model.MainMenuModel;
-import Civilization.Model.User;
-import Civilization.View.Components.Account;
-import Civilization.View.GraphicalBases;
-import Civilization.View.LoginMenu;
-import Civilization.View.MainMenu;
+import Server.UserDatabase;
+import Client.Model.GameModel;
+import Client.View.Components.Account;
+import Client.View.GraphicalBases;
 import Client.Client;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -59,7 +43,7 @@ public class Main extends Application {
 //            mainMenu.run(scanner, User.loggedInUser);
 //        }
 
-        UserDatabase.writeInFile("UserDatabase.json");
+        //UserDatabase.writeInFile("UserDatabase.json");
     }
 
     @Override
@@ -68,7 +52,7 @@ public class Main extends Application {
             GameDatabase.saveGame();
         }
         try{
-            UserDatabase.writeInFile("UserDatabase.json");
+            //UserDatabase.writeInFile("UserDatabase.json");
         } catch (Exception e) {
 
         }

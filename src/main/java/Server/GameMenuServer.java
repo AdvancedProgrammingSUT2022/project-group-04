@@ -1,14 +1,14 @@
 //package Server;
 //
 //
-//import Civilization.Controller.CombatController;
-//import Civilization.Controller.GameMenuController;
+//import CombatController;
+//import GameMenuController;
 //import Civilization.Database.GameDatabase;
 //import Civilization.Database.GlobalVariables;
 //import Civilization.Model.*;
-//import Civilization.View.Colors;
-//import Civilization.View.Info;
-//import Civilization.View.Menu;
+//import Colors;
+//import Info;
+//import Menu;
 //import org.json.JSONObject;
 //
 //import java.io.DataOutputStream;

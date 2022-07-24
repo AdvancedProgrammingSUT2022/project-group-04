@@ -1,0 +1,32 @@
+[
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "alirezaRM",
+    "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "yahya",
+    "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "Alireza",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "test4",
+    "isAccepted": false,
+    "isDenied": true
+  },
+  {
+    "firstUsername": "Arian",
+    "secondUsername": "sepehr",
+    "isAccepted": true,
+    "isDenied": false
+  }
+]
