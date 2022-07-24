@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Invitation {
     public static ArrayList<Invitation> invitations = new ArrayList<>();
@@ -55,6 +56,27 @@ public class Invitation {
             }
         }
         return validInvitations;
+    }
+
+    public static ArrayList<Invitation> getMyInvitations(String username) {
+        ArrayList<Invitation> myInvitations = new ArrayList<>();
+        for (Invitation invitation : invitations) {
+            if(!invitation.isExpired() && !invitation.isAccepted() && !invitation.isDenied()) {
+                if(invitation.getUsername2().equals(username)) {
+                    myInvitations.add(invitation);
+                }
+            }
+        }
+        return myInvitations;
+    }
+
+    public static Invitation getInvitationAccepted(String username) {
+        for (Invitation invitation : Invitation.invitations) {
+            if(invitation.getUsername2().equals(username) && !invitation.isExpired() && invitation.isAccepted()) {
+                return invitation;
+            }
+        }
+        return null;
     }
 
     private long minuteCalculator(LocalDateTime now) {
