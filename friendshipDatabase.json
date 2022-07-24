@@ -14,7 +14,7 @@
   {
     "firstUsername": "sepehr",
     "secondUsername": "Alireza",
-    "isAccepted": false,
+    "isAccepted": true,
     "isDenied": false
   },
   {
@@ -27,6 +27,54 @@
     "firstUsername": "Arian",
     "secondUsername": "sepehr",
     "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "alirezaAmiri",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "Hasti",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "testAccount",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "alirezaRM",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "kasra",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "yahya",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "Arian",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "test1",
+    "isAccepted": false,
     "isDenied": false
   }
 ]
