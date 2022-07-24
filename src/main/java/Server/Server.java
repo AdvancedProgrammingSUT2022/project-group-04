@@ -1,12 +1,9 @@
 package Server;
 
 
-import Client.Model.Invitation;
+import Client.Model.*;
 import Server.Controller.LoginMenuController;
 import Server.Controller.ProfileMenuController;
-import Client.Model.Friendship;
-import Client.Model.LoginMenuModel;
-import Client.Model.ProfileMenuModel;
 import Client.View.Components.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -142,6 +139,39 @@ public class Server {
             System.out.println(Arrays.toString(Invitation.invitations.toArray()));
             Invitation.writeInvitations("invitationDatabase.json");
             System.out.println("end");
+        } else if (clientCommandJ.get("action").equals("getAllInvitations")) {
+            boolean bool = false;
+            if(Invitation.getAllNotExpiredInvitations().size() == 0) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("haveNotAcceptedInvitation")) {
+            boolean bool = false;
+            if(Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() > 0) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("isAGame")) {
+            boolean bool = false;
+            if(Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() == 0
+                && Invitation.getAllNotExpiredInvitations().size() != 0
+                && Invitation.getInvitationAccepted(clientCommandJ.get("username").toString()) == null) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("isFree")) {
+            boolean bool = true;
+            if(Invitation.getAllNotExpiredInvitations().size() != 0) {
+                bool = false;
+            }
+            if(GameModel.isGame) {
+                bool = false;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
         }
     }
 

@@ -719,11 +719,26 @@ public class GameMenuFXMLController {
     }
 
     private void runGame() throws IOException {
-        GameDatabase.setYou();
-        ArrayList<String> users = new ArrayList<>(selectedUsers);
-        //sendInvitation(users);
-        GameModel gameModel = new GameModel();
-        gameModel.startGame(users);
+        if(isServerFree()) {
+            GameDatabase.setYou();
+            ArrayList<String> users = new ArrayList<>(selectedUsers);
+            //sendInvitation(users);
+            GameModel gameModel = new GameModel();
+            gameModel.startGame(users);
+        } else {
+            GraphicalBases.userLoggedIn();
+        }
+    }
+
+    private boolean isServerFree() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","invitation");
+        input.put("action","isFree");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        Boolean bool = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        System.out.println(bool);
+        return bool;
     }
 
     private void sendInvitation(ArrayList<String> users) throws IOException {
