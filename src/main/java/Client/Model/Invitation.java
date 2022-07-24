@@ -160,11 +160,29 @@ public class Invitation {
         Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
         Path userPath = Paths.get(fileName);
         Writer writer = Files.newBufferedWriter(userPath);
-        System.out.println("Hi");
+        //System.out.println("Hi");
         System.out.println(Invitation.invitations.size());
         gsonBuilder.toJson(Invitation.invitations, writer);
-        System.out.println("writing ends");
+        //System.out.println("writing ends");
         writer.close();
+    }
+
+    public void expire() {
+        this.minute = 0;
+    }
+
+    public static void expireAll() {
+        for (Invitation invitation : getAllNotExpiredInvitations()) {
+            invitation.expire();
+        }
+    }
+
+    public static String getAdminUsername() {
+        if(getAllNotExpiredInvitations().size() == 0) {
+            return "";
+        } else {
+            return getAllNotExpiredInvitations().get(0).getUsername1();
+        }
     }
 
     public void deny() {
