@@ -156,7 +156,7 @@ public class Server {
             dataOutputStream.writeUTF(Boolean.toString(shall));
             dataOutputStream.flush();
         } else if(clientCommandJ.get("action").equals("getUsers")) {
-            String users = Invitation.getAcceptedValidInvitationsString();
+            String users = Invitation.sort(Invitation.getAcceptedValidInvitationsString());
             dataOutputStream.writeUTF(users);
             dataOutputStream.flush();
         } else if (clientCommandJ.get("action").equals("number")) {
