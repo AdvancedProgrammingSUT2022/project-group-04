@@ -1,10 +1,9 @@
 package Server;
 
+
+import Client.Model.*;
 import Server.Controller.LoginMenuController;
 import Server.Controller.ProfileMenuController;
-import Client.Model.Friendship;
-import Client.Model.LoginMenuModel;
-import Client.Model.ProfileMenuModel;
 import Client.View.Components.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,6 +38,7 @@ public class Server {
         UserDatabase.readFromFile("UserDatabase.json");
         Account.readAccounts("AccountURLs.json");
         Friendship.readFriendships("friendshipDatabase.json");
+        Invitation.readInvitations("invitationDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
@@ -83,6 +83,10 @@ public class Server {
                             processLeaderBoardMenuReqs(clientCommandJ, dataOutputStream);
                         } else if (clientCommandJ.get("menu type").equals("Friendship")) {
                             processFriendshipMenuReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("invitation")) {
+                            processInvitationReqs(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Loading")) {
+                            processLoadingMenuReqs(clientCommandJ, dataOutputStream);
                         }
                     }
                     else {
@@ -100,7 +104,8 @@ public class Server {
                     GameDatabaseServer.updateMap(response);
                 }
             } catch (Exception ex) {
-                if (!disconnected) {
+                if(!disconnected) {
+                    //ex.printStackTrace();
                     System.out.println("Client " + id + " disconnected");
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if (clientThread != null && clientThread.getUsername() != null) {
@@ -140,6 +145,82 @@ public class Server {
             /////////
             getMapFromClient(dataInputStream);
         }
+    }
+    private void processLoadingMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("isGettingUserValid")) {
+            int number = Invitation.getAllNotExpiredInvitations().size();
+            boolean shall = false;
+            if(number > 0) {
+                shall = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(shall));
+            dataOutputStream.flush();
+        } else if(clientCommandJ.get("action").equals("getUsers")) {
+            String users = Invitation.getAcceptedValidInvitationsString();
+            dataOutputStream.writeUTF(users);
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("number")) {
+            dataOutputStream.writeUTF(Integer.toString(Invitation.getAllNotExpiredInvitations().size()));
+            dataOutputStream.flush();
+        }
+    }
+
+    private void processInvitationReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("invite")) {
+            String username1 = clientCommandJ.get("username").toString();
+            String[] users = clientCommandJ.get("users").toString().split("\n");
+            Invitation.sendToAll(users, username1);
+            System.out.println(Arrays.toString(Invitation.invitations.toArray()));
+            System.out.println("end");
+        } else if (clientCommandJ.get("action").equals("getAllInvitations")) {
+            boolean bool = false;
+            if(Invitation.getAllNotExpiredInvitations().size() == 0) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("haveNotAcceptedInvitation")) {
+            boolean bool = false;
+            if(Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() > 0) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("isAGame")) {
+            boolean bool = false;
+            if(Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() == 0
+                && Invitation.getAllNotExpiredInvitations().size() != 0
+                && Invitation.getInvitationAccepted(clientCommandJ.get("username").toString()) == null) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("isFree")) {
+            boolean bool = true;
+            if(Invitation.getAllNotExpiredInvitations().size() != 0) {
+                bool = false;
+            }
+            if(GameModel.isGame) {
+                bool = false;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("getUserInvitation")) {
+            ArrayList<Invitation> invitations = Invitation.getMyInvitations(clientCommandJ.get("username").toString());
+            String result = "";
+            if(invitations.size() > 0) {
+                result = invitations.get(0).getUsername1();
+            }
+            dataOutputStream.writeUTF(result);
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("accept")) {
+            Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
+            invitation.accept();
+        } else if (clientCommandJ.get("action").equals("deny")) {
+            Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
+            invitation.deny();
+        }
+        Invitation.writeInvitations("invitationDatabase.json");
     }
 
     private void processFriendshipMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
@@ -257,6 +338,9 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("profile")) {
             UserDatabase.readFromFile("UserDatabase.json");
             Account.readAccounts("AccountURLs.json");
+        } else if (clientCommandJ.get("action").equals("firstInit")) {
+            //GameModel.generateMap = true;
+            // TODO
         }
     }
 

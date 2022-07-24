@@ -28,6 +28,11 @@ public class MainMenuFXMLController {
 
     @FXML
     public void initialize() {
+        try{
+            makeGameModelZero();
+        } catch (Exception e) {
+
+        }
         setBackground();
         setNameLabel();
         GameModel.isGame = false;
@@ -62,8 +67,60 @@ public class MainMenuFXMLController {
     }
 
     public void goToGameMenu(MouseEvent mouseEvent) {
-        GraphicalBases.changeMenu("GameMenu");
-        //GraphicalBases.enterGame("Game");
+        try{
+            if(shallGoToGameMenu()) {
+                GraphicalBases.changeMenu("GameMenu");
+            } else if (haveNotAcceptedInvitation() || theyDoNotInviteYou()) {
+                GraphicalBases.changeMenu("invitation");
+            } else {
+                GraphicalBases.changeMenu("Loading");
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private boolean theyDoNotInviteYou() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","invitation");
+        input.put("action","isAGame");
+        input.put("username", User.loggedInUser.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        Boolean bool = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        System.out.println(bool);
+        return bool;
+    }
+
+    private void makeGameModelZero() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","firstInit");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+    }
+
+    private boolean haveNotAcceptedInvitation() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","invitation");
+        input.put("action","haveNotAcceptedInvitation");
+        input.put("username", User.loggedInUser.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        Boolean bool = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        System.out.println(bool);
+        return bool;
+    }
+
+    private boolean shallGoToGameMenu() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","invitation");
+        input.put("action","getAllInvitations");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        Boolean bool = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        System.out.println(bool);
+        return bool;
     }
 
     public void goToScoreboard(MouseEvent mouseEvent) {
