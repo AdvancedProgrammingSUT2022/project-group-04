@@ -159,11 +159,18 @@ public class Server {
             dataOutputStream.writeUTF(Boolean.toString(shall));
             dataOutputStream.flush();
         } else if(clientCommandJ.get("action").equals("getUsers")) {
-            String users = Invitation.getAcceptedValidInvitationsString();
+            String users = Invitation.sort(Invitation.getAcceptedValidInvitationsString());
             dataOutputStream.writeUTF(users);
             dataOutputStream.flush();
         } else if (clientCommandJ.get("action").equals("number")) {
             dataOutputStream.writeUTF(Integer.toString(Invitation.getAllNotExpiredInvitations().size()));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("isAdmin")) {
+            boolean result = false;
+            if(Invitation.getAdminUsername().equals(clientCommandJ.get("username").toString())) {
+                result = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(result));
             dataOutputStream.flush();
         }
     }
@@ -222,6 +229,11 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("deny")) {
             Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
             invitation.deny();
+        } else if (clientCommandJ.get("action").equals("expireAll")) {
+            System.out.println("Hi");
+            System.out.println(Invitation.getAllNotExpiredInvitations().size());
+            Invitation.expireAll();
+            System.out.println(Invitation.getAllNotExpiredInvitations().size());
         }
         Invitation.writeInvitations("invitationDatabase.json");
     }

@@ -90,6 +90,19 @@ public class Invitation {
         return null;
     }
 
+    public static String sort(String acceptedValidInvitationsString) {
+        String[] users = acceptedValidInvitationsString.split(" ");
+        String adminUser = Invitation.getAdminUsername();
+        String result = adminUser + " ";
+        for (String user : users) {
+            if(!user.equals(adminUser)) {
+                result += user + " ";
+            }
+        }
+        //System.out.println(result);
+        return result;
+    }
+
     private long minuteCalculator(LocalDateTime now) {
         return (now.getDayOfYear()-1)*24*60 + now.getHour()*60 + now.getMinute();
     }
@@ -160,11 +173,29 @@ public class Invitation {
         Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
         Path userPath = Paths.get(fileName);
         Writer writer = Files.newBufferedWriter(userPath);
-        System.out.println("Hi");
+        //System.out.println("Hi");
         System.out.println(Invitation.invitations.size());
         gsonBuilder.toJson(Invitation.invitations, writer);
-        System.out.println("writing ends");
+        //System.out.println("writing ends");
         writer.close();
+    }
+
+    public void expire() {
+        this.minute = 0;
+    }
+
+    public static void expireAll() {
+        for (Invitation invitation : getAllNotExpiredInvitations()) {
+            invitation.expire();
+        }
+    }
+
+    public static String getAdminUsername() {
+        if(getAllNotExpiredInvitations().size() == 0) {
+            return "";
+        } else {
+            return getAllNotExpiredInvitations().get(0).getUsername1();
+        }
     }
 
     public void deny() {

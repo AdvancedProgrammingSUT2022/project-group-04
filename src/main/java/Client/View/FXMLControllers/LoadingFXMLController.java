@@ -2,8 +2,10 @@ package Client.View.FXMLControllers;
 
 import Client.Client;
 import Client.Model.GameModel;
+import Client.Model.Unit;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.CheckStartGameTransition;
+import Server.User;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,6 +32,14 @@ public class LoadingFXMLController {
     private Text text;
     private Button button;
 
+    private Text users;
+
+    private Button refresh;
+    private Button goNow;
+
+    private boolean isAdmin;
+
+
     @FXML
     public void initialize() {
         usersInGame = new ArrayList<>();
@@ -38,6 +48,83 @@ public class LoadingFXMLController {
         setBackground();
         setText();
         setOkButton();
+        setRefreshButton();
+
+        isAdmin = false;
+        try {
+            isAdmin();
+        } catch (Exception e) {
+
+        }
+
+        setGoToNowButton();
+
+        try{
+            updateUsersInGame();
+        } catch (Exception e) {
+
+        }
+        updateText();
+    }
+
+    private void isAdmin() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Loading");
+        input.put("action","isAdmin");
+        input.put("username", User.loggedInUser.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        isAdmin = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        System.out.println(isAdmin);
+    }
+
+    private void expireAll() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","invitation");
+        input.put("action","expireAll");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+    }
+
+    private void setGoToNowButton() {
+        goNow = new Button("Go Now");
+        goNow.setLayoutX(990);
+        goNow.setLayoutY(300);
+        goNow.setPrefWidth(200);
+        goNow.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        goNow.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    expireAll();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        goNow.setVisible(false);
+        mainAnchorPane.getChildren().add(goNow);
+    }
+
+    private void setRefreshButton() {
+        refresh = new Button("Refresh");
+        refresh.setLayoutX(990);
+        refresh.setLayoutY(250);
+        refresh.setPrefWidth(200);
+        refresh.setVisible(true);
+        refresh.setStyle("-fx-background-color: #222c41;-fx-border-color: #555564; -fx-text-fill: white;-fx-border-width: 3;");
+        refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    updateUsersInGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                updateText();
+            }
+        });
+        mainAnchorPane.getChildren().add(refresh);
     }
 
     private void setOkButton() {
@@ -62,6 +149,13 @@ public class LoadingFXMLController {
         text.setY(500);
         text.setStyle("-fx-fill: white; -fx-font-size: 50");
         mainAnchorPane.getChildren().add(text);
+
+        users = new Text("It's Just You!");
+        users.setX(50);
+        users.setY(50);
+        users.setStyle("-fx-fill: white; -fx-font-size: 50");
+        mainAnchorPane.getChildren().add(users);
+
     }
 
     private void setBackground() {
@@ -101,9 +195,25 @@ public class LoadingFXMLController {
         this.text.setText(this.usersInGame.size() + " Players in Game.");
     }
 
-    private void updateUsersNames(String[] users) {
+    private void updateUsersNames(String[] usersArray) {
         this.usersInGame = new ArrayList<>();
-        usersInGame.addAll(Arrays.asList(users));
+        usersInGame.addAll(Arrays.asList(usersArray));
+        if(usersArray.length > 1) {
+            users.setText("Players In Game:\n" + userString(usersArray));
+            if(isAdmin) {
+                goNow.setVisible(true);
+            } else {
+                goNow.setVisible(false);
+            }
+        }
+    }
+
+    private String userString(String[] usersArray) {
+        String result = "";
+        for (String name : usersArray) {
+            result += name + "\n";
+        }
+        return result;
     }
 
 
