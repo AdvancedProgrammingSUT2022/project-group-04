@@ -90,6 +90,19 @@ public class Invitation {
         return null;
     }
 
+    public static String sort(String acceptedValidInvitationsString) {
+        String[] users = acceptedValidInvitationsString.split(" ");
+        String adminUser = Invitation.getAdminUsername();
+        String result = adminUser + " ";
+        for (String user : users) {
+            if(!user.equals(adminUser)) {
+                result += user + " ";
+            }
+        }
+        //System.out.println(result);
+        return result;
+    }
+
     private long minuteCalculator(LocalDateTime now) {
         return (now.getDayOfYear()-1)*24*60 + now.getHour()*60 + now.getMinute();
     }
