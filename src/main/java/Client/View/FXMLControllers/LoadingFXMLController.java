@@ -257,6 +257,6 @@ public class LoadingFXMLController {
 
     private void runGame() throws IOException {
         GameModel gameModel = new GameModel();
-        gameModel.startGame(usersInGame);
+        gameModel.startGame(usersInGame,isAdmin);
     }
 }

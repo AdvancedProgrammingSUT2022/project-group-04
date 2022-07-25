@@ -14,7 +14,7 @@
   {
     "firstUsername": "sepehr",
     "secondUsername": "Alireza",
-    "isAccepted": false,
+    "isAccepted": true,
     "isDenied": false
   },
   {
@@ -44,6 +44,24 @@
   {
     "firstUsername": "test3",
     "secondUsername": "kasra",
+    "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "alirezaRM",
+    "secondUsername": "alirezaAmiri",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "alirezaAmiri",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "alirezaRM",
+    "secondUsername": "Alireza",
     "isAccepted": true,
     "isDenied": false
   }

@@ -51,6 +51,7 @@ public class GameDatabaseServer {
     }
 
     public static void generateRuin() {
+        System.out.println("wot");
         Random random = new Random();
         for (Tile tile : map) {
             if (getCivilizationByTile(tile) == null) {
@@ -60,7 +61,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        Server.gameMode = true;
+        System.out.println("what");
     }
 
 
@@ -520,6 +521,8 @@ public class GameDatabaseServer {
         }
         else if (s.startsWith("generateRuin")){
             generateRuin();
+            System.out.println("salamp");
+            Server.gameMode = true;
         }
         else if (s.startsWith("getCivilizationByUsername")){
             s = s.substring("getCivilizationByUsername".length());

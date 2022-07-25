@@ -19,6 +19,9 @@ import java.util.Arrays;
 
 public class Server {
     private ServerSocket serverSocket1;
+    private ServerSocket serverSocket2;
+
+
 
     public static boolean gameMode = false;
 
@@ -27,6 +30,7 @@ public class Server {
         //game = new GameMenuServer();
         try {
             serverSocket1 = new ServerSocket(8080);
+            serverSocket2 = new ServerSocket(8569);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
@@ -56,6 +60,25 @@ public class Server {
                 });
                 thread.start();
                 clientThread.setThread(thread);
+                ///
+                if (gameMode) {
+                    Socket socket1 = serverSocket2.accept();
+                    ClientThread clientThread1 = new ClientThread();
+                    Thread thread1 = new Thread(() -> {
+                        try {
+                            DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket1.getOutputStream()));
+                            DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket1.getInputStream()));
+                            System.out.println("madar kharab");
+                            processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    thread1.start();
+                    clientThread1.setThread(thread1);
+                }
+                //
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,14 +117,16 @@ public class Server {
                         processGameUsingXML(clientCommand,dataOutputStream);
                         if (gameMode) gameHandling(dataInputStream,dataOutputStream);
                     }
+                    System.err.println(gameMode);
                 } else {
-                    System.out.println("dir");
-                    byte[] requestToByte = new byte[dataInputStream.readInt()];
-                    System.out.println(123);
-                    dataInputStream.readFully(requestToByte);
-                    System.out.println(34);
-                    String response = new String(requestToByte, StandardCharsets.UTF_8);
-                    GameDatabaseServer.updateMap(response);
+//                    System.out.println("dir");
+//                    byte[] requestToByte = new byte[dataInputStream.readInt()];
+//                    System.out.println(123);
+//                    dataInputStream.readFully(requestToByte);
+//                    System.out.println(34);
+//                    String response = new String(requestToByte, StandardCharsets.UTF_8);
+//                    GameDatabaseServer.updateMap(response);
+                    gameHandling(dataInputStream,dataOutputStream);
                 }
             } catch (Exception ex) {
                 if(!disconnected) {
