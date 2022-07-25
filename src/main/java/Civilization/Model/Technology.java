@@ -245,7 +245,7 @@ public class Technology {
         if (civilization.getScience() - this.cost > 100) {
             this.turnsNeedToResearch = 1;
         } else {
-            this.turnsNeedToResearch = 10 - (civilization.getScience() - this.cost) / 10;
+            this.turnsNeedToResearch = (10 - (civilization.getScience() - this.cost) / 10)/GameModel.speed;
         }
     }
 
@@ -334,7 +334,7 @@ public class Technology {
     }
 
     public void setTurnsNeedToResearch(int turnsNeedToResearch) {
-        this.turnsNeedToResearch = turnsNeedToResearch;
+        this.turnsNeedToResearch = (turnsNeedToResearch)/GameModel.speed;
     }
 
     @Override
