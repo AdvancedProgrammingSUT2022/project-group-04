@@ -109,6 +109,18 @@ public class GameMenuFXMLController {
         label.setLayoutY(40);
         speed.setLayoutX(860);
         speed.setLayoutY(40);
+        
+        
+        speed.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(speed.getState()) {
+                    GameModel.speed = 2;
+                } else {
+                    GameModel.speed = 1;
+                }
+            }
+        });
 
         mainAnchorPane.getChildren().add(label);
         mainAnchorPane.getChildren().add(speed);
