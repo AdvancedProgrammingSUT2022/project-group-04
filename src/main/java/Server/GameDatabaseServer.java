@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Model.*;
+import Client.View.Transitions.DisconnectTransition;
 import Server.Controller.GameMenuController;
 import Civilization.Database.GlobalVariables;
 import Client.View.FXMLControllers.GameFXMLController;
@@ -635,5 +636,45 @@ public class GameDatabaseServer {
         requestPlayers.x = GameDatabaseServer.turn;
         XStream xStream = new XStream();
         return xStream.toXML(requestPlayers);
+    }
+
+    public static void disconnectPlayer(String username) {
+        if(GameDatabaseServer.players.size() == 2) {
+            GameDatabaseServer.cheated = true;
+            GameDatabaseServer.cheatedCivilization = theOtherCivilization(username);
+        } else {
+            DisconnectTransition disconnectTransition = new DisconnectTransition(username);
+            disconnectTransition.play();
+        }
+    }
+
+    private static Civilization theOtherCivilization(String username) {
+        String civilUsername = username;
+        for (Civilization player : GameDatabaseServer.players) {
+            if(!player.getUsername().equals(username)) {
+                civilUsername = player.getUsername();
+            }
+        }
+        return GameDatabaseServer.getCivilizationByUsername(civilUsername);
+    }
+
+    public static void userConnected(DisconnectTransition disconnectTransition) {
+        disconnectTransition.pause();
+    }
+
+    public static void removeUser(DisconnectTransition disconnectTransition, String username) throws IOException {
+        if(GameDatabaseServer.getCivilizationByTurn(GameDatabaseServer.getTurn()).getUsername().equals(username)) {
+            GameDatabaseServer.nextTurn();
+        }
+        disconnectTransition.pause();
+        for (Unit combatUnit : GameDatabaseServer.getCivilizationByUsername(username).getCombatUnits()) {
+            GameDatabaseServer.getTileByXAndY(combatUnit.getX(), combatUnit.getY()).setCombatUnit(null);
+        }
+        for (int i = 0; i < GameDatabaseServer.players.size(); i++) {
+            if(GameDatabaseServer.players.get(i).getUsername().equals(username)) {
+                GameDatabaseServer.players.remove(i);
+                break;
+            }
+        }
     }
 }

@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -120,6 +121,13 @@ public class ChatRoomFXMLController {
             label.setText(" " + message + " ");
             Text time = new Text();
             time.setText(LocalDateTime.now().getHour() + ":" + LocalDateTime.now().getMinute() + ":" + LocalDateTime.now().getSecond());
+
+//            try{
+//                sendMessageInReal(User.loggedInUser.getNickname(), users.getValue(), message, choiceBox.getValue());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
             Image avatarImage = new Image(GraphicalBases.class.getResource(User.loggedInUser.getAvatarURL()).toString());
             ImageView avatar = new ImageView(avatarImage);
             avatar.setFitHeight(37);
@@ -152,6 +160,23 @@ public class ChatRoomFXMLController {
             chatBoxPane.setPrefHeight(chatBoxPane.getPrefHeight() + 50);
             chatBox.setPrefHeight(chatBox.getPrefHeight() + 50);
         }
+    }
+
+    private void sendMessageInReal(String nickname, String value, String message, String value1) throws IOException {
+        if(value1.equals("public")) {
+            value = "ALL USERS";
+        } else if (value1.equals("rooms")) {
+            value = "ALL IN ROOM";
+        }
+        JSONObject input = new JSONObject();
+        input.put("menu type","Chatroom");
+        input.put("action","send message");
+        input.put("from", nickname);
+        input.put("to", value);
+        input.put("text", message);
+        input.put("room", value1);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
     }
 
     public void backToMain() {

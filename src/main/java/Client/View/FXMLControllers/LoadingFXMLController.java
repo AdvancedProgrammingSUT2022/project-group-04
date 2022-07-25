@@ -50,6 +50,12 @@ public class LoadingFXMLController {
         setOkButton();
         setRefreshButton();
 
+        try{
+            falseGameModel();
+        } catch (Exception e) {
+
+        }
+
         isAdmin = false;
         try {
             isAdmin();
@@ -76,6 +82,14 @@ public class LoadingFXMLController {
         Client.dataOutputStream1.flush();
         isAdmin = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
         System.out.println(isAdmin);
+    }
+
+    private void falseGameModel() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","false game model");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
     }
 
     private void expireAll() throws IOException {

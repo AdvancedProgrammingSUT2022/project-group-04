@@ -113,6 +113,9 @@ public class Server {
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if (clientThread != null && clientThread.getUsername() != null) {
                         UserDatabase.disconnectUser(clientThread.getUsername());
+                        if(GameModel.isGame && UserDatabase.isUserInGame(clientThread.getUsername())) {
+                            GameDatabaseServer.disconnectPlayer(clientThread.getUsername());
+                        }
                     }
                     disconnected = true;
                 }
@@ -120,6 +123,17 @@ public class Server {
 
             }
         }
+    }
+
+    private void processChatroomReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("send message")) {
+            String from = clientCommandJ.get("from").toString();
+            String to = clientCommandJ.get("to").toString();
+            String text = clientCommandJ.get("text").toString();
+            String room = clientCommandJ.get("room").toString();
+            new Message(from, to, text, room);
+        }
+        Message.writeMessages("chatDatabase.json");
     }
 
     private static String getMapFromClient(DataInputStream dataInputStream) throws IOException {
@@ -356,7 +370,26 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("firstInit")) {
             //GameModel.generateMap = true;
             // TODO
+        } else if (clientCommandJ.get("action").equals("not finished game")) {
+            boolean bool = false;
+            if(GameModel.isGame && UserDatabase.isUserInGame(clientCommandJ.get("username").toString())) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("true game model")) {
+            trueGameModel();
+        } else if (clientCommandJ.get("action").equals("false game model")) {
+            falseGameModel();
         }
+    }
+
+    private void trueGameModel() {
+        GameModel.isGame = true;
+    }
+
+    private void falseGameModel() {
+        GameModel.isGame = false;
     }
 
     private void processGameMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
