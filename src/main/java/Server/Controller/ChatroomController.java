@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,6 +56,17 @@ public class ChatroomController {
         }
     }
 
+    public static void seeChats(String fileName, String username) throws IOException {
+        for (Chat chat: Chat.chats){
+            if (!new String(chat.getName(), StandardCharsets.UTF_8).equals(username)){
+                chat.setSeen(true);
+                System.out.println("salam");
+            }
+        }
+
+        writeChats(fileName);
+
+    }
 
     public static void addChatsToPanel(String message, String nameUser, String Time, String ImageURL){
 

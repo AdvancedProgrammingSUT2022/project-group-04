@@ -51,6 +51,7 @@ public class ChatRoomFXMLController {
         JSONObject clientCommandJ = new JSONObject();
         clientCommandJ.put("menu type", "Chatroom");
         clientCommandJ.put("action", "refresh");
+        clientCommandJ.put("name", User.loggedInUser.getNickname());
         Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
         Client.dataOutputStream1.flush();
         updateChatBox();
