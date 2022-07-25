@@ -14,7 +14,7 @@
   {
     "firstUsername": "sepehr",
     "secondUsername": "Alireza",
-    "isAccepted": false,
+    "isAccepted": true,
     "isDenied": false
   },
   {
@@ -27,6 +27,18 @@
     "firstUsername": "Arian",
     "secondUsername": "sepehr",
     "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "alirezaAmiri",
+    "secondUsername": "Alireza",
+    "isAccepted": true,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "Alireza",
+    "secondUsername": "kasra",
+    "isAccepted": false,
     "isDenied": false
   }
 ]

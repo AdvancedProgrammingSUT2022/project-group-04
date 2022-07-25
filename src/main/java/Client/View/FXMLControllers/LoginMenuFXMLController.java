@@ -217,9 +217,18 @@ public class LoginMenuFXMLController {
         return user;
     }
 
-    private void login() {
-        User.loggedInUser.setLastLoginTime(LocalDateTime.now());
+    private void login() throws IOException {
+        setLoginTime(User.loggedInUser.getUsername());
         GraphicalBases.userLoggedIn();
+    }
+
+    private void setLoginTime(String username) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Login");
+        input.put("action","login time");
+        input.put("username", username);
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
     }
 
     private void setLogin() {
