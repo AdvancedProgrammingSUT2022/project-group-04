@@ -32,6 +32,11 @@
             <Font size="24.0" />
          </font>
       </Button>
+       <Button alignment="CENTER" layoutX="1139.0" layoutY="50.0" mnemonicParsing="false" onAction="#refresh" prefHeight="43.0" prefWidth="103.0" styleClass="backButton" text="Refresh">
+           <font>
+               <Font size="24.0" />
+           </font>
+       </Button>
       <ChoiceBox fx:id="users" layoutX="500.0" layoutY="40.0" prefHeight="33.0" prefWidth="119.0" styleClass="choiceButton" value="Users" visible="false" />
    </children>
 </AnchorPane>

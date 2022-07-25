@@ -28,23 +28,5 @@
     "secondUsername": "sepehr",
     "isAccepted": true,
     "isDenied": false
-  },
-  {
-    "firstUsername": "sepehr",
-    "secondUsername": "kasra",
-    "isAccepted": true,
-    "isDenied": false
-  },
-  {
-    "firstUsername": "sepehr",
-    "secondUsername": "test3",
-    "isAccepted": true,
-    "isDenied": false
-  },
-  {
-    "firstUsername": "test3",
-    "secondUsername": "kasra",
-    "isAccepted": true,
-    "isDenied": false
   }
 ]
