@@ -40,6 +40,7 @@ public class Server {
         Account.readAccounts("AccountURLs.json");
         Friendship.readFriendships("friendshipDatabase.json");
         Invitation.readInvitations("invitationDatabase.json");
+        Message.readMessages("chatDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
@@ -120,6 +121,17 @@ public class Server {
 
             }
         }
+    }
+
+    private void processChatroomReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        if(clientCommandJ.get("action").equals("send message")) {
+            String from = clientCommandJ.get("from").toString();
+            String to = clientCommandJ.get("to").toString();
+            String text = clientCommandJ.get("text").toString();
+            String room = clientCommandJ.get("room").toString();
+            new Message(from, to, text, room);
+        }
+        Message.writeMessages("chatDatabase.json");
     }
 
     private static String getMapFromClient(DataInputStream dataInputStream) throws IOException {
