@@ -540,10 +540,11 @@ public class Server {
             byte[] byteArrrayName = name.getBytes(StandardCharsets.UTF_8);
             byte[] byteArrrayImage = imageUrl.getBytes(StandardCharsets.UTF_8);
 
-            Chat.addChat(byteArrrayMessage, byteArrrayName, byteArrrayTime,byteArrrayImage );
+            Chat.addChat(byteArrrayMessage, byteArrrayName, byteArrrayTime,byteArrrayImage , false, false);
             ChatroomController.writeChats("chatDatabase.json");
         } else if (clientCommandJ.get("action").equals("refresh")){
             ChatroomController.readChats("chatDatabase.json");
+            ChatroomController.seeChats("chatDatabase.json", clientCommandJ.get("name").toString());
         }
     }
 
