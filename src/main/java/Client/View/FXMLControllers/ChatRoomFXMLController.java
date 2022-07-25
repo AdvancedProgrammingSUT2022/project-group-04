@@ -121,11 +121,11 @@ public class ChatRoomFXMLController {
             Text time = new Text();
             time.setText(LocalDateTime.now().getHour() + ":" + LocalDateTime.now().getMinute() + ":" + LocalDateTime.now().getSecond());
 
-            try{
-                sendMessageInReal(User.loggedInUser.getNickname(), users.getValue(), message, choiceBox.getValue());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try{
+//                sendMessageInReal(User.loggedInUser.getNickname(), users.getValue(), message, choiceBox.getValue());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
             Image avatarImage = new Image(GraphicalBases.class.getResource(User.loggedInUser.getAvatarURL()).toString());
             ImageView avatar = new ImageView(avatarImage);

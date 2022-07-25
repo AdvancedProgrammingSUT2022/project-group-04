@@ -40,7 +40,6 @@ public class Server {
         Account.readAccounts("AccountURLs.json");
         Friendship.readFriendships("friendshipDatabase.json");
         Invitation.readInvitations("invitationDatabase.json");
-        Message.readMessages("chatDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
