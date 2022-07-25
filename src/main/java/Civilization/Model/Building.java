@@ -226,7 +226,8 @@ public class Building {
             this.turnsNeedToBuild = 0;
         } else {
             turns = -turns;
-            this.turnsNeedToBuild = turns / (productionGeneratingRate+1) + 1;
+            this.turnsNeedToBuild = (turns / (productionGeneratingRate+1) + 1)/GameModel.speed;
+
         }
     }
 
