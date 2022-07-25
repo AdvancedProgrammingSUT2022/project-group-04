@@ -484,7 +484,7 @@ public class City extends Tile {
         ArrayList<Tile> tiles = new ArrayList<>();
         for (Tile tile : getTiles()) {
             for (Tile adjacentTile : tile.getAdjacentTiles()) {
-                if(!isTileForThisCity(adjacentTile) && isTileNewInArray(adjacentTile, tiles)) {
+                if(!isTileForThisCity(adjacentTile) && isTileNewInArray(adjacentTile, tiles) && isTileValidForBuying(adjacentTile,this.civilizationName)) {
                     if(GameDatabase.getCivilizationByNickname(this.civilizationName).getGold() > 10) {
                         tiles.add(adjacentTile);
                     }
@@ -492,6 +492,18 @@ public class City extends Tile {
             }
         }
         return tiles;
+    }
+
+    private boolean isTileValidForBuying(Tile adjacentTile, String civilizationName) {
+        for (Civilization player : GameDatabase.players) {
+            if(player.getNickname().equals(civilizationName)) {
+                continue;
+            }
+            if(player.isTileInCivilization(adjacentTile.x, adjacentTile.y)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isTileNewInArray(Tile adjacentTile, ArrayList<Tile> tiles) {
