@@ -1,0 +1,26 @@
+[
+  {
+    "from": "smiz",
+    "to": "ALL USERS",
+    "text": "zizigooloo",
+    "seen": false,
+    "time": "8:32:17",
+    "room": "public"
+  },
+  {
+    "from": "smiz",
+    "to": "kysre",
+    "text": "mooch",
+    "seen": false,
+    "time": "8:32:42",
+    "room": "private"
+  },
+  {
+    "from": "smiz",
+    "to": "ALL IN ROOM",
+    "text": "joon baw",
+    "seen": false,
+    "time": "8:33:2",
+    "room": "rooms"
+  }
+]
