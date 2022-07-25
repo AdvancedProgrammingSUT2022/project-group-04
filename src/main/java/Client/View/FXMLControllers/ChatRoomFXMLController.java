@@ -50,7 +50,10 @@ public class ChatRoomFXMLController {
     AnchorPane chatBoxPane;
     @FXML
     ChoiceBox<String> users;
+    @FXML
+    AnchorPane mainAnchorPane;
 
+    Button editOk = new Button("OK");
 
     @FXML
     public void initialize(){
@@ -58,6 +61,14 @@ public class ChatRoomFXMLController {
         setChoices();
         Chatroom.refreshTimer = refresh5Sec();
         Chatroom.refreshTimer.start();
+        editOk.setLayoutX(595);
+        editOk.setLayoutY(663);
+        editOk.setVisible(false);
+        editOk.setStyle("-fx-background-size: cover;\n" +
+                "    -fx-border-color: #fffde9;\n" +
+                "    -fx-border-width: 3; -fx-background-color: black;" +
+                "-fx-text-fill: white");
+        mainAnchorPane.getChildren().add(editOk);
     }
 
     public AnimationTimer refresh5Sec(){
@@ -110,12 +121,36 @@ public class ChatRoomFXMLController {
 
     }
 
-    public void editChat() throws IOException {
+    public void editChat(Chat chat) throws IOException {
+
+        System.out.println("editing");
         JSONObject clientCommandJ = new JSONObject();
         clientCommandJ.put("menu type", "Chatroom");
         clientCommandJ.put("action", "edit");
-        Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
-        Client.dataOutputStream1.flush();
+        clientCommandJ.put("name", new String(chat.getName(), StandardCharsets.UTF_8));
+        clientCommandJ.put("time", new String(chat.getTime(), StandardCharsets.UTF_8));
+        clientCommandJ.put("message", new String(chat.getMessage(), StandardCharsets.UTF_8));
+        clientCommandJ.put("imageUrl", new String(chat.getImageUrl(), StandardCharsets.UTF_8));
+        clientCommandJ.put("seen", chat.isSeen());
+        clientCommandJ.put("edited", chat.isEdited());
+        editOk.setVisible(true);
+        messageBox.setText(new String(chat.getMessage(), StandardCharsets.UTF_8));
+        editOk.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    clientCommandJ.put("newMessage",messageBox.getText());
+                    Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+                    Client.dataOutputStream1.flush();
+                    editOk.setVisible(false);
+                    messageBox.clear();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
      }
 
     public void updateChatBox() throws IOException {
@@ -164,7 +199,11 @@ public class ChatRoomFXMLController {
                 edit.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-
+                        try {
+                            editChat(chat);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 trash.setBackground(Background.fill(new ImagePattern(GraphicalBases.trash)));

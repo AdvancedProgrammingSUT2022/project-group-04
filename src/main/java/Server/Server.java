@@ -560,6 +560,22 @@ public class Server {
             Chat.removeChat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, seen, edited);
             ChatroomController.writeChats("chatDatabase.json");
         } else if (clientCommandJ.get("action").equals("edit")){
+            String message = clientCommandJ.getString("message");
+            String name = clientCommandJ.getString("name");
+            String Time = clientCommandJ.getString("time");
+            String imageUrl = clientCommandJ.getString("imageUrl");
+            String newMessage = clientCommandJ.getString("newMessage");
+            byte[] byteArrrayImage = imageUrl.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayTime = Time.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayName = name.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayMessage = message.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayNewMessage = newMessage.getBytes(StandardCharsets.UTF_8);
+            boolean seen = clientCommandJ.getBoolean("seen");
+            boolean edited = clientCommandJ.getBoolean("edited");
+
+            Chat.editChat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, seen, edited, byteArrrayNewMessage);
+            ChatroomController.writeChats("chatDatabase.json");
+
 
         }
     }

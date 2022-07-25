@@ -92,6 +92,11 @@ public class Chat {
         return null;
     }
 
+    public static void editChat(byte[] message, byte[] name, byte[] time, byte[] imageUrl,  boolean seen , boolean edited, byte[] newMessage){
+        Chat chat = getChat(message,name,time,imageUrl,seen,edited);
+        chat.setMessage(newMessage);
+    }
+
 
 
 
