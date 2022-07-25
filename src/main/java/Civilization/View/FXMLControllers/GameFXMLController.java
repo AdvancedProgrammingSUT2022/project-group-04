@@ -176,6 +176,7 @@ public class GameFXMLController {
                 createCityVBox.setVisible(false);
                 updateMap();
                 updateInfoPanel();
+                cityName.setText("");
             }
         });
     }
@@ -963,7 +964,16 @@ public class GameFXMLController {
             }
             if(GameDatabase.getCityByXAndY(tile.x, tile.y) != null
                 || GameDatabase.getTileByXAndY(tile.x, tile.y).isCityInTile() != null) {
-                tile.polygon.setFill(new ImagePattern(GraphicalBases.CITY));
+                City cityInTile = GameDatabase.getCityByXAndY(tile.x, tile.y);
+                if(cityInTile == null) {
+                    cityInTile = GameDatabase.getTileByXAndY(tile.x, tile.y).isCityInTile();
+                }
+                String name = cityInTile.getName();
+                if(isCityDefault(name)) {
+                    tile.polygon.setFill(new ImagePattern(GraphicalBases.CITIES.get(name.toLowerCase())));
+                } else {
+                    tile.polygon.setFill(new ImagePattern(GraphicalBases.CITY));
+                }
             }
 
             if(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).isThisTileFogOfWar(GameDatabase.getTileByXAndY(tile.x, tile.y))) {
@@ -1003,6 +1013,15 @@ public class GameFXMLController {
 
         }
 
+    }
+
+    private boolean isCityDefault(String name) {
+        for (String city : GlobalVariables.CITIES) {
+            if(name.toLowerCase().equals(city)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

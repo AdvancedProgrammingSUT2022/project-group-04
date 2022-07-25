@@ -26,6 +26,7 @@ public class GlobalVariables {
             "Horseman", "Swordsman", "Crossbowman", "Knight", "Longswordsman", "Pikeman", "Trebuchet", "Canon", "Cavalry", "Lancer", "Musketman",
             "Rifleman", "AntiTankGun", "Artillery", "Infantry", "Panzer", "Tank"};
 
+    public static final String[] CITIES = new String[]{"yazd", "tehran", "dubai", "cairo", "dehli", "paris", "london","newyork" , "losangeles", "shiraz"};
     public static final int firstHappiness = 50;
     public static final int happinessForEachCitizen = 1;
     public static final int happinessForEachCity = 1;
