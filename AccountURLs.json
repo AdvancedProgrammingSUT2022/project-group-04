@@ -70,5 +70,9 @@
   {
     "username": "test9",
     "avatarURL": "*pics*Avatars*2.png"
+  },
+  {
+    "username": "dbtest",
+    "avatarURL": "*pics*Avatars*2.png"
   }
 ]

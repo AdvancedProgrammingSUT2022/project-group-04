@@ -6,6 +6,10 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -82,6 +86,32 @@ public class UserDatabase {
         }
     }
 
+    public static void readFromDatabase() throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "select * from user";
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String username = resultSet.getString(1);
+                String nickname = resultSet.getString(2);
+                String password = resultSet.getString(3);
+                int score = Integer.parseInt(resultSet.getString(4));
+                String timeOfScore = resultSet.getString(5);
+                String lastLoginTime = resultSet.getString(6);
+                User user = new User(username, nickname, password, score, timeOfScore, lastLoginTime);
+                User.users.add(user);
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            UserDatabase.readFromFile("UserDatabase.json");
+            System.err.println("Database ERROR");
+        }
+    }
+
     /**
      * writes in file
      *
@@ -102,6 +132,7 @@ public class UserDatabase {
             User user = UserDatabase.getUserByUsername(players.get(i));
             user.setScore(user.getScore() + scores.get(i));
             user.setTimeOfScore(LocalDateTime.now());
+            User.editUser(user);
         }
     }
 

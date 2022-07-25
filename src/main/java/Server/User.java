@@ -2,9 +2,12 @@ package Server;
 
 import Client.View.Components.Account;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import java.sql.*;
 
 public class User {
 
@@ -29,6 +32,14 @@ public class User {
         this.lastLoginTime = timeToJsonString(LocalDateTime.MIN.format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss")));
     }
 
+    public User(String username, String nickname, String password, int score, String timeOfScore, String lastLoginTime) {
+        this.username = username;
+        this.nickname = nickname;
+        this.password = password;
+        this.score = score;
+        this.timeOfScore = timeOfScore;
+        this.lastLoginTime = lastLoginTime;
+    }
 
     private String timeToJsonString(String time) {
         String tempTime = time.replace(":", "^");
@@ -121,5 +132,39 @@ public class User {
     @Override
     public String toString() {
         return this.username + "\n" + "  Nickname = " + this.nickname + "\n  Score = " + this.score;
+    }
+
+    public static void writeOneUser(User user) throws IOException {
+        try{
+           Class.forName("com.mysql.jdbc.Driver").newInstance();
+           String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+           Connection connection = DriverManager.getConnection(url);
+           Statement statement = connection.createStatement();
+           String query = "insert into user(username,nickname,password,score,timeOfScore,lastLoginTime) values('%s','%s','%s',%s,'%s','%s')";
+           query = String.format(query, user.getUsername(), user.getNickname(), user.getPassword(), user.getScore(), user.getTimeOfScore(), user.getLastLoginTime());
+           statement.execute(query);
+           statement.close();
+           connection.close();
+        } catch (Exception e) {
+            UserDatabase.writeInFile("UserDatabase.json");
+            System.err.println("Database ERROR");
+        }
+    }
+
+    public static void editUser(User user) throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "update user set username='%s',nickname='%s',password='%s',score=%s,timeOfScore='%s',lastLoginTime='%s' where username='%s'";
+            query = String.format(query, user.getUsername(), user.getNickname(), user.getPassword(), user.getScore(), user.getTimeOfScore(), user.getLastLoginTime(), user.getUsername());
+            statement.execute(query);
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            UserDatabase.writeInFile("UserDatabase.json");
+            System.err.println("Database ERROR");
+        }
     }
 }
