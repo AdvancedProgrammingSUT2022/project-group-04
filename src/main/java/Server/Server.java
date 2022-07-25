@@ -22,7 +22,6 @@ public class Server {
     private ServerSocket serverSocket2;
 
 
-
     public static boolean gameMode = false;
 
 
@@ -47,36 +46,37 @@ public class Server {
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
             while (true) {
-                Socket socket = serverSocket1.accept();
-                ClientThread clientThread = new ClientThread();
-                Thread thread = new Thread(() -> {
-                    try {
-                        DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                        DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                thread.start();
-                clientThread.setThread(thread);
-                ///
-                if (gameMode) {
-                    Socket socket1 = serverSocket2.accept();
-                    ClientThread clientThread1 = new ClientThread();
-                    Thread thread1 = new Thread(() -> {
+                for (int s = 0; s < 2; s++) {
+                    Socket socket = serverSocket1.accept();
+                    ClientThread clientThread = new ClientThread();
+                    Thread thread = new Thread(() -> {
                         try {
-                            DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket1.getOutputStream()));
-                            DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket1.getInputStream()));
-                            System.out.println("madar kharab");
-                            processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id);
+                            DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                            DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                            processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id, "admin", 8080);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     });
-                    thread1.start();
-                    clientThread1.setThread(thread1);
+                    thread.start();
+                    clientThread.setThread(thread);
                 }
+                ///
+                Socket socket1 = serverSocket2.accept();
+                ClientThread clientThread1 = new ClientThread();
+                Thread thread1 = new Thread(() -> {
+                    try {
+                        DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket1.getOutputStream()));
+                        DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket1.getInputStream()));
+                        System.out.println("madar kharab");
+                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id, "not admin", 8569);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                //thread1.wait(1000);
+                thread1.start();
+                clientThread1.setThread(thread1);
                 //
 
             }
@@ -85,12 +85,15 @@ public class Server {
         }
     }
 
-    private void processSocketRequest(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController, ProfileMenuController profileMenuController, int id) throws IOException {
+    private void processSocketRequest(DataInputStream dataInputStream, DataOutputStream dataOutputStream, LoginMenuController loginMenuController, ProfileMenuController profileMenuController, int id, String sth, int portNumber) throws IOException {
         boolean disconnected = false;
+        //System.err.println(sth);
         while (true) {
             try {
-                if (!gameMode) {
+                if (!gameMode && portNumber == 8080) {
+                    System.out.println("dude the fuck" + sth);
                     String clientCommand = dataInputStream.readUTF();
+                    System.out.println("im happy " + sth);
                     JSONObject clientCommandJ;
                     if (!clientCommand.startsWith("!!!")) {
                         clientCommandJ = new JSONObject(clientCommand);
@@ -111,13 +114,12 @@ public class Server {
                         } else if (clientCommandJ.get("menu type").equals("Loading")) {
                             processLoadingMenuReqs(clientCommandJ, dataOutputStream);
                         }
-                    }
-                    else {
+                    } else {
+                        System.out.println("i was here " + sth);
                         clientCommand = clientCommand.substring(3);
-                        processGameUsingXML(clientCommand,dataOutputStream);
-                        if (gameMode) gameHandling(dataInputStream,dataOutputStream);
+                        processGameUsingXML(clientCommand, dataOutputStream);
+                        if (gameMode) gameHandling(dataInputStream, dataOutputStream, sth);
                     }
-                    System.err.println(gameMode);
                 } else {
 //                    System.out.println("dir");
 //                    byte[] requestToByte = new byte[dataInputStream.readInt()];
@@ -126,11 +128,15 @@ public class Server {
 //                    System.out.println(34);
 //                    String response = new String(requestToByte, StandardCharsets.UTF_8);
 //                    GameDatabaseServer.updateMap(response);
-                    gameHandling(dataInputStream,dataOutputStream);
+                    //if (sth.equals("not admin")) wait(10000);
+                    System.out.println("amadam inja" + sth);
+                    //if (sth.equals("not admin")) Thread.sleep(10000);
+                    gameHandling(dataInputStream, dataOutputStream, sth);
                 }
+                System.err.println(gameMode + sth);
             } catch (Exception ex) {
-                if(!disconnected) {
-                    //ex.printStackTrace();
+                if (!disconnected) {
+                    ex.printStackTrace();
                     System.out.println("Client " + id + " disconnected");
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if (clientThread != null && clientThread.getUsername() != null) {
@@ -144,8 +150,8 @@ public class Server {
         }
     }
 
-    private static String getMapFromClient(DataInputStream dataInputStream) throws IOException {
-        System.out.println("begir");
+    private static String getMapFromClient(DataInputStream dataInputStream, String sth) throws IOException {
+        System.out.println("begir" + sth);
         byte[] requestToByte = new byte[dataInputStream.readInt()];
         System.out.println(123);
         dataInputStream.readFully(requestToByte);
@@ -154,8 +160,8 @@ public class Server {
         return GameDatabaseServer.updateMap(response);
     }
 
-    private static void sendMapToClients(String response,DataOutputStream dataOutputStream) throws IOException {
-        System.out.println("bede");
+    private static void sendMapToClients(String response, DataOutputStream dataOutputStream, String sth) throws IOException {
+        System.out.println("bede" + sth);
         byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
         //System.out.println(Arrays.toString(requestToBytes));
         dataOutputStream.writeInt(requestToBytes.length);
@@ -164,23 +170,24 @@ public class Server {
         dataOutputStream.flush();
     }
 
-    private void gameHandling(DataInputStream dataInputStream,DataOutputStream dataOutputStream) throws IOException {
-        while (true){
-            sendMapToClients(GameDatabaseServer.getGameString(),dataOutputStream);
+    private void gameHandling(DataInputStream dataInputStream, DataOutputStream dataOutputStream, String sth) throws IOException {
+        while (true) {
+            sendMapToClients(GameDatabaseServer.getGameString(), dataOutputStream, sth);
             /////////
-            getMapFromClient(dataInputStream);
+            getMapFromClient(dataInputStream, sth);
         }
     }
+
     private void processLoadingMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
-        if(clientCommandJ.get("action").equals("isGettingUserValid")) {
+        if (clientCommandJ.get("action").equals("isGettingUserValid")) {
             int number = Invitation.getAllNotExpiredInvitations().size();
             boolean shall = false;
-            if(number > 0) {
+            if (number > 0) {
                 shall = true;
             }
             dataOutputStream.writeUTF(Boolean.toString(shall));
             dataOutputStream.flush();
-        } else if(clientCommandJ.get("action").equals("getUsers")) {
+        } else if (clientCommandJ.get("action").equals("getUsers")) {
             String users = Invitation.getAcceptedValidInvitationsString();
             dataOutputStream.writeUTF(users);
             dataOutputStream.flush();
@@ -189,7 +196,7 @@ public class Server {
             dataOutputStream.flush();
         } else if (clientCommandJ.get("action").equals("isAdmin")) {
             boolean result = false;
-            if(Invitation.getAdminUsername().equals(clientCommandJ.get("username").toString())) {
+            if (Invitation.getAdminUsername().equals(clientCommandJ.get("username").toString())) {
                 result = true;
             }
             dataOutputStream.writeUTF(Boolean.toString(result));
@@ -198,7 +205,7 @@ public class Server {
     }
 
     private void processInvitationReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
-        if(clientCommandJ.get("action").equals("invite")) {
+        if (clientCommandJ.get("action").equals("invite")) {
             String username1 = clientCommandJ.get("username").toString();
             String[] users = clientCommandJ.get("users").toString().split("\n");
             Invitation.sendToAll(users, username1);
@@ -206,33 +213,33 @@ public class Server {
             System.out.println("end");
         } else if (clientCommandJ.get("action").equals("getAllInvitations")) {
             boolean bool = false;
-            if(Invitation.getAllNotExpiredInvitations().size() == 0) {
+            if (Invitation.getAllNotExpiredInvitations().size() == 0) {
                 bool = true;
             }
             dataOutputStream.writeUTF(Boolean.toString(bool));
             dataOutputStream.flush();
         } else if (clientCommandJ.get("action").equals("haveNotAcceptedInvitation")) {
             boolean bool = false;
-            if(Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() > 0) {
+            if (Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() > 0) {
                 bool = true;
             }
             dataOutputStream.writeUTF(Boolean.toString(bool));
             dataOutputStream.flush();
         } else if (clientCommandJ.get("action").equals("isAGame")) {
             boolean bool = false;
-            if(Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() == 0
-                && Invitation.getAllNotExpiredInvitations().size() != 0
-                && Invitation.getInvitationAccepted(clientCommandJ.get("username").toString()) == null) {
+            if (Invitation.getMyInvitations(clientCommandJ.get("username").toString()).size() == 0
+                    && Invitation.getAllNotExpiredInvitations().size() != 0
+                    && Invitation.getInvitationAccepted(clientCommandJ.get("username").toString()) == null) {
                 bool = true;
             }
             dataOutputStream.writeUTF(Boolean.toString(bool));
             dataOutputStream.flush();
         } else if (clientCommandJ.get("action").equals("isFree")) {
             boolean bool = true;
-            if(Invitation.getAllNotExpiredInvitations().size() != 0) {
+            if (Invitation.getAllNotExpiredInvitations().size() != 0) {
                 bool = false;
             }
-            if(GameModel.isGame) {
+            if (GameModel.isGame) {
                 bool = false;
             }
             dataOutputStream.writeUTF(Boolean.toString(bool));
@@ -240,7 +247,7 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("getUserInvitation")) {
             ArrayList<Invitation> invitations = Invitation.getMyInvitations(clientCommandJ.get("username").toString());
             String result = "";
-            if(invitations.size() > 0) {
+            if (invitations.size() > 0) {
                 result = invitations.get(0).getUsername1();
             }
             dataOutputStream.writeUTF(result);
@@ -354,7 +361,7 @@ public class Server {
 
     private void processGameUsingXML(String s, DataOutputStream dataOutputStream) throws IOException {
         String response = GameDatabaseServer.processReq(s);
-        System.out.println(response);
+        //System.out.println(response);
 
         byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
         //System.out.println(Arrays.toString(requestToBytes));

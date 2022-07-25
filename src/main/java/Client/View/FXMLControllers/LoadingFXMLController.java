@@ -116,12 +116,12 @@ public class LoadingFXMLController {
         refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    updateUsersInGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                updateText();
+//                try {
+//                    updateUsersInGame();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                updateText();
             }
         });
         mainAnchorPane.getChildren().add(refresh);

@@ -1,5 +1,6 @@
 package Client.View.FXMLControllers;
 
+import Civilization.Database.GameDatabase;
 import Client.Client;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.InvitationTransition;
@@ -56,6 +57,7 @@ public class InvitationFXMLController {
             public void handle(MouseEvent mouseEvent) {
                 if(!username.getText().equals("")) {
                     try {
+                        //GameDatabase.setYou();
                         acceptInvitation(username.getText());
                         invitationTransition.pause();
                         GraphicalBases.changeMenu("Loading");

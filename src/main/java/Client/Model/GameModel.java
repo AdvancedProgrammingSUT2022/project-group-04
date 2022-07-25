@@ -22,7 +22,7 @@ public class GameModel {
         }
 
 
-        //for (int i = 0; i < users.size(); i++) GameDatabase.setPlayers(players, users.get(i));
+        if (isAdmin) GameDatabase.setPlayers(players, users.get(0));
         GameDatabase.players = players;
         System.out.println("worked");
 
@@ -32,6 +32,7 @@ public class GameModel {
         if (isAdmin) GameDatabase.generateRuin();
         if (!isAdmin) {
             GameDatabase.setSocket(Client.socket2,Client.dataOutputStream2,Client.dataInputStream2);
+            System.out.println("miane");
             GameDatabase.getMapFromServer();
         }
         System.out.println("haha worked");

@@ -62,6 +62,7 @@ public class GameDatabaseServer {
             }
         }
         System.out.println("what");
+        Server.gameMode = true;
     }
 
 
@@ -207,7 +208,7 @@ public class GameDatabaseServer {
                 int randomGenerate = random.nextInt(sumOfPossibilities);
                 int counter = 0;
                 int flag = -1;
-                System.out.println("kose nanat bisharaf??????");
+                //System.out.println("kose nanat bisharaf??????");
                 for (int k = 0; k < possibilities.length; k++) {
                     counter += possibilities[k];
                     if (randomGenerate < counter) {
@@ -215,14 +216,14 @@ public class GameDatabaseServer {
                         break;
                     }
                 }
-                System.out.println(baseTerrains.get(flag));
+                //System.out.println(baseTerrains.get(flag));
                 Tile tile = new Tile("fogOfWar", baseTerrains.get(flag), i, j);
-                System.out.println("kose nanat bisharaf!!!!!");
+                //System.out.println("kose nanat bisharaf!!!!!");
                 map.add(tile);
             }
         }
 
-        System.out.println("kose nanat bisharaf5");
+        //System.out.println("kose nanat bisharaf5");
         //random initialize river
         int[] deltaX0 = {-1, 0, 1, 1, 1, 0};
         int[] deltaY0 = {0, 1, 1, 0, -1, -1};
@@ -252,7 +253,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        System.out.println("kose nanat bisharaf4");
+        //System.out.println("kose nanat bisharaf4");
         //random initialize terrainFeature
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
@@ -267,7 +268,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        System.out.println("kose nanat bisharaf3");
+        //System.out.println("kose nanat bisharaf3");
         //random initialize resources
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
@@ -282,7 +283,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        System.out.println("kose nanat bisharaf2");
+        //System.out.println("kose nanat bisharaf2");
         //random set beginning tiles for each player
         int counter = 0;
         while (counter < players.size()) {
@@ -304,7 +305,7 @@ public class GameDatabaseServer {
 
                 continue;
             }
-            System.out.println(x1 + " " + y1);
+            //System.out.println(x1 + " " + y1);
             boolean isOccupied = false;
             for (int i = 0; i < counter; i++) {
                 if (players.get(i).isTileInCivilization(xRandomGenerate, yRandomGenerate)
