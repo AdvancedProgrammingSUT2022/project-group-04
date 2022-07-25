@@ -45,12 +45,12 @@ public class GameMenuFXMLController {
     // map and saving information
     private TextField numberOfTiles;
     private int tileCount;
-    private TextField autoSaveRate;
-    private int autoSave;
-    private SwitchButton autoSaveSwitchButton;
-    private Label autoSaveRateLabel;
-    private Button autoSaveOKButton;
-    private Button saveButton;
+//    private TextField autoSaveRate;
+//    private int autoSave;
+//    private SwitchButton autoSaveSwitchButton;
+//    private Label autoSaveRateLabel;
+//    private Button autoSaveOKButton;
+//    private Button saveButton;
 
     // game speed
     private SwitchButton speed;
@@ -63,10 +63,10 @@ public class GameMenuFXMLController {
     private int usersCount;
 
     // information
-    private Text autoSaving;
-    private boolean isAutoSavingOn;
-    private Text autoSavingRate;
-    private boolean isAutoSavingRateOn;
+//    private Text autoSaving;
+//    private boolean isAutoSavingOn;
+//    private Text autoSavingRate;
+//    private boolean isAutoSavingRateOn;
     private Text numberOfTilesInformation;
     private boolean isNumberOfTilesOn;
     private Text numberOfUsersInformation;
@@ -75,8 +75,8 @@ public class GameMenuFXMLController {
     private boolean isChoosingUsersOn;
     private Text listOfUsers;
     private boolean isListOfUsersOn;
-    private Text savingGame;
-    private boolean isSavingGameOn;
+//    private Text savingGame;
+//    private boolean isSavingGameOn;
     private Text speedInformation;
     private boolean isSpeedOn;
 
@@ -114,22 +114,22 @@ public class GameMenuFXMLController {
     }
 
     private void setPlayingSavedGame() {
-        saveButton = new Button("Playing Saved Game");
-        saveButton.setPrefWidth(200);
-        saveButton.setLayoutX(800);
-        saveButton.setLayoutY(70);
-        saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                SavingGame.readGame();
-                GraphicalBases.enterGame("Game");
-
-            }
-        });
-
-        saveButton.setVisible(isFileValid("savedMap.json"));
-
-        mainAnchorPane.getChildren().add(saveButton);
+//        saveButton = new Button("Playing Saved Game");
+//        saveButton.setPrefWidth(200);
+//        saveButton.setLayoutX(800);
+//        saveButton.setLayoutY(70);
+//        saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                SavingGame.readGame();
+//                GraphicalBases.enterGame("Game");
+//
+//            }
+//        });
+//
+//        saveButton.setVisible(isFileValid("savedMap.json"));
+//
+//        mainAnchorPane.getChildren().add(saveButton);
     }
 
     private boolean isFileValid(String fileName) {
@@ -183,37 +183,37 @@ public class GameMenuFXMLController {
     }
 
     private void setSavingGameInformation() {
-        savingGame = new Text("Playing a saved Game");
-        savingGame.setStyle("-fx-fill: white; -fx-font-size: 20");
-        savingGame.setLayoutY(saveButton.getLayoutY() - 10);
-        savingGame.setLayoutX(saveButton.getLayoutX());
-        savingGame.setVisible(false);
-        isSavingGameOn = false;
-        mainAnchorPane.getChildren().add(savingGame);
-        saveButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(!isSavingGameOn) {
-                    isSavingGameOn= true;
-                    savingGame.setVisible(true);
-                } else {
-                    isSavingGameOn = false;
-                    savingGame.setVisible(false);
-                }
-            }
-        });
-        saveButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(!isSavingGameOn) {
-                    isSavingGameOn= true;
-                    savingGame.setVisible(true);
-                } else {
-                    isSavingGameOn = false;
-                    savingGame.setVisible(false);
-                }
-            }
-        });
+//        savingGame = new Text("Playing a saved Game");
+//        savingGame.setStyle("-fx-fill: white; -fx-font-size: 20");
+//        savingGame.setLayoutY(saveButton.getLayoutY() - 10);
+//        savingGame.setLayoutX(saveButton.getLayoutX());
+//        savingGame.setVisible(false);
+//        isSavingGameOn = false;
+//        mainAnchorPane.getChildren().add(savingGame);
+//        saveButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(!isSavingGameOn) {
+//                    isSavingGameOn= true;
+//                    savingGame.setVisible(true);
+//                } else {
+//                    isSavingGameOn = false;
+//                    savingGame.setVisible(false);
+//                }
+//            }
+//        });
+//        saveButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(!isSavingGameOn) {
+//                    isSavingGameOn= true;
+//                    savingGame.setVisible(true);
+//                } else {
+//                    isSavingGameOn = false;
+//                    savingGame.setVisible(false);
+//                }
+//            }
+//        });
     }
 
     private void setListOfUsersInformation() {
@@ -354,151 +354,151 @@ public class GameMenuFXMLController {
     }
 
     private void setAutoSavingRateInformation() {
-        autoSavingRate = new Text("AutoSaving Rate");
-        autoSavingRate.setStyle("-fx-fill: white; -fx-font-size: 20");
-        autoSavingRate.setLayoutY(autoSaveRate.getLayoutY());
-        autoSavingRate.setLayoutX(autoSaveRate.getLayoutX() - 100);
-        autoSavingRate.setVisible(false);
-        isAutoSavingRateOn = false;
-        mainAnchorPane.getChildren().add(autoSavingRate);
-        autoSaveRate.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(!isAutoSavingRateOn) {
-                    isAutoSavingRateOn = true;
-                    autoSavingRate.setVisible(true);
-                } else {
-                    isAutoSavingRateOn = false;
-                    autoSavingRate.setVisible(false);
-                }
-            }
-        });
-        autoSaveRate.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(!isAutoSavingRateOn) {
-                    isAutoSavingRateOn = true;
-                    autoSavingRate.setVisible(true);
-                } else {
-                    isAutoSavingRateOn = false;
-                    autoSavingRate.setVisible(false);
-                }
-            }
-        });
+//        autoSavingRate = new Text("AutoSaving Rate");
+//        autoSavingRate.setStyle("-fx-fill: white; -fx-font-size: 20");
+//        autoSavingRate.setLayoutY(autoSaveRate.getLayoutY());
+//        autoSavingRate.setLayoutX(autoSaveRate.getLayoutX() - 100);
+//        autoSavingRate.setVisible(false);
+//        isAutoSavingRateOn = false;
+//        mainAnchorPane.getChildren().add(autoSavingRate);
+//        autoSaveRate.setOnMouseEntered(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(!isAutoSavingRateOn) {
+//                    isAutoSavingRateOn = true;
+//                    autoSavingRate.setVisible(true);
+//                } else {
+//                    isAutoSavingRateOn = false;
+//                    autoSavingRate.setVisible(false);
+//                }
+//            }
+//        });
+//        autoSaveRate.setOnMouseExited(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(!isAutoSavingRateOn) {
+//                    isAutoSavingRateOn = true;
+//                    autoSavingRate.setVisible(true);
+//                } else {
+//                    isAutoSavingRateOn = false;
+//                    autoSavingRate.setVisible(false);
+//                }
+//            }
+//        });
     }
 
     private void setAutoSavingInformation() {
-        autoSaving = new Text("AutoSaving");
-        autoSaving.setStyle("-fx-fill: white; -fx-font-size: 20");
-        autoSaving.setLayoutY(autoSaveSwitchButton.getLayoutY());
-        autoSaving.setLayoutX(autoSaveSwitchButton.getLayoutX() - 100);
-        autoSaving.setVisible(false);
-        isAutoSavingOn = false;
-        mainAnchorPane.getChildren().add(autoSaving);
-        autoSaveSwitchButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(!isAutoSavingOn) {
-                    isAutoSavingOn = true;
-                    autoSaving.setVisible(true);
-                } else {
-                    isAutoSavingOn = false;
-                    autoSaving.setVisible(false);
-                }
-            }
-        });
-        autoSaveSwitchButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(!isAutoSavingOn) {
-                    isAutoSavingOn = true;
-                    autoSaving.setVisible(true);
-                } else {
-                    isAutoSavingOn = false;
-                    autoSaving.setVisible(false);
-                }
-            }
-        });
+//        autoSaving = new Text("AutoSaving");
+//        autoSaving.setStyle("-fx-fill: white; -fx-font-size: 20");
+//        autoSaving.setLayoutY(autoSaveSwitchButton.getLayoutY());
+//        autoSaving.setLayoutX(autoSaveSwitchButton.getLayoutX() - 100);
+//        autoSaving.setVisible(false);
+//        isAutoSavingOn = false;
+//        mainAnchorPane.getChildren().add(autoSaving);
+//        autoSaveSwitchButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(!isAutoSavingOn) {
+//                    isAutoSavingOn = true;
+//                    autoSaving.setVisible(true);
+//                } else {
+//                    isAutoSavingOn = false;
+//                    autoSaving.setVisible(false);
+//                }
+//            }
+//        });
+//        autoSaveSwitchButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(!isAutoSavingOn) {
+//                    isAutoSavingOn = true;
+//                    autoSaving.setVisible(true);
+//                } else {
+//                    isAutoSavingOn = false;
+//                    autoSaving.setVisible(false);
+//                }
+//            }
+//        });
     }
 
     private void setAutoSaveInformation() {
-        Label autoSaveLabel = new Label("Auto Saving: ");
-        autoSaveLabel.setStyle("-fx-fill: white");
-        autoSaveLabel.setLayoutX(800);
-        autoSaveLabel.setLayoutY(110);
-        mainAnchorPane.getChildren().add(autoSaveLabel);
-
-        autoSaveSwitchButton = new SwitchButton();
-        autoSaveSwitchButton.setLayoutX(870);
-        autoSaveSwitchButton.setLayoutY(110);
-        mainAnchorPane.getChildren().add(autoSaveSwitchButton);
-        SwitchButtonTransition switchButtonTransition = new SwitchButtonTransition(autoSaveSwitchButton, this);
-        switchButtonTransition.play();
-
-        autoSaveRateLabel = new Label("Auto Saving Rate: ");
-        autoSaveRateLabel.setStyle("-fx-fill: white");
-        autoSaveRateLabel.setLayoutX(900);
-        autoSaveRateLabel.setLayoutY(110);
-        autoSaveRateLabel.setVisible(false);
-        mainAnchorPane.getChildren().add(autoSaveRateLabel);
-
-        autoSaveRate = new TextField();
-        autoSaveRate.setPromptText("Auto Saving Rate: ");
-        autoSaveRate.setLayoutX(970);
-        autoSaveRate.setLayoutY(110);
-        autoSaveRate.setVisible(false);
-
-        autoSaveOKButton = new Button("OK");
-        autoSaveOKButton.setLayoutX(1130);
-        autoSaveOKButton.setLayoutY(110);
-        autoSaveOKButton.setDisable(true);
-        autoSaveOKButton.setVisible(false);
-        autoSaveOKButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                String text = autoSaveRate.getText();
-                Pattern pattern = Pattern.compile("\\d+");
-                Matcher matcher = pattern.matcher(text);
-                if(!matcher.matches()) {
-                    autoSaveRate.setText("");
-                    autoSaveRate.setStyle("-fx-border-color: red");
-                } else {
-                    int number = Integer.parseInt(text);
-                    if(number <= 0 || number > 10) {
-                        autoSaveRate.setText("");
-                        autoSaveRate.setStyle("-fx-border-color: red");
-                    } else {
-                        autoSave = number;
-                        autoSaveRate.setEditable(false);
-                        autoSaveSwitchButton.setDisable(true);
-                    }
-                }
-            }
-        });
-        mainAnchorPane.getChildren().add(autoSaveOKButton);
-
-        autoSaveRate.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                String text = autoSaveRate.getText();
-                autoSaveOKButton.setDisable(text.length() == 0);
-                autoSaveRate.setStyle("-fx-border-color: null");
-                Pattern pattern = Pattern.compile("\\d+");
-                Matcher matcher = pattern.matcher(text);
-                if(!matcher.matches()) {
-                    autoSaveRate.setText("");
-                }
-            }
-        });
-        mainAnchorPane.getChildren().add(autoSaveRate);
+//        Label autoSaveLabel = new Label("Auto Saving: ");
+//        autoSaveLabel.setStyle("-fx-fill: white");
+//        autoSaveLabel.setLayoutX(800);
+//        autoSaveLabel.setLayoutY(110);
+//        mainAnchorPane.getChildren().add(autoSaveLabel);
+//
+//        autoSaveSwitchButton = new SwitchButton();
+//        autoSaveSwitchButton.setLayoutX(870);
+//        autoSaveSwitchButton.setLayoutY(110);
+//        mainAnchorPane.getChildren().add(autoSaveSwitchButton);
+//        SwitchButtonTransition switchButtonTransition = new SwitchButtonTransition(autoSaveSwitchButton, this);
+//        switchButtonTransition.play();
+//
+//        autoSaveRateLabel = new Label("Auto Saving Rate: ");
+//        autoSaveRateLabel.setStyle("-fx-fill: white");
+//        autoSaveRateLabel.setLayoutX(900);
+//        autoSaveRateLabel.setLayoutY(110);
+//        autoSaveRateLabel.setVisible(false);
+//        mainAnchorPane.getChildren().add(autoSaveRateLabel);
+//
+//        autoSaveRate = new TextField();
+//        autoSaveRate.setPromptText("Auto Saving Rate: ");
+//        autoSaveRate.setLayoutX(970);
+//        autoSaveRate.setLayoutY(110);
+//        autoSaveRate.setVisible(false);
+//
+//        autoSaveOKButton = new Button("OK");
+//        autoSaveOKButton.setLayoutX(1130);
+//        autoSaveOKButton.setLayoutY(110);
+//        autoSaveOKButton.setDisable(true);
+//        autoSaveOKButton.setVisible(false);
+//        autoSaveOKButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                String text = autoSaveRate.getText();
+//                Pattern pattern = Pattern.compile("\\d+");
+//                Matcher matcher = pattern.matcher(text);
+//                if(!matcher.matches()) {
+//                    autoSaveRate.setText("");
+//                    autoSaveRate.setStyle("-fx-border-color: red");
+//                } else {
+//                    int number = Integer.parseInt(text);
+//                    if(number <= 0 || number > 10) {
+//                        autoSaveRate.setText("");
+//                        autoSaveRate.setStyle("-fx-border-color: red");
+//                    } else {
+//                        autoSave = number;
+//                        autoSaveRate.setEditable(false);
+//                        autoSaveSwitchButton.setDisable(true);
+//                    }
+//                }
+//            }
+//        });
+//        mainAnchorPane.getChildren().add(autoSaveOKButton);
+//
+//        autoSaveRate.setOnKeyTyped(new EventHandler<KeyEvent>() {
+//            @Override
+//            public void handle(KeyEvent keyEvent) {
+//                String text = autoSaveRate.getText();
+//                autoSaveOKButton.setDisable(text.length() == 0);
+//                autoSaveRate.setStyle("-fx-border-color: null");
+//                Pattern pattern = Pattern.compile("\\d+");
+//                Matcher matcher = pattern.matcher(text);
+//                if(!matcher.matches()) {
+//                    autoSaveRate.setText("");
+//                }
+//            }
+//        });
+//        mainAnchorPane.getChildren().add(autoSaveRate);
 
     }
 
     public void handleSwitchButton() {
-        autoSaveRateLabel.setVisible(autoSaveSwitchButton.getState());
-        autoSaveRate.setVisible(autoSaveRateLabel.isVisible());
-        autoSaveOKButton.setVisible(autoSaveRateLabel.isVisible());
-        GameModel.autoSave = autoSaveSwitchButton.getState();
+//        autoSaveRateLabel.setVisible(autoSaveSwitchButton.getState());
+//        autoSaveRate.setVisible(autoSaveRateLabel.isVisible());
+//        autoSaveOKButton.setVisible(autoSaveRateLabel.isVisible());
+//        GameModel.autoSave = autoSaveSwitchButton.getState();
     }
 
     private void setNumberOfTiles() {
