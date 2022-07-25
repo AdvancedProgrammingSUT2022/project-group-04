@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -20,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import org.json.JSONObject;
 
@@ -61,9 +64,9 @@ public class ChatRoomFXMLController {
     public void updateChatBox() throws IOException {
         chatBox.getChildren().clear();
         ChatroomController.readChats("chatDatabase.json");
-        System.out.println(Chat.chats.size());
+
         for (Chat chat:Chat.chats){
-            System.out.println(chat.getTime() + " " + new String(chat.getTime(), StandardCharsets.UTF_8));
+
             Text name = new Text(new String(chat.getName(), StandardCharsets.UTF_8));
             Label label = new Label();
             label.setText(" " + new String(chat.getMessage(), StandardCharsets.UTF_8) + " ");
@@ -72,9 +75,36 @@ public class ChatRoomFXMLController {
             Image avatarImage = new Image(new String(chat.getImageUrl(), StandardCharsets.UTF_8));
             ImageView avatar = new ImageView(avatarImage);
 
+            Button edit = new Button("edit");
+            edit.setStyle("-fx-font-size: 15;" +
+                    "    -fx-background-color: black;" +
+                    "    -fx-border-color: #fffde9;" +
+                    "    -fx-text-fill: white;" +
+                    "    -fx-border-width: 1;" +
+                    "    -fx-fill: white;" +
+                    "    -fx-text-alignment: center;" +
+                    "    -fx-tile-alignment: center;" +
+                    "    -fx-border-radius: 2;" +
+                    "-fx-start-margin: 20");
+
             avatar.setFitHeight(37);
             avatar.setFitWidth(37);
-            HBox line = new HBox(avatar, name, label, time);
+            HBox line;
+            if (new String(chat.getName(), StandardCharsets.UTF_8).equals(User.loggedInUser.getNickname())) {
+                Circle sent = new Circle(5);
+                sent.setFill(Color.WHITE);
+                if (chat.isSeen()) {
+                    Circle seen = new Circle(5);
+                    seen.setFill(Color.WHITE);
+                    line = new HBox(avatar, name, label, time, edit, sent, seen);
+                } else {
+
+
+                    line = new HBox(avatar, name, label, time, edit, sent);
+                }
+            } else {
+                line = new HBox(avatar, name, label, time);
+            }
             time.setStyle("-fx-font-size: 10; -fx-fill: white; -fx-text-fill: white;");
             name.setStyle("-fx-fill: white; -fx-font-size: 10");
             line.setStyle("-fx-alignment: center-left; -fx-spacing: 10; -fx-padding: 10");
@@ -132,7 +162,20 @@ public class ChatRoomFXMLController {
             ImageView avatar = new ImageView(avatarImage);
             avatar.setFitHeight(37);
             avatar.setFitWidth(37);
-            HBox line = new HBox(avatar, name, label, time);
+            Button edit = new Button("edit");
+            edit.setStyle("-fx-font-size: 15;" +
+                    "    -fx-background-color: black;" +
+                    "    -fx-border-color: #fffde9;" +
+                    "    -fx-text-fill: white;" +
+                    "    -fx-border-width: 1;" +
+                    "    -fx-fill: white;" +
+                    "    -fx-text-alignment: center;" +
+                    "    -fx-tile-alignment: center;" +
+                    "    -fx-border-radius: 2;" +
+                    "-fx-start-margin: 20");
+            Circle sent = new Circle(5);
+            sent.setFill(Color.WHITE);
+            HBox line = new HBox(avatar, name, label, time, edit, sent);
 
 
             clientCommandJ.put("message", message);
