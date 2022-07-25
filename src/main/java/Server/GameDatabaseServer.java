@@ -27,6 +27,7 @@ public class GameDatabaseServer {
     public static int year = 0;
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
+    public static Boolean gameMode = false;
 
     public static void setStaticFields(ArrayList<Civilization> civilizations, ArrayList<Tile> tiles, int tool, int arz, int nobat
             , int sal, boolean taghalobKarde, Civilization civilizationtaghalob) {
@@ -62,7 +63,8 @@ public class GameDatabaseServer {
             }
         }
         System.out.println("what");
-        Server.gameMode = true;
+        GameDatabaseServer.gameMode = true;
+        //GameDatabaseServer.gameMode.notifyAll();
     }
 
 

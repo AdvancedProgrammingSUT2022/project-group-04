@@ -84,7 +84,7 @@ public class GameDatabase {
         // TODO update data here based on message
     }
 
-    private static RequestPlayers readAndCastResponse(String s,String filename) throws IOException {
+    private static RequestPlayers readAndCastResponse(String s,int filename) throws IOException {
         XStream xStream = new XStream();
         FileWriter fileWriter;
         String path = "clientResponse/response" + filename + ".xml";
@@ -118,7 +118,9 @@ public class GameDatabase {
         String response = new String(requestToByte, StandardCharsets.UTF_8);
         //System.out.println(response);
         System.out.println(432);
-        RequestPlayers requestPlayers = readAndCastResponse(response,you.getUsername());
+        Random random = new Random();
+        int rend = random.nextInt(1000);
+        RequestPlayers requestPlayers = readAndCastResponse(response,rend);
         System.out.println(48885);
         GameDatabase.players = requestPlayers.players;
         System.out.println(485);
@@ -167,7 +169,9 @@ public class GameDatabase {
         System.out.println(13);
         String response = new String(requestToByte, StandardCharsets.UTF_8);
         System.out.println(response);
-        RequestPlayers requestPlayers = readAndCastResponse(response,you.getUsername());
+        Random random = new Random();
+        int ran = random.nextInt(1000);
+        RequestPlayers requestPlayers = readAndCastResponse(response,ran);
         GameDatabase.map = requestPlayers.tiles;
         //if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
         //else isYourTurn = false;

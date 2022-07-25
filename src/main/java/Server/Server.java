@@ -1,6 +1,7 @@
 package Server;
 
 
+import Civilization.Database.GameDatabase;
 import Client.Model.*;
 import Server.Controller.LoginMenuController;
 import Server.Controller.ProfileMenuController;
@@ -46,21 +47,19 @@ public class Server {
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
             while (true) {
-                for (int s = 0; s < 2; s++) {
-                    Socket socket = serverSocket1.accept();
-                    ClientThread clientThread = new ClientThread();
-                    Thread thread = new Thread(() -> {
-                        try {
-                            DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                            DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                            processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id, "admin", 8080);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                    thread.start();
-                    clientThread.setThread(thread);
-                }
+                Socket socket = serverSocket1.accept();
+                ClientThread clientThread = new ClientThread();
+                Thread thread = new Thread(() -> {
+                    try {
+                        DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                        DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                        processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id, "admin", 8080);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                thread.start();
+                clientThread.setThread(thread);
                 ///
                 Socket socket1 = serverSocket2.accept();
                 ClientThread clientThread1 = new ClientThread();
@@ -130,10 +129,21 @@ public class Server {
 //                    GameDatabaseServer.updateMap(response);
                     //if (sth.equals("not admin")) wait(10000);
                     System.out.println("amadam inja" + sth);
-                    //if (sth.equals("not admin")) Thread.sleep(10000);
+                    if (portNumber == 8569) {
+                        synchronized (GameDatabaseServer.map){
+                            while (GameDatabaseServer.map.size() != 144){
+                                wait();
+                            }
+                        }
+                        synchronized (GameDatabaseServer.gameMode){
+                            while (!GameDatabaseServer.gameMode){
+                                wait();
+                            }
+                        }
+                    }
                     gameHandling(dataInputStream, dataOutputStream, sth);
                 }
-                System.err.println(gameMode + sth);
+                System.err.println(gameMode + " " + sth);
             } catch (Exception ex) {
                 if (!disconnected) {
                     ex.printStackTrace();
@@ -151,7 +161,7 @@ public class Server {
     }
 
     private static String getMapFromClient(DataInputStream dataInputStream, String sth) throws IOException {
-        System.out.println("begir" + sth);
+        System.out.println("begir " + sth);
         byte[] requestToByte = new byte[dataInputStream.readInt()];
         System.out.println(123);
         dataInputStream.readFully(requestToByte);
@@ -161,7 +171,8 @@ public class Server {
     }
 
     private static void sendMapToClients(String response, DataOutputStream dataOutputStream, String sth) throws IOException {
-        System.out.println("bede" + sth);
+        System.out.println("bede " + sth);
+        if (sth.equals("not admin")) System.out.println(response);
         byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
         //System.out.println(Arrays.toString(requestToBytes));
         dataOutputStream.writeInt(requestToBytes.length);
@@ -175,6 +186,7 @@ public class Server {
             sendMapToClients(GameDatabaseServer.getGameString(), dataOutputStream, sth);
             /////////
             getMapFromClient(dataInputStream, sth);
+            if (GameDatabaseServer.map.size() == 144) notifyAll();
         }
     }
 

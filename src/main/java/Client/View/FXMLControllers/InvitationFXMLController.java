@@ -57,7 +57,7 @@ public class InvitationFXMLController {
             public void handle(MouseEvent mouseEvent) {
                 if(!username.getText().equals("")) {
                     try {
-                        //GameDatabase.setYou();
+                        GameDatabase.setYou();
                         acceptInvitation(username.getText());
                         invitationTransition.pause();
                         GraphicalBases.changeMenu("Loading");
