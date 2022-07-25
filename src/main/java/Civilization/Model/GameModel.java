@@ -15,6 +15,7 @@ public class GameModel {
 
     public static boolean autoSave = false;
     public static boolean isGame = false;
+    public static int speed = 1;
 
     public void startGame(ArrayList<String> users) {
 
