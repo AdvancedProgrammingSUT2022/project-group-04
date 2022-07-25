@@ -650,4 +650,8 @@ public class Tile {
         }
         return null;
     }
+
+    public void setCombatUnit(Unit unit) {
+        this.units = new ArrayList<>();
+    }
 }
