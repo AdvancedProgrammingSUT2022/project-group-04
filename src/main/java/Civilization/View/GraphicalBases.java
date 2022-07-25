@@ -62,9 +62,10 @@ public class GraphicalBases {
     public static final HashMap<String, Image> BUILDINGS = new HashMap<>();
     public static final HashMap<String, Image> FEATURES = new HashMap<>();
     public static final HashMap<String, Image> RESOURCES = new HashMap<>();
+    public static final HashMap<String, Image> CITIES = new HashMap<>();
     public static final Image BUILD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Buildings/build.png")).toExternalForm());
     public static final Image RUINS = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Ruins.jpg")).toExternalForm());
-    public static final Image CITY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/City.jpg")).toExternalForm());
+    public static final Image CITY = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Cities/default.jpg")).toExternalForm());
     public static final Image FOG_OF_WAR = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/FogOfWar.png")).toExternalForm());
     public static final Image ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/road.jpg")).toExternalForm());
     public static final Image RAIL_ROAD = new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Map/railroad.png")).toExternalForm());
@@ -100,6 +101,9 @@ public class GraphicalBases {
         }
         for (String resourceName : GlobalVariables.RESOURCES) {
             RESOURCES.put(resourceName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Resources/" + resourceName + ".png")).toExternalForm()));
+        }
+        for (String cityName : GlobalVariables.CITIES) {
+            CITIES.put(cityName, new Image(Objects.requireNonNull(GraphicalBases.class.getResource("/pics/Cities/" + cityName + ".jpg")).toExternalForm()));
         }
     }
 
