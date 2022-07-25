@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -311,6 +312,7 @@ public class Server {
 
     private void processLeaderBoardMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) {
         try {
+            //UserDatabase.readFromFile("UserDatabase.json");
             if (clientCommandJ.get("action").equals("isOnline")) {
                 String username = clientCommandJ.get("username").toString();
                 String result = Boolean.toString(UserDatabase.isUserOnline(username));
@@ -521,6 +523,10 @@ public class Server {
                 String toJson = gson.toJson(UserDatabase.getUserByUsername(username));
                 dataOutputStream.writeUTF(toJson);
                 dataOutputStream.flush();
+            } else if (clientCommandJ.get("action").equals("login time")) {
+                String username = clientCommandJ.get("username").toString();
+                UserDatabase.getUserByUsername(username).setLastLoginTime(LocalDateTime.now());
+                UserDatabase.writeInFile("UserDatabase.json");
             }
         } catch (Exception e) {
             if (disconnected) {
