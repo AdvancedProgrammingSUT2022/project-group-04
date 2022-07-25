@@ -21,7 +21,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        UserDatabase.readFromFile("UserDatabase.json");
+        //UserDatabase.readFromFile("UserDatabase.json");
+        UserDatabase.readFromDatabase();
         Account.readAccounts("AccountURLs.json");
 
         GraphicalBases.stage = stage;

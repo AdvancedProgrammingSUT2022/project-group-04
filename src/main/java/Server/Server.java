@@ -37,7 +37,8 @@ public class Server {
 
 
     public void startServer() throws IOException {
-        UserDatabase.readFromFile("UserDatabase.json");
+        //UserDatabase.readFromFile("UserDatabase.json");
+        UserDatabase.readFromDatabase();
         Account.readAccounts("AccountURLs.json");
         Friendship.readFriendships("friendshipDatabase.json");
         Invitation.readInvitations("invitationDatabase.json");
@@ -144,7 +145,6 @@ public class Server {
 
             UserDatabase.setUserScores(users, scores);
         }
-        UserDatabase.writeInFile("UserDatabase.json");
     }
 
     private void processChatroomReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
@@ -386,9 +386,10 @@ public class Server {
             if (clientThread != null && clientThread.getUsername() != null) {
                 UserDatabase.disconnectUser(clientThread.getUsername());
             }
-            UserDatabase.writeInFile("UserDatabase.json");
+            //UserDatabase.writeInFile("UserDatabase.json");
         } else if (clientCommandJ.get("action").equals("profile")) {
-            UserDatabase.readFromFile("UserDatabase.json");
+            //UserDatabase.readFromFile("UserDatabase.json");
+            UserDatabase.readFromDatabase();
             Account.readAccounts("AccountURLs.json");
         } else if (clientCommandJ.get("action").equals("firstInit")) {
             //GameModel.generateMap = true;
@@ -446,7 +447,8 @@ public class Server {
                 }
                 //System.out.println("username");
                 profileMenuController.changePassword(UserDatabase.getUserByUsername(username), newPassword);
-                UserDatabase.writeInFile("UserDatabase.json");
+                //UserDatabase.writeInFile("UserDatabase.json");
+                User.editUser(UserDatabase.getUserByUsername(username));
                 dataOutputStream.writeUTF("password changed successfully");
                 dataOutputStream.flush();
             } else if (clientCommandJ.get("action").equals("change nickname")) {
@@ -470,7 +472,8 @@ public class Server {
                 //System.out.println(username);
                 profileMenuController.changeNickname(username, nickname);
                 //System.out.println("changed");
-                UserDatabase.writeInFile("UserDatabase.json");
+                //UserDatabase.writeInFile("UserDatabase.json");
+                User.editUser(UserDatabase.getUserByUsername(username));
                 //System.out.println("writing");
                 dataOutputStream.writeUTF("nickname changed successfully");
                 dataOutputStream.flush();
@@ -519,7 +522,8 @@ public class Server {
                     loginMenuController.userCreate(username, nickname, password);
                     //System.out.println(User.users.size());
                     createAccount(username);
-                    UserDatabase.writeInFile("UserDatabase.json");
+                    //UserDatabase.writeInFile("UserDatabase.json");
+                    User.writeOneUser(UserDatabase.getUserByUsername(username));
                     dataOutputStream.writeUTF("Registered successfully");
                     dataOutputStream.flush();
                 }
@@ -536,7 +540,7 @@ public class Server {
                     dataOutputStream.flush();
                 }
             } else if (clientCommandJ.get("action").equals("Exit")) {
-                UserDatabase.writeInFile("UserDatabase.json");
+                //UserDatabase.writeInFile("UserDatabase.json");
             } else if (clientCommandJ.get("action").equals("user")) {
                 String username = clientCommandJ.get("username").toString();
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -546,7 +550,7 @@ public class Server {
             } else if (clientCommandJ.get("action").equals("login time")) {
                 String username = clientCommandJ.get("username").toString();
                 UserDatabase.getUserByUsername(username).setLastLoginTime(LocalDateTime.now());
-                UserDatabase.writeInFile("UserDatabase.json");
+                User.editUser(UserDatabase.getUserByUsername(username));
             }
         } catch (Exception e) {
             if (disconnected) {
