@@ -43,6 +43,7 @@ public class Server {
         Friendship.readFriendships("friendshipDatabase.json");
         Invitation.readInvitations("invitationDatabase.json");
         ChatroomController.writeChats("chatDatabase.json");
+        ChatroomController.writeChats("privateChatDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
@@ -569,12 +570,28 @@ public class Server {
             byte[] byteArrrayMessage = message.getBytes(StandardCharsets.UTF_8);
             byte[] byteArrrayName = name.getBytes(StandardCharsets.UTF_8);
             byte[] byteArrrayImage = imageUrl.getBytes(StandardCharsets.UTF_8);
+            if (clientCommandJ.get("receiver").equals("null")) {
+                Chat temp = new Chat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, false, false);
+                String receiver = clientCommandJ.getString("receiver");
+                temp.setReceiver(receiver.getBytes(StandardCharsets.UTF_8));
+                Chat.addChat2(temp);
+                ChatroomController.writeChats("chatDatabase.json");
+            } else {
+                System.out.println("ggooooozzz");
+                Chat temp = new Chat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, false, false);
+                String receiver = clientCommandJ.getString("receiver");
+                temp.setReceiver(receiver.getBytes(StandardCharsets.UTF_8));
+                Chat.addChat2(temp);
 
-            Chat.addChat(byteArrrayMessage, byteArrrayName, byteArrrayTime,byteArrrayImage , false, false);
-            ChatroomController.writeChats("chatDatabase.json");
+                ChatroomController.writeChats("privateChatDatabase.json");
+            }
         } else if (clientCommandJ.get("action").equals("refresh")){
             ChatroomController.readChats("chatDatabase.json");
             ChatroomController.seeChats("chatDatabase.json", clientCommandJ.get("name").toString());
+        } else if (clientCommandJ.get("action").equals("privateRefresh")){
+            System.out.println("hello?");
+            ChatroomController.readChats("privateChatDatabase.json");
+            ChatroomController.seeChats("privateChatDatabase.json", clientCommandJ.get("name").toString());
         } else if (clientCommandJ.get("action").equals("delete")){
             String message = clientCommandJ.getString("message");
             String name = clientCommandJ.getString("name");
@@ -587,7 +604,11 @@ public class Server {
             boolean seen = clientCommandJ.getBoolean("seen");
             boolean edited = clientCommandJ.getBoolean("edited");
             Chat.removeChat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, seen, edited);
-            ChatroomController.writeChats("chatDatabase.json");
+            if (clientCommandJ.get("receiver").equals("null")) {
+                ChatroomController.writeChats("chatDatabase.json");
+            } else {
+                ChatroomController.writeChats("privateChatDatabase.json");
+            }
         } else if (clientCommandJ.get("action").equals("edit")){
             String message = clientCommandJ.getString("message");
             String name = clientCommandJ.getString("name");
@@ -603,7 +624,12 @@ public class Server {
             boolean edited = clientCommandJ.getBoolean("edited");
 
             Chat.editChat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, seen, edited, byteArrrayNewMessage);
-            ChatroomController.writeChats("chatDatabase.json");
+            System.out.println(clientCommandJ.get("receiver").toString());
+            if (clientCommandJ.get("receiver").equals("null")) {
+                ChatroomController.writeChats("chatDatabase.json");
+            } else {
+                ChatroomController.writeChats("privateChatDatabase.json");
+            }
 
 
         }

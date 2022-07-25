@@ -68,6 +68,17 @@ public class ChatroomController {
 
     }
 
+    public static void seeChatsPrivate(String fileName, String name) throws IOException{
+        for (Chat chat: Chat.chats){
+            //if (new String(chat, StandardCharsets.UTF_8).equals(name)) {
+            //        chat.setSeen(true);
+            //        System.out.println("salam");
+            //} else {
+            //    System.out.println(new String(chat.getReceiver(), StandardCharsets.UTF_8)+ " " + name);
+            //}
+        }
+    }
+
     public static void addChatsToPanel(String message, String nameUser, String Time, String ImageURL){
 
         Text name = new Text(nameUser);
