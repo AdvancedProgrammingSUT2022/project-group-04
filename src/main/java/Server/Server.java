@@ -113,6 +113,9 @@ public class Server {
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if (clientThread != null && clientThread.getUsername() != null) {
                         UserDatabase.disconnectUser(clientThread.getUsername());
+                        if(GameModel.isGame && UserDatabase.isUserInGame(clientThread.getUsername())) {
+                            GameDatabaseServer.disconnectPlayer(clientThread.getUsername());
+                        }
                     }
                     disconnected = true;
                 }
@@ -369,7 +372,7 @@ public class Server {
             // TODO
         } else if (clientCommandJ.get("action").equals("not finished game")) {
             boolean bool = false;
-            if(GameModel.isGame && UserDatabase.isUserInGame(clientCommandJ.get("username"))) {
+            if(GameModel.isGame && UserDatabase.isUserInGame(clientCommandJ.get("username").toString())) {
                 bool = true;
             }
             dataOutputStream.writeUTF(Boolean.toString(bool));
