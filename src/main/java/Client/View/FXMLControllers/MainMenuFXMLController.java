@@ -72,12 +72,26 @@ public class MainMenuFXMLController {
                 GraphicalBases.changeMenu("GameMenu");
             } else if (haveNotAcceptedInvitation() || theyDoNotInviteYou()) {
                 GraphicalBases.changeMenu("invitation");
+            } else if (isUserInANotFinishedGame()) {
+                GraphicalBases.enterGame("Game");
             } else {
                 GraphicalBases.changeMenu("Loading");
             }
         } catch (Exception e) {
 
         }
+    }
+
+    private boolean isUserInANotFinishedGame() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","not finished game");
+        input.put("username", User.loggedInUser.getUsername());
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        Boolean bool = Boolean.parseBoolean(Client.dataInputStream1.readUTF());
+        System.out.println(bool);
+        return bool;
     }
 
     private boolean theyDoNotInviteYou() throws IOException {

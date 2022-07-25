@@ -86,7 +86,12 @@ public class GameMenuFXMLController {
         selectedUsers = new HashSet<>();
         selectedUsers.add(User.loggedInUser.getUsername());
         tileCount = 0;
-        GameModel.isGame = false;
+
+        try{
+            falseGameModel();
+        } catch (Exception e) {
+
+        }
 
         setBackground();
         setOKButton();
@@ -98,6 +103,14 @@ public class GameMenuFXMLController {
         setPlayingSavedGame();
         setSpeed();
         setInformation();
+    }
+
+    private void falseGameModel() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","false game model");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
     }
 
     private void setSpeed() {
