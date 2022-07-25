@@ -1,5 +1,6 @@
 package Client.View.FXMLControllers;
 
+import Client.Client;
 import Client.Model.*;
 import Server.Controller.CombatController;
 import Server.Controller.GameMenuController;
@@ -8,6 +9,7 @@ import Civilization.Database.GlobalVariables;
 import Client.View.Cheater;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.NextTurnTransition;
+import Server.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -26,6 +28,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -139,10 +142,22 @@ public class GameFXMLController {
         GraphicalBases.playGameMusic();
         setWarPopUpBox();
         setTurnError();
-        GameModel.isGame = true;
+        try{
+            trueGameModel();
+        } catch (Exception e) {
+
+        }
 
     }
-    
+
+    private void trueGameModel() throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Main");
+        input.put("action","true game model");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+    }
+
     public void setTurnError(){
         notYourTurn.setTextFill(Color.WHITE);
         turnErrorVbox.setLayoutY(300);

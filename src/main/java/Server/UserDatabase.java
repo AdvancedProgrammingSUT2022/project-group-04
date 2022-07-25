@@ -139,4 +139,13 @@ public class UserDatabase {
         }
         return result;
     }
+
+    public static boolean isUserInGame(Object username) {
+        for (Civilization player : GameDatabaseServer.players) {
+            if(player.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

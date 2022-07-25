@@ -367,7 +367,26 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("firstInit")) {
             //GameModel.generateMap = true;
             // TODO
+        } else if (clientCommandJ.get("action").equals("not finished game")) {
+            boolean bool = false;
+            if(GameModel.isGame && UserDatabase.isUserInGame(clientCommandJ.get("username"))) {
+                bool = true;
+            }
+            dataOutputStream.writeUTF(Boolean.toString(bool));
+            dataOutputStream.flush();
+        } else if (clientCommandJ.get("action").equals("true game model")) {
+            trueGameModel();
+        } else if (clientCommandJ.get("action").equals("false game model")) {
+            falseGameModel();
         }
+    }
+
+    private void trueGameModel() {
+        GameModel.isGame = true;
+    }
+
+    private void falseGameModel() {
+        GameModel.isGame = false;
     }
 
     private void processGameMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
