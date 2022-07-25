@@ -1,6 +1,8 @@
 package Client.Model;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Chat {
     public static ArrayList<Chat> chats = new ArrayList<>();
@@ -76,6 +78,19 @@ public class Chat {
         chats.add(temp);
     }
 
+
+    public static void removeChat(byte[] message, byte[] name, byte[] time, byte[] imageUrl, boolean seen , boolean edited){
+        chats.remove(getChat(message,name,time,imageUrl,seen,edited));
+    }
+
+    public static Chat getChat(byte[] message, byte[] name, byte[] time, byte[] imageUrl,  boolean seen , boolean edited){
+        for (Chat chat : Chat.chats){
+            if (Arrays.equals(chat.message, message) && Arrays.equals(chat.name, name) && Arrays.equals(chat.time, time) && Arrays.equals(chat.imageUrl, imageUrl) && chat.seen == seen && chat.edited == edited){
+                return chat;
+            }
+        }
+        return null;
+    }
 
 
 

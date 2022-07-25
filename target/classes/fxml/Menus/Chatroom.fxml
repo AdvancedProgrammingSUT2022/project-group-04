@@ -16,23 +16,23 @@
             <Font size="50.0" />
          </font>
       </Text>
-      <ScrollPane layoutX="39.0" layoutY="100.0" prefHeight="559.0" prefWidth="446.0" styleClass="chatBox">
+      <ScrollPane layoutX="39.0" layoutY="100.0" prefHeight="559.0" prefWidth="550" styleClass="chatBox">
         <content>
-          <AnchorPane fx:id="chatBoxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="735.0" prefWidth="418.0" styleClass="chatBoxInner">
+          <AnchorPane fx:id="chatBoxPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="735.0" prefWidth="550" styleClass="chatBoxInner">
                <children>
-                  <VBox fx:id="chatBox" layoutX="-1.0" layoutY="-1.0" prefHeight="737.0" prefWidth="419.0" spacing="5.0" />
+                  <VBox fx:id="chatBox" layoutX="-1.0" layoutY="-1.0" prefHeight="737.0" prefWidth="551" spacing="5.0" />
                </children></AnchorPane>
         </content>
       </ScrollPane>
       <ChoiceBox fx:id="choiceBox" layoutX="292.0" layoutY="40.0" onInputMethodTextChanged="#changeChatType" onMouseClicked="#changeChatType" onMouseExited="#changeChatType" onMouseMoved="#changeChatType" prefHeight="32.0" prefWidth="193.0" styleClass="choiceButton" value="public" />
-      <TextField fx:id="messageBox" layoutX="38.0" layoutY="663.0" prefHeight="32.0" prefWidth="413.0" promptText="Type your message" styleClass="TextFeild" />
-      <Button layoutX="454.0" layoutY="663.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="30.0" prefWidth="31.0" styleClass="sendButton" />
+      <TextField fx:id="messageBox" layoutX="38.0" layoutY="663.0" prefHeight="33.0" prefWidth="515.0" promptText="Type your message" styleClass="TextFeild" />
+      <Button layoutX="557.0" layoutY="663.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="32.0" styleClass="sendButton" />
       <Button alignment="CENTER" layoutX="1139.0" layoutY="31.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="43.0" prefWidth="103.0" styleClass="backButton" text="Back">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-       <Button alignment="CENTER" layoutX="1139.0" layoutY="50.0" mnemonicParsing="false" onAction="#refresh" prefHeight="43.0" prefWidth="103.0" styleClass="backButton" text="Refresh">
+       <Button alignment="CENTER" layoutX="1139.0" layoutY="100.0" mnemonicParsing="false" onAction="#refresh" prefHeight="43.0" prefWidth="103.0" styleClass="backButton" text="Refresh">
            <font>
                <Font size="24.0" />
            </font>
