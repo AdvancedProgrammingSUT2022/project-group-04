@@ -44,6 +44,25 @@ public class Chat {
     private byte[] time;
     private byte[] imageUrl;
 
+    public byte[] getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(byte[] receiver) {
+        this.receiver = receiver;
+    }
+
+    public byte[] getRoom() {
+        return room;
+    }
+
+    public void setRoom(byte[] room) {
+        this.room = room;
+    }
+
+    private byte[] receiver;
+    private byte[] room;
+
     public boolean isSeen() {
         return seen;
     }
@@ -76,6 +95,10 @@ public class Chat {
     public static void addChat(byte[] message, byte[] name, byte[] time, byte[] imageUrl, boolean seen , boolean edited){
         Chat temp = new Chat(message, name, time, imageUrl, seen, edited);
         chats.add(temp);
+    }
+
+    public static void addChat2(Chat chat){
+        chats.add(chat);
     }
 
 

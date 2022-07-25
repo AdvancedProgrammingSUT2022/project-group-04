@@ -53,7 +53,11 @@ public class ChatRoomFXMLController {
     @FXML
     AnchorPane mainAnchorPane;
 
-    Button editOk = new Button("OK");
+    Button editOk = new Button("Ok");
+    @FXML
+    Button startChat = new Button("start");
+
+    boolean isChatPrivate = false;
 
     @FXML
     public void initialize(){
@@ -61,6 +65,7 @@ public class ChatRoomFXMLController {
         setChoices();
         Chatroom.refreshTimer = refresh5Sec();
         Chatroom.refreshTimer.start();
+        Chatroom.privateRefreshTimer = privateRefresh5Sec();
         editOk.setLayoutX(595);
         editOk.setLayoutY(663);
         editOk.setVisible(false);
@@ -69,6 +74,7 @@ public class ChatRoomFXMLController {
                 "    -fx-border-width: 3; -fx-background-color: black;" +
                 "-fx-text-fill: white");
         mainAnchorPane.getChildren().add(editOk);
+        startChat.setVisible(false);
     }
 
     public AnimationTimer refresh5Sec(){
@@ -95,6 +101,41 @@ public class ChatRoomFXMLController {
         return ref;
     }
 
+    public AnimationTimer privateRefresh5Sec(){
+        final LongProperty lastUpdateTime = new SimpleLongProperty();
+        double[] secondsSinceStart = new double[1];
+        AnimationTimer ref = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (lastUpdateTime.get() > 0){
+                    final double elapsedSeconds = (l - lastUpdateTime.get()) / 1_000_000_000.0;
+                    secondsSinceStart[0] += elapsedSeconds;
+                    if (secondsSinceStart[0] > 1){
+                        try {
+                            privateRefresh();
+                            secondsSinceStart[0] = 0;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                lastUpdateTime.set(l);
+            }
+        };
+        return ref;
+    }
+
+
+    public void startPrivateChat() throws IOException {
+        isChatPrivate = true;
+        chatBox.getChildren().clear();
+        Chat.chats.clear();
+        Chatroom.refreshTimer.stop();
+        Chatroom.privateRefreshTimer.start();
+        ChatroomController.readChats("privateChatDatabase.json");
+
+    }
+
     public void refresh() throws IOException {
         JSONObject clientCommandJ = new JSONObject();
         clientCommandJ.put("menu type", "Chatroom");
@@ -102,6 +143,20 @@ public class ChatRoomFXMLController {
         clientCommandJ.put("name", User.loggedInUser.getNickname());
         Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
         Client.dataOutputStream1.flush();
+        chatBox.getChildren().clear();
+        ChatroomController.readChats("chatDatabase.json");
+        updateChatBox();
+    }
+
+    public void privateRefresh() throws IOException {
+        JSONObject clientCommandJ = new JSONObject();
+        clientCommandJ.put("menu type", "Chatroom");
+        clientCommandJ.put("action", "privateRefresh");
+        clientCommandJ.put("name", User.loggedInUser.getNickname());
+        Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+        Client.dataOutputStream1.flush();
+        chatBox.getChildren().clear();
+        ChatroomController.readChats("privateChatDatabase.json");
         updateChatBox();
     }
 
@@ -116,6 +171,7 @@ public class ChatRoomFXMLController {
         clientCommandJ.put("imageUrl", new String(chat.getImageUrl(), StandardCharsets.UTF_8));
         clientCommandJ.put("seen", chat.isSeen());
         clientCommandJ.put("edited", chat.isEdited());
+        clientCommandJ.put("receiver", new String(chat.getReceiver(), StandardCharsets.UTF_8));
         Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
         Client.dataOutputStream1.flush();
 
@@ -133,6 +189,7 @@ public class ChatRoomFXMLController {
         clientCommandJ.put("imageUrl", new String(chat.getImageUrl(), StandardCharsets.UTF_8));
         clientCommandJ.put("seen", chat.isSeen());
         clientCommandJ.put("edited", chat.isEdited());
+        clientCommandJ.put("receiver", new String(chat.getReceiver(), StandardCharsets.UTF_8));
         editOk.setVisible(true);
         messageBox.setText(new String(chat.getMessage(), StandardCharsets.UTF_8));
         editOk.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -154,10 +211,19 @@ public class ChatRoomFXMLController {
      }
 
     public void updateChatBox() throws IOException {
-        chatBox.getChildren().clear();
-        ChatroomController.readChats("chatDatabase.json");
+
 
         for (Chat chat:Chat.chats){
+
+            if (isChatPrivate){
+                if (!(new String(chat.getReceiver(), StandardCharsets.UTF_8).equals(User.loggedInUser.getNickname())
+                        || new String(chat.getName(), StandardCharsets.UTF_8).equals(User.loggedInUser.getNickname()))){
+                    continue;
+                }
+                if (new String(chat.getReceiver(), StandardCharsets.UTF_8).equals("null")){
+                    continue;
+                }
+            }
 
             Text name = new Text(new String(chat.getName(), StandardCharsets.UTF_8));
             Label label = new Label();
@@ -255,7 +321,6 @@ public class ChatRoomFXMLController {
     }
 
     public void sendMessage() throws IOException {
-        //Todo
         if (!messageBox.getText().isBlank()) {
             JSONObject clientCommandJ = new JSONObject();
             clientCommandJ.put("menu type", "Chatroom");
@@ -302,6 +367,12 @@ public class ChatRoomFXMLController {
 
             HBox line = new HBox(avatar, name, label, time, edit,trash, sent);
 
+            if (isChatPrivate){
+                clientCommandJ.put("receiver", users.getValue());
+            } else {
+                clientCommandJ.put("receiver", "null");
+
+            }
 
             clientCommandJ.put("message", message);
             clientCommandJ.put("name",User.loggedInUser.getNickname());
@@ -373,8 +444,13 @@ public class ChatRoomFXMLController {
     public void changeChatType() {
         if (choiceBox.getValue().equals("private")){
             users.setVisible(true);
+            startChat.setVisible(true);
         } else {
             users.setVisible(false);
+            startChat.setVisible(false);
+            isChatPrivate = false;
+            Chatroom.privateRefreshTimer.stop();
+            Chatroom.refreshTimer.start();
         }
     }
 }
