@@ -40,6 +40,7 @@ public class Server {
         Account.readAccounts("AccountURLs.json");
         Friendship.readFriendships("friendshipDatabase.json");
         Invitation.readInvitations("invitationDatabase.json");
+        ChatroomController.writeChats("chatDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
         ProfileMenuController profileMenuController = new ProfileMenuController(new ProfileMenuModel());
         try {
@@ -545,6 +546,21 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("refresh")){
             ChatroomController.readChats("chatDatabase.json");
             ChatroomController.seeChats("chatDatabase.json", clientCommandJ.get("name").toString());
+        } else if (clientCommandJ.get("action").equals("delete")){
+            String message = clientCommandJ.getString("message");
+            String name = clientCommandJ.getString("name");
+            String Time = clientCommandJ.getString("time");
+            String imageUrl = clientCommandJ.getString("imageUrl");
+            byte[] byteArrrayName = name.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayImage = imageUrl.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayTime = Time.getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayMessage = message.getBytes(StandardCharsets.UTF_8);
+            boolean seen = clientCommandJ.getBoolean("seen");
+            boolean edited = clientCommandJ.getBoolean("edited");
+            Chat.removeChat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, seen, edited);
+            ChatroomController.writeChats("chatDatabase.json");
+        } else if (clientCommandJ.get("action").equals("edit")){
+
         }
     }
 

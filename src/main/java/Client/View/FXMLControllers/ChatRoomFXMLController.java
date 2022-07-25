@@ -2,26 +2,33 @@ package Client.View.FXMLControllers;
 
 import Client.Client;
 import Client.Model.Chat;
+import Client.View.Transitions.Chatroom;
 import Server.Controller.ChatroomController;
 import Server.UserDatabase;
 import Client.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
-import com.google.gson.JsonObject;
+import javafx.animation.AnimationTimer;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import org.json.JSONObject;
@@ -49,6 +56,32 @@ public class ChatRoomFXMLController {
     public void initialize(){
         GameModel.isGame = false;
         setChoices();
+        Chatroom.refreshTimer = refresh5Sec();
+        Chatroom.refreshTimer.start();
+    }
+
+    public AnimationTimer refresh5Sec(){
+        final LongProperty lastUpdateTime = new SimpleLongProperty();
+        double[] secondsSinceStart = new double[1];
+        AnimationTimer ref = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (lastUpdateTime.get() > 0){
+                    final double elapsedSeconds = (l - lastUpdateTime.get()) / 1_000_000_000.0;
+                    secondsSinceStart[0] += elapsedSeconds;
+                    if (secondsSinceStart[0] > 1){
+                        try {
+                            refresh();
+                            secondsSinceStart[0] = 0;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                lastUpdateTime.set(l);
+            }
+        };
+        return ref;
     }
 
     public void refresh() throws IOException {
@@ -60,6 +93,30 @@ public class ChatRoomFXMLController {
         Client.dataOutputStream1.flush();
         updateChatBox();
     }
+
+    public void deleteChat(Chat chat) throws IOException {
+        System.out.println("deleting");
+        JSONObject clientCommandJ = new JSONObject();
+        clientCommandJ.put("menu type", "Chatroom");
+        clientCommandJ.put("action", "delete");
+        clientCommandJ.put("message", new String(chat.getMessage(), StandardCharsets.UTF_8));
+        clientCommandJ.put("name", new String(chat.getName(), StandardCharsets.UTF_8));
+        clientCommandJ.put("time", new String(chat.getTime(), StandardCharsets.UTF_8));
+        clientCommandJ.put("imageUrl", new String(chat.getImageUrl(), StandardCharsets.UTF_8));
+        clientCommandJ.put("seen", chat.isSeen());
+        clientCommandJ.put("edited", chat.isEdited());
+        Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+        Client.dataOutputStream1.flush();
+
+    }
+
+    public void editChat() throws IOException {
+        JSONObject clientCommandJ = new JSONObject();
+        clientCommandJ.put("menu type", "Chatroom");
+        clientCommandJ.put("action", "edit");
+        Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+        Client.dataOutputStream1.flush();
+     }
 
     public void updateChatBox() throws IOException {
         chatBox.getChildren().clear();
@@ -93,14 +150,34 @@ public class ChatRoomFXMLController {
             if (new String(chat.getName(), StandardCharsets.UTF_8).equals(User.loggedInUser.getNickname())) {
                 Circle sent = new Circle(5);
                 sent.setFill(Color.WHITE);
+                Button trash = new Button();
+                trash.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        try {
+                            deleteChat(chat);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                edit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+
+                    }
+                });
+                trash.setBackground(Background.fill(new ImagePattern(GraphicalBases.trash)));
+                trash.setPrefWidth(40);
+
                 if (chat.isSeen()) {
                     Circle seen = new Circle(5);
                     seen.setFill(Color.WHITE);
-                    line = new HBox(avatar, name, label, time, edit, sent, seen);
+                    line = new HBox(avatar, name, label, time, edit,trash, sent, seen);
                 } else {
 
 
-                    line = new HBox(avatar, name, label, time, edit, sent);
+                    line = new HBox(avatar, name, label, time, edit,trash, sent);
                 }
             } else {
                 line = new HBox(avatar, name, label, time);
@@ -163,7 +240,7 @@ public class ChatRoomFXMLController {
             avatar.setFitHeight(37);
             avatar.setFitWidth(37);
             Button edit = new Button("edit");
-            edit.setStyle("-fx-font-size: 15;" +
+            edit.setStyle("-fx-font-size: 10;" +
                     "    -fx-background-color: black;" +
                     "    -fx-border-color: #fffde9;" +
                     "    -fx-text-fill: white;" +
@@ -175,11 +252,20 @@ public class ChatRoomFXMLController {
                     "-fx-start-margin: 20");
             Circle sent = new Circle(5);
             sent.setFill(Color.WHITE);
-            HBox line = new HBox(avatar, name, label, time, edit, sent);
+            Button trash = new Button();
+            byte[] byteArrrayName = name.getText().getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayImage = avatarImage.getUrl().getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayTime = time.getText().getBytes(StandardCharsets.UTF_8);
+            byte[] byteArrrayMessage = message.getBytes(StandardCharsets.UTF_8);
+            trash.setBackground(Background.fill(new ImagePattern(GraphicalBases.trash)));
+            trash.setPrefWidth(40);
+
+
+            HBox line = new HBox(avatar, name, label, time, edit,trash, sent);
 
 
             clientCommandJ.put("message", message);
-            clientCommandJ.put("name",User.loggedInUser.getNickname() );
+            clientCommandJ.put("name",User.loggedInUser.getNickname());
             clientCommandJ.put("time", LocalDateTime.now().getHour() + ":" + LocalDateTime.now().getMinute() + ":" + LocalDateTime.now().getSecond());
             clientCommandJ.put("imageUrl", GraphicalBases.class.getResource(User.loggedInUser.getAvatarURL()).toString());
             Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
@@ -202,6 +288,24 @@ public class ChatRoomFXMLController {
             chatBox.getChildren().add(line);
             chatBoxPane.setPrefHeight(chatBoxPane.getPrefHeight() + 50);
             chatBox.setPrefHeight(chatBox.getPrefHeight() + 50);
+            //ChatroomController.readChats("chatDatabase.json");
+//            trash.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent mouseEvent) {
+//                    try {
+//                        deleteChat(Chat.getChat(byteArrrayMessage, byteArrrayName, byteArrrayTime, byteArrrayImage, false, false));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//
+//            edit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent mouseEvent) {
+//
+//                }
+//            });
         }
     }
 
@@ -223,6 +327,7 @@ public class ChatRoomFXMLController {
     }
 
     public void backToMain() {
+        Chatroom.refreshTimer.stop();
         GraphicalBases.changeMenu("MainMenu");
     }
 
