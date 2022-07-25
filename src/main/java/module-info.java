@@ -8,6 +8,7 @@
      requires java.desktop;
      requires org.json;
      requires xstream;
+     requires mysql.connector.java;
 
      exports Civilization.Database to xstream;
      opens Civilization.Database to com.google.gson, xstream;
