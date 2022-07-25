@@ -115,7 +115,7 @@ public class User {
     }
 
     public void setScore(int amount) {
-        this.score += amount;
+        this.score = amount;
     }
 
     @Override

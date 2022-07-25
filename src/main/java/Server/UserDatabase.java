@@ -97,10 +97,10 @@ public class UserDatabase {
         writer.close();
     }
 
-    public static void setUserScores(ArrayList<Civilization> players) throws IOException {
-        for (Civilization civilization : players) {
-            User user = GameDatabase.getUserForCivilization(civilization.getNickname());
-            user.setScore(user.getScore() + civilization.getFinalScore());
+    public static void setUserScores(ArrayList<String> players, ArrayList<Integer> scores) throws IOException {
+        for (int i = 0; i < players.size(); i++) {
+            User user = UserDatabase.getUserByUsername(players.get(i));
+            user.setScore(user.getScore() + scores.get(i));
             user.setTimeOfScore(LocalDateTime.now());
         }
     }

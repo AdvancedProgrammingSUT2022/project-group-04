@@ -1,6 +1,7 @@
 package Client.View.FXMLControllers;
 
 import Civilization.Database.GameDatabase;
+import Client.Client;
 import Client.Model.Civilization;
 import Client.Model.GameModel;
 import Client.View.GraphicalBases;
@@ -15,8 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class WinFXMLController {
 
@@ -26,13 +29,46 @@ public class WinFXMLController {
     private Civilization winner;
 
     @FXML
-    public void initialize() throws IOException {
-        winner = GameDatabase.checkIfWin();
-        UserDatabase.setUserScores(GameDatabase.players);
+    public void initialize(){
+
+        try{
+            winner = GameDatabase.checkIfWin();
+            setUsersScores(GameDatabase.players);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         setBackground();
         setOKButton();
         setWinnerInformation();
         GameModel.isGame = false;
+    }
+
+    private void setUsersScores(ArrayList<Civilization> players) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Win");
+        input.put("action","score");
+        input.put("users", findUserString(players));
+        input.put("scores", findUserScores(players));
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
+        //UserDatabase.setUserScores(GameDatabase.players);
+    }
+
+    private String findUserScores(ArrayList<Civilization> players) {
+        String result = "";
+        for (Civilization player : players) {
+            result += Integer.toString(player.getFinalScore()) + " ";
+        }
+        return result;
+    }
+
+    private String findUserString(ArrayList<Civilization> players) {
+        String result = "";
+        for (Civilization player : players) {
+            result += player + " ";
+        }
+        return result;
     }
 
     private void setWinnerInformation() {

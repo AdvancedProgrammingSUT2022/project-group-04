@@ -92,6 +92,8 @@ public class Server {
                             processLoadingMenuReqs(clientCommandJ, dataOutputStream);
                         } else if (clientCommandJ.get("menu type").equals("Chatroom")){
                             processChatroom(clientCommandJ, dataOutputStream);
+                        } else if (clientCommandJ.get("menu type").equals("Win")) {
+                            processWinMenuReqs(clientCommandJ, dataOutputStream);
                         }
                     }
                     else {
@@ -125,6 +127,23 @@ public class Server {
 
             }
         }
+    }
+
+    private void processWinMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
+        System.err.println("WIN");
+        if(clientCommandJ.get("action").equals("score")) {
+            String[] usersString = clientCommandJ.get("users").toString().split(" ");
+            ArrayList<String> users = new ArrayList<>(Arrays.asList(usersString));
+
+            ArrayList<Integer> scores = new ArrayList<>();
+            String[] scoresString = clientCommandJ.get("scores").toString().split(" ");
+            for (String s : scoresString) {
+                scores.add(Integer.parseInt(s));
+            }
+
+            UserDatabase.setUserScores(users, scores);
+        }
+        UserDatabase.writeInFile("UserDatabase.json");
     }
 
     private void processChatroomReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
