@@ -169,6 +169,8 @@ public class GameFXMLController {
                 String name = cityName.getText();
                 if(GameDatabase.getCityByName(name) != null) {
                     cityName.setStyle("-fx-border-color: RED");
+                    cityName.setText("");
+                    return;
                 }
                 new GameMenuController(new GameModel()).createNewCity(GameDatabase.getTileByXAndY(GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit().getX(), GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedUnit().getY()).getSettler(), name);
                 createCityVBox.setVisible(false);
