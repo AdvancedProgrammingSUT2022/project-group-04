@@ -19,6 +19,7 @@ public class GameModel {
         for (String user : users) {
             Civilization civilization = new Civilization(user, Objects.requireNonNull(UserDatabase.getUserByUsername(user)).getNickname());
             players.add(civilization);
+            System.err.println(civilization.getUsername());
         }
 
 

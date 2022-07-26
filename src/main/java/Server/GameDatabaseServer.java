@@ -1,5 +1,6 @@
 package Server;
 
+import Civilization.Database.GameDatabase;
 import Client.Model.*;
 import Server.Controller.GameMenuController;
 import Civilization.Database.GlobalVariables;
@@ -64,6 +65,7 @@ public class GameDatabaseServer {
         }
         System.out.println("what");
         GameDatabaseServer.gameMode = true;
+        Server.gameMode = true;
         //GameDatabaseServer.gameMode.notifyAll();
     }
 
@@ -623,6 +625,7 @@ public class GameDatabaseServer {
 
     public static String updateMap(String mp) throws IOException {
         RequestPlayers requestPlayers = readAndCastRequest(mp);
+        GameDatabaseServer.players = requestPlayers.players;
         GameDatabaseServer.map = requestPlayers.tiles;
         GameDatabaseServer.turn = requestPlayers.x;
         System.out.println("sadistic maniac");
@@ -639,6 +642,7 @@ public class GameDatabaseServer {
         requestPlayers.players = GameDatabaseServer.players;
         requestPlayers.tiles = GameDatabaseServer.map;
         requestPlayers.x = GameDatabaseServer.turn;
+        requestPlayers.civilization = GameDatabaseServer.getCivilizationByTurn(turn);
         XStream xStream = new XStream();
         return xStream.toXML(requestPlayers);
     }

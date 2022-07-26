@@ -173,8 +173,8 @@ public class GameDatabase {
         int ran = random.nextInt(1000);
         RequestPlayers requestPlayers = readAndCastResponse(response,ran);
         GameDatabase.map = requestPlayers.tiles;
-        //if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
-        //else isYourTurn = false;
+//        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
+//        else isYourTurn = false;
     }
 
     public static void setYou() {

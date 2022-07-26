@@ -130,11 +130,11 @@ public class Server {
                     //if (sth.equals("not admin")) wait(10000);
                     System.out.println("amadam inja" + sth);
                     if (portNumber == 8569) {
-                        synchronized (GameDatabaseServer.map){
-                            while (GameDatabaseServer.map.size() != 144){
-                                wait();
-                            }
-                        }
+//                        synchronized (GameDatabaseServer.map){
+//                            while (GameDatabaseServer.map.size() != 144){
+//                                wait();
+//                            }
+//                        }
                         synchronized (GameDatabaseServer.gameMode){
                             while (!GameDatabaseServer.gameMode){
                                 wait();
@@ -186,7 +186,7 @@ public class Server {
             sendMapToClients(GameDatabaseServer.getGameString(), dataOutputStream, sth);
             /////////
             getMapFromClient(dataInputStream, sth);
-            if (GameDatabaseServer.map.size() == 144) notifyAll();
+            if (GameDatabaseServer.gameMode) GameDatabaseServer.gameMode.notifyAll();
         }
     }
 
