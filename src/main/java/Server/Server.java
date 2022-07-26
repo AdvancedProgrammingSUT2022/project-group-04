@@ -39,7 +39,9 @@ public class Server {
     public void startServer() throws IOException {
         //UserDatabase.readFromFile("UserDatabase.json");
         UserDatabase.readFromDatabase();
-        Account.readAccounts("AccountURLs.json");
+        //Account.readAccounts("AccountURLs.json");
+        Account.readFromDatabase();
+
         Friendship.readFriendships("friendshipDatabase.json");
         Invitation.readInvitations("invitationDatabase.json");
         ChatroomController.writeChats("chatDatabase.json");
@@ -389,7 +391,8 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("profile")) {
             //UserDatabase.readFromFile("UserDatabase.json");
             UserDatabase.readFromDatabase();
-            Account.readAccounts("AccountURLs.json");
+            //Account.readAccounts("AccountURLs.json");
+            Account.readFromDatabase();
         } else if (clientCommandJ.get("action").equals("firstInit")) {
             //GameModel.generateMap = true;
             // TODO
@@ -492,6 +495,11 @@ public class Server {
                 String username = clientCommandJ.get("username").toString();
                 dataOutputStream.writeUTF(Friendship.getMyFriendsString(username));
                 dataOutputStream.flush();
+            } else if (clientCommandJ.get("action").equals("change avatar")) {
+                String username = clientCommandJ.get("username").toString();
+                String avatarURL = clientCommandJ.get("avatarURL").toString();
+                UserDatabase.getUserByUsername(username).setAvatarURL(avatarURL);
+                Account.editAccount(Account.getUserAccount(UserDatabase.getUserByUsername(username)));
             }
         } catch (Exception e) {
             if (disconnected) {
@@ -613,7 +621,7 @@ public class Server {
     private void createAccount(String username) throws IOException {
         Account account = new Account(username);
         Account.accounts.add(account);
-        Account.writeAccounts("AccountURLs.json");
+        Account.writeOneAccount(account);
     }
 
 
