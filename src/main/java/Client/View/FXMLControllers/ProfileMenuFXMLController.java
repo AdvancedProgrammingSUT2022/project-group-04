@@ -205,11 +205,6 @@ public class ProfileMenuFXMLController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                try {
-                    Account.writeAccounts("AccountURLs.json");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
         avatarVBox.getChildren().add(circle);
@@ -220,8 +215,9 @@ public class ProfileMenuFXMLController {
         configureFileChooser(fileChooser);
         File file = fileChooser.showOpenDialog(GraphicalBases.stage);
         if (file != null) {
-            User.loggedInUser.setAvatarURL(file.toURI().toURL().toExternalForm());
-            ImagePattern profilePicture = new ImagePattern(new Image(User.loggedInUser.getAvatarURL()));
+            String avatarURL = file.toURI().toURL().toExternalForm();
+            setAvatarURL(avatarURL);
+            ImagePattern profilePicture = new ImagePattern(new Image(getAvatarURL(User.loggedInUser.getUsername())));
             Circle circle = (Circle) avatarVBox.getChildren().get(0);
             circle.setFill(profilePicture);
         }
@@ -265,16 +261,27 @@ public class ProfileMenuFXMLController {
                     ImagePattern profilePicture = new ImagePattern(GraphicalBases.AVATARS[finalI]);
                     Circle circle = (Circle) avatarVBox.getChildren().get(0);
                     circle.setFill(profilePicture);
-                    User.loggedInUser.setAvatarURL("/pics/Avatars/" + (finalI + 1) + ".png");
-                    try {
-                        Account.writeAccounts("AccountURLs.json");
-                    } catch (IOException e) {
+                    String avatarURL = "/pics/Avatars/" + (finalI + 1) + ".png";
+                    try{
+                        setAvatarURL("/pics/Avatars/" + (finalI + 1) + ".png");
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
             avatarVBox.getChildren().add(circle);
         }
+    }
+
+    private void setAvatarURL(String avatarURL) throws IOException {
+        JSONObject input = new JSONObject();
+        input.put("menu type","Profile");
+        input.put("action","change avatar");
+        input.put("username", User.loggedInUser.getUsername());
+        input.put("avatarURL", avatarURL);
+        //System.out.println("I'm writing");
+        Client.dataOutputStream1.writeUTF(input.toString());
+        Client.dataOutputStream1.flush();
     }
 
     private void loadDefaultAvatar(int index) {

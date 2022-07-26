@@ -23,7 +23,8 @@ public class Main extends Application {
 
         //UserDatabase.readFromFile("UserDatabase.json");
         UserDatabase.readFromDatabase();
-        Account.readAccounts("AccountURLs.json");
+        //Account.readAccounts("AccountURLs.json");
+        Account.readFromDatabase();
 
         GraphicalBases.stage = stage;
         GraphicalBases.firstLogin();

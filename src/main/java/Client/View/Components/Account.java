@@ -2,6 +2,7 @@ package Client.View.Components;
 
 import Client.View.GraphicalBases;
 import Server.User;
+import Server.UserDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.image.Image;
@@ -12,6 +13,10 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,6 +34,11 @@ public class Account {
             }
         }
         return null;
+    }
+
+    public Account(String username, String avatarURL) {
+        this.username = username;
+        this.avatarURL = avatarURL;
     }
 
     public String getUsername() {
@@ -77,6 +87,62 @@ public class Account {
         for (int i = 0; i < jsonStringUserDatabase.size(); i++) {
             Account tempAccount = gson.fromJson(jsonStringUserDatabase.get(i).toString(), Account.class);
             Account.accounts.add(tempAccount);
+        }
+    }
+
+    public static void writeOneAccount(Account account) throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "insert into account(username,avatarURL) values('%s','%s')";
+            query = String.format(query, account.getUsername(), account.getAvatarURL());
+            statement.execute(query);
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            Account.writeAccounts("AccountURLs.json");
+            System.err.println("Database ERROR");
+        }
+    }
+
+    public static void editAccount(Account account) throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "update account set username='%s',avatarURL='%s' where username='%s'";
+            query = String.format(query, account.getUsername(), account.getAvatarURL(), account.getUsername());
+            statement.execute(query);
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            Account.writeAccounts("AccountURLs.json");
+            System.err.println("Database ERROR");
+        }
+    }
+
+    public static void readFromDatabase() throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "select * from account";
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String username = resultSet.getString(1);
+                String avatarURL = resultSet.getString(2);
+                Account account = new Account(username, avatarURL);
+                Account.accounts.add(account);
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            Account.readAccounts("AccountURLs.json");
+            System.err.println("Database ERROR");
         }
     }
 

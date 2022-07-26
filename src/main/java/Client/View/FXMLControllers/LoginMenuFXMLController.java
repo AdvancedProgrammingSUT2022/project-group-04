@@ -150,7 +150,7 @@ public class LoginMenuFXMLController {
     private void createAccount(String username) throws IOException {
         Account account = new Account(username);
         Account.accounts.add(account);
-        Account.writeAccounts("AccountURLs.json");
+        //Account.writeOneAccount(account);
     }
 
     private void setError(String errorText) {
