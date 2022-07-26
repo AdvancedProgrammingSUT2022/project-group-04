@@ -29,6 +29,7 @@ public class GameDatabaseServer {
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
     public static Boolean gameMode = false;
+    public static Boolean mapchange = false;
 
     public static void setStaticFields(ArrayList<Civilization> civilizations, ArrayList<Tile> tiles, int tool, int arz, int nobat
             , int sal, boolean taghalobKarde, Civilization civilizationtaghalob) {
@@ -642,6 +643,7 @@ public class GameDatabaseServer {
         requestPlayers.players = GameDatabaseServer.players;
         requestPlayers.tiles = GameDatabaseServer.map;
         requestPlayers.x = GameDatabaseServer.turn;
+        requestPlayers.y = GameDatabaseServer.year;
         requestPlayers.civilization = GameDatabaseServer.getCivilizationByTurn(turn);
         XStream xStream = new XStream();
         return xStream.toXML(requestPlayers);

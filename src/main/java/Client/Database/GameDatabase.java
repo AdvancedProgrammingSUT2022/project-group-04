@@ -150,6 +150,7 @@ public class GameDatabase {
         requestPlayers.tiles = GameDatabase.map;
         requestPlayers.players = GameDatabase.players;
         requestPlayers.x = GameDatabase.turn;
+        requestPlayers.y = GameDatabase.year;
         XStream xStream = new XStream();
         byte[] requestToBytes = xStream.toXML(requestPlayers).getBytes(StandardCharsets.UTF_8);
         //System.out.println(Arrays.toString(requestToBytes));
@@ -173,6 +174,9 @@ public class GameDatabase {
         int ran = random.nextInt(1000);
         RequestPlayers requestPlayers = readAndCastResponse(response,ran);
         GameDatabase.map = requestPlayers.tiles;
+        GameDatabase.players = requestPlayers.players;
+        GameDatabase.turn = requestPlayers.x;
+        GameDatabase.year = requestPlayers.y;
 //        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
 //        else isYourTurn = false;
     }
