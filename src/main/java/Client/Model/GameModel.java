@@ -37,6 +37,7 @@ public class GameModel {
             Thread.sleep(10000);
             GameDatabase.getMapFromServer();
         }
+        //GameDatabase.mapTransferStarted = true;
         System.out.println("haha worked");
     }
 

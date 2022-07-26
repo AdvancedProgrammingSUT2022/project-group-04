@@ -90,9 +90,7 @@ public class Server {
         while (true) {
             try {
                 if (!gameMode && portNumber == 8080) {
-                    System.out.println("dude the fuck" + sth);
                     String clientCommand = dataInputStream.readUTF();
-                    System.out.println("im happy " + sth);
                     JSONObject clientCommandJ;
                     if (!clientCommand.startsWith("!!!")) {
                         clientCommandJ = new JSONObject(clientCommand);
@@ -114,7 +112,6 @@ public class Server {
                             processLoadingMenuReqs(clientCommandJ, dataOutputStream);
                         }
                     } else {
-                        System.out.println("i was here " + sth);
                         clientCommand = clientCommand.substring(3);
                         processGameUsingXML(clientCommand, dataOutputStream);
                         if (gameMode) gameHandling(dataInputStream, dataOutputStream, sth);
@@ -128,15 +125,14 @@ public class Server {
 //                    String response = new String(requestToByte, StandardCharsets.UTF_8);
 //                    GameDatabaseServer.updateMap(response);
                     //if (sth.equals("not admin")) wait(10000);
-                    System.out.println("amadam inja" + sth);
                     if (portNumber == 8569) {
 //                        synchronized (GameDatabaseServer.map){
 //                            while (GameDatabaseServer.map.size() != 144){
 //                                wait();
 //                            }
 //                        }
-                        synchronized (GameDatabaseServer.gameMode){
-                            while (!GameDatabaseServer.gameMode){
+                        synchronized (GameDatabaseServer.gameMode) {
+                            while (!GameDatabaseServer.gameMode) {
                                 wait();
                             }
                         }
@@ -172,7 +168,7 @@ public class Server {
 
     private static void sendMapToClients(String response, DataOutputStream dataOutputStream, String sth) throws IOException {
         System.out.println("bede " + sth);
-        if (sth.equals("not admin")) System.out.println(response);
+        //if (sth.equals("not admin")) System.out.println(response);
         byte[] requestToBytes = response.getBytes(StandardCharsets.UTF_8);
         //System.out.println(Arrays.toString(requestToBytes));
         dataOutputStream.writeInt(requestToBytes.length);
@@ -181,7 +177,7 @@ public class Server {
         dataOutputStream.flush();
     }
 
-    private void gameHandling(DataInputStream dataInputStream, DataOutputStream dataOutputStream, String sth) throws IOException {
+    private void gameHandling(DataInputStream dataInputStream, DataOutputStream dataOutputStream, String sth) throws IOException, InterruptedException {
         while (true) {
             sendMapToClients(GameDatabaseServer.getGameString(), dataOutputStream, sth);
             /////////
