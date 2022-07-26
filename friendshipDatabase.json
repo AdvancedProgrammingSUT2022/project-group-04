@@ -40,5 +40,23 @@
     "secondUsername": "kasra",
     "isAccepted": false,
     "isDenied": false
+  },
+  {
+    "firstUsername": "alirezaRM",
+    "secondUsername": "alirezaAmiri",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "sepehr",
+    "secondUsername": "alirezaAmiri",
+    "isAccepted": false,
+    "isDenied": false
+  },
+  {
+    "firstUsername": "alirezaRM",
+    "secondUsername": "Alireza",
+    "isAccepted": true,
+    "isDenied": false
   }
 ]

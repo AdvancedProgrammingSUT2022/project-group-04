@@ -1,6 +1,7 @@
 package Client.View.FXMLControllers;
 
 import Client.Client;
+import Client.Database.GameDatabase;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.InvitationTransition;
 import Server.User;
@@ -56,6 +57,7 @@ public class InvitationFXMLController {
             public void handle(MouseEvent mouseEvent) {
                 if(!username.getText().equals("")) {
                     try {
+                        GameDatabase.setYou();
                         acceptInvitation(username.getText());
                         invitationTransition.pause();
                         GraphicalBases.changeMenu("Loading");

@@ -28,6 +28,7 @@ public class GameDatabaseServer {
     public static int year = 0;
     public static boolean cheated = false;
     public static Civilization cheatedCivilization = null;
+    public static Boolean gameMode = false;
 
     public static void setStaticFields(ArrayList<Civilization> civilizations, ArrayList<Tile> tiles, int tool, int arz, int nobat
             , int sal, boolean taghalobKarde, Civilization civilizationtaghalob) {
@@ -52,6 +53,7 @@ public class GameDatabaseServer {
     }
 
     public static void generateRuin() {
+        System.out.println("wot");
         Random random = new Random();
         for (Tile tile : map) {
             if (getCivilizationByTile(tile) == null) {
@@ -61,7 +63,10 @@ public class GameDatabaseServer {
                 }
             }
         }
+        System.out.println("what");
+        GameDatabaseServer.gameMode = true;
         Server.gameMode = true;
+        //GameDatabaseServer.gameMode.notifyAll();
     }
 
 
@@ -207,7 +212,7 @@ public class GameDatabaseServer {
                 int randomGenerate = random.nextInt(sumOfPossibilities);
                 int counter = 0;
                 int flag = -1;
-                System.out.println("kose nanat bisharaf??????");
+                //System.out.println("kose nanat bisharaf??????");
                 for (int k = 0; k < possibilities.length; k++) {
                     counter += possibilities[k];
                     if (randomGenerate < counter) {
@@ -215,14 +220,14 @@ public class GameDatabaseServer {
                         break;
                     }
                 }
-                System.out.println(baseTerrains.get(flag));
+                //System.out.println(baseTerrains.get(flag));
                 Tile tile = new Tile("fogOfWar", baseTerrains.get(flag), i, j);
-                System.out.println("kose nanat bisharaf!!!!!");
+                //System.out.println("kose nanat bisharaf!!!!!");
                 map.add(tile);
             }
         }
 
-        System.out.println("kose nanat bisharaf5");
+        //System.out.println("kose nanat bisharaf5");
         //random initialize river
         int[] deltaX0 = {-1, 0, 1, 1, 1, 0};
         int[] deltaY0 = {0, 1, 1, 0, -1, -1};
@@ -252,7 +257,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        System.out.println("kose nanat bisharaf4");
+        //System.out.println("kose nanat bisharaf4");
         //random initialize terrainFeature
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
@@ -267,7 +272,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        System.out.println("kose nanat bisharaf3");
+        //System.out.println("kose nanat bisharaf3");
         //random initialize resources
         for (int i = 0; i < map.size(); i++) {
             BaseTerrain baseTerrain = map.get(i).getBaseTerrain();
@@ -282,7 +287,7 @@ public class GameDatabaseServer {
                 }
             }
         }
-        System.out.println("kose nanat bisharaf2");
+        //System.out.println("kose nanat bisharaf2");
         //random set beginning tiles for each player
         int counter = 0;
         while (counter < players.size()) {
@@ -304,7 +309,7 @@ public class GameDatabaseServer {
 
                 continue;
             }
-            System.out.println(x1 + " " + y1);
+            //System.out.println(x1 + " " + y1);
             boolean isOccupied = false;
             for (int i = 0; i < counter; i++) {
                 if (players.get(i).isTileInCivilization(xRandomGenerate, yRandomGenerate)
@@ -521,6 +526,8 @@ public class GameDatabaseServer {
         }
         else if (s.startsWith("generateRuin")){
             generateRuin();
+            System.out.println("salamp");
+            Server.gameMode = true;
         }
         else if (s.startsWith("getCivilizationByUsername")){
             s = s.substring("getCivilizationByUsername".length());
@@ -618,6 +625,7 @@ public class GameDatabaseServer {
 
     public static String updateMap(String mp) throws IOException {
         RequestPlayers requestPlayers = readAndCastRequest(mp);
+        GameDatabaseServer.players = requestPlayers.players;
         GameDatabaseServer.map = requestPlayers.tiles;
         GameDatabaseServer.turn = requestPlayers.x;
         System.out.println("sadistic maniac");
@@ -634,6 +642,7 @@ public class GameDatabaseServer {
         requestPlayers.players = GameDatabaseServer.players;
         requestPlayers.tiles = GameDatabaseServer.map;
         requestPlayers.x = GameDatabaseServer.turn;
+        requestPlayers.civilization = GameDatabaseServer.getCivilizationByTurn(turn);
         XStream xStream = new XStream();
         return xStream.toXML(requestPlayers);
     }

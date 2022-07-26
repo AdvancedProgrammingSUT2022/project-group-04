@@ -84,20 +84,21 @@ public class GameDatabase {
         // TODO update data here based on message
     }
 
-    private static RequestPlayers readAndCastResponse(String s) throws IOException {
+    private static RequestPlayers readAndCastResponse(String s,int filename) throws IOException {
         XStream xStream = new XStream();
         FileWriter fileWriter;
+        String path = "clientResponse/response" + filename + ".xml";
         System.out.println("wot wot?");
-        if (Files.exists(Paths.get("clientResponse/response.xml")))
-            fileWriter = new FileWriter("clientResponse/response.xml");
+        if (Files.exists(Paths.get(path)))
+            fileWriter = new FileWriter(path);
         else {
             new File("clientResponse").mkdir();
-            fileWriter = new FileWriter("clientResponse/response.xml");
+            fileWriter = new FileWriter(path);
         }
         fileWriter.write(s);
         fileWriter.close();
         ///
-        String xml = new String(Files.readAllBytes(Paths.get("clientResponse/response.xml")));
+        String xml = new String(Files.readAllBytes(Paths.get(path)));
         xStream.addPermission(AnyTypePermission.ANY);
         if (xml.length() != 0) {
             Object obh = xStream.fromXML(xml);
@@ -115,9 +116,11 @@ public class GameDatabase {
         byte[] requestToByte = new byte[dataInputStream1.readInt()];
         dataInputStream1.readFully(requestToByte);
         String response = new String(requestToByte, StandardCharsets.UTF_8);
-        System.out.println(response);
+        //System.out.println(response);
         System.out.println(432);
-        RequestPlayers requestPlayers = readAndCastResponse(response);
+        Random random = new Random();
+        int rend = random.nextInt(1000);
+        RequestPlayers requestPlayers = readAndCastResponse(response,rend);
         System.out.println(48885);
         GameDatabase.players = requestPlayers.players;
         System.out.println(485);
@@ -165,10 +168,13 @@ public class GameDatabase {
         dataInputStream1.readFully(requestToByte);
         System.out.println(13);
         String response = new String(requestToByte, StandardCharsets.UTF_8);
-        RequestPlayers requestPlayers = readAndCastResponse(response);
+        System.out.println(response);
+        Random random = new Random();
+        int ran = random.nextInt(1000);
+        RequestPlayers requestPlayers = readAndCastResponse(response,ran);
         GameDatabase.map = requestPlayers.tiles;
-        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
-        else isYourTurn = false;
+//        if (requestPlayers.civilization.getNickname().equals(GameDatabase.you.getNickname())) isYourTurn = true;
+//        else isYourTurn = false;
     }
 
     public static void setYou() {
