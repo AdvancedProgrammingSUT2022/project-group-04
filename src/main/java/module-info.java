@@ -13,7 +13,7 @@
      exports Client.Database to xstream;
      opens Client.Database to com.google.gson, xstream;
 
-     exports Server to xstream;
+     exports Server to xstream, com.google.gson;
 
       exports Server.Model to xstream;
      opens Server.Model to com.google.gson,xstream;

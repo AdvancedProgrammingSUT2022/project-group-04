@@ -37,8 +37,8 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         this.score = score;
-        this.timeOfScore = timeOfScore;
-        this.lastLoginTime = lastLoginTime;
+        this.timeOfScore = timeToJsonString(timeOfScore);
+        this.lastLoginTime = timeToJsonString(lastLoginTime);
     }
 
     private String timeToJsonString(String time) {

@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -75,7 +76,7 @@ public class UserDatabase {
         if (!userPath.toFile().isFile()) {
             return;
         }
-        Reader reader = Files.newBufferedReader(userPath);
+        BufferedReader reader = Files.newBufferedReader(userPath);
         ArrayList<?> jsonStringUserDatabase = gson.fromJson(reader, ArrayList.class);
         reader.close();
 

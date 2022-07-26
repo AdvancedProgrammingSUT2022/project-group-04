@@ -4,143 +4,159 @@
     "nickname": "smiz",
     "password": "123456aA",
     "score": 6,
-    "timeOfScore": "Thu,11:04:11",
-    "lastLoginTime": "Mon, 18:10:44"
+    "timeOfScore": "Thu*11^04^11",
+    "lastLoginTime": "Tue*_11^31^24"
   },
   {
     "username": "alirezaRM",
     "nickname": "ARM",
     "password": "123456aA",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, 17:22:30"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_10^40^49"
   },
   {
     "username": "alirezaAmiri",
     "nickname": "amiri",
     "password": "123456aA",
     "score": 6,
-    "timeOfScore": "Thu,11:04:11",
-    "lastLoginTime": "Mon, 17:48:33"
+    "timeOfScore": "Thu*11^04^11",
+    "lastLoginTime": "Mon*_17^48^33"
   },
   {
     "username": "kasra",
     "nickname": "kysre",
     "password": "123456aA",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_09^41^09"
   },
   {
     "username": "yahya",
     "nickname": "yahcraft",
     "password": "123456aA",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, 17:15:04"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_09^41^52"
   },
   {
     "username": "testAccount",
     "nickname": "testPass",
     "password": "123456aA",
     "score": 2,
-    "timeOfScore": "Mon,19:47:56",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Mon*19^47^56",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "Alireza",
     "nickname": "Alireza",
     "password": "Amiri",
     "score": 2,
-    "timeOfScore": "Thu,11:04:11",
-    "lastLoginTime": "Mon, 16:40:01"
+    "timeOfScore": "Thu*11^04^11",
+    "lastLoginTime": "Mon*_16^40^01"
   },
   {
     "username": "Hasti",
     "nickname": "Hmiz",
     "password": "1234aA",
     "score": 2,
-    "timeOfScore": "Mon,19:47:56",
-    "lastLoginTime": "Fri, 14:00:53"
+    "timeOfScore": "Mon*19^47^56",
+    "lastLoginTime": "Fri*_14^00^53"
   },
   {
     "username": "Arian",
     "nickname": "timsar",
     "password": "1234",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_09^48^32"
   },
   {
     "username": "test1",
     "nickname": "test1",
     "password": "test1",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "test2",
     "nickname": "test2",
     "password": "test2",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "test3",
     "nickname": "test3",
     "password": "test3",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_10^42^20"
   },
   {
     "username": "test4",
     "nickname": "test4",
-    "password": "test4",
+    "password": "newPass",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_08^53^15"
   },
   {
     "username": "test5",
     "nickname": "test5",
     "password": "test5",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon*_22^48^19"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "test6",
     "nickname": "test6",
     "password": "test6",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "test7",
     "nickname": "test7",
     "password": "test7",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_09^44^40"
   },
   {
     "username": "test8",
     "nickname": "test8",
     "password": "test8",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
   },
   {
     "username": "dbtest",
     "nickname": "db",
     "password": "1234",
     "score": 0,
-    "timeOfScore": "Fri, Dec 31 +999999999 23:59:59",
-    "lastLoginTime": "Mon, Jan 01 +1000000000 00:00:00"
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Mon*_Jan_01_+1000000000_00^00^00"
+  },
+  {
+    "username": "testdb2",
+    "nickname": "testdb2",
+    "password": "testdb2",
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_08^02^30"
+  },
+  {
+    "username": "testRefactor",
+    "nickname": "123",
+    "password": "123",
+    "score": 0,
+    "timeOfScore": "Fri*_Dec_31_+999999999_23^59^59",
+    "lastLoginTime": "Tue*_11^30^46"
   }
 ]
