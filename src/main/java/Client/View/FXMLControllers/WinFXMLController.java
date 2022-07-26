@@ -34,7 +34,8 @@ public class WinFXMLController {
             winner = GameDatabase.checkIfWin();
             setUsersScores(GameDatabase.players);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
 
         setBackground();

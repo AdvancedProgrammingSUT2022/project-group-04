@@ -202,7 +202,8 @@ public class ProfileMenuFXMLController {
                 try {
                     loadAvatar(null);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -264,7 +265,8 @@ public class ProfileMenuFXMLController {
                     try{
                         setAvatarURL("/pics/Avatars/" + (finalI + 1) + ".png");
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             });

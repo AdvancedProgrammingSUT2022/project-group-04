@@ -2,7 +2,7 @@ package Client.View.FXMLControllers;
 
 import Client.Client;
 import Client.View.Components.Account;
-import Server.CheckOnlineTransition;
+import Client.View.Transitions.CheckOnlineTransition;
 import Server.UserDatabase;
 import Server.Model.GameModel;
 import Server.User;
@@ -150,7 +150,8 @@ public class LeaderBoardFXMLController {
             checkOnlineTransition = new CheckOnlineTransition(this);
             checkOnlineTransition.play();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
     }
 

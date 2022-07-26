@@ -717,7 +717,8 @@ public class GameMenuFXMLController {
                 try {
                     runGame();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 //GraphicalBases.enterGame("Game");
                 GraphicalBases.changeMenu("Loading");

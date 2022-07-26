@@ -22,7 +22,8 @@ public class DiscussionUserChoosingTransition extends Transition {
         try {
             discussionFXMLController.handleChoiceBox();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
     }
 }

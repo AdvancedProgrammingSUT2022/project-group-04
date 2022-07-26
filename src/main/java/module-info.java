@@ -23,9 +23,8 @@
      opens Client.View.FXMLControllers to javafx.fxml;
 
      exports Client.View.Transitions;
-     opens Client.View.Transitions to javafx.fxml,java.desktop;
 
-      exports Client.View;
+     exports Client.View;
      opens Client.View to javafx.fxml, javafx.media;
 
 
@@ -34,6 +33,7 @@
       opens Server to com.google.gson, xstream;
       exports Client;
       opens Client to javafx.fxml, xstream;
+     opens Client.View.Transitions to com.google.gson, java.desktop, javafx.fxml, xstream;
 
 
  }

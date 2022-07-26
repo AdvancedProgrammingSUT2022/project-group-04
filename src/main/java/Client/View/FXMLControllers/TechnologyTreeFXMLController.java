@@ -93,7 +93,8 @@ public class TechnologyTreeFXMLController {
                     try {
                         GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).addTechnology(technology);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             });

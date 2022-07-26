@@ -60,7 +60,8 @@ public class InvitationFXMLController {
                         invitationTransition.pause();
                         GraphicalBases.changeMenu("Loading");
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -77,7 +78,8 @@ public class InvitationFXMLController {
                     try {
                         denyInvitation(username.getText());
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -151,7 +153,8 @@ public class InvitationFXMLController {
                 username.setText("");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
     }
 
