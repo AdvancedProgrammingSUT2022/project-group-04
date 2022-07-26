@@ -1,15 +1,12 @@
 package Client.View.FXMLControllers;
 
-import Server.Controller.SavingGame;
-import Civilization.Database.GameDatabase;
+import Client.Database.GameDatabase;
 import Client.Client;
-import Client.Model.GameModel;
 import Server.User;
 import Client.View.Components.SwitchButton;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.CursorTransition;
 import Client.View.Transitions.GameMenuUserChoosingTransition;
-import Client.View.Transitions.SwitchButtonTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

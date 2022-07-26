@@ -1,8 +1,8 @@
 package Server.Controller;
 
-import Civilization.Database.GameDatabase;
-import Civilization.Database.GlobalVariables;
-import Client.Model.*;
+import Client.Database.GameDatabase;
+import Client.Database.GlobalVariables;
+import Server.Model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

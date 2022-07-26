@@ -1,9 +1,9 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Database.GameDatabase;
-import Client.Model.City;
-import Client.Model.GameModel;
-import Client.Model.Unit;
+import Client.Database.GameDatabase;
+import Server.Model.City;
+import Server.Model.GameModel;
+import Server.Model.Unit;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.CityPanelChoosingTransition;
 import Client.View.Transitions.UnitPanelChoosingTransition;

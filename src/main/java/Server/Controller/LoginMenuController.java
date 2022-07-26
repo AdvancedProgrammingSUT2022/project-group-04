@@ -1,6 +1,6 @@
 package Server.Controller;
 
-import Client.Model.LoginMenuModel;
+import Server.Model.LoginMenuModel;
 import Server.User;
 import Server.UserDatabase;
 import Server.UserController;

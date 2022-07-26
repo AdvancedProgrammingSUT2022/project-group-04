@@ -1,9 +1,9 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Database.GameDatabase;
-import Civilization.Database.GlobalVariables;
-import Client.Model.Building;
-import Client.Model.GameModel;
+import Client.Database.GameDatabase;
+import Client.Database.GlobalVariables;
+import Server.Model.Building;
+import Server.Model.GameModel;
 import Client.View.GraphicalBases;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

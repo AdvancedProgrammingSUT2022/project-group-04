@@ -1,11 +1,11 @@
 package Client.View.FXMLControllers;
 
 import Client.Client;
-import Client.Model.Chat;
+import Server.Model.Chat;
 import Client.View.Transitions.Chatroom;
 import Server.Controller.ChatroomController;
 import Server.UserDatabase;
-import Client.Model.GameModel;
+import Server.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
 import javafx.animation.AnimationTimer;
@@ -13,7 +13,6 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

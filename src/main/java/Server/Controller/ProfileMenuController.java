@@ -1,7 +1,7 @@
 package Server.Controller;
 
 import Server.UserDatabase;
-import Client.Model.ProfileMenuModel;
+import Server.Model.ProfileMenuModel;
 import Server.User;
 import Server.UserController;
 

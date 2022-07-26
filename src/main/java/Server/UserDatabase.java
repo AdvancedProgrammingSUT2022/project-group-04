@@ -13,8 +13,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import Civilization.Database.GameDatabase;
-import Client.Model.Civilization;
+import Server.Model.Civilization;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

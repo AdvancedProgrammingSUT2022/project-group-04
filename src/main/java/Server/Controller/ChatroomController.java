@@ -1,18 +1,12 @@
 package Server.Controller;
 
-import Client.Model.Chat;
-import Client.Model.Friendship;
-import Client.View.GraphicalBases;
-import Server.User;
+import Server.Model.Chat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -22,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ChatroomController {

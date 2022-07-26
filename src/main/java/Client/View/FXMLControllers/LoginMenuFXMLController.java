@@ -2,8 +2,8 @@ package Client.View.FXMLControllers;
 
 import Server.Controller.LoginMenuController;
 import Server.ClientThread;
-import Client.Model.GameModel;
-import Client.Model.LoginMenuModel;
+import Server.Model.GameModel;
+import Server.Model.LoginMenuModel;
 import Server.User;
 import Client.View.Components.Account;
 import Client.View.GraphicalBases;
@@ -27,7 +27,6 @@ import javafx.scene.text.Text;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 public class LoginMenuFXMLController {
 

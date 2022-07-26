@@ -1,10 +1,10 @@
 package Server;
 
-import Client.Model.*;
 import Client.View.Transitions.DisconnectTransition;
 import Server.Controller.GameMenuController;
-import Civilization.Database.GlobalVariables;
+import Client.Database.GlobalVariables;
 import Client.View.FXMLControllers.GameFXMLController;
+import Server.Model.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.json.JSONObject;

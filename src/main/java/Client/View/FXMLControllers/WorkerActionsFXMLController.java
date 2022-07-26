@@ -1,12 +1,12 @@
 package Client.View.FXMLControllers;
 
 import Server.Controller.GameMenuController;
-import Civilization.Database.GameDatabase;
-import Civilization.Database.GlobalVariables;
-import Client.Model.GameModel;
-import Client.Model.TerrainFeatures;
-import Client.Model.Tile;
-import Client.Model.Worker;
+import Client.Database.GameDatabase;
+import Client.Database.GlobalVariables;
+import Server.Model.GameModel;
+import Server.Model.TerrainFeatures;
+import Server.Model.Tile;
+import Server.Model.Worker;
 import Client.View.GraphicalBases;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

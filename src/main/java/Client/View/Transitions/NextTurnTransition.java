@@ -1,11 +1,9 @@
 package Client.View.Transitions;
 
-import Civilization.Database.GameDatabase;
+import Client.Database.GameDatabase;
 import Client.View.FXMLControllers.GameFXMLController;
-import Server.GameDatabaseServer;
 import javafx.animation.Transition;
 import javafx.util.Duration;
-import Client.*;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package Client;
 
-import Civilization.Database.GameDatabase;
+import Client.Database.GameDatabase;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

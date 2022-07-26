@@ -1,15 +1,14 @@
 package Client.View.FXMLControllers;
 
 import Client.Client;
-import Client.Model.*;
 import Server.Controller.CombatController;
 import Server.Controller.GameMenuController;
-import Civilization.Database.GameDatabase;
-import Civilization.Database.GlobalVariables;
+import Client.Database.GameDatabase;
+import Client.Database.GlobalVariables;
 import Client.View.Cheater;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.NextTurnTransition;
-import Server.User;
+import Server.Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
