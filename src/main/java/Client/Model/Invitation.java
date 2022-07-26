@@ -223,8 +223,8 @@ public class Invitation {
             String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
             Connection connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-            String query = "update invitation set username1='%s',username2='%s', isAccepted=%s, isDenied=%s, minute=%s where username1='%s'and username2='%s'";
-            query = String.format(query, invitation.getUsername1(), invitation.getUsername2(), invitation.isAccepted(), invitation.isDenied(), invitation.getMinute(), invitation.getUsername1(), invitation.getUsername2());
+            String query = "update invitation set username1='%s',username2='%s', isAccepted=%s, isDenied=%s, minute=%s where username1='%s'and username2='%s' and `minute`=%s";
+            query = String.format(query, invitation.getUsername1(), invitation.getUsername2(), invitation.isAccepted(), invitation.isDenied(), invitation.getMinute(), invitation.getUsername1(), invitation.getUsername2(), invitation.getMinute());
             statement.execute(query);
             statement.close();
             connection.close();
@@ -278,6 +278,5 @@ public class Invitation {
     public void deny() {
         this.isAccepted = false;
         this.isDenied = true;
-        expire();
     }
 }
