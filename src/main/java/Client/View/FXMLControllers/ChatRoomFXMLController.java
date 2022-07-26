@@ -1,6 +1,8 @@
 package Client.View.FXMLControllers;
 
 import Client.Client;
+import Client.View.Transitions.ChatroomChoosingTransition;
+import Client.View.Transitions.GameMenuUserChoosingTransition;
 import Server.Model.Chat;
 import Client.View.Transitions.Chatroom;
 import Server.Controller.ChatroomController;
@@ -8,6 +10,7 @@ import Server.UserDatabase;
 import Server.Model.GameModel;
 import Server.User;
 import Client.View.GraphicalBases;
+import com.google.gson.JsonObject;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -37,6 +40,8 @@ import java.nio.charset.StandardCharsets;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ChatRoomFXMLController {
     @FXML
@@ -55,16 +60,26 @@ public class ChatRoomFXMLController {
     Button editOk = new Button("Ok");
     @FXML
     Button startChat = new Button("start");
+    @FXML
+    Button roomOK;
 
     boolean isChatPrivate = false;
+    boolean isRoomChat = false;
+
+    private Set<String> selectedUsers;
+
+    ChoiceBox<String> roomUsers = new ChoiceBox<>();
 
     @FXML
     public void initialize(){
+        selectedUsers = new HashSet<>();
         GameModel.isGame = false;
         setChoices();
+        roomOK.setVisible(false);
         Chatroom.refreshTimer = refresh5Sec();
         Chatroom.refreshTimer.start();
         Chatroom.privateRefreshTimer = privateRefresh5Sec();
+        Chatroom.roomRefreshTimer = roomRefresh5Sec();
         editOk.setLayoutX(595);
         editOk.setLayoutY(663);
         editOk.setVisible(false);
@@ -74,8 +89,40 @@ public class ChatRoomFXMLController {
                 "-fx-text-fill: white");
         mainAnchorPane.getChildren().add(editOk);
         startChat.setVisible(false);
+        setRoomChoiceBox();
     }
 
+    public void handleChoiceBox() {
+        if(roomUsers.getValue() != null) {
+            selectedUsers.add(roomUsers.getValue());
+
+        }
+
+    }
+
+    public void setRoomChoiceBox(){
+        ChatroomChoosingTransition chatroomChoosingTransition = new ChatroomChoosingTransition(this);
+        chatroomChoosingTransition.play();
+
+        ArrayList<String> usersNames = new ArrayList<>();
+        for (User user : User.users) {
+            if(user.getUsername().equals(User.loggedInUser.getUsername())) {
+                continue;
+            }
+            usersNames.add(user.getNickname());
+        }
+        ObservableList<String> usersInput = FXCollections.observableArrayList(usersNames);
+        roomUsers.setItems(usersInput);
+
+
+        roomUsers.setLayoutX(500);
+        roomUsers.setLayoutY(40);
+        roomUsers.setStyle(users.getStyle());
+        roomUsers.setDisable(true);
+        roomUsers.setVisible(false);
+        mainAnchorPane.getChildren().add(roomUsers);
+
+    }
     public AnimationTimer refresh5Sec(){
         final LongProperty lastUpdateTime = new SimpleLongProperty();
         double[] secondsSinceStart = new double[1];
@@ -125,14 +172,49 @@ public class ChatRoomFXMLController {
     }
 
 
+    public AnimationTimer roomRefresh5Sec(){
+        final LongProperty lastUpdateTime = new SimpleLongProperty();
+        double[] secondsSinceStart = new double[1];
+        AnimationTimer ref = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (lastUpdateTime.get() > 0){
+                    final double elapsedSeconds = (l - lastUpdateTime.get()) / 1_000_000_000.0;
+                    secondsSinceStart[0] += elapsedSeconds;
+                    if (secondsSinceStart[0] > 1){
+                        try {
+                            roomRefresh();
+                            secondsSinceStart[0] = 0;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                lastUpdateTime.set(l);
+            }
+        };
+        return ref;
+    }
+
     public void startPrivateChat() throws IOException {
         isChatPrivate = true;
         chatBox.getChildren().clear();
         Chat.chats.clear();
         Chatroom.refreshTimer.stop();
+        Chatroom.roomRefreshTimer.stop();
         Chatroom.privateRefreshTimer.start();
         ChatroomController.readChats("privateChatDatabase.json");
 
+    }
+
+    public void startRoomChat() throws IOException {
+        isRoomChat = true;
+        chatBox.getChildren().clear();
+        Chat.chats.clear();
+        Chatroom.refreshTimer.stop();
+        Chatroom.privateRefreshTimer.stop();
+        Chatroom.roomRefreshTimer.start();
+        ChatroomController.readChats("roomChatDatabase.json");
     }
 
     public void refresh() throws IOException {
@@ -159,6 +241,18 @@ public class ChatRoomFXMLController {
         updateChatBox();
     }
 
+    public void roomRefresh() throws IOException {
+        JSONObject clientCommandJ = new JSONObject();
+        clientCommandJ.put("menu type", "Chatroom");
+        clientCommandJ.put("action", "roomRefresh");
+        clientCommandJ.put("name", User.loggedInUser.getNickname());
+        Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
+        Client.dataOutputStream1.flush();
+        chatBox.getChildren().clear();
+        ChatroomController.readChats("roomChatDatabase.json");
+        updateChatBox();
+    }
+
     public void deleteChat(Chat chat) throws IOException {
         System.out.println("deleting");
         JSONObject clientCommandJ = new JSONObject();
@@ -171,6 +265,12 @@ public class ChatRoomFXMLController {
         clientCommandJ.put("seen", chat.isSeen());
         clientCommandJ.put("edited", chat.isEdited());
         clientCommandJ.put("receiver", new String(chat.getReceiver(), StandardCharsets.UTF_8));
+
+        if (chat.getRoomReceivers() != null) {
+            clientCommandJ.put("room", new String(chat.getRoomReceivers().get(0), StandardCharsets.UTF_8));
+        } else {
+            clientCommandJ.put("room", "null");
+        }
         Client.dataOutputStream1.writeUTF(clientCommandJ.toString());
         Client.dataOutputStream1.flush();
 
@@ -189,6 +289,11 @@ public class ChatRoomFXMLController {
         clientCommandJ.put("seen", chat.isSeen());
         clientCommandJ.put("edited", chat.isEdited());
         clientCommandJ.put("receiver", new String(chat.getReceiver(), StandardCharsets.UTF_8));
+        if (chat.getRoomReceivers() != null) {
+            clientCommandJ.put("room", new String(chat.getRoomReceivers().get(0), StandardCharsets.UTF_8));
+        } else {
+            clientCommandJ.put("room", "null");
+        }
         editOk.setVisible(true);
         messageBox.setText(new String(chat.getMessage(), StandardCharsets.UTF_8));
         editOk.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -220,6 +325,17 @@ public class ChatRoomFXMLController {
                     continue;
                 }
                 if (new String(chat.getReceiver(), StandardCharsets.UTF_8).equals("null")){
+                    continue;
+                }
+            }
+            if (isRoomChat){
+                boolean exists = false;
+                for (byte[] roomReceiver : chat.getRoomReceivers()) {
+                    if (new String(roomReceiver, StandardCharsets.UTF_8).equals(User.loggedInUser.getNickname())){
+                        exists = true;
+                    }
+                }
+                if (!(exists ||  new String(chat.getName(), StandardCharsets.UTF_8).equals(User.loggedInUser.getNickname()))){
                     continue;
                 }
             }
@@ -319,6 +435,7 @@ public class ChatRoomFXMLController {
         users.setItems(availableUsers);
     }
 
+
     public void sendMessage() throws IOException {
         if (!messageBox.getText().isBlank()) {
             JSONObject clientCommandJ = new JSONObject();
@@ -368,9 +485,20 @@ public class ChatRoomFXMLController {
 
             if (isChatPrivate){
                 clientCommandJ.put("receiver", users.getValue());
-            } else {
+            } else  {
                 clientCommandJ.put("receiver", "null");
+                if (isRoomChat){
+                    JSONObject roomUsers = new JSONObject();
+                    int i = 1;
+                    for (String selectedUser : selectedUsers) {
+                        roomUsers.put(String.valueOf(i), selectedUser);
+                        i++;
+                    }
+                    clientCommandJ.put("room", roomUsers);
 
+                } else {
+                    clientCommandJ.put("room", "null");
+                }
             }
 
             clientCommandJ.put("message", message);
@@ -442,14 +570,27 @@ public class ChatRoomFXMLController {
 
     public void changeChatType() {
         if (choiceBox.getValue().equals("private")){
+            roomOK.setVisible(false);
             users.setVisible(true);
             startChat.setVisible(true);
-        } else {
+        } else if (choiceBox.getValue().equals("public")) {
+            roomOK.setVisible(false);
             users.setVisible(false);
             startChat.setVisible(false);
             isChatPrivate = false;
+            isRoomChat = false;
             Chatroom.privateRefreshTimer.stop();
+            Chatroom.roomRefreshTimer.stop();
             Chatroom.refreshTimer.start();
+        } else {
+            users.setVisible(false);
+            startChat.setVisible(false);
+            roomOK.setVisible(true);
+            Chatroom.privateRefreshTimer.stop();
+            Chatroom.refreshTimer.stop();
+            roomUsers.setDisable(false);
+            roomUsers.setVisible(true);
+
         }
     }
 }

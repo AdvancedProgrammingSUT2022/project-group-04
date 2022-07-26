@@ -39,5 +39,6 @@
        </Button>
       <ChoiceBox fx:id="users" layoutX="500.0" layoutY="40.0" prefHeight="33.0" prefWidth="119.0" styleClass="choiceButton" value="Users" visible="false" />
       <Button fx:id="startChat" layoutX="292.0" layoutY="5.0" mnemonicParsing="false" onAction="#startPrivateChat" styleClass="TextFeild" text="start" visible="false" />
+      <Button fx:id="roomOK" layoutX="358.0" layoutY="5.0" mnemonicParsing="false" onAction="#startRoomChat" styleClass="TextFeild" text="Ok" />
    </children>
 </AnchorPane>

@@ -51,16 +51,17 @@ public class Chat {
         this.receiver = receiver;
     }
 
-    public byte[] getRoom() {
-        return room;
-    }
-
-    public void setRoom(byte[] room) {
-        this.room = room;
-    }
 
     private byte[] receiver;
-    private byte[] room;
+    private ArrayList<byte[]> roomReceivers;
+
+    public ArrayList<byte[]> getRoomReceivers() {
+        return roomReceivers;
+    }
+
+    public void setRoomReceivers(ArrayList<byte[]> roomReceivers) {
+        this.roomReceivers = roomReceivers;
+    }
 
     public boolean isSeen() {
         return seen;
