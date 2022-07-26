@@ -1,5 +1,6 @@
 package Client.Model;
 
+import Client.View.Components.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -9,6 +10,10 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Friendship {
@@ -25,6 +30,72 @@ public class Friendship {
         this.isAccepted = false;
         this.isDenied = false;
         friendships.add(this);
+    }
+
+    public Friendship(String firstUsername, String secondUsername, boolean isAccepted, boolean isDenied) {
+        this.firstUsername = firstUsername;
+        this.secondUsername = secondUsername;
+        this.isAccepted = isAccepted;
+        this.isDenied = isDenied;
+    }
+
+    public static void writeOneFriendship(Friendship friendship) throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "insert into friendship(firstUsername,secondUsername, isAccepted, isDenied) values('%s','%s', %s, %s)";
+            query = String.format(query, friendship.getFirstUsername(), friendship.getSecondUsername(), friendship.isAccepted(), friendship.isDenied());
+            statement.execute(query);
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            Friendship.writeFriendships("friendshipDatabase.json");
+            System.err.println("Database ERROR");
+        }
+    }
+
+    public static void editFriendship(Friendship friendship) throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "update friendship set firstUsername='%s',secondUsername='%s', isAccepted=%s, isDenied=%s where firstUsername='%s'and secondUsername='%s'";
+            query = String.format(query, friendship.getFirstUsername(), friendship.getSecondUsername(), friendship.isAccepted(), friendship.isDenied(), friendship.getFirstUsername(), friendship.getSecondUsername());
+            statement.execute(query);
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            //e.printStackTrace();
+            Friendship.writeFriendships("friendshipDatabase.json");
+            System.err.println("Database ERROR");
+        }
+    }
+
+    public static void readFromDatabase() throws IOException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String url = "jdbc:mysql://localhost:3306/project-group-04?user=root";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            String query = "select * from friendship";
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String firstUsername = resultSet.getString(1);
+                String secondUsername = resultSet.getString(2);
+                boolean isAccepted = Boolean.parseBoolean(resultSet.getString(3));
+                boolean isDenied = Boolean.parseBoolean(resultSet.getString(4));
+                Friendship friendship = new Friendship(firstUsername, secondUsername, isAccepted, isDenied);
+                Friendship.friendships.add(friendship);
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            Friendship.readFriendships("friendshipDatabase.json");
+            System.err.println("Database ERROR");
+        }
     }
 
     public String getFirstUsername() {
@@ -99,6 +170,15 @@ public class Friendship {
             if(friendship.getFirstUsername().equals(firstUsername) && friendship.getSecondUsername().equals(secondUsername)) {
                 return friendship;
             } else if(friendship.getFirstUsername().equals(secondUsername) && friendship.getSecondUsername().equals(firstUsername)) {
+                return friendship;
+            }
+        }
+        return null;
+    }
+
+    public static Friendship getJustFriendshipByUsernames(String firstUsername, String secondUsername) {
+        for (Friendship friendship : friendships) {
+            if(friendship.getFirstUsername().equals(firstUsername) && friendship.getSecondUsername().equals(secondUsername)) {
                 return friendship;
             }
         }
