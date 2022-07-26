@@ -1,8 +1,7 @@
 package Client.View.FXMLControllers;
 
 import Client.Client;
-import Client.Model.GameModel;
-import Client.Model.Unit;
+import Server.Model.GameModel;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.CheckStartGameTransition;
 import Server.User;

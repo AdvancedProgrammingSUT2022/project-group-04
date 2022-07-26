@@ -1,9 +1,9 @@
 package Client.View;
 
-import Client.Model.*;
 import Server.Controller.GameMenuController;
-import Civilization.Database.GameDatabase;
-import Civilization.Database.GlobalVariables;
+import Client.Database.GameDatabase;
+import Client.Database.GlobalVariables;
+import Server.Model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

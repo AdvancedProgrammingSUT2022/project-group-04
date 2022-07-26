@@ -1,7 +1,7 @@
 package Server.Controller;
 
 import Server.UserDatabase;
-import Client.Model.MainMenuModel;
+import Server.Model.MainMenuModel;
 import Server.User;
 
 public class MainMenuController {

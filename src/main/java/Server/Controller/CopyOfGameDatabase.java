@@ -1,8 +1,8 @@
 package Server.Controller;
 
-import Civilization.Database.GameDatabase;
-import Client.Model.Civilization;
-import Client.Model.Tile;
+import Client.Database.GameDatabase;
+import Server.Model.Civilization;
+import Server.Model.Tile;
 
 import java.util.ArrayList;
 

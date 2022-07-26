@@ -1,8 +1,8 @@
 package Client.View;
 
 import Server.Controller.GameMenuController;
-import Civilization.Database.GameDatabase;
-import Client.Model.GameModel;
+import Client.Database.GameDatabase;
+import Server.Model.GameModel;
 
 import java.io.IOException;
 import java.util.Objects;

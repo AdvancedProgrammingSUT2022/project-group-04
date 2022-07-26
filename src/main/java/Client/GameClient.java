@@ -1,9 +1,9 @@
 package Client;
 
-import Client.Model.*;
 import Server.Controller.GameMenuController;
-import Civilization.Database.GameDatabase;
-import Civilization.Database.GlobalVariables;
+import Client.Database.GameDatabase;
+import Client.Database.GlobalVariables;
+import Server.Model.*;
 import Server.UserDatabase;
 import Client.View.FXMLControllers.GameFXMLController;
 import Client.View.Transitions.TransitionDatabase;

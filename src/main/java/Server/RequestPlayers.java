@@ -1,7 +1,7 @@
 package Server;
 
 
-import Client.Model.*;
+import Server.Model.*;
 
 import java.util.ArrayList;
 

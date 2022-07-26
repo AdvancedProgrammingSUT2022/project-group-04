@@ -1,10 +1,9 @@
 package Client.View.FXMLControllers;
 
 import Server.Controller.ProfileMenuController;
-import Client.Model.GameModel;
-import Client.Model.ProfileMenuModel;
+import Server.Model.GameModel;
+import Server.Model.ProfileMenuModel;
 import Server.User;
-import Client.View.Components.Account;
 import Client.View.GraphicalBases;
 import Client.View.Transitions.CursorTransition;
 import Client.Client;

@@ -1,11 +1,10 @@
 package Client.View.FXMLControllers;
 
-import Civilization.Database.GameDatabase;
+import Client.Database.GameDatabase;
 import Client.Client;
-import Client.Model.Civilization;
-import Client.Model.GameModel;
+import Server.Model.Civilization;
+import Server.Model.GameModel;
 import Client.View.GraphicalBases;
-import Server.UserDatabase;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

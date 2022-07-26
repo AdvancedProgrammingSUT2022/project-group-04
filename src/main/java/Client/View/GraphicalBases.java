@@ -1,6 +1,6 @@
 package Client.View;
 
-import Civilization.Database.GlobalVariables;
+import Client.Database.GlobalVariables;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

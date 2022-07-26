@@ -1,6 +1,6 @@
 package Client.View.FXMLControllers;
 
-import Client.Model.GameModel;
+import Server.Model.GameModel;
 import Client.Client;
 import Server.User;
 import Client.View.GraphicalBases;

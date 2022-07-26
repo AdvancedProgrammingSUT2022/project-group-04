@@ -4,11 +4,11 @@ import Server.Controller.CombatController;
 import Server.Controller.GameMenuController;
 import Server.Controller.MainMenuController;
 import Server.Controller.ProfileMenuController;
-import Civilization.Database.GameDatabase;
+import Client.Database.GameDatabase;
 import Server.UserDatabase;
-import Client.Model.Civilization;
-import Client.Model.GameModel;
-import Client.Model.ProfileMenuModel;
+import Server.Model.Civilization;
+import Server.Model.GameModel;
+import Server.Model.ProfileMenuModel;
 import Server.User;
 
 import java.io.IOException;

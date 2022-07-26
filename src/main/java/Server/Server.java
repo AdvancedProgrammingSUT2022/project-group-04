@@ -1,11 +1,11 @@
 package Server;
 
 
-import Client.Model.*;
 import Server.Controller.ChatroomController;
 import Server.Controller.LoginMenuController;
 import Server.Controller.ProfileMenuController;
 import Client.View.Components.Account;
+import Server.Model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
