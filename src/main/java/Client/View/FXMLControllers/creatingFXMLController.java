@@ -111,7 +111,8 @@ public class creatingFXMLController {
                     try {
                         GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             });
@@ -123,7 +124,8 @@ public class creatingFXMLController {
                     try {
                         GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).getSelectedCity().buildBuilding(selectedBuilding, buildBool);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             });

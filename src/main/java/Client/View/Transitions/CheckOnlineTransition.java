@@ -1,6 +1,7 @@
-package Server;
+package Client.View.Transitions;
 
 import Client.View.FXMLControllers.LeaderBoardFXMLController;
+import Server.UserDatabase;
 import javafx.animation.Transition;
 import javafx.util.Duration;
 

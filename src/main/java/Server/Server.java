@@ -30,7 +30,8 @@ public class Server {
         try {
             serverSocket1 = new ServerSocket(8080);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Server Error");
             System.exit(0);
         }
     }
@@ -60,14 +61,16 @@ public class Server {
                         DataInputStream dataInputStream1 = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                         processSocketRequest(dataInputStream1, dataOutputStream1, loginMenuController, profileMenuController, ClientThread.id);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Server Error");
                     }
                 });
                 thread.start();
                 clientThread.setThread(thread);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Server Error");
         }
     }
 
@@ -118,7 +121,7 @@ public class Server {
                 }
             } catch (Exception ex) {
                 if(!disconnected) {
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                     System.out.println("Client " + id + " disconnected");
                     ClientThread clientThread = ClientThread.getThreadID(id);
                     if (clientThread != null && clientThread.getUsername() != null) {
@@ -381,7 +384,8 @@ public class Server {
                 dataOutputStream.flush();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Server Error");
         }
     }
 

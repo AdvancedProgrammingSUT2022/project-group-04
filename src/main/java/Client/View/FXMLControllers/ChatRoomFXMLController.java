@@ -90,7 +90,8 @@ public class ChatRoomFXMLController {
                             refresh();
                             secondsSinceStart[0] = 0;
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            System.err.println("Connection lost");
                         }
                     }
                 }
@@ -114,7 +115,8 @@ public class ChatRoomFXMLController {
                             privateRefresh();
                             secondsSinceStart[0] = 0;
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            System.err.println("Connection lost");
                         }
                     }
                 }
@@ -201,7 +203,8 @@ public class ChatRoomFXMLController {
                     editOk.setVisible(false);
                     messageBox.clear();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
 
             }
@@ -257,7 +260,8 @@ public class ChatRoomFXMLController {
                         try {
                             deleteChat(chat);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            System.err.println("Connection lost");
                         }
                     }
                 });
@@ -267,7 +271,8 @@ public class ChatRoomFXMLController {
                         try {
                             editChat(chat);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            System.err.println("Connection lost");
                         }
                     }
                 });

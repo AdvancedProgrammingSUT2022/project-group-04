@@ -132,27 +132,32 @@ public class DiscussionFXMLController {
                 try {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(false);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(null);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     sendMessage("Peace accepted");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(false);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(null);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 isPeace = false;
                 isAccepting = false;
@@ -172,12 +177,14 @@ public class DiscussionFXMLController {
                 try {
                     sendMessage("Peace with " + selected.getNickname());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByNickname(selected.getNickname()).setAcceptingPeace(true);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 isPeace = false;
                 isAccepting = false;
@@ -197,27 +204,32 @@ public class DiscussionFXMLController {
                 try {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setInWar(true);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByTurn(GameDatabase.getTurn()).setIsInWarWith(GameDatabase.getCivilizationByNickname(selected.getNickname()));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     sendMessage(you + " is Now in WAR with " + selected.getNickname());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByNickname(selected.getNickname()).setIsInWarWith(GameDatabase.getCivilizationByNickname(you));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     GameDatabase.getCivilizationByNickname(selected.getNickname()).setInWar(true);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 isPeace = true;
             }
@@ -280,12 +292,14 @@ public class DiscussionFXMLController {
                         try {
                             sendMessage(number + " Foods from " + you);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            System.err.println("Connection lost");
                         }
                         try {
                             GameDatabase.getCityByName(finalCityWithMaxFood).setLeftoverFood(GameDatabase.getCityByName(finalCityWithMaxFood).getFood() - number);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            System.err.println("Connection lost");
                         }
                         for (City city : selected.getCities()) {
                             city.setLeftoverFood(city.getFood() + number);
@@ -356,7 +370,8 @@ public class DiscussionFXMLController {
                             button.setDisable(true);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -418,13 +433,15 @@ public class DiscussionFXMLController {
                             try {
                                 GameDatabase.getCivilizationByNickname(you).setGold(GameDatabase.getCivilizationByNickname(you).getGold() - number);
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                //e.printStackTrace();
+                                System.err.println("Connection lost");
                             }
                             textField.setText("");
                             button.setDisable(true);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -459,7 +476,8 @@ public class DiscussionFXMLController {
                 try {
                     sendMessage(you + " sent resource " + resourceSelected);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -504,7 +522,8 @@ public class DiscussionFXMLController {
                 try {
                     sendMessage(message.getText());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 message.setText("");
             }

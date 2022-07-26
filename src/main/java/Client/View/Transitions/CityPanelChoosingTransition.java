@@ -23,7 +23,8 @@ public class CityPanelChoosingTransition
         try {
             panelListFXMLController.handleCityChoiceBox();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
     }
 }

@@ -28,7 +28,8 @@ public class DisconnectTransition extends Transition {
             try {
                 GameDatabaseServer.removeUser(this, this.username);
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                System.err.println("Connection lost");
             }
         }
 

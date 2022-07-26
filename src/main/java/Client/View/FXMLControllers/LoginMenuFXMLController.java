@@ -244,7 +244,8 @@ public class LoginMenuFXMLController {
                 try {
                     loginButton(mouseEvent);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -265,7 +266,8 @@ public class LoginMenuFXMLController {
                 try {
                     registerButton(mouseEvent);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });

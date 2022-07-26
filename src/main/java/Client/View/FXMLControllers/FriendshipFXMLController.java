@@ -80,7 +80,8 @@ public class FriendshipFXMLController {
                     acceptFriendship(request1.getText());
                     updateButtons();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -94,7 +95,8 @@ public class FriendshipFXMLController {
                     acceptFriendship(request2.getText());
                     updateButtons();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -108,7 +110,8 @@ public class FriendshipFXMLController {
                     denyFriendship(request1.getText());
                     updateButtons();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -122,7 +125,8 @@ public class FriendshipFXMLController {
                     denyFriendship(request2.getText());
                     updateButtons();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -179,7 +183,8 @@ public class FriendshipFXMLController {
                 try {
                     sendFriendship(username);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 button.setVisible(false);
             }
@@ -222,7 +227,8 @@ public class FriendshipFXMLController {
                     try {
                         profile.setText(getUserInformation(text1.getText()));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                     try {
                         if(isRequestingValid(text1.getText())) {
@@ -231,7 +237,8 @@ public class FriendshipFXMLController {
                             button.setVisible(false);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -246,7 +253,8 @@ public class FriendshipFXMLController {
                     try {
                         profile.setText(getUserInformation(text2.getText()));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                     try {
                         if(isRequestingValid(text2.getText())) {
@@ -255,7 +263,8 @@ public class FriendshipFXMLController {
                             button.setVisible(false);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -270,7 +279,8 @@ public class FriendshipFXMLController {
                     try {
                         profile.setText(getUserInformation(text3.getText()));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                     try {
                         if(isRequestingValid(text3.getText())) {
@@ -279,7 +289,8 @@ public class FriendshipFXMLController {
                             button.setVisible(false);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -294,7 +305,8 @@ public class FriendshipFXMLController {
                     try {
                         profile.setText(getUserInformation(text4.getText()));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                     try {
                         if(isRequestingValid(text4.getText())) {
@@ -303,7 +315,8 @@ public class FriendshipFXMLController {
                             button.setVisible(false);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -318,7 +331,8 @@ public class FriendshipFXMLController {
                     try {
                         profile.setText(getUserInformation(text5.getText()));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                     try {
                         if(isRequestingValid(text5.getText())) {
@@ -327,7 +341,8 @@ public class FriendshipFXMLController {
                             button.setVisible(false);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        System.err.println("Connection lost");
                     }
                 }
             }
@@ -348,18 +363,21 @@ public class FriendshipFXMLController {
                 try {
                     Client.dataOutputStream1.writeUTF(input.toString());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     Client.dataOutputStream1.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     String usernames = Client.dataInputStream1.readUTF();
                     setTexts(usernames.split("\n"));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });

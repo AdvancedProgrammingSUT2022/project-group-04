@@ -27,7 +27,8 @@ public class CheckStartGameTransition extends Transition {
             this.loadingFXMLController.shallGoIn();
             System.out.println("5");
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
     }
 }

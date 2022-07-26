@@ -72,7 +72,8 @@ public class CityPanelFXMLController {
                 try {
                     tile = findTile(tilesForBuying.getValue());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 if(tile == null) {
                     return;
@@ -80,12 +81,14 @@ public class CityPanelFXMLController {
                 try {
                     city.buyTile(tile);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 try {
                     updateTilesForBuyingChoiceBox();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 updateTilesChoiceBox();
             }
@@ -131,7 +134,8 @@ public class CityPanelFXMLController {
                 try {
                     citizen = findCitizen(workingCitizens.getValue());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 if(citizen == null) {
                     return;
@@ -187,7 +191,8 @@ public class CityPanelFXMLController {
                 try {
                     citizen = findCitizen(result[0]);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 if(citizen == null) {
                     return;

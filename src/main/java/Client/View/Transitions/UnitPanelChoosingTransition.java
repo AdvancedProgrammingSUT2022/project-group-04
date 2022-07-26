@@ -22,7 +22,8 @@ public class UnitPanelChoosingTransition extends Transition {
         try {
             panelListFXMLController.handleUnitChoiceBox();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.err.println("Connection lost");
         }
     }
 }

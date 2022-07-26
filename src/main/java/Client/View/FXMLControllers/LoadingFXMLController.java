@@ -111,7 +111,8 @@ public class LoadingFXMLController {
                 try {
                     expireAll();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
             }
         });
@@ -132,7 +133,8 @@ public class LoadingFXMLController {
                 try {
                     updateUsersInGame();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.err.println("Connection lost");
                 }
                 updateText();
             }
