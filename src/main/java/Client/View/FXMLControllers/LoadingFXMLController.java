@@ -130,13 +130,13 @@ public class LoadingFXMLController {
         refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    updateUsersInGame();
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                    System.err.println("Connection lost");
-                }
-                updateText();
+//                try {
+//                    updateUsersInGame();
+//                } catch (IOException e) {
+//                    //e.printStackTrace();
+//                    System.err.println("Connection lost");
+//                }
+//                updateText();
             }
         });
         mainAnchorPane.getChildren().add(refresh);
@@ -232,7 +232,7 @@ public class LoadingFXMLController {
     }
 
 
-    public void shallGoIn() throws IOException {
+    public void shallGoIn() throws IOException, InterruptedException {
         if(isGettingUsersValid()) {
             if(usersInGame.size() == usersInvited()) {
                 goToGame();
@@ -259,7 +259,7 @@ public class LoadingFXMLController {
         return result;
     }
 
-    private void goToGame() throws IOException {
+    private void goToGame() throws IOException, InterruptedException {
         this.checkStartGameTransition.pause();
         runGame();
         GraphicalBases.enterGame("Game");
@@ -270,8 +270,8 @@ public class LoadingFXMLController {
         button.setVisible(true);
     }
 
-    private void runGame() throws IOException {
+    private void runGame() throws IOException, InterruptedException {
         GameModel gameModel = new GameModel();
-        gameModel.startGame(usersInGame);
+        gameModel.startGame(usersInGame,isAdmin);
     }
 }
