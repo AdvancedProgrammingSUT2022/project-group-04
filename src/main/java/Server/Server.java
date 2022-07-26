@@ -43,9 +43,8 @@ public class Server {
         Account.readFromDatabase();
         //Friendship.readFriendships("friendshipDatabase.json");
         Friendship.readFromDatabase();
-
-
-        Invitation.readInvitations("invitationDatabase.json");
+        //Invitation.readInvitations("invitationDatabase.json");
+        Invitation.readFromDatabase();
 
         ChatroomController.writeChats("chatDatabase.json");
         ChatroomController.writeChats("privateChatDatabase.json");
@@ -221,6 +220,7 @@ public class Server {
             String username1 = clientCommandJ.get("username").toString();
             String[] users = clientCommandJ.get("users").toString().split("\n");
             Invitation.sendToAll(users, username1);
+            addAllInvitations(users, username1);
             System.out.println(Arrays.toString(Invitation.invitations.toArray()));
             System.out.println("end");
         } else if (clientCommandJ.get("action").equals("getAllInvitations")) {
@@ -267,16 +267,26 @@ public class Server {
         } else if (clientCommandJ.get("action").equals("accept")) {
             Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
             invitation.accept();
+            //Invitation.writeInvitations("invitationDatabase.json");
+            Invitation.editInvitation(invitation);
         } else if (clientCommandJ.get("action").equals("deny")) {
             Invitation invitation = Invitation.getInvitationBuUsernames(clientCommandJ.get("username1").toString(), clientCommandJ.get("username2").toString());
             invitation.deny();
+            //Invitation.writeInvitations("invitationDatabase.json");
+            Invitation.editInvitation(invitation);
         } else if (clientCommandJ.get("action").equals("expireAll")) {
             System.out.println("Hi");
             System.out.println(Invitation.getAllNotExpiredInvitations().size());
             Invitation.expireAll();
             System.out.println(Invitation.getAllNotExpiredInvitations().size());
+            //Invitation.writeInvitations("invitationDatabase.json");
         }
-        Invitation.writeInvitations("invitationDatabase.json");
+    }
+
+    private void addAllInvitations(String[] users, String username1) throws IOException {
+        for (String user : users) {
+            Invitation.writeOneInvitation(Invitation.getInvitationBuUsernames(username1, user));
+        }
     }
 
     private void processFriendshipMenuReqs(JSONObject clientCommandJ, DataOutputStream dataOutputStream) throws IOException {
