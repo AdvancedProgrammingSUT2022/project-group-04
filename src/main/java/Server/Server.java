@@ -41,9 +41,12 @@ public class Server {
         UserDatabase.readFromDatabase();
         //Account.readAccounts("AccountURLs.json");
         Account.readFromDatabase();
+        //Friendship.readFriendships("friendshipDatabase.json");
+        Friendship.readFromDatabase();
 
-        Friendship.readFriendships("friendshipDatabase.json");
+
         Invitation.readInvitations("invitationDatabase.json");
+
         ChatroomController.writeChats("chatDatabase.json");
         ChatroomController.writeChats("privateChatDatabase.json");
         LoginMenuController loginMenuController = new LoginMenuController(new LoginMenuModel());
@@ -296,7 +299,8 @@ public class Server {
             String firstUsername = clientCommandJ.get("firstUsername").toString();
             String secondUsername = clientCommandJ.get("secondUsername").toString();
             Friendship.addFriendship(firstUsername, secondUsername);
-            Friendship.writeFriendships("friendshipDatabase.json");
+            //Friendship.writeFriendships("friendshipDatabase.json");
+            Friendship.writeOneFriendship(Friendship.getJustFriendshipByUsernames(firstUsername, secondUsername));
         } else if (clientCommandJ.get("action").equals("request")) {
             String firstUsername = clientCommandJ.get("firstUsername").toString();
             String secondUsername = clientCommandJ.get("secondUsername").toString();
@@ -310,7 +314,8 @@ public class Server {
                 System.out.println("Not null");
                 friendship.accept();
             }
-            Friendship.writeFriendships("friendshipDatabase.json");
+            //Friendship.writeFriendships("friendshipDatabase.json");
+            Friendship.editFriendship(friendship);
         } else if (clientCommandJ.get("action").equals("deny")) {
             String firstUsername = clientCommandJ.get("firstUsername").toString();
             String secondUsername = clientCommandJ.get("secondUsername").toString();
@@ -319,7 +324,8 @@ public class Server {
                 System.out.println("Not null");
                 friendship.deny();
             }
-            Friendship.writeFriendships("friendshipDatabase.json");
+            //Friendship.writeFriendships("friendshipDatabase.json");
+            Friendship.editFriendship(friendship);
         } else if (clientCommandJ.get("action").equals("getRequests")) {
             String username = clientCommandJ.get("username").toString();
             ArrayList<String> users = Friendship.getMyRequests(username);
@@ -355,7 +361,8 @@ public class Server {
                 String firstUsername = clientCommandJ.get("firstUsername").toString();
                 String secondUsername = clientCommandJ.get("secondUsername").toString();
                 Friendship.addFriendship(firstUsername, secondUsername);
-                Friendship.writeFriendships("friendshipDatabase.json");
+                //Friendship.writeFriendships("friendshipDatabase.json");
+                Friendship.writeOneFriendship(Friendship.getJustFriendshipByUsernames(firstUsername, secondUsername));
                 System.out.println("Hiiiiii");
             } else if (clientCommandJ.get("action").equals("request")) {
                 String firstUsername = clientCommandJ.get("firstUsername").toString();
